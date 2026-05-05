@@ -48,13 +48,13 @@ public:
     // Lamps
     virtual void redLampOn() = 0;
     virtual void redLampOff() = 0;
-    virtual void redLampBlink(int) = 0;
+   // virtual void redLampBlink(int) = 0;
     virtual void yellowLampOn() = 0;
     virtual void yellowLampOff() = 0;
-    virtual void yellowLampBlink(int) = 0;
+    //virtual void yellowLampBlink(int) = 0;
     virtual void greenLampOn() = 0;
     virtual void greenLampOff() = 0;
-    virtual void greenLampBlink(int) = 0;
+    //virtual void greenLampBlink(int) = 0;
 
     // Pusher
     virtual void openPusher() = 0;

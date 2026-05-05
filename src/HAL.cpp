@@ -6,6 +6,8 @@
  */
 //  TODO Funktion für Start Kurz oder Lang
 #include "HAL.h"
+using namespace std;
+
 
 	// Sensor Wrapper Implementation
 
@@ -68,6 +70,7 @@
     // Actor Wrapper Implementation
 
     ActorWrapper::ActorWrapper(){
+
 		gpio_bank_1 = mmap_device_io(GPIO_REGISTER_LENGHT, (uint64_t) GPIO_PORT1);
 	    if (gpio_bank_1 == MAP_DEVICE_FAILED) {
 	        throw std::runtime_error("Failed to map GPIO1");
@@ -77,6 +80,9 @@
 	    if (gpio_bank_2 == MAP_DEVICE_FAILED) {
 	        throw std::runtime_error("Failed to map GPIO2");
 	    }
+
+    	out32((uintptr_t) (gpio_bank_2 + OE_REGISTER),0);
+
     }
 
     ActorWrapper::~ActorWrapper(){
@@ -85,8 +91,9 @@
 
     }
     void ActorWrapper::motorForwards(){
-    	out32((uintptr_t) (gpio_bank_1 + CLR_REGISTER),
-    			MOTOR_BACKWARDS | MOTOR_STOP | MOTOR_SLOW);
+    	out32((uintptr_t) (gpio_bank_1 + CLR_REGISTER),MOTOR_BACKWARDS);
+    	out32((uintptr_t) (gpio_bank_1 + CLR_REGISTER),MOTOR_STOP);
+    	out32((uintptr_t) (gpio_bank_1 + CLR_REGISTER),MOTOR_SLOW);
     	out32((uintptr_t) (gpio_bank_1 + SET_REGISTER), MOTOR_FORWARDS);
     }
     void ActorWrapper::motorBackwards(){
@@ -107,30 +114,36 @@
     void ActorWrapper::greenLampOff(){
       	out32((uintptr_t) (gpio_bank_1 + CLR_REGISTER), GREEN_LAMP_ON);
       }
+    /*
     void ActorWrapper::greenLampBlink(int hz){  //TODO
     	greenLampOn();
     	usleep(hz);
     }
+    */
     void ActorWrapper::yellowLampOn(){
     	out32((uintptr_t) (gpio_bank_1 + SET_REGISTER), YELLOW_LAMP_ON);
     }
     void ActorWrapper::yellowLampOff(){
     	out32((uintptr_t) (gpio_bank_1 + CLR_REGISTER), YELLOW_LAMP_ON);
     }
+    /*
     void ActorWrapper::yellowLampBlink(int hz){  //TODO
     	yellowLampOn();
     	usleep(hz);
     }
+    */
     void ActorWrapper::redLampOn(){
     	out32((uintptr_t) (gpio_bank_1 + SET_REGISTER), RED_LAMP_ON);
     }
     void ActorWrapper::redLampOff(){
     	out32((uintptr_t) (gpio_bank_1 + CLR_REGISTER), RED_LAMP_ON);
     }
+    /*
     void ActorWrapper::redLampBlink(int hz){  //TODO
     	redLampOn();
     	usleep(hz);
     }
+    */
     void ActorWrapper::openPusher(){
 
     	out32((uintptr_t) (gpio_bank_1 + SET_REGISTER), OPEN_PUSHER);
