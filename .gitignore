@@ -1,4 +1,7 @@
 Debug/
 Release/
+build/
+.project
+.cproject
 *.o
 *.d
