@@ -10,6 +10,8 @@
 
 #include <thread>
 #include <sys/neutrino.h>
+#include "PulseMessages.h"
+#include "HAL.h"
 
 
 
@@ -23,7 +25,6 @@ private:
 	int idEstop;
 	int idItemAtEntry;
 	int idItemAtExit;
-	int idItemAtHeightMeas;
 	int iditemAtPusher;
 	int iditemMetal;
 	int idPusherOpen;
@@ -36,7 +37,6 @@ private:
 	struct sigevent eventEstop;
 	struct sigevent eventItemAtEntry;
 	struct sigevent eventItemAtExit;
-	struct sigevent eventItemAtHeightMeas;
 	struct sigevent eventItemAtPusher;
 	struct sigevent eventItemMetal;
 	struct sigevent eventPusherOpen;

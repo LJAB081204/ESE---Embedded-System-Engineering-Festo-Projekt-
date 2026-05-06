@@ -5,10 +5,7 @@
  *      Author: tayla
  */
 #include "InterruptHandler.h"
-#include "HAL.h"
-#include "PulseMessages.h"
 
-#include <thread>
 using namespace std;
 
 	InterruptHandler::InterruptHandler(int coid){
@@ -19,7 +16,6 @@ using namespace std;
 		idButtonStop = -1;
 		idEstop = -1;
 		idItemAtEntry = -1;
-		idItemAtHeightMeas = -1;
 		idItemAtExit = -1;
 		idPusherOpen = -1;
 		idSlideFull = -1;
@@ -34,7 +30,6 @@ using namespace std;
 		InterruptDetach(idEstop);
 		InterruptDetach(idItemAtEntry);
 		InterruptDetach(idItemAtExit);
-		InterruptDetach(idItemAtHeightMeas);
 		InterruptDetach(idPusherOpen);
 		InterruptDetach(idSlideFull);
 		InterruptDetach(iditemAtPusher);
@@ -47,8 +42,9 @@ using namespace std;
 		ThreadCtl(_NTO_TCTL_IO, 0); // Request IO privileges for this thread.
 
 		out32(gpio_bank_0 + GPIO_FALLINGDETECT, ESTOP | BUTTON_STOP | ITEM_AT_ENTRY | ITEM_AT_EXIT
-			 | ITEM_IN_HEIGHT_MEAS | ITEM_IN_PUSHER | SLIDE_FULL);
-		out32(gpio_bank_0 + GPIO_RISINGDETECT, BUTTON_RESET | BUTTON_START | ITEM_METAL | PUSHER_OPEN);
+		      | ITEM_IN_PUSHER | SLIDE_FULL | BUTTON_RESET | BUTTON_START | ITEM_METAL | PUSHER_OPEN);
+		out32(gpio_bank_0 + GPIO_RISINGDETECT, ESTOP | BUTTON_STOP | ITEM_AT_ENTRY | ITEM_AT_EXIT
+		      | ITEM_IN_PUSHER | SLIDE_FULL | BUTTON_RESET | BUTTON_START | ITEM_METAL | PUSHER_OPEN);
 
 		//Debounce Buttons
 		out32(gpio_bank_0 + GPIO_DEBOUNCENABLE, BUTTON_START | BUTTON_STOP | BUTTON_RESET | ESTOP);
@@ -60,6 +56,7 @@ using namespace std;
 		SIGEV_PULSE_INIT(&eventEstop, connectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_E_STOP_PRESSED, 0);
 		idEstop = InterruptAttachEvent((GPIO_0_IRQ_BASE+27),&eventEstop,_NTO_INTR_FLAGS_TRK_MSK);
 		eventEstop.sigev_value.sival_int = idEstop;
+
 
 		//Interrupt Button Reset (high when true, Bit 26)
 		out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),BUTTON_RESET);
@@ -104,11 +101,6 @@ using namespace std;
 		idItemAtExit = InterruptAttachEvent((GPIO_0_IRQ_BASE+20), &eventItemAtExit, _NTO_INTR_FLAGS_TRK_MSK);
 		eventItemAtExit.sigev_value.sival_int = idItemAtExit;
 
-		// Interrupt Item in Height Measurement (low when true, Bit 3)
-		out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0), ITEM_IN_HEIGHT_MEAS);
-		SIGEV_PULSE_INIT(&eventItemAtHeightMeas, connectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_IN_HEIGHT_MEAS, 0);
-		idItemAtHeightMeas = InterruptAttachEvent((GPIO_0_IRQ_BASE+3), &eventItemAtHeightMeas, _NTO_INTR_FLAGS_TRK_MSK);
-		eventItemAtHeightMeas.sigev_value.sival_int = idItemAtHeightMeas;
 
 		// Interrupt Item in Pusher (low when true, Bit 5)
 		out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0), ITEM_IN_PUSHER);
