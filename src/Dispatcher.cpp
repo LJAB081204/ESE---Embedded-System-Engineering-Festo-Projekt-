@@ -15,7 +15,7 @@ Dispatcher::Dispatcher(const std::string& name){
 			std::cout << "Connecting to channel failed" << std::endl;
 			}
 	waitForMessages = true;
-	receivingThread = thread(&Dispatcher::run,this,channelID);
+	receivingThread = thread(&Dispatcher::run,this);
 }
 
 Dispatcher::~Dispatcher(){
@@ -25,7 +25,7 @@ Dispatcher::~Dispatcher(){
 	ChannelDestroy(channelID);
 }
 
-Dispatcher::run(){
+void Dispatcher::run(){
 	while(waitForMessages){
 		int rcvid = MsgReceive(channelID, &msg, sizeof(msg), nullptr);
 		if (rcvid == 0){
@@ -45,10 +45,4 @@ Dispatcher::run(){
 
 
 
-int Demultiplexer::getChannelID(){
-		return channelID;
-	}
-	int Demultiplexer::getConnectionID(){
-		return connectionID;
-	}
 

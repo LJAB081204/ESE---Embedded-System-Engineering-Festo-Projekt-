@@ -43,7 +43,7 @@ using namespace std;
 		    	std::cout << "Pulse received: " << msg.code << std::endl;
 				switch(msg.code){
 
-				case PULSE_E_STOP_PRESSED:
+				case PULSE_E_STOP:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & ESTOP) {
 				        cout << "E-Stop released!" << endl;
 				        hal.getActors()->motorForwards();
@@ -56,7 +56,7 @@ using namespace std;
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),ESTOP);
 				    InterruptUnmask((GPIO_0_IRQ_BASE+27),msg.value.sival_int);
 				    break;
-				case PULSE_RESET_PRESSED:
+				case PULSE_RESET:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & BUTTON_RESET) {
 				        cout << "Reset pressed!" << endl;
 				    } else {
@@ -65,7 +65,7 @@ using namespace std;
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),BUTTON_RESET);
 				    InterruptUnmask((GPIO_0_IRQ_BASE+26),msg.value.sival_int);
 				    break;
-				case PULSE_STOP_PRESSED:
+				case PULSE_STOP:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & BUTTON_STOP) {
 				        cout << "Stop released!" << endl;
 				    } else {
@@ -75,7 +75,7 @@ using namespace std;
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),BUTTON_STOP);
 				    InterruptUnmask((GPIO_0_IRQ_BASE+23),msg.value.sival_int);
 				    break;
-				case PULSE_START_PRESSED:
+				case PULSE_START:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & BUTTON_START) {
 				        cout << "Start pressed!" << endl;
 				        hal.getActors()->greenLampOn();
