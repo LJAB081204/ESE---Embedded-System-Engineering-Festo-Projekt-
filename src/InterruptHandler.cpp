@@ -53,7 +53,7 @@ using namespace std;
 		//Interrupt E-Stop (low when true, Bit 27)
 		out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),ESTOP);
 		//out32((gpio_bank_0 + FALLING_DETECT),ESTOP);
-		SIGEV_PULSE_INIT(&eventEstop, connectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_E_STOP_PRESSED, 0);
+		SIGEV_PULSE_INIT(&eventEstop, connectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_E_STOP, 0);
 		idEstop = InterruptAttachEvent((GPIO_0_IRQ_BASE+27),&eventEstop,_NTO_INTR_FLAGS_TRK_MSK);
 		eventEstop.sigev_value.sival_int = idEstop;
 
@@ -61,7 +61,7 @@ using namespace std;
 		//Interrupt Button Reset (high when true, Bit 26)
 		out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),BUTTON_RESET);
 		//out32((gpio_bank_0 + RISING_DETECT),BUTTON_RESET);
-		SIGEV_PULSE_INIT(&eventReset, connectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_RESET_PRESSED, 0);
+		SIGEV_PULSE_INIT(&eventReset, connectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_RESET, 0);
 		idButtonReset = InterruptAttachEvent((GPIO_0_IRQ_BASE+26),&eventReset,_NTO_INTR_FLAGS_TRK_MSK);
 		eventReset.sigev_value.sival_int = idButtonReset;
 		cout << "ID:" << idButtonReset << endl;
@@ -69,7 +69,7 @@ using namespace std;
 		//Interrupt Button Stop (low when true, Bit 23)
 		out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),BUTTON_STOP);
 		//out32((gpio_bank_0 + FALLING_DETECT),BUTTON_STOP);
-		SIGEV_PULSE_INIT(&eventStop, connectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_STOP_PRESSED, 0);
+		SIGEV_PULSE_INIT(&eventStop, connectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_STOP, 0);
 		idButtonStop =  InterruptAttachEvent((GPIO_0_IRQ_BASE+23),&eventStop,_NTO_INTR_FLAGS_TRK_MSK);
 		eventStop.sigev_value.sival_int = idButtonStop;
 		cout << "ID:" << idButtonStop << endl;
@@ -78,7 +78,7 @@ using namespace std;
 		//Interrupt Button Start (high when true, Bit 22)
 		out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),BUTTON_START);
 		//out32((gpio_bank_0 + RISING_DETECT),BUTTON_START);
-		SIGEV_PULSE_INIT(&eventStart, connectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_START_PRESSED, 0);
+		SIGEV_PULSE_INIT(&eventStart, connectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_START, 0);
 		idButtonStart =  InterruptAttachEvent((GPIO_0_IRQ_BASE+22),&eventStart,_NTO_INTR_FLAGS_TRK_MSK);
 		eventStart.sigev_value.sival_int = idButtonStart;
 		cout << "ID:" << idButtonStart << endl;
@@ -145,7 +145,7 @@ using namespace std;
 //			out32(gpio_bank_0 + 0x2C,ESTOP); //Leitung clearen
 //
 //			if(!(status & ESTOP)){
-//				MsgSendPulse(connectionID,-1, PULSE_E_STOP_PRESSED,0);
+//				MsgSendPulse(connectionID,-1, PULSE_E_STOP,0);
 //			}
 //			InterruptUnmask((768+27),id);
 //
