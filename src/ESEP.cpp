@@ -8,22 +8,43 @@ using namespace std;
 #include "testing.h"
 #include "Demultiplexer.h"
 #include "InterruptHandler.h"
+#include "Dispatcher.h"
+
+#define SYSTEM1 "system1"
+#define SYSTEM2 "system2"
 
 
 
-
-
-int main() {
+int main(int argc, char **argv) {
     try {
 
 		ThreadCtl(_NTO_TCTL_IO, 0); // Request IO privileges for this thread.
+		const char* local;
+		const char* remote;
+	    /*
+		if (argc < 2) {
+	        printf("Usage %s -s | -c \n", argv[0]);
+	        ret = EXIT_FAILURE;
+	    }
 
+		if (strcmp(argv[1],"-c") == 0){
+			local = SYSTEM1;
+			remote = SYSTEM2;
+		}
+		else{
+			remote = SYSTEM2;
+			local = SYSTEM1;
+		}
+		*/
+		local = SYSTEM1;
+		remote = SYSTEM2;
         HAL hal;
         hal.getActors()->greenLampOn();
+        hal.getActors()->motorStop();
 
-    	Demultiplexer demux("demo");
+    	Dispatcher dispatcher(local,remote);
+    	Demultiplexer demux(dispatcher.getConnectionID());
     	InterruptHandler handler(demux.getConnectionID());
-
     	while(true){
 
     	}

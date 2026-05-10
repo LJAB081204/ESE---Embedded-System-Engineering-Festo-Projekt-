@@ -16,6 +16,7 @@ class Demultiplexer{
 private:
 	int channelID;
 	int connectionID;
+	int dispatcherID;
 	std::string channel_name;
 	bool waitForMessages;
 	std::thread receivingThread;
@@ -23,7 +24,7 @@ private:
 	uintptr_t gpio_bank_0;
 
 public:
-	Demultiplexer(const std::string& name);
+	Demultiplexer(int DispatcherConnectionID);
 	~Demultiplexer();
 
 	void run(int channelID);
