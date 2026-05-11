@@ -39,8 +39,16 @@ int main(int argc, char **argv) {
 		local = SYSTEM1;
 		remote = SYSTEM2;
         HAL hal;
-        hal.getActors()->greenLampOn();
         hal.getActors()->motorStop();
+        hal.getActors()->greenLampBlink(500);
+        hal.getActors()->yellowLampBlink(500);
+        hal.getActors()->redLampBlink(500);
+
+        this_thread::sleep_for(chrono::seconds(10));
+
+        hal.getActors()->greenLampBlinkOff();
+        hal.getActors()->yellowLampBlinkOff();
+        hal.getActors()->redLampOn();
 
     	Dispatcher dispatcher(local,remote);
     	Demultiplexer demux(dispatcher.getConnectionID());

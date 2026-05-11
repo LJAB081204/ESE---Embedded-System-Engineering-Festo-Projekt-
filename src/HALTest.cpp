@@ -4,7 +4,7 @@
 // ============================================
 // LAMP TESTS
 // ============================================
-/*
+
 TEST(HALTest, GreenLampOn) {
     HAL hal;
     hal.getActors()->greenLampOn();
@@ -289,8 +289,8 @@ TEST(HALTest, MultipleHALInstances) {
     ASSERT_NE(hal1.getSensors(), nullptr);
     ASSERT_NE(hal2.getActors(), nullptr);
 }
+
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
-*/
