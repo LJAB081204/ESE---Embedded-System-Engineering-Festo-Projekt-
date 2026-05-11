@@ -10,8 +10,7 @@ using namespace std;
 #include "InterruptHandler.h"
 #include "Dispatcher.h"
 
-#define SYSTEM1 "system1"
-#define SYSTEM2 "system2"
+
 
 
 
@@ -21,10 +20,10 @@ int main(int argc, char **argv) {
 		ThreadCtl(_NTO_TCTL_IO, 0); // Request IO privileges for this thread.
 		const char* local;
 		const char* remote;
-	    /*
+
 		if (argc < 2) {
 	        printf("Usage %s -s | -c \n", argv[0]);
-	        ret = EXIT_FAILURE;
+	        return 0;
 	    }
 
 		if (strcmp(argv[1],"-c") == 0){
@@ -32,17 +31,17 @@ int main(int argc, char **argv) {
 			remote = SYSTEM2;
 		}
 		else{
-			remote = SYSTEM2;
-			local = SYSTEM1;
+			local = SYSTEM2;
+			remote = SYSTEM1;
 		}
-		*/
-		local = SYSTEM1;
-		remote = SYSTEM2;
+
+
         HAL hal;
         hal.getActors()->greenLampOff();
         hal.getActors()->yellowLampOff();
         hal.getActors()->redLampOff();
         hal.getActors()->motorStop();
+        /*
         hal.getActors()->greenLampBlink(500);
         hal.getActors()->yellowLampBlink(500);
         hal.getActors()->redLampBlink(500);
@@ -52,8 +51,8 @@ int main(int argc, char **argv) {
         hal.getActors()->greenLampBlinkOff();
         hal.getActors()->yellowLampBlinkOff();
         hal.getActors()->redLampBlinkOff();
-
-    	Dispatcher dispatcher(local,remote);
+		*/
+    	Dispatcher dispatcher(local,remote,hal);
     	Demultiplexer demux(dispatcher.getConnectionID());
     	InterruptHandler handler(demux.getConnectionID());
     	while(true){
