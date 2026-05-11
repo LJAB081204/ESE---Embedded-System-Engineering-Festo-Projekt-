@@ -1,0 +1,136 @@
+/*
+ * HeightSensor.cpp
+ *
+ *  Created on: 08.05.2026
+ *      Author: lewis
+ */
+
+#include "HeightSensor.h"
+
+//Konstruktor
+HeightSensor::HeightSensor(TSCADC& tscadc, int dispCoid)
+    : tscadc(tscadc), adc(tscadc)
+{
+	this->offset = 0;
+	this->previousHeight = HEIGHT_UNINITIALIZED;
+	this->currentHeight = HEIGHT_CONVEYOR;
+	this->lastCandidate = HEIGHT_UNINITIALIZED;
+	this->heightCounter = 0;
+    this->dispCoid = dispCoid;
+    chid = ChannelCreate(0);
+    coid = ConnectAttach(0, 0, chid, _NTO_SIDE_CHANNEL, 0);
+    this->running = false;
+
+}
+
+//Destruktor
+HeightSensor::~HeightSensor(){
+	 stop();
+	 ConnectDetach(coid);
+	 ChannelDestroy(chid);
+}
+
+//Kalibriert den Höhensensor -> Band 2 als Referenz für die Defines
+void HeightSensor::calibrate() {
+	struct _pulse pulse;
+    adc.sample();
+    MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
+    offset = pulse.value.sival_int - ADC_CONVEYOR;	//Offset auf die defines gerechnet
+    //std::cout << "Raw: " << pulse.value.sival_int << " Offset: " << offset << std::endl; -> Testausgabe ADC Wert und Offset
+}
+
+//Start des HS-Threads
+void HeightSensor::start(){
+	running = true;
+	threadHS = std::thread(&HeightSensor::threadFunc, this);
+}
+
+//Stop des HS-Threads
+void HeightSensor::stop(){
+	running = false;
+	    if(threadHS.joinable()) {
+	        threadHS.join();
+	    }
+}
+
+//HS Thread Funktion
+void HeightSensor::threadFunc(){
+	adc.registerAdcISR(coid, ADC_TYPE);	//Registrieren der ISR
+	calibrate();
+	struct _pulse pulse;
+	while(running){
+		adc.sample();				//adc Wert holen
+		MsgReceivePulse(chid,&pulse,sizeof(pulse),NULL); //"" erhalten
+		detectHeight(pulse.value.sival_int);
+	}
+	 adc.unregisterAdcISR();	//Abmelden der ISR
+}
+
+void HeightSensor::detectHeight(int value){
+	//std::cout << "Raw value: " << value << std::endl;
+
+	//wenn wert kleiner ist als kleinster adc wert für Hohen Baustein
+	if(value < ADC_MAX + offset){
+	    currentHeight = HEIGHT_TOO_HIGH;
+	}
+	//Wenn wert- Define + offset kleiner als Threshold && größer als minimu  ADC Wert vom Laufband
+	else if(abs(value - (ADC_CONVEYOR + offset)) < ADC_THRESHOLD && value > ADC_CONVEYOR_MIN){
+        currentHeight = HEIGHT_CONVEYOR;
+    }
+	//Wenn Wert - Define kleiner als Threshold
+    else if(abs(value - (ADC_DRILLING + offset)) < ADC_THRESHOLD){
+        currentHeight = HEIGHT_DRILLING;
+    }
+	//Wenn Wert - Define kleiner als Threshold und größer als ADC Max
+    else if(abs(value - (ADC_WORKPIECE_HIGH + offset)) < ADC_THRESHOLD && value > (ADC_MAX + offset) ){
+        currentHeight = HEIGHT_WORKPIECE_HIGH;
+    }
+
+	//Wenn Wert - Define kleiner als threshold
+    else if(abs(value - (ADC_WORKPIECE_FLAT + offset)) < ADC_THRESHOLD){
+        currentHeight = HEIGHT_WORKPIECE_FLAT;
+    }
+
+    else{
+        currentHeight = HEIGHT_UNKNOWN;
+    }
+
+	//if-Abfrage für gleiche Höhe von vorherigem und aktuellem wert erhöhen des puffers
+    if(currentHeight == lastCandidate){
+            heightCounter++;
+        }
+    //sonst reseten
+    else {
+            lastCandidate = currentHeight;
+            heightCounter = 0;
+        }
+
+    //If Abfrage für puffer, damit bei kurzem schwanken nicht neue Höhe detektiert wird
+    if(heightCounter > 70 && currentHeight != previousHeight){
+    	//std::cout << "Raw value: " << value << std::endl;
+       //std::cout << "prev: " << previousHeight << " curr: " << currentHeight << std::endl;
+        switch(currentHeight) {
+            case HEIGHT_CONVEYOR:       std::cout << "HEIGHT_CONVEYOR" << std::endl; break;
+            case HEIGHT_DRILLING:       std::cout << "HEIGHT_DRILLING" << std::endl; break;
+            case HEIGHT_WORKPIECE_HIGH: std::cout << "HEIGHT_WORKPIECE_HIGH" << std::endl; break;
+            case HEIGHT_WORKPIECE_FLAT: std::cout << "HEIGHT_WORKPIECE_FLAT" << std::endl; break;
+            case HEIGHT_TOO_HIGH: std::cout << "HEIGHT_TOO_HIGH" << std::endl; break;
+            default: break;
+        }
+        //setzen der vorherigen Höhe, wenn nicht unbekannt
+        if(currentHeight != HEIGHT_UNKNOWN){
+        previousHeight = currentHeight;
+        }
+        //reset des Puffers
+        heightCounter = 0;
+        lastCandidate = currentHeight;
+    }
+}
+
+int HeightSensor::getCoid(){
+    return coid;
+}
+
+int HeightSensor::getChid(){
+    return chid;
+}
