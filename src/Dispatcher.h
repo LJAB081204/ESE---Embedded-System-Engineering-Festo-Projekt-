@@ -3,26 +3,34 @@
 
 #include <thread>
 #include <iostream>
+#include <stdio.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/dispatch.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <unistd.h>
 #include <sys/neutrino.h>
 #include "HAL.h"
 #include "PulseMessages.h"
 
-struct DispatcherMsg {
-    struct _pulse pulse;
-    int type;
-    int data;
-};
 
 class Dispatcher {
 private:
-    int channelID;
-    int connectionID;
+    name_attach_t* attach;
+    int localConnectionID;
+    int remoteConnectionID;
+    HAL& hal;
+  //  int channelID;
+
     bool waitForMessages;
-    std::thread receivingThread;
+    std::thread DispatcherThread;
     _pulse msg;
 
 public:
-    Dispatcher(const std::string& name);
+    Dispatcher(const char* localName, const char* remoteName,HAL& hal);
     ~Dispatcher();
     void run();
     int getChannelID();

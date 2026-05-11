@@ -14,6 +14,7 @@
 #include <hw/inout.h>
 #include <sys/neutrino.h>
 #include <iostream>
+#include <thread>
 #include "IHAL.h"
 
 // ========================
@@ -118,6 +119,8 @@
 #define LAMP_Q1          0x00000010
 #define LAMP_Q2          0x00000020
 
+
+
 class SensorWrapper : public ISensor {
 
 private:
@@ -144,12 +147,20 @@ public:
 	bool isButtonStopPressed() override;
 	bool isButtonResetPressed() override;
 	bool isEStopTriggered() override;
+
+
 };
 
 class ActorWrapper : public IActor {
 private:
     uintptr_t gpio_bank_1;
     uintptr_t gpio_bank_2;
+	bool blinkGreenLamp;
+	bool blinkYellowLamp;
+	bool blinkRedLamp;
+	std::thread greenLampThread;
+	std::thread yellowLampThread;
+	std::thread redLampThread;
 
 
 public:
@@ -164,13 +175,16 @@ public:
 
     void redLampOn() override;
     void redLampOff() override;
-    //void redLampBlink() override;
+    void redLampBlink(int hz) override;
+    void redLampBlinkOff() override;
     void yellowLampOn() override;
     void yellowLampOff() override;
-    //void yellowLampBlink() override;
+    void yellowLampBlink(int hz) override;
+    void yellowLampBlinkOff() override;
     void greenLampOn() override;
     void greenLampOff() override;
-    //void greenLampBlink() override;
+    void greenLampBlink(int hz) override;
+    void greenLampBlinkOff() override;
 
     void openPusher() override;
     void closePusher() override;

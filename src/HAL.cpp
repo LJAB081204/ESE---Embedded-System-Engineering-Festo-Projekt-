@@ -70,7 +70,6 @@ using namespace std;
     // Actor Wrapper Implementation
 
     ActorWrapper::ActorWrapper(){
-
 		gpio_bank_1 = mmap_device_io(GPIO_REGISTER_LENGHT, (uint64_t) GPIO_PORT1);
 	    if (gpio_bank_1 == MAP_DEVICE_FAILED) {
 	        throw std::runtime_error("Failed to map GPIO1");
@@ -80,8 +79,11 @@ using namespace std;
 	    if (gpio_bank_2 == MAP_DEVICE_FAILED) {
 	        throw std::runtime_error("Failed to map GPIO2");
 	    }
-
     	out32((uintptr_t) (gpio_bank_2 + OE_REGISTER),0);
+
+    	blinkGreenLamp = false;
+    	blinkYellowLamp = false;
+    	blinkRedLamp = false;
 
     }
 
@@ -114,36 +116,79 @@ using namespace std;
     void ActorWrapper::greenLampOff(){
       	out32((uintptr_t) (gpio_bank_1 + CLR_REGISTER), GREEN_LAMP_ON);
       }
-    /*
-    void ActorWrapper::greenLampBlink(int hz){  //TODO
-    	greenLampOn();
-    	usleep(hz);
+
+    void ActorWrapper::greenLampBlink(int ms) {
+        blinkGreenLamp = true;
+        greenLampThread = thread([this, ms](){
+            while(blinkGreenLamp){
+                greenLampOn();
+                this_thread::sleep_for(chrono::milliseconds(ms));
+                greenLampOff();
+                this_thread::sleep_for(chrono::milliseconds(ms));
+            }
+        });
     }
-    */
+    void ActorWrapper::greenLampBlinkOff(){
+    	blinkGreenLamp = false;
+    	if(greenLampThread.joinable()){
+    		greenLampThread.join();
+    	}
+    }
+
+
     void ActorWrapper::yellowLampOn(){
     	out32((uintptr_t) (gpio_bank_1 + SET_REGISTER), YELLOW_LAMP_ON);
     }
     void ActorWrapper::yellowLampOff(){
     	out32((uintptr_t) (gpio_bank_1 + CLR_REGISTER), YELLOW_LAMP_ON);
     }
-    /*
-    void ActorWrapper::yellowLampBlink(int hz){  //TODO
-    	yellowLampOn();
-    	usleep(hz);
+
+    void ActorWrapper::yellowLampBlink(int ms){
+    	blinkYellowLamp = true;
+    	yellowLampThread = thread([this,ms](){
+        	while(blinkYellowLamp){
+    			yellowLampOn();
+    			this_thread::sleep_for(chrono::milliseconds(ms));
+    			yellowLampOff();
+    			this_thread::sleep_for(chrono::milliseconds(ms));
+
+        	}
+    	});
     }
-    */
+    void ActorWrapper::yellowLampBlinkOff(){
+    	blinkYellowLamp = false;
+    	if(yellowLampThread.joinable()){
+    		yellowLampThread.join();
+    	}
+    }
+
+
     void ActorWrapper::redLampOn(){
     	out32((uintptr_t) (gpio_bank_1 + SET_REGISTER), RED_LAMP_ON);
     }
     void ActorWrapper::redLampOff(){
     	out32((uintptr_t) (gpio_bank_1 + CLR_REGISTER), RED_LAMP_ON);
     }
-    /*
-    void ActorWrapper::redLampBlink(int hz){  //TODO
-    	redLampOn();
-    	usleep(hz);
+
+    void ActorWrapper::redLampBlink(int ms){  //TODO
+    	blinkRedLamp = true;
+    	redLampThread = thread([this,ms](){
+    	while(blinkRedLamp){
+    		redLampOn();
+			this_thread::sleep_for(chrono::milliseconds(ms));
+    		redLampOff();
+			this_thread::sleep_for(chrono::milliseconds(ms));
+
+    	}
+    });
     }
-    */
+    void ActorWrapper::redLampBlinkOff(){  //TODO
+    	blinkRedLamp = false;
+    	if(redLampThread.joinable()){
+    		redLampThread.join();
+    	}
+    }
+
     void ActorWrapper::openPusher(){
 
     	out32((uintptr_t) (gpio_bank_1 + SET_REGISTER), OPEN_PUSHER);
