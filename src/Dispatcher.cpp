@@ -89,6 +89,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName){
 					case PULSE_ITEM_AT_ENTRY:
 					    if(msg.value.sival_int == 1){
 					        cout << "Item at entry!" << endl;
+					        hal.getActors()->motorForwards();
 					    } else {
 					        cout << "Item left entry!" << endl;
 					    }
@@ -97,6 +98,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName){
 					case PULSE_ITEM_AT_EXIT:
 					    if(msg.value.sival_int == 1){
 					        cout << "Item at exit!" << endl;
+					        hal.getActors()->motorStop();
 					    } else {
 					        cout << "Item left exit!" << endl;
 					    }
@@ -129,6 +131,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName){
 					case PULSE_SLIDE_FULL:
 					    if(msg.value.sival_int == 1){
 					        cout << "Slide is full!" << endl;
+					        hal.getActors()->yellowLampOn();
 					    } else {
 					        cout << "Slide cleared!" << endl;
 					    }
