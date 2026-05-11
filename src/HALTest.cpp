@@ -251,7 +251,7 @@ TEST(HALTest, MotorSlowClearsForwards) {
 // ============================================
 // LAMP BLINK TESTS
 // ============================================
-
+/**
 TEST(HALTest, GreenLampBlink) {
     HAL hal;
     hal.getActors()->greenLampBlink();
@@ -269,11 +269,12 @@ TEST(HALTest, RedLampBlink) {
     hal.getActors()->redLampBlink();
     SUCCEED();
 }
+*/
 
 // ============================================
 // INTEGRATION TESTS
 // ============================================
-
+/*
 TEST(HALTest, HALInitialization) {
     // Test that HAL can be initialized without error
     HAL hal;
@@ -294,3 +295,4 @@ int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
+*/

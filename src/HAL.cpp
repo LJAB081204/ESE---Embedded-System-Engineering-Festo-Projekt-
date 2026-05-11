@@ -172,11 +172,13 @@ using namespace std;
 
     void ActorWrapper::redLampBlink(int ms){  //TODO
     	blinkRedLamp = true;
-    	yellowLampThread = thread([this,ms](){
+    	redLampThread = thread([this,ms](){
     	while(blinkRedLamp){
     		redLampOn();
-			this_thread::sleep_for(chrono::seconds(ms));
+			this_thread::sleep_for(chrono::milliseconds(ms));
     		redLampOff();
+			this_thread::sleep_for(chrono::milliseconds(ms));
+
     	}
     });
     }
