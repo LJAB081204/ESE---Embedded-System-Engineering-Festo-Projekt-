@@ -5,7 +5,11 @@
  *      Author: tayla
  */
 #include "InterruptHandler.h"
-
+#include "HAL.h"
+#include "PulseMessages.h"
+#include <sys/mman.h>
+#include <hw/inout.h>
+#include <iostream>
 using namespace std;
 
 	InterruptHandler::InterruptHandler(int coid){
@@ -126,32 +130,6 @@ using namespace std;
 		idSlideFull = InterruptAttachEvent((GPIO_0_IRQ_BASE+15), &eventSlideFull, _NTO_INTR_FLAGS_TRK_MSK);
 		eventSlideFull.sigev_value.sival_int = idSlideFull;
 	}
-//
-//	void InterruptHandler::run(){
-//		ThreadCtl(_NTO_TCTL_IO, 0); // Request IO privileges for this thread.
-//		struct sigevent event;
-//		SIGEV_INTR_INIT(&event);
-//		id = InterruptAttachEvent((768+27),&event,_NTO_INTR_FLAGS_TRK_MSK);
-//		out32((gpio_bank_0 + RISING_DETECT),0);
-//		out32((gpio_bank_0 + GPIO_0_LEVEL_DETECT),0);
-//		out32((gpio_bank_0 + GPIO_1_LEVEL_DETECT),0);
-//		out32((gpio_bank_0 + FALLING_DETECT),ESTOP);
-//		cout << "id" << id;
-//		while(waitForInterrupts){
-//			if(InterruptWait(0,NULL) == -1) break;
-//			cout << "Interrupt received" << endl;
-//
-//			uint32_t status = in32(gpio_bank_0 + 0x138); // 0x2C Status IRG Register GPIO0
-//			out32(gpio_bank_0 + 0x2C,ESTOP); //Leitung clearen
-//
-//			if(!(status & ESTOP)){
-//				MsgSendPulse(connectionID,-1, PULSE_E_STOP,0);
-//			}
-//			InterruptUnmask((768+27),id);
-//
-//
-//		}
-//	}
 
 
 

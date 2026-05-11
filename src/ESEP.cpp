@@ -1,23 +1,18 @@
-#include <stdint.h>
-#include <sys/mman.h>
-#include <hw/inout.h>
+
 #include <sys/neutrino.h>
 #include <iostream>
-using namespace std;
 #include "HAL.h"
-#include "testing.h"
 #include "Demultiplexer.h"
 #include "InterruptHandler.h"
 #include "Dispatcher.h"
-
+#include "ADC_Sources/HeightSensor.h"
+using namespace std;
 
 #define SYSTEM1 "system1"
 #define SYSTEM2 "system2"
 
 
 int main(int argc, char **argv) {
-    try {
-
 		ThreadCtl(_NTO_TCTL_IO, 0); // Request IO privileges for this thread.
 		const char* local;
 		const char* remote;
@@ -53,6 +48,7 @@ int main(int argc, char **argv) {
         hal.getActors()->yellowLampBlinkOff();
         hal.getActors()->redLampBlinkOff();
 		*/
+
     	Dispatcher dispatcher(local,remote,hal);
     	Demultiplexer demux(dispatcher.getConnectionID());
     	InterruptHandler handler(demux.getConnectionID());
@@ -61,24 +57,8 @@ int main(int argc, char **argv) {
     	}
 
 
-        hal.getActors()->ledButtonReset();
 
-
-        // Sensors abfragen
-        while (!hal.getSensors()->isButtonStartPressed()) {
-        }
-        std::cout << "Start button pressed!" << std::endl;
-        hal.getActors()->motorForwards();
-        hal.getActors()->greenLampOn();
-
-        while (!hal.getSensors()->isEStopTriggered()) {
-        }
-        hal.getActors()->motorStop();
-        hal.getActors()->redLampOn();
-        return 0;
-    } catch (const std::exception& e) {
-        std::cerr << "Fatal error: " << e.what() << std::endl;
         return 1;
     }
-}
+
 

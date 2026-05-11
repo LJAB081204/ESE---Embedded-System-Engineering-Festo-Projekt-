@@ -7,9 +7,9 @@
 
 #ifndef SRC_DEMULTIPLEXER_H_
 #define SRC_DEMULTIPLEXER_H_
-#include "hal.h"
-#include "PulseMessages.h"
+
 #include <thread>
+#include <stdint.h>
 
 
 class Demultiplexer{
@@ -17,10 +17,8 @@ private:
 	int channelID;
 	int connectionID;
 	int dispatcherID;
-	std::string channel_name;
 	bool waitForMessages;
 	std::thread receivingThread;
-	_pulse msg;
 	uintptr_t gpio_bank_0;
 
 public:

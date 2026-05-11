@@ -8,9 +8,8 @@
 #ifndef SRC_INTERRUPTHANDLER_H_
 #define SRC_INTERRUPTHANDLER_H_
 
-#include <thread>
 #include <sys/neutrino.h>
-#include "PulseMessages.h"
+#include <stdint.h>
 #include "HAL.h"
 
 
@@ -51,7 +50,6 @@ private:
 public:
 	InterruptHandler(int connectionID);
 	~InterruptHandler();
-//	void run();
 	void initInterrupts(int coid);
 
 };

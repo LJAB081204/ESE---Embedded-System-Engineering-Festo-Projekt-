@@ -5,8 +5,12 @@
  *      Author: tayla test test
  */
 #include "Demultiplexer.h"
-//#include "InterruptHandler.h"
-//#include "HAL.h"
+#include "HAL.h"
+#include "PulseMessages.h"
+#include <sys/mman.h>
+#include <hw/inout.h>
+#include <iostream>
+#include <sys/neutrino.h>
 using namespace std;
 
 	Demultiplexer::Demultiplexer(int DispatcherConnectionID){
@@ -25,21 +29,22 @@ using namespace std;
 	}
 
 	Demultiplexer::~Demultiplexer(){
-		MsgSendPulse(connectionID,-1,1,0);
-		receivingThread.join();
+		MsgSendPulse(connectionID,SIGEV_PULSE_PRIO_INHERIT,PULSE_STOP_RUNNING,0);
+		if(receivingThread.joinable()){
+			receivingThread.join();
+		}
 		ConnectDetach_r(connectionID);
 		ChannelDestroy(channelID);
 		munmap_device_io(gpio_bank_0,GPIO_REGISTER_LENGHT);
 	}
 
 	void Demultiplexer::run(int channelID){
-		HAL hal;
 		ThreadCtl(_NTO_TCTL_IO, 0); // Request IO privileges for this thread.
 		_pulse msg;
 		while(waitForMessages){
 			std::cout << "Waiting for pulse..." << std::endl;
 
-		    int recvid = MsgReceivePulse(channelID, &msg, sizeof(_pulse), nullptr);  //TODO vlt umodellieren auf MsgReceive
+		    int recvid = MsgReceivePulse(channelID, &msg, sizeof(_pulse), nullptr);
 
 		    	std::cout << "Pulse received: " << msg.code << std::endl;
 				switch(msg.code){
