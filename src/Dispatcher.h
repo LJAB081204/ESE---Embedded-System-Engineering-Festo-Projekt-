@@ -22,15 +22,15 @@ private:
     name_attach_t* attach;
     int localConnectionID;
     int remoteConnectionID;
-
-    int channelID;
+    HAL& hal;
+  //  int channelID;
 
     bool waitForMessages;
     std::thread DispatcherThread;
     _pulse msg;
 
 public:
-    Dispatcher(const char* localName, const char* remoteName);
+    Dispatcher(const char* localName, const char* remoteName,HAL& hal);
     ~Dispatcher();
     void run();
     int getChannelID();

@@ -119,6 +119,8 @@
 #define LAMP_Q1          0x00000010
 #define LAMP_Q2          0x00000020
 
+
+
 class SensorWrapper : public ISensor {
 
 private:
