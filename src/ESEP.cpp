@@ -11,7 +11,8 @@ using namespace std;
 #include "Dispatcher.h"
 
 
-
+#define SYSTEM1 "system1"
+#define SYSTEM2 "system2"
 
 
 int main(int argc, char **argv) {
