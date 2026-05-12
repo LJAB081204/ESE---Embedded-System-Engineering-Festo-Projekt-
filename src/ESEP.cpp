@@ -5,8 +5,8 @@
 #include "Demultiplexer.h"
 #include "InterruptHandler.h"
 #include "Dispatcher.h"
-#include "ADC_Sources/HeightSensor.h"
-using namespace std;
+#include "timer.h"
+
 
 #define SYSTEM1 "system1"
 #define SYSTEM2 "system2"
@@ -32,12 +32,11 @@ int main(int argc, char **argv) {
 		}
 
 
-
         HAL hal;
-        hal.getActors()->greenLampOff();
-        hal.getActors()->yellowLampOff();
-        hal.getActors()->redLampOff();
-        hal.getActors()->motorStop();
+//        hal.getActors()->greenLampOff();
+//        hal.getActors()->yellowLampOff();
+//        hal.getActors()->redLampOff();
+//        hal.getActors()->motorStop();
         /*
         hal.getActors()->greenLampBlink(500);
         hal.getActors()->yellowLampBlink(500);
@@ -53,6 +52,15 @@ int main(int argc, char **argv) {
     	Dispatcher dispatcher(local,remote,hal);
     	Demultiplexer demux(dispatcher.getConnectionID());
     	InterruptHandler handler(demux.getConnectionID());
+
+    	Timer t1(1, dispatcher.getConnectionID());
+    	t1.startOnce(500);
+
+    	Timer t2(2, dispatcher.getConnectionID());
+    	t2.startPeriodic(1000);
+
+
+
     	while(true){
 
     	}
