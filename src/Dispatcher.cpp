@@ -270,6 +270,13 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName){
 				            cout << "Slide cleared on remote!" << endl;
 				        }
 				        break;
+
+				    case PULSE_TIMER_EXPIRED:
+				    	cout << "[TimerServer] Timer " << msg.value.sival_int << " TICK\n";
+				        break;
+				    case PULSE_TIMER_TICK:
+				    	cout << "[TimerServer] Timer " << msg.value.sival_int << " EXPIRED\n";
+				        break;
 				}
 			}
 			else{
