@@ -110,7 +110,8 @@ void HeightSensor::detectHeight(int value){
     	//std::cout << "Raw value: " << value << std::endl;
        //std::cout << "prev: " << previousHeight << " curr: " << currentHeight << std::endl;
         switch(currentHeight) {
-            case HEIGHT_CONVEYOR:       std::cout << "HEIGHT_CONVEYOR" << std::endl; break;
+            case HEIGHT_CONVEYOR:       std::cout << "HEIGHT_CONVEYOR" << std::endl;
+            break;
             case HEIGHT_DRILLING:       std::cout << "HEIGHT_DRILLING" << std::endl; break;
             case HEIGHT_WORKPIECE_HIGH: std::cout << "HEIGHT_WORKPIECE_HIGH" << std::endl; break;
             case HEIGHT_WORKPIECE_FLAT: std::cout << "HEIGHT_WORKPIECE_FLAT" << std::endl; break;

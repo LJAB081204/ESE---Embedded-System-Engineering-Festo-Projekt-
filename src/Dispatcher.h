@@ -14,7 +14,8 @@ private:
     int remoteConnectionID;
     HAL& hal;
 
-    //LOCAL VERSION int channelID;
+    //LOCAL VERSION
+  //  int channelID;
 
 
     bool waitForMessages;

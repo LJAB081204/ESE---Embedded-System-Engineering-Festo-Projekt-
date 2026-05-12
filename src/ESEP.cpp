@@ -7,8 +7,6 @@
 #include "Dispatcher.h"
 #include "timer.h"
 
-#define SYSTEM1 		"system1"
-#define SYSTEM2 		"system2"
 
 #define SYSTEM1 "system1"
 #define SYSTEM2 "system2"
@@ -18,22 +16,22 @@ int main(int argc, char **argv) {
 		ThreadCtl(_NTO_TCTL_IO, 0); // Request IO privileges for this thread.
 		const char* local;
 		const char* remote;
-//
-//		if (argc < 2) {
-//	        printf("Usage %s -s | -c \n", argv[0]);
-//	        return 0;
-//	    }
-//
-//		if (strcmp(argv[1],"-c") == 0){
-//			local = SYSTEM1;
-//			remote = SYSTEM2;
-//		}
-//		else{
-//			local = SYSTEM2;
-//			remote = SYSTEM1;
-//		}
-//
-//
+
+		if (argc < 2) {
+	        printf("Usage %s -s | -c \n", argv[0]);
+	        return 0;
+	    }
+
+		if (strcmp(argv[1],"-c") == 0){
+			local = SYSTEM1;
+			remote = SYSTEM2;
+		}
+		else{
+			local = SYSTEM2;
+			remote = SYSTEM1;
+		}
+
+
         HAL hal;
 //        hal.getActors()->greenLampOff();
 //        hal.getActors()->yellowLampOff();
