@@ -13,6 +13,7 @@ using namespace std;
 	Dispatcher::Dispatcher(const char* localName, const char* remoteName,HAL& hal)
 		:hal(hal){
 		// GNS Version
+
 		attach = name_attach(NULL, localName, NAME_FLAG_ATTACH_GLOBAL);
 		if (attach == NULL){
 			cout << "name_attach failed" << endl;
@@ -33,7 +34,9 @@ using namespace std;
 		if(localConnectionID == -1){
 			cout << "connectAttach failed" << endl;
 		}
-		/* Lokale Version — eine Anlage, kein Qnet
+
+		// Lokale Version — eine Anlage, kein Qnet
+		/*
 		 if ((channelID = ChannelCreate(0)) == -1){
 			 cout << "ChannelCreate failed" << endl;
 		 }
@@ -44,7 +47,7 @@ using namespace std;
 		 remoteConnectionID = -1;  // kein Remote
 		 waitForMessages = true;
 		 DispatcherThread = thread(&Dispatcher::run, this);
-		 */
+		*/
 
 	}
 	Dispatcher::~Dispatcher(){
@@ -60,8 +63,10 @@ using namespace std;
 	    ThreadCtl(_NTO_TCTL_IO, 0);
 
 		while(waitForMessages){
+			//GLOBAL VERSION
 			int rcvid = MsgReceive(attach->chid, &msg, sizeof(msg), nullptr);
-			//LOCAL VERSION int rcvid = MsgReceive(channelID, &msg, sizeof(msg), nullptr);
+			//LOCAL VERSION
+			//int rcvid = MsgReceive(channelID, &msg, sizeof(msg), nullptr);
 
 			if (rcvid == 0){
 				//Pulse

@@ -29,7 +29,7 @@ using namespace std;
 	}
 
 	Demultiplexer::~Demultiplexer(){
-		MsgSendPulse(connectionID,SIGEV_PULSE_PRIO_INHERIT,PULSE_STOP_RUNNING,0);
+		MsgSendPulse(connectionID,-1,1,0);
 		if(receivingThread.joinable()){
 			receivingThread.join();
 		}

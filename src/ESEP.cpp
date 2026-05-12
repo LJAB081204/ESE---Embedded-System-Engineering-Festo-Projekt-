@@ -32,6 +32,7 @@ int main(int argc, char **argv) {
 		}
 
 
+
         HAL hal;
         hal.getActors()->greenLampOff();
         hal.getActors()->yellowLampOff();
