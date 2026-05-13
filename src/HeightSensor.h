@@ -5,16 +5,14 @@
  *      Author: lewis
  */
 
-#ifndef SRC_HEIGHTSENSOR_H_
-#define SRC_HEIGHTSENSOR_H_
+#ifndef SRC_ADC_SOURCES_HEIGHTSENSOR_H_
+#define SRC_ADC_SOURCES_HEIGHTSENSOR_H_
 
-#define ADC_CONVEYOR       3647   // noch nicht fest -> Testwert
-#define ADC_CONVEYOR_MIN  3500  // alles unter diesem Wert ist nicht Conveyor
-#define ADC_DRILLING       3305
-#define ADC_WORKPIECE_HIGH 2355
-#define ADC_WORKPIECE_FLAT 2587
-#define ADC_MAX (ADC_WORKPIECE_HIGH - 500)
-#define ADC_THRESHOLD      30   // Toleranzbereich
+#define ADC_CONVEYOR_REF        3641
+#define ADC_DRILLING_DIFF       406
+#define ADC_WORKPIECE_FLAT_DIFF 1130
+#define ADC_WORKPIECE_HIGH_DIFF 1366
+#define ADC_THRESHOLD           50
 
 enum Height {
 	HEIGHT_UNINITIALIZED,
@@ -63,4 +61,4 @@ private:
 
 };
 
-#endif /* SRC_HEIGHTSENSOR_H_ */
+#endif /* SRC_ADC_SOURCES_HEIGHTSENSOR_H_ */
