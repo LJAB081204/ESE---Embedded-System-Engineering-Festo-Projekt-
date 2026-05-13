@@ -1,26 +1,30 @@
-/*
- * Dispatcher.h
- *
- *  Created on: 6.5.2026
- *      Author: Lewis
- */
 #ifndef SRC_DISPATCHER_H_
 #define SRC_DISPATCHER_H_
-#include "hal.h"
-#include "PulseMessages.h"
+
+#include <thread>
+#include <sys/dispatch.h>
+#include <sys/neutrino.h>
+#include "HAL.h"
 
 
-struct DispatcherMsg {
-    struct _pulse pulse;
-    int type;
-    int data;
-};
-
-class Dispatcher{
+class Dispatcher {
 private:
-	int channelID;
-	int connectionID;
-	bool waitForMessages;
-	std::thread receivingThread;
-	DispatcherMsg msg;
+    name_attach_t* attach;
+    int localConnectionID;
+    int remoteConnectionID;
+    HAL& hal;
+
+    //LOCAL VERSION
+  //  int channelID;
+
+
+    bool waitForMessages;
+    std::thread DispatcherThread;
+    _pulse msg;
+    void run();
+public:
+    Dispatcher(const char* localName, const char* remoteName,HAL& hal);
+    ~Dispatcher();
+    int getConnectionID();
 };
+#endif /* SRC_DISPATCHER_H_ */
