@@ -15,7 +15,8 @@ private:
     HAL& hal;
 
     //LOCAL VERSION
-  //  int channelID;
+   // int channelID;
+
 
 
     bool waitForMessages;

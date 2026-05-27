@@ -5,56 +5,84 @@
  *      Author: lewis
  */
 #include "Dispatcher.h"
-#include <iostream>
-#include <unistd.h>
-#include "PulseMessages.h"
+#include "HeightSensor.h"
+#include <sys/dispatch.h>
 using namespace std;
+/*
+Dispatcher::Dispatcher(const char* localName, const char* remoteName){
 
-	Dispatcher::Dispatcher(const char* localName, const char* remoteName,HAL& hal)
-		:hal(hal){
-		// GNS Version
+    // GNS Version (auskommentiert bis Qnet läuft)
 
-		attach = name_attach(NULL, localName, NAME_FLAG_ATTACH_GLOBAL);
-		if (attach == NULL){
-			cout << "name_attach failed" << endl;
-			return;
-		}
+    attach = name_attach(NULL, localName, NAME_FLAG_ATTACH_GLOBAL);
+    if (attach == NULL){
+        cout << "name_attach failed" << endl;
+        return;
+    }
+    if(strcmp(localName,SYSTEM1) == 0){
+    	sleep(2);
+    }
+    while ((remoteConnectionID = name_open(remoteName, NAME_FLAG_ATTACH_GLOBAL)) == -1) {
+        sleep(1);
+		cout << "trying to connect"<< endl;
 
-		waitForMessages = true;
-		DispatcherThread = thread(&Dispatcher::run, this);
+    }
+	cout << "coonection established"<< endl;
+    localConnectionID = ConnectAttach(0, 0, attach->chid, _NTO_SIDE_CHANNEL, 0);
 
 
-		remoteConnectionID = -1;
-		while ((remoteConnectionID = name_open(remoteName, NAME_FLAG_ATTACH_GLOBAL)) == -1) {
-			sleep(1);
-			cout << "trying to connect" << endl;
-		}
-		cout << "connection established" << endl;
-		localConnectionID = ConnectAttach(0,0,attach->chid,_NTO_SIDE_CHANNEL,0);
-		if(localConnectionID == -1){
-			cout << "connectAttach failed" << endl;
-		}
+    /* Lokale Version ohne GNS
+    if ((channelID = ChannelCreate(0)) == -1) {
+        cout << "ChannelCreate failed" << endl;
+    }
+    localConnectionID = ConnectAttach(0, 0, channelID, _NTO_SIDE_CHANNEL, 0);
+    if (localConnectionID == -1) {
+        cout << "ConnectAttach failed" << endl;
+    }
 
-		// Lokale Version — eine Anlage, kein Qnet
-		/*
-		 if ((channelID = ChannelCreate(0)) == -1){
-			 cout << "ChannelCreate failed" << endl;
-		 }
-		 localConnectionID = ConnectAttach(0, 0, channelID, _NTO_SIDE_CHANNEL, 0);
-		 if (localConnectionID == -1){
-			 cout << "ConnectAttach failed" << endl;
-		 }
-		 remoteConnectionID = -1;  // kein Remote
-		 waitForMessages = true;
-		 DispatcherThread = thread(&Dispatcher::run, this);
-		*/
+    waitForMessages = true;
+    DispatcherThread = thread(&Dispatcher::run, this);
+}
+*/
+Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
+    : hal(hal) {
+    //GNS Version
+    attach = name_attach(NULL, localName, NAME_FLAG_ATTACH_GLOBAL);
+    if (attach == NULL){
+        cout << "name_attach failed" << endl;
+        return;
+    }
+    waitForMessages = true;
+    DispatcherThread = thread(&Dispatcher::run, this);
 
-	}
+    remoteConnectionID = -1;
+    while ((remoteConnectionID = name_open(remoteName, NAME_FLAG_ATTACH_GLOBAL)) == -1) {
+        sleep(1);
+        cout << "trying to connect" << endl;
+    }
+    cout << "connection established" << endl;
+    localConnectionID = ConnectAttach(0,0,attach->chid,_NTO_SIDE_CHANNEL,0);
+    if(localConnectionID == -1){
+        cout << "connectAttach failed" << endl;
+    }
+
+
+    // Lokale Version — eine Anlage, kein Qnet
+	/*
+    if ((channelID = ChannelCreate(0)) == -1){
+        cout << "ChannelCreate failed" << endl;
+    }
+    localConnectionID = ConnectAttach(0, 0, channelID, _NTO_SIDE_CHANNEL, 0);
+    if (localConnectionID == -1){
+        cout << "ConnectAttach failed" << endl;
+    }
+    remoteConnectionID = -1;
+    waitForMessages = true;
+    DispatcherThread = thread(&Dispatcher::run, this);
+    */
+}
 	Dispatcher::~Dispatcher(){
-		MsgSendPulse(localConnectionID,-1,PULSE_STOP_RUNNING,0);
-		if(DispatcherThread.joinable()){
-			DispatcherThread.join();
-		}
+		MsgSendPulse(localConnectionID,-1,PULSE_STOP_RECEIVING,0);
+		DispatcherThread.join();
 		name_detach(attach,0);
 		name_close(remoteConnectionID);
 	}
@@ -71,22 +99,22 @@ using namespace std;
 			if (rcvid == 0){
 				//Pulse
 				switch(msg.code){
-				    case PULSE_STOP_RUNNING:
+				    case PULSE_STOP_RECEIVING:
 				        waitForMessages = false;
 				        break;
 
-				    case PULSE_E_STOP:
+				    case PULSE_BTN_ESTOP_LOCAL:
 				        cout << "ESTOP Pulse reached dispatcher" << endl;
 				        if(msg.value.sival_int == 0){
 				            hal.getActors()->motorForwards();
-				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_E_STOP_REMOTE, 0);
+				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_ESTOP_REMOTE, 0);
 				        } else {
 				            hal.getActors()->motorStop();
-				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_E_STOP_REMOTE, 1);
+				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_ESTOP_REMOTE, 1);
 				        }
 				        break;
 
-				    case PULSE_E_STOP_REMOTE:
+				    case PULSE_BTN_ESTOP_REMOTE:
 				        cout << "ESTOP Remote Pulse reached dispatcher" << endl;
 				        if(msg.value.sival_int == 0){
 				            hal.getActors()->motorForwards();
@@ -95,17 +123,20 @@ using namespace std;
 				        }
 				        break;
 
-				    case PULSE_START:
+				    case PULSE_BTN_START_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            cout << "Start pressed!" << endl;
-				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_START_REMOTE, 1);
+				            //Zeitstamp 1
+				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_START_REMOTE, 1);
 				        } else {
 				            cout << "Start released!" << endl;
-				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_START_REMOTE, 0);
+				            //diff = Zeitstamp 2 - Zeitstamp 1
+				            //je nach diff long oder short press
+				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_START_REMOTE, 0);
 				        }
 				        break;
 
-				    case PULSE_START_REMOTE:
+				    case PULSE_BTN_START_REMOTE:
 				        if(msg.value.sival_int == 1){
 				            cout << "Start pressed on remote!" << endl;
 				        } else {
@@ -113,17 +144,17 @@ using namespace std;
 				        }
 				        break;
 
-				    case PULSE_RESET:
+				    case PULSE_BTN_RESET_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            cout << "Reset pressed!" << endl;
-				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_RESET_REMOTE, 1);
+				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_RESET_REMOTE, 1);
 				        } else {
 				            cout << "Reset released!" << endl;
-				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_RESET_REMOTE, 0);
+				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_RESET_REMOTE, 0);
 				        }
 				        break;
 
-				    case PULSE_RESET_REMOTE:
+				    case PULSE_BTN_RESET_REMOTE:
 				        if(msg.value.sival_int == 1){
 				            cout << "Reset pressed on remote!" << endl;
 				        } else {
@@ -131,17 +162,17 @@ using namespace std;
 				        }
 				        break;
 
-				    case PULSE_STOP:
+				    case PULSE_BTN_STOP_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            cout << "Stop pressed!" << endl;
-				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_STOP_REMOTE, 1);
+				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_STOP_REMOTE, 1);
 				        } else {
 				            cout << "Stop released!" << endl;
-				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_STOP_REMOTE, 0);
+				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_STOP_REMOTE, 0);
 				        }
 				        break;
 
-				    case PULSE_STOP_REMOTE:
+				    case PULSE_BTN_STOP_REMOTE:
 				        if(msg.value.sival_int == 1){
 				            cout << "Stop pressed on remote!" << endl;
 				        } else {
@@ -149,7 +180,7 @@ using namespace std;
 				        }
 				        break;
 
-				    case PULSE_ITEM_AT_ENTRY:
+				    case PULSE_ITEM_AT_ENTRY_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            cout << "Item at entry!" << endl;
 				            hal.getActors()->motorForwards();
@@ -168,7 +199,7 @@ using namespace std;
 				        }
 				        break;
 
-				    case PULSE_ITEM_AT_EXIT:
+				    case PULSE_ITEM_AT_EXIT_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            cout << "Item at exit!" << endl;
 				            hal.getActors()->motorStop();
@@ -187,17 +218,17 @@ using namespace std;
 				        }
 				        break;
 
-				    case PULSE_ITEM_IN_PUSHER:
+				    case PULSE_ITEM_AT_PUSHER_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            cout << "Item in pusher!" << endl;
-				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_IN_PUSHER_REMOTE, 1);
+				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_PUSHER_REMOTE, 1);
 				        } else {
 				            cout << "Item left pusher!" << endl;
-				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_IN_PUSHER_REMOTE, 0);
+				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_PUSHER_REMOTE, 0);
 				        }
 				        break;
 
-				    case PULSE_ITEM_IN_PUSHER_REMOTE:
+				    case PULSE_ITEM_AT_PUSHER_REMOTE:
 				        if(msg.value.sival_int == 1){
 				            cout << "Item in pusher on remote!" << endl;
 				        } else {
@@ -205,7 +236,7 @@ using namespace std;
 				        }
 				        break;
 
-				    case PULSE_ITEM_METAL:
+				    case PULSE_ITEM_METAL_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            cout << "Item is metal!" << endl;
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_METAL_REMOTE, 1);
@@ -223,7 +254,7 @@ using namespace std;
 				        }
 				        break;
 
-				    case PULSE_PUSHER_OPEN:
+				    case PULSE_PUSHER_OPEN_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            cout << "Pusher is open!" << endl;
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_PUSHER_OPEN_REMOTE, 1);
@@ -241,7 +272,7 @@ using namespace std;
 				        }
 				        break;
 
-				    case PULSE_SLIDE_FULL:
+				    case PULSE_SLIDE_FULL_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            cout << "Slide is full!" << endl;
 				            hal.getActors()->yellowLampOn();
@@ -259,13 +290,27 @@ using namespace std;
 				            cout << "Slide cleared on remote!" << endl;
 				        }
 				        break;
+				    case PULSE_NEW_HEIGHT_LOCAL:
+				    	cout << "Height change recevied" << endl;
+				    	switch(msg.value.sival_int){
+				    	case HEIGHT_CONVEYOR: // Height Conveyer
+			            	std::cout << "HEIGHT_CONVEYOR" << std::endl;
+			            	break;
+				    	case HEIGHT_DRILLING:
+			            	std::cout << "HEIGHT_DRILLING" << std::endl;
+			            	break;
+				    	case HEIGHT_WORKPIECE_HIGH:
+			            	std::cout << "HEIGHT_WORKPIECE_HIGH" << std::endl;
+			            	break;
+				    	case HEIGHT_WORKPIECE_FLAT:
+			            	std::cout << "HEIGHT_WORKPIECE_FLAT" << std::endl;
+			            	break;
+				    	case HEIGHT_TOO_HIGH:
+			            	std::cout << "HEIGHT_TOO_HIGH" << std::endl;
+			            	break;
+				    	default: break;
 
-				    case PULSE_TIMER_EXPIRED:
-				    	cout << "[TimerServer] Timer " << msg.value.sival_int << " TICK\n";
-				        break;
-				    case PULSE_TIMER_TICK:
-				    	cout << "[TimerServer] Timer " << msg.value.sival_int << " EXPIRED\n";
-				        break;
+				    	}
 				}
 			}
 			else{
@@ -279,6 +324,7 @@ using namespace std;
 	int Dispatcher::getConnectionID(){
 		return localConnectionID;
 	}
+
 
 
 

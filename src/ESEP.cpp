@@ -6,6 +6,7 @@
 #include "InterruptHandler.h"
 #include "Dispatcher.h"
 #include "timer.h"
+#include "HeightSensor.h"
 
 
 #define SYSTEM1 "system1"
@@ -49,7 +50,10 @@ int main(int argc, char **argv) {
         hal.getActors()->redLampBlinkOff();
 		*/
 
+
     	Dispatcher dispatcher(local,remote,hal);
+        TSCADC tsc;
+        HeightSensor hs (tsc,dispatcher.getConnectionID());
     	Demultiplexer demux(dispatcher.getConnectionID());
     	InterruptHandler handler(demux.getConnectionID());
 
