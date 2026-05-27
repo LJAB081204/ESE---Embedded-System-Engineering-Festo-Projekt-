@@ -49,122 +49,122 @@ using namespace std;
 		    	std::cout << "Pulse received: " << msg.code << std::endl;
 				switch(msg.code){
 
-				case PULSE_E_STOP:
+				case PULSE_BTN_ESTOP_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & ESTOP) {
 				        cout << "E-Stop released!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_E_STOP,0);
+				        MsgSendPulse(dispatcherID,-1,PULSE_BTN_ESTOP_LOCAL,0);
 				    } else {
 				        cout << "E-Stop pressed!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_E_STOP,1);
+				        MsgSendPulse(dispatcherID,-1,PULSE_BTN_ESTOP_LOCAL,1);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),ESTOP);
 				    InterruptUnmask((GPIO_0_IRQ_BASE+27),msg.value.sival_int);
 				    break;
 
-				case PULSE_RESET:
+				case PULSE_BTN_RESET_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & BUTTON_RESET) {
 				        cout << "Reset pressed!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_RESET,1);
+				        MsgSendPulse(dispatcherID,-1,PULSE_BTN_RESET_LOCAL,1);
 				    } else {
 				        cout << "Reset released!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_RESET,0);
+				        MsgSendPulse(dispatcherID,-1,PULSE_BTN_RESET_LOCAL,0);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),BUTTON_RESET);
 				    InterruptUnmask((GPIO_0_IRQ_BASE+26),msg.value.sival_int);
 				    break;
 
-				case PULSE_STOP:
+				case PULSE_BTN_STOP_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & BUTTON_STOP) {
 				        cout << "Stop released!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_STOP,0);
+				        MsgSendPulse(dispatcherID,-1,PULSE_BTN_STOP_LOCAL,0);
 				    } else {
 				        cout << "Stop pressed!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_STOP,1);
+				        MsgSendPulse(dispatcherID,-1,PULSE_BTN_STOP_LOCAL,1);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),BUTTON_STOP);
 				    InterruptUnmask((GPIO_0_IRQ_BASE+23),msg.value.sival_int);
 				    break;
-				case PULSE_START:
+				case PULSE_BTN_START_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & BUTTON_START) {
 				        cout << "Start pressed!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_START,1);
+				        MsgSendPulse(dispatcherID,-1,PULSE_BTN_START_LOCAL,1);
 				    } else {
 				        cout << "Start released!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_START,0);
+				        MsgSendPulse(dispatcherID,-1,PULSE_BTN_START_LOCAL,0);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),BUTTON_START);
 				    InterruptUnmask((GPIO_0_IRQ_BASE+22),msg.value.sival_int);
 				    break;
-				case PULSE_ITEM_AT_ENTRY:
+				case PULSE_ITEM_AT_ENTRY_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & ITEM_AT_ENTRY) {
 				        cout << "Item at entry cleared!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_AT_ENTRY,0);
+				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_AT_ENTRY_LOCAL,0);
 				    } else {
 				        cout << "Item at entry!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_AT_ENTRY,1);
+				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_AT_ENTRY_LOCAL,1);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),ITEM_AT_ENTRY);
 				    InterruptUnmask((GPIO_0_IRQ_BASE+2),msg.value.sival_int);
 				    break;
-				case PULSE_ITEM_AT_EXIT:
+				case PULSE_ITEM_AT_EXIT_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & ITEM_AT_EXIT) {
 				        cout << "Item at exit cleared!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_AT_EXIT,0);
+				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_AT_EXIT_LOCAL,0);
 				    } else {
 				        cout << "Item at exit!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_AT_EXIT,1);
+				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_AT_EXIT_LOCAL,1);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),ITEM_AT_EXIT);
 				    InterruptUnmask((GPIO_0_IRQ_BASE+20),msg.value.sival_int);
 				    break;
 
-				case PULSE_ITEM_IN_PUSHER:
+				case PULSE_ITEM_AT_PUSHER_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & ITEM_IN_PUSHER) {
 				        cout << "Item left pusher!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_IN_PUSHER,0);
+				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_AT_PUSHER_LOCAL,0);
 				    } else {
 				        cout << "Item in pusher!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_IN_PUSHER,1);
+				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_AT_PUSHER_LOCAL,1);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0), ITEM_IN_PUSHER);
 				    InterruptUnmask((GPIO_0_IRQ_BASE+5), msg.value.sival_int);
 				    break;
-				case PULSE_ITEM_METAL:
+				case PULSE_ITEM_METAL_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & ITEM_METAL) {
 				        cout << "Item is metal!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_METAL,1);
+				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_METAL_LOCAL,1);
 				    } else {
 				        cout << "Item is not metal!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_METAL,0);
+				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_METAL_LOCAL,0);
 
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0), ITEM_METAL);
 				    InterruptUnmask((GPIO_0_IRQ_BASE+7), msg.value.sival_int);
 				    break;
-				case PULSE_PUSHER_OPEN:
+				case PULSE_PUSHER_OPEN_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & PUSHER_OPEN) {
 				        cout << "Pusher is open!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_PUSHER_OPEN,1);
+				        MsgSendPulse(dispatcherID,-1,PULSE_PUSHER_OPEN_LOCAL,1);
 				    } else {
 				        cout << "Pusher is closed!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_PUSHER_OPEN,0);
+				        MsgSendPulse(dispatcherID,-1,PULSE_PUSHER_OPEN_LOCAL,0);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0), PUSHER_OPEN);
 				    InterruptUnmask((GPIO_0_IRQ_BASE+14), msg.value.sival_int);
 				    break;
 
-				case PULSE_SLIDE_FULL:
+				case PULSE_SLIDE_FULL_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & SLIDE_FULL) {
 				        cout << "Slide cleared!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_SLIDE_FULL,0);
+				        MsgSendPulse(dispatcherID,-1,PULSE_SLIDE_FULL_LOCAL,0);
 				    } else {
 				        cout << "Slide is full!" << endl;
-				        MsgSendPulse(dispatcherID,-1,PULSE_SLIDE_FULL,1);
+				        MsgSendPulse(dispatcherID,-1,PULSE_SLIDE_FULL_LOCAL,1);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0), SLIDE_FULL);
 				    InterruptUnmask((GPIO_0_IRQ_BASE+15), msg.value.sival_int);
 				    break;
-				case PULSE_STOP_RUNNING:
+				case PULSE_STOP_RECEIVING:
 				    waitForMessages = false;
 				    break;
 

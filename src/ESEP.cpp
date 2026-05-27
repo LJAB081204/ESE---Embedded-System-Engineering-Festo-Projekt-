@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
 		ThreadCtl(_NTO_TCTL_IO, 0); // Request IO privileges for this thread.
 		const char* local;
 		const char* remote;
-		/*
+
 		if (argc < 2) {
 	        printf("Usage %s -s | -c \n", argv[0]);
 	        return 0;
@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
 			local = SYSTEM2;
 			remote = SYSTEM1;
 		}
-	*/
+
 
         HAL hal;
 //        hal.getActors()->greenLampOff();

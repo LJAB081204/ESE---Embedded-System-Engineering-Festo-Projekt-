@@ -18,6 +18,7 @@ private:
    // int channelID;
 
 
+
     bool waitForMessages;
     std::thread DispatcherThread;
     _pulse msg;

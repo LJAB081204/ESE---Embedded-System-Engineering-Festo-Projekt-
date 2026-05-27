@@ -118,11 +118,11 @@ void HeightSensor::detectHeight(int value){
     //If Abfrage für puffer, damit bei kurzem schwanken nicht neue Höhe detektiert wird
     if(heightCounter > 70 && currentHeight != previousHeight){
         switch(currentHeight) {
-            case HEIGHT_CONVEYOR:      MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT,HEIGHT_CONVEYOR);break;
-            case HEIGHT_DRILLING:      MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT,HEIGHT_DRILLING);break;
-            case HEIGHT_WORKPIECE_HIGH:MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT,HEIGHT_WORKPIECE_HIGH); break;
-            case HEIGHT_WORKPIECE_FLAT:MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT,HEIGHT_WORKPIECE_FLAT); break;
-            case HEIGHT_TOO_HIGH: 	   MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT,HEIGHT_TOO_HIGH); break;
+            case HEIGHT_CONVEYOR:      MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT_LOCAL,HEIGHT_CONVEYOR);break;
+            case HEIGHT_DRILLING:      MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT_LOCAL,HEIGHT_DRILLING);break;
+            case HEIGHT_WORKPIECE_HIGH:MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT_LOCAL,HEIGHT_WORKPIECE_HIGH); break;
+            case HEIGHT_WORKPIECE_FLAT:MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT_LOCAL,HEIGHT_WORKPIECE_FLAT); break;
+            case HEIGHT_TOO_HIGH: 	   MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT_LOCAL,HEIGHT_TOO_HIGH); break;
             default: break;
         }
         //setzen der vorherigen Höhe, wenn nicht unbekannt
