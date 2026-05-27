@@ -5,8 +5,8 @@
  *      Author: lewis
  */
 
-#ifndef SRC_ADC_SOURCES_HEIGHTSENSOR_H_
-#define SRC_ADC_SOURCES_HEIGHTSENSOR_H_
+#ifndef SRC_HEIGHTSENSOR_H_
+#define SRC_HEIGHTSENSOR_H_
 
 #define ADC_CONVEYOR       3647   // noch nicht fest -> Testwert
 #define ADC_CONVEYOR_MIN  3500  // alles unter diesem Wert ist nicht Conveyor
@@ -26,7 +26,7 @@ enum Height {
 	HEIGHT_TOO_HIGH
 };
 
-#include "ADC.h"
+#include "ADC_Sources/ADC.h"
 #include <sys/neutrino.h>
 #include <thread>
 #include <cstdlib>
@@ -63,4 +63,4 @@ private:
 
 };
 
-#endif /* SRC_ADC_SOURCES_HEIGHTSENSOR_H_ */
+#endif /* SRC_HEIGHTSENSOR_H_ */

@@ -6,6 +6,8 @@
  */
 
 #include "HeightSensor.h"
+#include "Pulsemessages.h"
+using namespace std;
 
 //Konstruktor
 HeightSensor::HeightSensor(TSCADC& tscadc, int dispCoid)
@@ -20,6 +22,7 @@ HeightSensor::HeightSensor(TSCADC& tscadc, int dispCoid)
     chid = ChannelCreate(0);
     coid = ConnectAttach(0, 0, chid, _NTO_SIDE_CHANNEL, 0);
     this->running = false;
+    start();
 
 }
 
@@ -33,9 +36,12 @@ HeightSensor::~HeightSensor(){
 //Kalibriert den Höhensensor -> Band 2 als Referenz für die Defines
 void HeightSensor::calibrate() {
 	struct _pulse pulse;
-    adc.sample();
-    MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
-    offset = pulse.value.sival_int - ADC_CONVEYOR;	//Offset auf die defines gerechnet
+	for(int i = 0; i<20;i++){
+	   adc.sample();
+	   MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
+	   offset += pulse.value.sival_int - ADC_CONVEYOR;
+	}
+	offset = offset / 20;
     //std::cout << "Raw: " << pulse.value.sival_int << " Offset: " << offset << std::endl; -> Testausgabe ADC Wert und Offset
 }
 
@@ -110,12 +116,22 @@ void HeightSensor::detectHeight(int value){
     	//std::cout << "Raw value: " << value << std::endl;
        //std::cout << "prev: " << previousHeight << " curr: " << currentHeight << std::endl;
         switch(currentHeight) {
-            case HEIGHT_CONVEYOR:       std::cout << "HEIGHT_CONVEYOR" << std::endl;
-            break;
-            case HEIGHT_DRILLING:       std::cout << "HEIGHT_DRILLING" << std::endl; break;
-            case HEIGHT_WORKPIECE_HIGH: std::cout << "HEIGHT_WORKPIECE_HIGH" << std::endl; break;
-            case HEIGHT_WORKPIECE_FLAT: std::cout << "HEIGHT_WORKPIECE_FLAT" << std::endl; break;
-            case HEIGHT_TOO_HIGH: std::cout << "HEIGHT_TOO_HIGH" << std::endl; break;
+            case HEIGHT_CONVEYOR:
+            	cout << "Height detected" << endl;
+            	MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT,HEIGHT_CONVEYOR);
+            	break;
+            case HEIGHT_DRILLING:
+            	MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT,HEIGHT_DRILLING);
+            	break;
+            case HEIGHT_WORKPIECE_HIGH:
+            	MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT,HEIGHT_WORKPIECE_HIGH);
+            	break;
+            case HEIGHT_WORKPIECE_FLAT:
+            	MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT,HEIGHT_WORKPIECE_FLAT);
+            	break;
+            case HEIGHT_TOO_HIGH:
+            	MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT,HEIGHT_TOO_HIGH);
+            	break;
             default: break;
         }
         //setzen der vorherigen Höhe, wenn nicht unbekannt
