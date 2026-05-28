@@ -4,19 +4,23 @@
 #include <thread>
 #include <sys/dispatch.h>
 #include <sys/neutrino.h>
+#include "Config.h"
 #include "HAL.h"
 
 
 class Dispatcher {
 private:
-    name_attach_t* attach;
     int localConnectionID;
     int remoteConnectionID;
     HAL& hal;
 
+#ifndef LOCAL_VERSION
+    //GLOBAL VERSION
+    name_attach_t* attach;
+#else
     //LOCAL VERSION
-   // int channelID;
-
+    int channelID;
+#endif
 
 
     bool waitForMessages;

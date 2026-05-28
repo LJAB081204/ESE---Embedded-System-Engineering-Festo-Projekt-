@@ -6,54 +6,20 @@
  */
 #include "Dispatcher.h"
 #include "HeightSensor.h"
+#include "PulseMessages.h"
+#include "Config.h"
 #include <sys/dispatch.h>
 using namespace std;
-/*
-Dispatcher::Dispatcher(const char* localName, const char* remoteName){
 
-    // GNS Version (auskommentiert bis Qnet läuft)
-
-    attach = name_attach(NULL, localName, NAME_FLAG_ATTACH_GLOBAL);
-    if (attach == NULL){
-        cout << "name_attach failed" << endl;
-        return;
-    }
-    if(strcmp(localName,SYSTEM1) == 0){
-    	sleep(2);
-    }
-    while ((remoteConnectionID = name_open(remoteName, NAME_FLAG_ATTACH_GLOBAL)) == -1) {
-        sleep(1);
-		cout << "trying to connect"<< endl;
-
-    }
-	cout << "coonection established"<< endl;
-    localConnectionID = ConnectAttach(0, 0, attach->chid, _NTO_SIDE_CHANNEL, 0);
-
-
-    /* Lokale Version ohne GNS
-    if ((channelID = ChannelCreate(0)) == -1) {
-        cout << "ChannelCreate failed" << endl;
-    }
-    localConnectionID = ConnectAttach(0, 0, channelID, _NTO_SIDE_CHANNEL, 0);
-    if (localConnectionID == -1) {
-        cout << "ConnectAttach failed" << endl;
-    }
-
-    waitForMessages = true;
-    DispatcherThread = thread(&Dispatcher::run, this);
-}
-*/
 Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
     : hal(hal) {
+#ifndef LOCAL_VERSION
     //GNS Version
     attach = name_attach(NULL, localName, NAME_FLAG_ATTACH_GLOBAL);
     if (attach == NULL){
         cout << "name_attach failed" << endl;
         return;
     }
-    waitForMessages = true;
-    DispatcherThread = thread(&Dispatcher::run, this);
-
     remoteConnectionID = -1;
     while ((remoteConnectionID = name_open(remoteName, NAME_FLAG_ATTACH_GLOBAL)) == -1) {
         sleep(1);
@@ -64,10 +30,8 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
     if(localConnectionID == -1){
         cout << "connectAttach failed" << endl;
     }
-
-
+#else
     // Lokale Version — eine Anlage, kein Qnet
-	/*
     if ((channelID = ChannelCreate(0)) == -1){
         cout << "ChannelCreate failed" << endl;
     }
@@ -76,9 +40,9 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
         cout << "ConnectAttach failed" << endl;
     }
     remoteConnectionID = -1;
+#endif
     waitForMessages = true;
     DispatcherThread = thread(&Dispatcher::run, this);
-    */
 }
 	Dispatcher::~Dispatcher(){
 		MsgSendPulse(localConnectionID,-1,PULSE_STOP_RECEIVING,0);
@@ -91,11 +55,13 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 	    ThreadCtl(_NTO_TCTL_IO, 0);
 
 		while(waitForMessages){
+			#ifndef LOCAL_VERSION
 			//GLOBAL VERSION
 			int rcvid = MsgReceive(attach->chid, &msg, sizeof(msg), nullptr);
+			#else
 			//LOCAL VERSION
-			//int rcvid = MsgReceive(channelID, &msg, sizeof(msg), nullptr);
-
+			int rcvid = MsgReceive(channelID, &msg, sizeof(msg), nullptr);
+			#endif
 			if (rcvid == 0){
 				//Pulse
 				switch(msg.code){
