@@ -123,6 +123,7 @@ void HeightSensor::detectHeight(int value){
             case HEIGHT_WORKPIECE_HIGH:MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT_LOCAL,HEIGHT_WORKPIECE_HIGH); break;
             case HEIGHT_WORKPIECE_FLAT:MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT_LOCAL,HEIGHT_WORKPIECE_FLAT); break;
             case HEIGHT_TOO_HIGH: 	   MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT_LOCAL,HEIGHT_TOO_HIGH); break;
+            case HEIGHT_UNKNOWN:       MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT_LOCAL,HEIGHT_UNKNOWN);break;
             default: break;
         }
         //setzen der vorherigen Höhe, wenn nicht unbekannt
