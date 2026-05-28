@@ -7,6 +7,7 @@
 #include "Dispatcher.h"
 #include "timer.h"
 #include "HeightSensor.h"
+using namespace std;
 
 
 #define SYSTEM1 "system1"
@@ -15,22 +16,22 @@
 
 int main(int argc, char **argv) {
 		ThreadCtl(_NTO_TCTL_IO, 0); // Request IO privileges for this thread.
-		const char* local;
-		const char* remote;
+		const char* local = SYSTEM1;
+		const char* remote = SYSTEM2;
 
-		if (argc < 2) {
-	        printf("Usage %s -s | -c \n", argv[0]);
-	        return 0;
-	    }
-
-		if (strcmp(argv[1],"-c") == 0){
-			local = SYSTEM1;
-			remote = SYSTEM2;
-		}
-		else{
-			local = SYSTEM2;
-			remote = SYSTEM1;
-		}
+//		if (argc < 2) {
+//	        printf("Usage %s -s | -c \n", argv[0]);
+//	        return 0;
+//	    }
+//
+//		if (strcmp(argv[1],"-c") == 0){
+//			local = SYSTEM1;
+//			remote = SYSTEM2;
+//		}
+//		else{
+//			local = SYSTEM2;
+//			remote = SYSTEM1;
+//		}
 
 
         HAL hal;
@@ -57,11 +58,17 @@ int main(int argc, char **argv) {
     	Demultiplexer demux(dispatcher.getConnectionID());
     	InterruptHandler handler(demux.getConnectionID());
 
-    	Timer t1(1, dispatcher.getConnectionID());
-    	t1.startOnce(500);
+    	TimerHandler* th = new TimerHandler(dispatcher.getConnectionID());
 
-    	Timer t2(2, dispatcher.getConnectionID());
-    	t2.startPeriodic(1000);
+    	DynamicTimer dt1(1, *th);
+    	SimpleTimer st1(2,dispatcher.getConnectionID());
+    	SimpleTimer st2(3,dispatcher.getConnectionID());
+    	cout << "blabla" << endl;
+    	st1.start(2000);
+    	sleep(1);
+    	st2.start(2000);
+    	sleep(3);
+    	cout << "blabla" << endl;
 
 
 

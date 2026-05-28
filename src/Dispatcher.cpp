@@ -264,6 +264,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				            cout << "Slide cleared on remote!" << endl;
 				        }
 				        break;
+
 				    case PULSE_NEW_HEIGHT_LOCAL:
 				    	cout << "Height change recevied" << endl;
 				    	switch(msg.value.sival_int){
@@ -283,8 +284,10 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 			            	std::cout << "HEIGHT_TOO_HIGH" << std::endl;
 			            	break;
 				    	default: break;
-
 				    	}
+					case PULSE_TIMER_EXPIRED:
+							cout << "Timer " << msg.value.sival_int << " abgelaufen" << endl;
+						break;
 				}
 			}
 			else{
