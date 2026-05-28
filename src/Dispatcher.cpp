@@ -20,6 +20,8 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
         cout << "name_attach failed" << endl;
         return;
     }
+    waitForMessages = true;
+    DispatcherThread = thread(&Dispatcher::run, this);
     remoteConnectionID = -1;
     while ((remoteConnectionID = name_open(remoteName, NAME_FLAG_ATTACH_GLOBAL)) == -1) {
         sleep(1);
@@ -40,15 +42,21 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
         cout << "ConnectAttach failed" << endl;
     }
     remoteConnectionID = -1;
-#endif
     waitForMessages = true;
     DispatcherThread = thread(&Dispatcher::run, this);
+#endif
+
 }
 	Dispatcher::~Dispatcher(){
 		MsgSendPulse(localConnectionID,-1,PULSE_STOP_RECEIVING,0);
 		DispatcherThread.join();
+#ifndef LOCAL_VERSION
 		name_detach(attach,0);
 		name_close(remoteConnectionID);
+#else
+		ConnectDetach(localConnectionID);
+		ChannelDestroy(channelID);
+#endif
 	}
 
 	void Dispatcher::run(){

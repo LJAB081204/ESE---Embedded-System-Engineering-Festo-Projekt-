@@ -14,19 +14,19 @@ public:
 		currentState = newState;
 	}
 	void eventButtonStartPressed(){
-		currentState->eventButtonStartPressed(*this);
+		//currentState->eventButtonStartPressed(*this);
 	}
 	void eventButtonStartPressedLong(){
-		currentState->eventButtonStartPressedLong(*this);
+		//currentState->eventButtonStartPressedLong(*this);
 	}
 	void eventButtonStopPressed(){
-		currentState->eventButtonStopPressed(*this);
+		//currentState->eventButtonStopPressed(*this);
 	}
 	void eventButtonEstopPressed(){
-		currentState->eventButtonEstopPressed(*this);
+		//currentState->eventButtonEstopPressed(*this);
 	}
 	void eventButtonResetPressed(){
-		currentState->eventButtonResetPressed(*this);
+		//currentState->eventButtonResetPressed(*this);
 	}
 
 };

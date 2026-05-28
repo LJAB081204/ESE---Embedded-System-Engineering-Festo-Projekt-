@@ -8,9 +8,9 @@
 
 class Idle : public OperationState{
 public:
-	void eventButtonStartPressed(OperationFSM& fsm) override{
-		fsm.setState(&RunningState::getInstance());
-	}
+	//void eventButtonStartPressed(OperationFSM& fsm) override{
+		//fsm.setState(&RunningState::getInstance());
+	//}
 
 };
 
