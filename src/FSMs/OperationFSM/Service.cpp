@@ -1,0 +1,27 @@
+/*
+ * Service.cpp
+ *
+ *  Created on: 31.05.2026
+ *      Author: tayla
+ */
+
+#include <new>
+#include "OperationBase.h"
+#include "Idle.h"
+#include "Service.h"
+
+	Service::Service(){
+
+	}
+
+	void Service::entry(OperationContext& ctx){
+	}
+
+	void Service::exit(OperationContext& ctx){
+	}
+
+	void Service::eventButtonStartPressedLong(OperationContext& ctx){
+		exit(ctx);
+		new (this) Idle;
+		entry(ctx);
+	}

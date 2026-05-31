@@ -10,11 +10,22 @@
 #include "Running.h"
 
 
-Running::Running(){
+	Running::Running(){
 
-}
+	}
 
-void Running::eventButtonStopPressed(OperationContext& ctx){
-	new (this) Idle;
-}
+
+	void Running::entry(OperationContext& ctx){
+		//greenLampOn
+	}
+
+	void Running::exit(OperationContext& ctx){
+
+	}
+
+	void Running::eventButtonStopPressed(OperationContext& ctx){
+		exit(ctx);
+		new (this) Idle;
+		entry(ctx);
+	}
 

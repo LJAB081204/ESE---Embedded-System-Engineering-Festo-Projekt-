@@ -9,11 +9,12 @@
 #include "Idle.h"
 #include "Running.h"
 
-
 	Idle::Idle(){
 	}
 
 	void Idle::entry(OperationContext& ctx){
+		//MotorStop
+		//LampsOff
 	}
 	void Idle::exit(OperationContext& ctx){
 	}
@@ -22,17 +23,17 @@
 		exit(ctx);
 		new (this) Running;
 		entry(ctx);
-	}
+		}
 	void Idle::eventButtonStartPressedLong(OperationContext& ctx){
-//		exit(ctx);
-//		new (this) Service;
-//		entry(ctx);
-	}
+	//		exit(ctx);
+	//		new (this) Service;
+	//		entry(ctx);
+				}
 
 	void Idle::eventButtonEstopPressed(OperationContext& ctx){
-//		exit(ctx);
-//		new (this) Estop;
-//		entry(ctx);
+	//		exit(ctx);
+	//		new (this) Estop;
+	//		entry(ctx);
 	}
 
 

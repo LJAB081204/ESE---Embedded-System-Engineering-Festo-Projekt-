@@ -13,6 +13,8 @@
 class Running : public OperationBase{
 public:
 	Running();
+	void entry(OperationContext& ctx)override;
+	void exit(OperationContext& ctx)override;
 	void eventButtonStopPressed(OperationContext& ctx)override;
 };
 

@@ -1,41 +1,32 @@
 /*
- * OperationBase.cpp
+ * OperationContext.cpp
  *
  *  Created on: 27.05.2026
  *      Author: tayla
  */
-#include <new>
+#include "OperationContext.h"
 #include "OperationBase.h"
 #include "Idle.h"
+#include "Running.h"
 
-class OperationContext{
-	//Kontext
-	alignas(Idle) char stateBuffer[sizeof(Idle)];
-	OperationBase* currentState = reinterpret_cast<OperationBase*>(stateBuffer);
-
-public:
-	OperationContext(){
-		new (currentState) Idle;
-		currentState->entry(*this);
-	}
-	void eventButtonStartPressed(){
+	void OperationContext::eventButtonStartPressed(){
 		currentState->eventButtonStartPressed(*this);
 	}
-	void eventButtonStartPressedLong(){
+	void OperationContext::eventButtonStartPressedLong(){
 		currentState->eventButtonStartPressedLong(*this);
 	}
-	void eventButtonStopPressed(){
+	void OperationContext::eventButtonStopPressed(){
 		currentState->eventButtonStopPressed(*this);
 	}
-	void eventButtonEstopPressed(){
+	void OperationContext::eventButtonEstopPressed(){
 		currentState->eventButtonEstopPressed(*this);
 	}
-	void eventButtonResetPressed(){
+	void OperationContext::eventButtonResetPressed(){
 		currentState->eventButtonResetPressed(*this);
 	}
 
 
 
-};
+
 
 
