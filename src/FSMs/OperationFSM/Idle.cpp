@@ -37,11 +37,6 @@
 		entry(ctx);
 				}
 
-	void Idle::eventButtonEstopPressed(OperationContext& ctx){
-	//		exit(ctx);
-	//		new (this) Estop;
-	//		entry(ctx);
-	}
 
 
 

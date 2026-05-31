@@ -34,6 +34,16 @@ public:
 	virtual void eventItemInSlide(OperationContext& fsm) {}
 	virtual void eventItemLeftSlide(OperationContext& fsm) {}
 
+	virtual void eventItemMetal(OperationContext& fsm) {}
+
+
+
+
+	virtual void eventError(OperationContext& fsm) {}
+
+
+
+
 
 
 

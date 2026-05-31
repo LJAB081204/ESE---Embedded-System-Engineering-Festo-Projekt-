@@ -12,7 +12,7 @@
 using namespace std;
 
 Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
-    : hal(hal), operationFSM(hal) {
+    : hal(hal), FSM(hal) {
 #ifndef LOCAL_VERSION
     //GNS Version
     attach = name_attach(NULL, localName, NAME_FLAG_ATTACH_GLOBAL);
@@ -80,11 +80,11 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				    case PULSE_BTN_ESTOP_LOCAL:
 				        cout << "ESTOP Pulse reached dispatcher" << endl;
 				        if(msg.value.sival_int == 0){
-				            hal.getActors()->motorForwards();
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_ESTOP_REMOTE, 0);
+				            FSM.eventButtonEstopReleased();
 				        } else {
-				            hal.getActors()->motorStop();
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_ESTOP_REMOTE, 1);
+				            FSM.eventButtonEstopPressed();
 				        }
 				        break;
 
@@ -106,7 +106,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				            cout << "Start released!" << endl;
 				            //diff = Zeitstamp 2 - Zeitstamp 1
 				            //je nach diff long oder short press
-				            operationFSM.eventButtonStartPressed();
+				            FSM.eventButtonStartPressed();
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_START_REMOTE, 0);
 				        }
 				        break;
@@ -126,6 +126,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				        } else {
 				            cout << "Reset released!" << endl;
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_RESET_REMOTE, 0);
+				            FSM.eventButtonResetPressed();
 				        }
 				        break;
 
@@ -144,7 +145,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				        } else {
 				            cout << "Stop released!" << endl;
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_STOP_REMOTE, 0);
-				            operationFSM.eventButtonStopPressed();
+				            FSM.eventButtonStopPressed();
 				        }
 				        break;
 
@@ -161,9 +162,11 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				            cout << "Item at entry!" << endl;
 				            hal.getActors()->motorForwards();
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_ENTRY_REMOTE, 1);
+				            FSM.eventItemAtEntry();
 				        } else {
 				            cout << "Item left entry!" << endl;
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_ENTRY_REMOTE, 0);
+				            FSM.eventItemLeftEntry();
 				        }
 				        break;
 
@@ -180,9 +183,11 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				            cout << "Item at exit!" << endl;
 				            hal.getActors()->motorStop();
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_EXIT_REMOTE, 1);
+				            FSM.eventItemAtExit();
 				        } else {
 				            cout << "Item left exit!" << endl;
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_EXIT_REMOTE, 0);
+				            FSM.eventItemLeftExit();
 				        }
 				        break;
 
@@ -198,9 +203,11 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				        if(msg.value.sival_int == 1){
 				            cout << "Item in pusher!" << endl;
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_PUSHER_REMOTE, 1);
+				            FSM.eventItemAtPusher();
 				        } else {
 				            cout << "Item left pusher!" << endl;
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_PUSHER_REMOTE, 0);
+				            FSM.eventItemLeftPusher();
 				        }
 				        break;
 
@@ -216,6 +223,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				        if(msg.value.sival_int == 1){
 				            cout << "Item is metal!" << endl;
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_METAL_REMOTE, 1);
+				            FSM.eventItemMetal();
 				        } else {
 				            cout << "Item is not metal!" << endl;
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_METAL_REMOTE, 0);
@@ -253,9 +261,11 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				            cout << "Slide is full!" << endl;
 				            hal.getActors()->yellowLampOn();
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_SLIDE_FULL_REMOTE, 1);
+				            FSM.eventItemInSlide();
 				        } else {
 				            cout << "Slide cleared!" << endl;
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_SLIDE_FULL_REMOTE, 0);
+				            FSM.eventItemLeftSlide();
 				        }
 				        break;
 

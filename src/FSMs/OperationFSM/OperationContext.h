@@ -25,11 +25,33 @@ public:
 		new (currentState) Idle;
 		currentState->entry(*this);
 	}
-    void eventButtonStartPressed();
-    void eventButtonStartPressedLong();
-    void eventButtonStopPressed();
-    void eventButtonEstopPressed();
-    void eventButtonResetPressed();
+	void eventButtonStartPressed()     { currentState->eventButtonStartPressed(*this); }
+    void eventButtonStartPressedLong() { currentState->eventButtonStartPressedLong(*this); }
+    void eventButtonStopPressed()      { currentState->eventButtonStopPressed(*this); }
+    void eventButtonResetPressed()     { currentState->eventButtonResetPressed(*this); }
+
+    void eventButtonEstopPressed()     { currentState->eventButtonEstopPressed(*this); }
+    void eventButtonEstopReleased()     { currentState->eventButtonEstopReleased(*this); }
+
+
+    void eventItemMetal()    		 { currentState->eventItemMetal(*this); }
+
+
+
+    void eventItemAtEntry()            { currentState->eventItemAtEntry(*this); }
+    void eventItemLeftEntry()          { currentState->eventItemLeftEntry(*this); }
+
+    void eventItemAtExit()             { currentState->eventItemAtExit(*this); }
+    void eventItemLeftExit()           { currentState->eventItemLeftExit(*this); }
+
+    void eventItemAtPusher()              { currentState->eventItemAtPusher(*this); }
+    void eventItemLeftPusher()              { currentState->eventItemLeftPusher(*this); }
+
+
+    void eventItemInSlide()              { currentState->eventItemInSlide(*this); }
+    void eventItemLeftSlide()            { currentState->eventItemLeftSlide(*this); }
+
+    void eventError()                  { currentState->eventError(*this); }
 };
 
 

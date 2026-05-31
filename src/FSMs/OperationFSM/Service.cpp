@@ -7,14 +7,15 @@
 
 #include <new>
 #include "OperationBase.h"
+#include "OperationContext.h"
 #include "Idle.h"
 #include "Service.h"
 
 	Service::Service(){
-
 	}
 
 	void Service::entry(OperationContext& ctx){
+		ctx.hal.getActors()->greenLampBlink(1000);
 	}
 
 	void Service::exit(OperationContext& ctx){

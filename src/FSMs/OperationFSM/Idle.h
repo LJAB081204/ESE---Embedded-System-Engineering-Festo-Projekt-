@@ -17,7 +17,6 @@ public:
 	void exit(OperationContext& ctx)override;
 	void eventButtonStartPressed(OperationContext& ctx)override;
 	void eventButtonStartPressedLong(OperationContext& ctx)override;
-	void eventButtonEstopPressed(OperationContext& ctx)override;
 
 
 };

@@ -6,7 +6,7 @@
 #include <sys/neutrino.h>
 #include "Config.h"
 #include "HAL.h"
-#include "FSMs/OperationFSM/OperationContext.h"
+#include "FSMs/MainFSM/MainContext.h"
 
 
 
@@ -15,7 +15,7 @@ private:
     int localConnectionID;
     int remoteConnectionID;
     HAL& hal;
-    OperationContext operationFSM;
+    MainContext FSM;
 
 #ifndef LOCAL_VERSION
     //GLOBAL VERSION
