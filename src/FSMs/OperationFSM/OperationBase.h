@@ -19,6 +19,24 @@ public:
 	virtual void eventButtonStopPressed(OperationContext& fsm)  {}
 	virtual void eventButtonResetPressed(OperationContext& fsm) {}
 	virtual void eventButtonEstopPressed(OperationContext& fsm) {}
+	virtual void eventButtonEstopReleased(OperationContext& fsm) {}
+
+
+	virtual void eventItemAtEntry(OperationContext& fsm) {}
+	virtual void eventItemLeftEntry(OperationContext& fsm) {}
+
+	virtual void eventItemAtExit(OperationContext& fsm) {}
+	virtual void eventItemLeftExit(OperationContext& fsm) {}
+
+	virtual void eventItemAtPusher(OperationContext& fsm) {}
+	virtual void eventItemLeftPusher(OperationContext& fsm) {}
+
+	virtual void eventItemInSlide(OperationContext& fsm) {}
+	virtual void eventItemLeftSlide(OperationContext& fsm) {}
+
+
+
+
 	virtual void entry(OperationContext& fsm){}
 	virtual void exit(OperationContext& fsm){}
 

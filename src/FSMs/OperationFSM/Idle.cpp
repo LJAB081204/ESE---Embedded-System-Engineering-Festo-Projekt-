@@ -6,15 +6,22 @@
  */
 #include <new>
 #include "OperationBase.h"
+#include "OperationContext.h"
 #include "Idle.h"
 #include "Running.h"
+#include "Service.h"
 
 	Idle::Idle(){
 	}
 
 	void Idle::entry(OperationContext& ctx){
-		//MotorStop
-		//LampsOff
+		ctx.hal.getActors()->motorStop();
+		ctx.hal.getActors()->greenLampOff();
+		ctx.hal.getActors()->greenLampBlinkOff();
+		ctx.hal.getActors()->yellowLampOff();
+		ctx.hal.getActors()->yellowLampBlinkOff();
+		ctx.hal.getActors()->redLampOff();
+		ctx.hal.getActors()->redLampBlinkOff();
 	}
 	void Idle::exit(OperationContext& ctx){
 	}
@@ -25,9 +32,9 @@
 		entry(ctx);
 		}
 	void Idle::eventButtonStartPressedLong(OperationContext& ctx){
-	//		exit(ctx);
-	//		new (this) Service;
-	//		entry(ctx);
+		exit(ctx);
+		new (this) Service;
+		entry(ctx);
 				}
 
 	void Idle::eventButtonEstopPressed(OperationContext& ctx){

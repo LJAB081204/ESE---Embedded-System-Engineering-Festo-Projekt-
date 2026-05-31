@@ -6,6 +6,7 @@
  */
 #include <new>
 #include "OperationBase.h"
+#include "OperationContext.h"
 #include "Idle.h"
 #include "Running.h"
 
@@ -16,7 +17,7 @@
 
 
 	void Running::entry(OperationContext& ctx){
-		//greenLampOn
+		ctx.hal.getActors()->greenLampOn();
 	}
 
 	void Running::exit(OperationContext& ctx){

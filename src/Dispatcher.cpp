@@ -12,7 +12,7 @@
 using namespace std;
 
 Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
-    : hal(hal) {
+    : hal(hal), operationFSM(hal) {
 #ifndef LOCAL_VERSION
     //GNS Version
     attach = name_attach(NULL, localName, NAME_FLAG_ATTACH_GLOBAL);
@@ -106,6 +106,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				            cout << "Start released!" << endl;
 				            //diff = Zeitstamp 2 - Zeitstamp 1
 				            //je nach diff long oder short press
+				            operationFSM.eventButtonStartPressed();
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_START_REMOTE, 0);
 				        }
 				        break;
@@ -143,6 +144,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				        } else {
 				            cout << "Stop released!" << endl;
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_STOP_REMOTE, 0);
+				            operationFSM.eventButtonStopPressed();
 				        }
 				        break;
 
@@ -283,7 +285,9 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				    	case HEIGHT_TOO_HIGH:
 			            	std::cout << "HEIGHT_TOO_HIGH" << std::endl;
 			            	break;
-				    	default: break;
+				    	default:
+				    		break;
+				    	break;
 				    	}
 					case PULSE_TIMER_EXPIRED:
 							cout << "Timer " << msg.value.sival_int << " abgelaufen" << endl;
