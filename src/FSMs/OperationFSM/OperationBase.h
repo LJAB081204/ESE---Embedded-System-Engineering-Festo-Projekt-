@@ -36,7 +36,7 @@ public:
 	virtual void eventItemLeftSlide(OperationContext& fsm) {}
 
 	virtual void eventItemMetal(OperationContext& fsm) {}
-
+	virtual void eventItemArrived(OperationContext& fsm){}
 	virtual void eventItemGone (OperationContext& fsm){}
 
 	virtual void eventHeightHigh(OperationContext& fsm){}

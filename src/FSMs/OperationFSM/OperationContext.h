@@ -45,6 +45,7 @@ public:
     void eventItemLeftSlide()          { currentState->eventItemLeftSlide(*this); }
 
     void eventItemMetal()			   { currentState->eventItemMetal(*this); }
+    void eventItemArrived()			   { currentState->eventItemArrived(*this);}
     void eventItemGone()			   { currentState->eventItemGone(*this);}
 
     void eventHeightHigh()			   { currentState->eventHeightHigh(*this); }
