@@ -23,8 +23,12 @@
 		ctx.hal.getActors()->redLampOff();
 		ctx.hal.getActors()->redLampBlinkOff();
 		ctx.hal.getActors()->ledButtonResetOff();
+
+		ctx.hal.getActors()->ledButtonStart();
 	}
 	void Idle::exit(OperationContext& ctx){
+		ctx.hal.getActors()->ledButtonStartOff();
+
 	}
 
 	void Idle::eventButtonStartPressed(OperationContext& ctx){
@@ -36,7 +40,7 @@
 		exit(ctx);
 		new (this) Service;
 		entry(ctx);
-				}
+	}
 
 
 

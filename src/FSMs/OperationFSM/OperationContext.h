@@ -29,14 +29,8 @@ public:
     void eventButtonStartPressedLong() { currentState->eventButtonStartPressedLong(*this); }
     void eventButtonStopPressed()      { currentState->eventButtonStopPressed(*this); }
     void eventButtonResetPressed()     { currentState->eventButtonResetPressed(*this); }
-
     void eventButtonEstopPressed()     { currentState->eventButtonEstopPressed(*this); }
-    void eventButtonEstopReleased()     { currentState->eventButtonEstopReleased(*this); }
-
-
-    void eventItemMetal()    		 { currentState->eventItemMetal(*this); }
-
-
+    void eventButtonEstopReleased()    { currentState->eventButtonEstopReleased(*this); }
 
     void eventItemAtEntry()            { currentState->eventItemAtEntry(*this); }
     void eventItemLeftEntry()          { currentState->eventItemLeftEntry(*this); }
@@ -44,12 +38,25 @@ public:
     void eventItemAtExit()             { currentState->eventItemAtExit(*this); }
     void eventItemLeftExit()           { currentState->eventItemLeftExit(*this); }
 
-    void eventItemAtPusher()              { currentState->eventItemAtPusher(*this); }
-    void eventItemLeftPusher()              { currentState->eventItemLeftPusher(*this); }
+    void eventItemAtPusher()           { currentState->eventItemAtPusher(*this); }
+    void eventItemLeftPusher()         { currentState->eventItemLeftPusher(*this); }
 
+    void eventItemInSlide()            { currentState->eventItemInSlide(*this); }
+    void eventItemLeftSlide()          { currentState->eventItemLeftSlide(*this); }
 
-    void eventItemInSlide()              { currentState->eventItemInSlide(*this); }
-    void eventItemLeftSlide()            { currentState->eventItemLeftSlide(*this); }
+    void eventItemMetal()			   { currentState->eventItemMetal(*this); }
+    void eventItemGone()			   { currentState->eventItemGone(*this);}
+
+    void eventHeightHigh()			   { currentState->eventHeightHigh(*this); }
+    void eventHeightFlat()			   { currentState->eventHeightFlat(*this); }
+    void eventHeightHole()			   { currentState->eventHeightHole(*this); }
+    void eventHeightWrong()			   { currentState->eventHeightWrong(*this); }
+
+    void eventItemWrong()			   { currentState->eventItemWrong(*this); }
+    void eventItemCorrect()			   { currentState->eventItemCorrect(*this); }
+    void eventUpdate()				   { currentState->eventUpdate(*this); }
+
+    void eventTimerExpired()			   { currentState->eventTimerExpired(*this); }
 
     void eventError()                  { currentState->eventError(*this); }
 };
