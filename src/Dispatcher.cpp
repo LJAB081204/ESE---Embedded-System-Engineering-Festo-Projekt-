@@ -284,29 +284,29 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				        break;
 
 				    case PULSE_NEW_HEIGHT_LOCAL:
-				    	cout << "Height change recevied" << endl;
 				    	switch(msg.value.sival_int){
 				    	case HEIGHT_CONVEYOR: // Height Conveyer
-			            	std::cout << "HEIGHT_CONVEYOR" << std::endl;
+				    		FSM.eventItemGone();
 			            	break;
 				    	case HEIGHT_DRILLING:
-			            	std::cout << "HEIGHT_DRILLING" << std::endl;
-			            	break;
+				    		FSM.eventHeightHole();
+				    		break;
 				    	case HEIGHT_WORKPIECE_HIGH:
-			            	std::cout << "HEIGHT_WORKPIECE_HIGH" << std::endl;
-			            	break;
+				    		FSM.eventHeightHigh();
+				    		break;
 				    	case HEIGHT_WORKPIECE_FLAT:
-			            	std::cout << "HEIGHT_WORKPIECE_FLAT" << std::endl;
-			            	break;
+				    		FSM.eventHeightFlat();
+				    		break;
 				    	case HEIGHT_TOO_HIGH:
-			            	std::cout << "HEIGHT_TOO_HIGH" << std::endl;
-			            	break;
+				    		FSM.eventHeightWrong();
+				    		break;
 				    	default:
 				    		break;
 				    	break;
 				    	}
 					case PULSE_TIMER_EXPIRED:
 							cout << "Timer " << msg.value.sival_int << " abgelaufen" << endl;
+							FSM.eventTimerExpired();
 						break;
 				}
 			}
