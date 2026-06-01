@@ -13,10 +13,11 @@
 #include "TransportBase.h"
 #include "Stop.h"
 #include "../../Running.h"
+#include "Forward.h"
 
 class TransportContext{
 	//Kontext
-	alignas(Running) char stateBuffer[sizeof(Running)];
+	alignas(Forward) char stateBuffer[sizeof(Forward)];
 	TransportBase* currentState = reinterpret_cast<TransportBase*>(stateBuffer);
 
 
@@ -28,11 +29,11 @@ public:
 	}
 
 	void eventItemAtEntry()		{currentState->eventItemAtEntry(*this); }
-	void eventItemAtSlide()          { currentState->eventItemAtSlide(*this); }
+	void eventItemInSlide()          { currentState->eventItemInSlide(*this); }
 	void eventItemAtEntryRemote()    { currentState->eventItemAtEntryRemote(*this); }
 	void eventItemAtExit()           { currentState->eventItemAtExit(*this); }
 	void eventItemLeftExitRemote()   { currentState->eventItemLeftExitRemote(*this); }
-	void eventItemAtSlideRemote()    { currentState->eventItemAtSlideRemote(*this); }
+	void eventItemInSlideRemote()    { currentState->eventItemInSlideRemote(*this); }
 	void eventItemGone()             { currentState->eventItemGone(*this); }
 	void eventItemArrived()          { currentState->eventItemArrived(*this); }
 

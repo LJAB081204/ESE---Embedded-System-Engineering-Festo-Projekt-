@@ -20,10 +20,11 @@ void Receive::entry(WeicheContext& ctx){
 void Receive::exit(WeicheContext& ctx){
 
 }
+
 void Receive::eventItemAtPusher(WeicheContext& ctx){
-	exit(ctx);
+	//exit(ctx);
 	//new (this) Ready;
-	entry(ctx);
+	//entry(ctx);
 }
 void Receive::eventItemMetal(WeicheContext& ctx){
 	new (this) Receive;
