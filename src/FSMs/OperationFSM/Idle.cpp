@@ -22,6 +22,7 @@
 		ctx.hal.getActors()->yellowLampBlinkOff();
 		ctx.hal.getActors()->redLampOff();
 		ctx.hal.getActors()->redLampBlinkOff();
+		ctx.hal.getActors()->ledButtonResetOff();
 	}
 	void Idle::exit(OperationContext& ctx){
 	}

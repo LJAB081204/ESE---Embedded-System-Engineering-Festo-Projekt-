@@ -8,6 +8,7 @@
 #include "HeightSensor.h"
 #include "PulseMessages.h"
 #include "Config.h"
+#include <chrono>
 #include <sys/dispatch.h>
 using namespace std;
 
@@ -100,13 +101,18 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				    case PULSE_BTN_START_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            cout << "Start pressed!" << endl;
-				            //Zeitstamp 1
+				            buttonPressStart = chrono::steady_clock::now();
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_START_REMOTE, 1);
 				        } else {
 				            cout << "Start released!" << endl;
-				            //diff = Zeitstamp 2 - Zeitstamp 1
-				            //je nach diff long oder short press
-				            FSM.eventButtonStartPressed();
+				            auto diff = chrono::steady_clock::now() - buttonPressStart;
+				            auto ms = chrono::duration_cast<chrono::milliseconds>(diff).count();
+				            if(ms > 2000){
+				            	FSM.eventButtonStartPressedLong();
+				            }
+				            else{
+				            	FSM.eventButtonStartPressed();
+				            }
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_START_REMOTE, 0);
 				        }
 				        break;
