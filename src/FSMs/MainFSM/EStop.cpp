@@ -12,8 +12,10 @@ void EStop::entry(MainContext& ctx) {
     ctx.hal.getActors()->motorStop();
     ctx.hal.getActors()->greenLampOff();
     ctx.hal.getActors()->redLampOn();
+    ctx.hal.getActors()->ledButtonReset();
 }
-void EStop::exit(MainContext& ctx) {}
+void EStop::exit(MainContext& ctx) {
+}
 
 void EStop::eventButtonResetPressed(MainContext& ctx) {
 	if(!ctx.hal.getSensors()->isEStopTriggered()){

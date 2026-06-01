@@ -4,6 +4,7 @@
 #include <thread>
 #include <sys/dispatch.h>
 #include <sys/neutrino.h>
+#include <chrono>
 #include "Config.h"
 #include "HAL.h"
 #include "FSMs/MainFSM/MainContext.h"
@@ -14,6 +15,7 @@ class Dispatcher {
 private:
     int localConnectionID;
     int remoteConnectionID;
+    std::chrono::steady_clock::time_point buttonPressStart;
     HAL& hal;
     MainContext FSM;
 
