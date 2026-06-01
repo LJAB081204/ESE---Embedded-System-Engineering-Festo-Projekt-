@@ -1,0 +1,41 @@
+/*
+ * TransportContext.h
+ *
+ *  Created on: 01.06.2026
+ *      Author: mika2
+ */
+
+#ifndef SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTCONTEXT_H_
+#define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTCONTEXT_H_
+
+#include "../../../../HAL.h"
+#include <new>
+#include "TransportBase.h"
+#include "Stop.h"
+#include "../../Running.h"
+
+class TransportContext{
+	//Kontext
+	alignas(Running) char stateBuffer[sizeof(Running)];
+	TransportBase* currentState = reinterpret_cast<TransportBase*>(stateBuffer);
+
+
+public:
+	HAL& hal;
+		TransportContext(HAL& hal) : hal(hal){
+			new (currentState) Stop;
+			currentState->entry(*this);
+	}
+
+	void eventItemAtEntry()		{currentState->eventItemAtEntry(*this); }
+	void eventItemAtSlide()          { currentState->eventItemAtSlide(*this); }
+	void eventItemAtEntryRemote()    { currentState->eventItemAtEntryRemote(*this); }
+	void eventItemAtExit()           { currentState->eventItemAtExit(*this); }
+	void eventItemLeftExitRemote()   { currentState->eventItemLeftExitRemote(*this); }
+	void eventItemAtSlideRemote()    { currentState->eventItemAtSlideRemote(*this); }
+	void eventItemGone()             { currentState->eventItemGone(*this); }
+	void eventItemArrived()          { currentState->eventItemArrived(*this); }
+
+};
+
+#endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTCONTEXT_H_ */
