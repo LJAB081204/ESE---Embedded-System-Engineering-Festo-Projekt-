@@ -4,7 +4,10 @@
  *  Created on: 01.06.2026
  *      Author: tayla
  */
-
+#include <new>
+#include "WeicheBase.h"
+#include "WeicheContext.h"
+#include "Ready.h"
 Ready::Ready(){
 }
 
