@@ -8,7 +8,34 @@
 #ifndef SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_WEICHEFSM_WEICHEBASE_H_
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_WEICHEFSM_WEICHEBASE_H_
 
+class WeicheContext;
 
+class WeicheBase{
+public:
+	virtual ~WeicheBase() = default;
+
+	virtual void entry(WeicheContext& fsm) {}
+	virtual void exit(WeicheContext& fsm)  {}
+
+	virtual void eventItemAtPusher(WeicheContext& fsm)  {}
+	virtual void eventItemLeftPusher(WeicheContext& fsm){}
+
+	virtual void eventItemInSlide(WeicheContext& fsm)   {}
+	virtual void eventItemLeftSlide(WeicheContext& fsm) {}
+
+	virtual void eventItemMetal(WeicheContext& fsm){}
+
+	virtual void eventItemWrong(WeicheContext& fsm){}
+	virtual void eventItemCorrect(WeicheContext& fsm){}
+	virtual void eventUpdate(WeicheContext& fsm){}
+
+	virtual void eventError(WeicheContext& fsm) {}
+
+
+
+
+
+};
 
 
 
