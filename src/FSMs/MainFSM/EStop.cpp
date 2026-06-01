@@ -10,6 +10,7 @@
 
 void EStop::entry(MainContext& ctx) {
     ctx.hal.getActors()->motorStop();
+    ctx.hal.getActors()->greenLampOff();
     ctx.hal.getActors()->redLampOn();
 }
 void EStop::exit(MainContext& ctx) {}
