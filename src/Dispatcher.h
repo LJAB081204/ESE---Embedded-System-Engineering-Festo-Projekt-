@@ -6,6 +6,8 @@
 #include <sys/neutrino.h>
 #include "Config.h"
 #include "HAL.h"
+#include "FSMs/MainFSM/MainContext.h"
+
 
 
 class Dispatcher {
@@ -13,6 +15,7 @@ private:
     int localConnectionID;
     int remoteConnectionID;
     HAL& hal;
+    MainContext FSM;
 
 #ifndef LOCAL_VERSION
     //GLOBAL VERSION
