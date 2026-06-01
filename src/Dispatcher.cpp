@@ -166,7 +166,6 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				    case PULSE_ITEM_AT_ENTRY_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            cout << "Item at entry!" << endl;
-				            hal.getActors()->motorForwards();
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_ENTRY_REMOTE, 1);
 				            FSM.eventItemAtEntry();
 				        } else {
@@ -187,7 +186,6 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				    case PULSE_ITEM_AT_EXIT_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            cout << "Item at exit!" << endl;
-				            hal.getActors()->motorStop();
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_EXIT_REMOTE, 1);
 				            FSM.eventItemAtExit();
 				        } else {
@@ -265,7 +263,6 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				    case PULSE_SLIDE_FULL_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            cout << "Slide is full!" << endl;
-				            hal.getActors()->yellowLampOn();
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_SLIDE_FULL_REMOTE, 1);
 				            FSM.eventItemInSlide();
 				        } else {
