@@ -8,12 +8,14 @@
 #include "WeicheBase.h"
 #include "WeicheContext.h"
 #include "Ready.h"
+#include "LetItemPass.h"
 Ready::Ready(){
 }
 
 void Ready::eventItemCorrect(WeicheContext& ctx){
-	//new (this) letItemPass;
-	//entry(ctx)
+	exit(ctx);
+	new (this) LetItemPass;
+	entry(ctx);
 }
 void Ready::eventItemWrong(WeicheContext& ctx){
 	/*

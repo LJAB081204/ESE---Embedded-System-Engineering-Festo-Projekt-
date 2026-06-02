@@ -29,6 +29,8 @@ public:
 	virtual void eventItemCorrect(WeicheContext& fsm){}
 	virtual void eventUpdate(WeicheContext& fsm){}
 
+	virtual void eventTimerExpired(WeicheContext& fsm){}
+
 	virtual void eventError(WeicheContext& fsm) {}
 
 

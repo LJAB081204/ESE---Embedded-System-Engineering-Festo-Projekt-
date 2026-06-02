@@ -9,6 +9,7 @@
 #include "OperationBase.h"
 #include "OperationContext.h"
 #include "RunningSubmachines/TransportFSM/TransportContext.h"
+#include "RunningSubmachines/WeicheFSM/WeicheContext.h"
 #include "Idle.h"
 #include "Running.h"
 
@@ -52,4 +53,29 @@
 	void Running::eventItemArrived(OperationContext& ctx){
 		transportFSM->eventItemArrived();
 	}
+	void Running::eventItemMetal(OperationContext& ctx){
+		weicheFSM->eventItemMetal();
+	}
+	void Running::eventItemLeftSlide(OperationContext& ctx){
 
+	}
+	void Running::eventItemAtPusher(OperationContext& ctx){
+	    weicheFSM->eventItemAtPusher();
+	}
+	void Running::eventItemLeftPusher(OperationContext& ctx){
+	    weicheFSM->eventItemLeftPusher();
+	}
+	void Running::eventItemWrong(OperationContext& ctx){
+		weicheFSM->eventItemWrong();
+	}
+	void Running::eventItemCorrect(OperationContext& ctx){
+		weicheFSM->eventItemCorrect();
+	}
+	void Running::eventUpdate(OperationContext& ctx){
+		weicheFSM->eventUpdate();
+	}
+	void Running::eventTimerExpired(OperationContext& ctx){
+	    weicheFSM->eventTimerExpired();
+	    transportFSM->eventTimerExpired();
+	}
+	void Running::eventError(OperationContext& ctx){}

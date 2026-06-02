@@ -5,7 +5,9 @@
  *      Author: tayla
  */
 #include <new>
+#include <iostream>
 #include "Receive.h"
+#include "Ready.h"
 #include "WeicheBase.h"
 #include "WeicheContext.h"
 
@@ -16,6 +18,7 @@ Receive::Receive(){
 
 void Receive::entry(WeicheContext& ctx){
 	ctx.hal.getActors()->closePusher();
+
 }
 void Receive::exit(WeicheContext& ctx){
 
@@ -27,6 +30,8 @@ void Receive::eventItemAtPusher(WeicheContext& ctx){
 	//entry(ctx);
 }
 void Receive::eventItemMetal(WeicheContext& ctx){
+	ctx.hal.getActors()->yellowLampOn();
+
 	new (this) Receive;
 	//bool metal == true
 }
