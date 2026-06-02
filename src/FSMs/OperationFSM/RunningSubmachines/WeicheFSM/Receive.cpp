@@ -30,8 +30,9 @@ void Receive::eventItemAtPusher(WeicheContext& ctx){
 	//entry(ctx);
 }
 void Receive::eventItemMetal(WeicheContext& ctx){
-	ctx.hal.getActors()->yellowLampOn();
-
+	ctx.hal.getActors()->openPusher();
+	sleep(1);
+	ctx.hal.getActors()->closePusher();
 	new (this) Receive;
 	//bool metal == true
 }
