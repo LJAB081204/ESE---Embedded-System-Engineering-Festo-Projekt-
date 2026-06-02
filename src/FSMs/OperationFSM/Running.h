@@ -14,6 +14,9 @@ class TransportContext;
 
 class Running : public OperationBase{
 	TransportContext* transportFSM;
+	WeicheContext* weicheFSM;
+	//SequenceContext* sequenceFSM;
+	//ProfileContext* profileFSM;
 public:
 	Running(HAL& hal);
 	void entry(OperationContext& ctx)override;
