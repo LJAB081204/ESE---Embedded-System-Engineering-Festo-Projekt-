@@ -26,4 +26,10 @@
 		//else raise eventItemWrong
 	}
 
+	void waitingForProfile::eventItemCorrect(SequenceContext& ctx){
+
+	}
+	void waitingForProfile::eventItemWrong(SequenceContext& ctx){
+
+	}
 

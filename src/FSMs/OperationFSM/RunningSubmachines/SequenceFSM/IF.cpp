@@ -25,5 +25,11 @@
 		//if IF == true -> IHM && raise eventItemCorrect
 		//else raise eventItemWrong
 	}
+	void IF::eventItemCorrect(SequenceContext& ctx){
+
+	}
+	void IF::eventItemWrong(SequenceContext& ctx){
+
+	}
 
 

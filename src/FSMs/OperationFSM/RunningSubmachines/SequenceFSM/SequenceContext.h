@@ -10,12 +10,12 @@
 
 #include <new>
 #include "SequenceBase.h"
-#include "..//../Running.h"
+#include "IHM.h"
 #include "waitingForProfile.h"
 
 class SequenceContext{
 	//Kontext
-	alignas(Running) char stateBuffer[sizeof(Running)];
+	alignas(IHM) char stateBuffer[sizeof(IHM)];
 	SequenceBase* currentState = reinterpret_cast<SequenceBase*>(stateBuffer);
 
 

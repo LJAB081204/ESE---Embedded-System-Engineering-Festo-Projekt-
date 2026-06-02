@@ -25,6 +25,11 @@
 
 	}
 
+	void IM::eventItemCorrect(SequenceContext& ctx){
 
+	}
+	void IM::eventItemWrong(SequenceContext& ctx){
+
+	}
 
 

@@ -25,5 +25,10 @@
 		//if IM == true -> IF && raise eventItemCorrect
 		//else raise eventItemWrong
 	}
+	void IH::eventItemCorrect(SequenceContext& ctx){
 
+	}
+	void IH::eventItemWrong(SequenceContext& ctx){
+
+	}
 
