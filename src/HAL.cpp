@@ -6,6 +6,14 @@
  */
 //  TODO Funktion für Start Kurz oder Lang
 #include "HAL.h"
+#include <iostream>
+#include <thread>
+#include <chrono>
+#include <mutex>
+#include <stdexcept>
+#include <sys/mman.h>
+#include <hw/inout.h>
+
 using namespace std;
 
 
@@ -88,6 +96,9 @@ using namespace std;
     }
 
     ActorWrapper::~ActorWrapper(){
+    	greenLampBlinkOff();
+    	yellowLampBlinkOff();
+    	redLampBlinkOff();
         munmap_device_io(gpio_bank_1, GPIO_REGISTER_LENGHT);
         munmap_device_io(gpio_bank_2, GPIO_REGISTER_LENGHT);
 
@@ -111,13 +122,16 @@ using namespace std;
     }
 
     void ActorWrapper::greenLampOn(){
+    	std::lock_guard<std::mutex> lock(lampMutex);
     	out32((uintptr_t) (gpio_bank_1 + SET_REGISTER), GREEN_LAMP_ON);
     }
     void ActorWrapper::greenLampOff(){
+    	std::lock_guard<std::mutex> lock(lampMutex);
       	out32((uintptr_t) (gpio_bank_1 + CLR_REGISTER), GREEN_LAMP_ON);
       }
 
     void ActorWrapper::greenLampBlink(int ms) {
+    	greenLampBlinkOff();
         blinkGreenLamp = true;
         greenLampThread = thread([this, ms](){
             while(blinkGreenLamp){
@@ -137,13 +151,16 @@ using namespace std;
 
 
     void ActorWrapper::yellowLampOn(){
+    	std::lock_guard<std::mutex> lock(lampMutex);
     	out32((uintptr_t) (gpio_bank_1 + SET_REGISTER), YELLOW_LAMP_ON);
     }
     void ActorWrapper::yellowLampOff(){
+    	std::lock_guard<std::mutex> lock(lampMutex);
     	out32((uintptr_t) (gpio_bank_1 + CLR_REGISTER), YELLOW_LAMP_ON);
     }
 
     void ActorWrapper::yellowLampBlink(int ms){
+    	yellowLampBlinkOff();
     	blinkYellowLamp = true;
     	yellowLampThread = thread([this,ms](){
         	while(blinkYellowLamp){
@@ -164,13 +181,16 @@ using namespace std;
 
 
     void ActorWrapper::redLampOn(){
+    	std::lock_guard<std::mutex> lock(lampMutex);
     	out32((uintptr_t) (gpio_bank_1 + SET_REGISTER), RED_LAMP_ON);
     }
     void ActorWrapper::redLampOff(){
+    	std::lock_guard<std::mutex> lock(lampMutex);
     	out32((uintptr_t) (gpio_bank_1 + CLR_REGISTER), RED_LAMP_ON);
     }
 
-    void ActorWrapper::redLampBlink(int ms){  //TODO
+    void ActorWrapper::redLampBlink(int ms){
+    	redLampBlinkOff();
     	blinkRedLamp = true;
     	redLampThread = thread([this,ms](){
     	while(blinkRedLamp){
@@ -182,7 +202,7 @@ using namespace std;
     	}
     });
     }
-    void ActorWrapper::redLampBlinkOff(){  //TODO
+    void ActorWrapper::redLampBlinkOff(){
     	blinkRedLamp = false;
     	if(redLampThread.joinable()){
     		redLampThread.join();

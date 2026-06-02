@@ -2,39 +2,39 @@
 #define SRC_DISPATCHER_H_
 
 #include <thread>
-#include <iostream>
-#include <stdio.h>
-#include <errno.h>
-#include <stdlib.h>
-#include <string.h>
 #include <sys/dispatch.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <unistd.h>
 #include <sys/neutrino.h>
+#include <chrono>
+#include "Config.h"
 #include "HAL.h"
-#include "PulseMessages.h"
+#include "FSMs/MainFSM/MainContext.h"
+
 
 
 class Dispatcher {
 private:
-    name_attach_t* attach;
     int localConnectionID;
     int remoteConnectionID;
+    std::chrono::steady_clock::time_point buttonPressStart;
+    HAL& hal;
+    MainContext FSM;
 
+#ifndef LOCAL_VERSION
+    //GLOBAL VERSION
+    name_attach_t* attach;
+#else
+    //LOCAL VERSION
     int channelID;
+#endif
+
 
     bool waitForMessages;
     std::thread DispatcherThread;
     _pulse msg;
-
-public:
-    Dispatcher(const char* localName, const char* remoteName);
-    ~Dispatcher();
     void run();
-    int getChannelID();
+public:
+    Dispatcher(const char* localName, const char* remoteName,HAL& hal);
+    ~Dispatcher();
     int getConnectionID();
 };
-
 #endif /* SRC_DISPATCHER_H_ */
