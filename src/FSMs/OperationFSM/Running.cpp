@@ -15,6 +15,9 @@
 
 	Running::Running(HAL& hal){
 		transportFSM = new TransportContext(hal);
+		weicheFSM = new WeicheContext(hal);
+		//sequenceFSM = new SequenceContext();
+		//profileFSM = new ProfileContext();
 	}
 
 
@@ -24,6 +27,9 @@
 
 	void Running::exit(OperationContext& ctx){
 		delete transportFSM;
+		delete weicheFSM;
+		//delete sequenceFSM;
+		//delete profileFSM;
 	}
 
 	void Running::eventButtonStopPressed(OperationContext& ctx){
