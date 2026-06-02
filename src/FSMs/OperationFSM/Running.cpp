@@ -75,7 +75,6 @@
 		weicheFSM->eventUpdate();
 	}
 	void Running::eventTimerExpired(OperationContext& ctx){
-	    weicheFSM->eventTimerExpired();
-	    transportFSM->eventTimerExpired();
+
 	}
 	void Running::eventError(OperationContext& ctx){}
