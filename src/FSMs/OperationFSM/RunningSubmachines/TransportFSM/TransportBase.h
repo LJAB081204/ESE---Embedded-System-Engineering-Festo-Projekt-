@@ -15,11 +15,11 @@ public:
 	virtual ~TransportBase() = default;
 
 	virtual void eventItemAtEntry(TransportContext& fsm) 		 {}
-	virtual void eventItemAtSlide(TransportContext& fsm)         {}
+	virtual void eventItemInSlide(TransportContext& fsm)         {}
 	virtual void eventItemAtEntryRemote(TransportContext& fsm)   {}
 	virtual void eventItemAtExit(TransportContext& fsm)          {}
 	virtual void eventItemLeftExitRemote(TransportContext& fsm)  {}
-	virtual void eventItemAtSlideRemote(TransportContext& fsm)   {}
+	virtual void eventItemInSlideRemote(TransportContext& fsm)   {}
 	virtual void eventItemGone(TransportContext& fsm)            {}
 	virtual void eventItemArrived(TransportContext& fsm)         {}
 

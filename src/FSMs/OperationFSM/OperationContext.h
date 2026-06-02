@@ -21,10 +21,13 @@ class OperationContext{
 
 public:
 	HAL& hal;
+	int connectionID = -1;
+	//dataClass& data
 	OperationContext(HAL& hal) : hal(hal){
 		new (currentState) Idle;
 		currentState->entry(*this);
 	}
+
 	void eventButtonStartPressed()     { currentState->eventButtonStartPressed(*this); }
     void eventButtonStartPressedLong() { currentState->eventButtonStartPressedLong(*this); }
     void eventButtonStopPressed()      { currentState->eventButtonStopPressed(*this); }

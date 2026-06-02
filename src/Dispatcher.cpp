@@ -33,6 +33,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
     if(localConnectionID == -1){
         cout << "connectAttach failed" << endl;
     }
+    //data.ConnectionID = localConnectionID
 #else
     // Lokale Version — eine Anlage, kein Qnet
     if ((channelID = ChannelCreate(0)) == -1){
@@ -42,6 +43,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
     if (localConnectionID == -1){
         cout << "ConnectAttach failed" << endl;
     }
+    //data.ConnectionID = localConnectionID
     remoteConnectionID = -1;
     waitForMessages = true;
     DispatcherThread = thread(&Dispatcher::run, this);
@@ -207,7 +209,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
 				        if(msg.value.sival_int == 1){
 				            cout << "Item in pusher!" << endl;
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_PUSHER_REMOTE, 1);
-				            FSM.eventItemAtPusher();
+				            //FSM.eventItemAtPusher();
 				        } else {
 				            cout << "Item left pusher!" << endl;
 				            MsgSendPulse(remoteConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_PUSHER_REMOTE, 0);

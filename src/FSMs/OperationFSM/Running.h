@@ -10,12 +10,35 @@
 
 #include "OperationBase.h"
 
+class TransportContext;
+class WeicheContext;
+
 class Running : public OperationBase{
+	TransportContext* transportFSM;
+	WeicheContext* weicheFSM;
+	//SequenceContext* sequenceFSM;
+	//ProfileContext* profileFSM;
 public:
-	Running();
+	Running(HAL& hal);
 	void entry(OperationContext& ctx)override;
 	void exit(OperationContext& ctx)override;
 	void eventButtonStopPressed(OperationContext& ctx)override;
+	void eventItemAtEntry(OperationContext& ctx)override;
+	void eventItemAtExit(OperationContext& ctx)override;
+	void eventItemInSlide(OperationContext& ctx)override;
+	void eventItemLeftSlide(OperationContext& ctx)override;
+	void eventItemGone(OperationContext& ctx)override;
+	void eventItemArrived(OperationContext& ctx)override;
+	void eventItemMetal(OperationContext& ctx)override;
+	void eventItemAtPusher(OperationContext& ctx)override;
+	void eventItemLeftPusher(OperationContext& ctx)override;
+	void eventItemWrong(OperationContext& ctx)override;
+	void eventItemCorrect(OperationContext& ctx)override;
+	void eventUpdate(OperationContext& ctx)override;
+	void eventTimerExpired(OperationContext& ctx)override;
+	void eventError(OperationContext& ctx)override;
+
+
 };
 
 
