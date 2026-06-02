@@ -17,7 +17,7 @@ public:
 	void exit(TransportContext& ctx)override;
 
 	void eventItemLeftExitRemote(TransportContext& ctx)override;
-	void eventItemAtSlideRemote(TransportContext& ctx)override;
+	void eventItemInSlideRemote(TransportContext& ctx)override;
 };
 
 

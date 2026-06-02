@@ -20,7 +20,7 @@
 	void SlowWaitForFesto::exit(TransportContext& ctx){
 	}
 
-	void SlowWaitForFesto::eventItemAtSlideRemote(TransportContext& ctx){
+	void SlowWaitForFesto::eventItemInSlideRemote(TransportContext& ctx){
 //		if(data.getReadyForItemRemote()){					//Datenklasse fehlt noch
 //			entry(ctx);
 //			new(this) ForwardSlow;

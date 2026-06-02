@@ -19,7 +19,7 @@
 	void WaitForFesto::exit(TransportContext& ctx){
 	}
 
-	void WaitForFesto::eventItemAtSlideRemote(TransportContext& ctx){
+	void WaitForFesto::eventItemInSlideRemote(TransportContext& ctx){
 //		if(data.getReadyForItemRemote()){					//Datenklasse fehlt noch
 //			entry(ctx);
 //			new(this) Forward;

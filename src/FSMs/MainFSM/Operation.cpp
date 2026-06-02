@@ -45,7 +45,7 @@ void Operation::eventItemLeftExit(MainContext& ctx) {
 }
 
 void Operation::eventItemAtPusher(MainContext& ctx) {
-    operationFSM.eventItemAtExit();
+    operationFSM.eventItemAtPusher();
 }
 void Operation::eventItemLeftPusher(MainContext& ctx) {
     operationFSM.eventItemLeftExit();
