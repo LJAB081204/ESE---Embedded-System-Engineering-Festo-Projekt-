@@ -23,12 +23,13 @@ class TransportContext{
 
 public:
 	HAL& hal;
-		TransportContext(HAL& hal) : hal(hal){
-			new (currentState) Stop;
-			currentState->entry(*this);
+	//dataclass& data
+	TransportContext(HAL& hal) : hal(hal){
+		new (currentState) Stop;
+		currentState->entry(*this);
 	}
 
-	void eventItemAtEntry()		{currentState->eventItemAtEntry(*this); }
+	void eventItemAtEntry()			 {currentState->eventItemAtEntry(*this); }
 	void eventItemInSlide()          { currentState->eventItemInSlide(*this); }
 	void eventItemAtEntryRemote()    { currentState->eventItemAtEntryRemote(*this); }
 	void eventItemAtExit()           { currentState->eventItemAtExit(*this); }

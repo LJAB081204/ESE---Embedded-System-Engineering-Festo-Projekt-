@@ -21,6 +21,7 @@ class OperationContext{
 
 public:
 	HAL& hal;
+	//dataClass& data
 	OperationContext(HAL& hal) : hal(hal){
 		new (currentState) Idle;
 		currentState->entry(*this);
