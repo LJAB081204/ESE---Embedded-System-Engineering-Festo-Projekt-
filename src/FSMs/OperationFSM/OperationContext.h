@@ -15,6 +15,8 @@
 #include "Idle.h"
 #include "Running.h"
 
+#include <iostream>
+
 class OperationContext{
 	//Kontext
 	alignas(Running) char stateBuffer[sizeof(Running)];
@@ -52,7 +54,7 @@ public:
     void eventItemArrived()			   { currentState->eventItemArrived(*this);}
     void eventItemGone()			   { currentState->eventItemGone(*this);}
 
-    void eventHeightHigh()			   { currentState->eventHeightHigh(*this); }
+    void eventHeightHigh()			   {currentState->eventHeightHigh(*this); }
     void eventHeightFlat()			   { currentState->eventHeightFlat(*this); }
     void eventHeightHole()			   { currentState->eventHeightHole(*this); }
     void eventHeightWrong()			   { currentState->eventHeightWrong(*this); }
