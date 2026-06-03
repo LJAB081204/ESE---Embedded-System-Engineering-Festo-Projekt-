@@ -8,12 +8,14 @@
 #include "HeightSensor.h"
 #include "PulseMessages.h"
 #include "Config.h"
+#include "dataClass.h"
 #include <chrono>
 #include <sys/dispatch.h>
+
 using namespace std;
 
-Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
-    : hal(hal), FSM(hal) {
+Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal,dataClass& data)
+    : hal(hal), data(data),FSM(hal,data) {
 #ifndef LOCAL_VERSION
     //GNS Version
     attach = name_attach(NULL, localName, NAME_FLAG_ATTACH_GLOBAL);
@@ -33,7 +35,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
     if(localConnectionID == -1){
         cout << "connectAttach failed" << endl;
     }
-    //data.ConnectionID = localConnectionID
+    data.conId = localConnectionID;
 #else
     // Lokale Version — eine Anlage, kein Qnet
     if ((channelID = ChannelCreate(0)) == -1){
@@ -43,7 +45,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal)
     if (localConnectionID == -1){
         cout << "ConnectAttach failed" << endl;
     }
-    //data.ConnectionID = localConnectionID
+    data.conId = localConnectionID;
     remoteConnectionID = -1;
     waitForMessages = true;
     DispatcherThread = thread(&Dispatcher::run, this);
