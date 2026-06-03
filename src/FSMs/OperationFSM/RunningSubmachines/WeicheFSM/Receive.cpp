@@ -6,10 +6,12 @@
  */
 #include <new>
 #include <iostream>
+#include <sys/neutrino.h>
 #include "Receive.h"
 #include "Ready.h"
 #include "WeicheBase.h"
 #include "WeicheContext.h"
+#include "../../../../PulseMessages.h"
 
 
 Receive::Receive(){
@@ -25,19 +27,19 @@ void Receive::exit(WeicheContext& ctx){
 }
 
 void Receive::eventItemAtPusher(WeicheContext& ctx){
-	//exit(ctx);
-	//new (this) Ready;
-	//entry(ctx);
+	exit(ctx);
+	raiseUpdate(ctx);
+	new (this) Ready;
+	entry(ctx);
 }
 void Receive::eventItemMetal(WeicheContext& ctx){
-	ctx.hal.getActors()->openPusher();
-	sleep(1);
+	ctx.data.section2.front().metal = true;
+	exit(ctx);
 	new (this) Receive;
 	entry(ctx);
-	//bool metal == true
 }
-void Receive::eventUpdate(WeicheContext& ctx){
-
+void Receive::raiseUpdate(WeicheContext& ctx){
+	MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_UPDATE,0);
 }
 
 

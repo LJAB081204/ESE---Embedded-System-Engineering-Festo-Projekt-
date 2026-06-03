@@ -9,6 +9,7 @@
 #include "WeicheBase.h"
 #include "WeicheContext.h"
 #include "Receive.h"
+#include "Wait.h"
 #include "LetItemPass.h"
 
 LetItemPass::LetItemPass(){
@@ -24,7 +25,7 @@ void LetItemPass::exit(WeicheContext& ctx){
 }
 void LetItemPass::eventItemLeftPusher(WeicheContext& ctx){
 	exit(ctx);
-	//new (this) Wait;
+	new (this) Wait;
 	entry(ctx);
 }
 

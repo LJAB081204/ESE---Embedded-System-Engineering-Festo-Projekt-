@@ -29,7 +29,8 @@ void Ready::eventItemWrong(WeicheContext& ctx){
 		new (this) PutItemInSlide;
 	  	entry(ctx);
 	}
-	else if(ctx.data.slideFull == true && ctx.data.slideFullRemote){
+	else if(ctx.data.slideFull == true && ctx.data.slideFullRemote == false){
+		exit(ctx);
 		new(this) LetItemPass;
 	  	entry(ctx);
 	}
