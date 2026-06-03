@@ -33,7 +33,7 @@
 
 	void Idle::eventButtonStartPressed(OperationContext& ctx){
 		exit(ctx);
-		new (this) Running(ctx.hal);
+		new (this) Running(ctx.hal,ctx.data);
 		entry(ctx);
 		}
 	void Idle::eventButtonStartPressedLong(OperationContext& ctx){

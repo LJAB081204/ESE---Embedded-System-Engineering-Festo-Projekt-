@@ -22,13 +22,14 @@
 	}
 
 	void Forward::eventItemAtExit(TransportContext& ctx){
-//		if(!data.getReadyForItemRemote()){					//Datenklasse fehlt noch
-//			exit(ctx);
-//			new(this) WaitForFesto;
-//			entry(ctx);
-//		}
+		if(!ctx.data.readyForItemRemote){					//Datenklasse fehlt noch
+			exit(ctx);
+			new(this) WaitForFesto;
+			entry(ctx);
+		}
 		new (this) Stop;
 		entry(ctx);
+
 	}
 
 	void Forward::eventItemArrived(TransportContext& ctx){

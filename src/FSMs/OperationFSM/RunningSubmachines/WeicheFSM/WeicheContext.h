@@ -10,6 +10,7 @@
 
 #include <new>
 #include "../../../../HAL.h"
+#include "../../../../dataClass.h"
 #include "WeicheBase.h"
 #include "Receive.h"
 
@@ -18,7 +19,8 @@ class WeicheContext{
 	WeicheBase* currentState = reinterpret_cast<WeicheBase*>(stateBuffer);
 public:
 	HAL& hal;
-	WeicheContext(HAL& hal) : hal(hal) {
+	dataClass& data;
+	WeicheContext(HAL& hal,dataClass& data) : hal(hal), data(data) {
 		new(currentState) Receive;
 		currentState->entry(*this);
 	}
