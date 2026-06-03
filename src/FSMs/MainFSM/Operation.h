@@ -39,6 +39,13 @@ public:
     void eventItemMetal(MainContext& ctx) override;
 
     void eventError(MainContext& ctx) override;
+
+    void eventItemGone(MainContext& ctx) override;
+
+    void eventHeightHigh(MainContext& ctx) override;
+    void eventHeightFlat(MainContext& ctx) override;
+    void eventHeightHole(MainContext& ctx) override;
+    void eventHeightWrong(MainContext& ctx) override;
 };
 
 

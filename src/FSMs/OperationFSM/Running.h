@@ -15,12 +15,13 @@
 class TransportContext;
 class WeicheContext;
 class SequenceContext;
+class ProfileContext;
 
 class Running : public OperationBase{
 	TransportContext* transportFSM;
 	WeicheContext* weicheFSM;
 	SequenceContext* sequenceFSM;
-	//ProfileContext* profileFSM;
+	ProfileContext* profileFSM;
 public:
 	Running(HAL& hal,dataClass& data);
 	void entry(OperationContext& ctx)override;
@@ -40,6 +41,12 @@ public:
 	void eventUpdate(OperationContext& ctx)override;
 	void eventTimerExpired(OperationContext& ctx)override;
 	void eventError(OperationContext& ctx)override;
+
+	//Profile
+	void eventHeightHigh(OperationContext& ctx)override;
+	void eventHeightFlat(OperationContext& ctx)override;
+	void eventHeightHole(OperationContext& ctx)override;
+	void eventHeightWrong(OperationContext& ctx)override;
 
 
 };

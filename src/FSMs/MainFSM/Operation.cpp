@@ -66,3 +66,21 @@ void Operation::eventError(MainContext& ctx) {
     //new(this) Error;
     entry(ctx);
 }
+void Operation::eventItemGone(MainContext& ctx){
+	operationFSM.eventItemGone();
+}
+
+void Operation::eventHeightHigh(MainContext& ctx){
+	operationFSM.eventHeightHigh();
+}
+void Operation::eventHeightFlat(MainContext& ctx){
+	operationFSM.eventHeightFlat();
+}
+void Operation::eventHeightHole(MainContext& ctx){
+	operationFSM.eventHeightHole();
+}
+void Operation::eventHeightWrong(MainContext& ctx){
+	operationFSM.eventHeightWrong();
+}
+
+
