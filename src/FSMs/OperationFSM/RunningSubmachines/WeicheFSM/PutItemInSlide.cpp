@@ -14,7 +14,7 @@
 PutItemInSlide::PutItemInSlide(){
 }
 void PutItemInSlide::entry(WeicheContext& ctx){
-	ctx.hal.getActors()->closePusher();
+	ctx.hal.getActors()->sortItemOut();
 }
 void PutItemInSlide::eventItemInSlide(WeicheContext& ctx){
 	exit(ctx);

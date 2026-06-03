@@ -159,10 +159,13 @@ private:
 	std::thread yellowLampThread;
 	std::thread redLampThread;
     std::mutex lampMutex;
+    bool sorterIsJunction;
+
 
 
 public:
-    ActorWrapper();
+    ActorWrapper(bool isJunction);
+    bool isJunction() {return sorterIsJunction;}
     virtual ~ActorWrapper();
 
     // IActor Implementation
@@ -186,6 +189,8 @@ public:
 
     void openPusher() override;
     void closePusher() override;
+    void sortItemOut() override;
+    void letItemPass() override;
 
     void ledButtonStart() override;
     void ledButtonStartOff() override;
@@ -202,6 +207,8 @@ class HAL {
 private:
 	SensorWrapper sensors;
 	ActorWrapper actors;
+
+
 
 public:
 	HAL();

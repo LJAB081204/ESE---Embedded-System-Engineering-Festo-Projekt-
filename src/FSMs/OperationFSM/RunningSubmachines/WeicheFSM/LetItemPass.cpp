@@ -16,7 +16,7 @@ LetItemPass::LetItemPass(){
 }
 
 void LetItemPass::entry(WeicheContext& ctx){
-	ctx.hal.getActors()->openPusher();
+	ctx.hal.getActors()->letItemPass();
 	// start Timer Pusher
 }
 
