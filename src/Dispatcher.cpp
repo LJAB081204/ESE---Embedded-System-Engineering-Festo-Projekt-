@@ -305,10 +305,24 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal,d
 				    		break;
 				    	break;
 				    	}
+				    	break;
+
 					case PULSE_TIMER_EXPIRED:
 							cout << "Timer " << msg.value.sival_int << " abgelaufen" << endl;
 							FSM.eventTimerExpired();
-						break;
+							break;
+					case PULSE_EVENT_ERROR:
+							FSM.eventError();
+							break;
+					case PULSE_EVENT_UPDATE:
+							FSM.eventUpdate();
+							break;
+					case PULSE_EVENT_ITEM_CORRECT:
+							FSM.eventItemCorrect();
+							break;
+					case PULSE_EVENT_ITEM_WRONG:
+							FSM.eventItemWrong();
+							break;
 				}
 			}
 			else{
