@@ -17,8 +17,8 @@ public:
 	void exit(SequenceContext& ctx)override;
 
 	void eventUpdate(SequenceContext& ctx)override;
-	void eventItemWrong(SequenceContext& ctx)override;
-	void eventItemCorrect(SequenceContext& ctx)override;
+	void raiseItemWrong(SequenceContext& ctx);
+	void raiseItemCorrect(SequenceContext& ctx);
 };
 
 

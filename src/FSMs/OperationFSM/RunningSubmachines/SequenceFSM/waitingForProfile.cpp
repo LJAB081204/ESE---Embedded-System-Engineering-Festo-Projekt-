@@ -9,6 +9,8 @@
 #include "SequenceContext.h"
 #include "waitingForProfile.h"
 #include "IH.h"
+#include "../../../../PulseMessages.h"
+#include <sys/neutrino.h>
 
 	waitingForProfile::waitingForProfile(){
 	}
@@ -22,14 +24,25 @@
 	}
 
 	void waitingForProfile::eventUpdate(SequenceContext& ctx){
-		//if IH == true -> IM && raise eventItemCorrect
+		//if IH == true -> IH && raise eventItemCorrect
 		//else raise eventItemWrong
+		if(ctx.data.section2.front().item == IH_PROFILE){
+			exit(ctx);
+			raiseItemCorrect(ctx);
+			new (this) IH;
+			entry(ctx);
+		}
+		else{
+			exit(ctx);
+			raiseItemWrong(ctx);
+			entry(ctx);
+		}
 	}
 
-	void waitingForProfile::eventItemCorrect(SequenceContext& ctx){
-
+	void waitingForProfile::raiseItemCorrect(SequenceContext& ctx){
+		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ITEM_CORRECT, 0);
 	}
-	void waitingForProfile::eventItemWrong(SequenceContext& ctx){
-
+	void waitingForProfile::raiseItemWrong(SequenceContext& ctx){
+		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ITEM_WRONG, 0);
 	}
 
