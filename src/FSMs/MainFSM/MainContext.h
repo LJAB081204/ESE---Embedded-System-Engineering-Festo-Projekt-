@@ -24,7 +24,7 @@ public:
     HAL& hal;
     dataClass& data;
     MainContext(HAL& hal,dataClass& data) : hal(hal),data(data) {
-        new(currentState) Operation(hal);
+        new(currentState) Operation(hal,data);
         currentState->entry(*this);
     }
 

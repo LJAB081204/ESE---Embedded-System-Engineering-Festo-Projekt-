@@ -10,11 +10,12 @@
 
 #include "MainBase.h"
 #include "../OperationFSM/OperationContext.h"
+#include "../../dataClass.h"
 
 class Operation : public MainBase{
 	OperationContext operationFSM;
 public:
-	Operation(HAL& hal) : operationFSM(hal) {}
+	Operation(HAL& hal,dataClass& data) : operationFSM(hal,data) {}
 	void entry(MainContext& ctx) override;
 	void exit(MainContext& ctx) override;
 	void eventButtonStartPressed(MainContext& ctx) override;

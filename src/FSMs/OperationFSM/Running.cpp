@@ -14,9 +14,9 @@
 #include "Running.h"
 
 
-	Running::Running(HAL& hal){
-		transportFSM = new TransportContext(hal);
-		weicheFSM = new WeicheContext(hal);
+	Running::Running(HAL& hal,dataClass& data){
+		transportFSM = new TransportContext(hal,data);
+		weicheFSM = new WeicheContext(hal,data);
 		//sequenceFSM = new SequenceContext();
 		//profileFSM = new ProfileContext();
 	}

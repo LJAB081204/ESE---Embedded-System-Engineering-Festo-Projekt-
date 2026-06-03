@@ -9,6 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_OPERATIONCONTEXT_H_
 
 #include "../../HAL.h"
+#include "../../dataClass.h"
 #include <new>
 #include "OperationBase.h"
 #include "Idle.h"
@@ -22,8 +23,8 @@ class OperationContext{
 public:
 	HAL& hal;
 	int connectionID = -1;
-	//dataClass& data
-	OperationContext(HAL& hal) : hal(hal){
+	dataClass& data;
+	OperationContext(HAL& hal,dataClass& data) : hal(hal),data(data){
 		new (currentState) Idle;
 		currentState->entry(*this);
 	}

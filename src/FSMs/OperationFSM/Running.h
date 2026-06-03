@@ -9,6 +9,8 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNING_H_
 
 #include "OperationBase.h"
+#include "../../dataClass.h"
+
 
 class TransportContext;
 class WeicheContext;
@@ -19,7 +21,7 @@ class Running : public OperationBase{
 	//SequenceContext* sequenceFSM;
 	//ProfileContext* profileFSM;
 public:
-	Running(HAL& hal);
+	Running(HAL& hal,dataClass& data);
 	void entry(OperationContext& ctx)override;
 	void exit(OperationContext& ctx)override;
 	void eventButtonStopPressed(OperationContext& ctx)override;
