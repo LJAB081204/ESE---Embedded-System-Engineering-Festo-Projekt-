@@ -11,6 +11,7 @@
 #include <new>
 #include "SequenceBase.h"
 #include "IHM.h"
+#include "../../../../dataClass.h"
 #include "waitingForProfile.h"
 
 class SequenceContext{
@@ -20,7 +21,8 @@ class SequenceContext{
 
 
 public:
-	SequenceContext(){
+	dataClass& data;
+	SequenceContext(dataClass& data) : data(data){
 		new (currentState) waitingForProfile;
 		currentState->entry(*this);
 	}

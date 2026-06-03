@@ -10,6 +10,7 @@
 #include "OperationContext.h"
 #include "RunningSubmachines/TransportFSM/TransportContext.h"
 #include "RunningSubmachines/WeicheFSM/WeicheContext.h"
+#include "RunningSubmachines/SequenceFSM/SequenceContext.h"
 #include "Idle.h"
 #include "Running.h"
 
@@ -17,7 +18,7 @@
 	Running::Running(HAL& hal,dataClass& data){
 		transportFSM = new TransportContext(hal,data);
 		weicheFSM = new WeicheContext(hal,data);
-		//sequenceFSM = new SequenceContext();
+		sequenceFSM = new SequenceContext(data);
 		//profileFSM = new ProfileContext();
 	}
 

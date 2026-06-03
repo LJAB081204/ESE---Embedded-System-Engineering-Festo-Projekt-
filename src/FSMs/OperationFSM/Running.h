@@ -14,11 +14,12 @@
 
 class TransportContext;
 class WeicheContext;
+class SequenceContext;
 
 class Running : public OperationBase{
 	TransportContext* transportFSM;
 	WeicheContext* weicheFSM;
-	//SequenceContext* sequenceFSM;
+	SequenceContext* sequenceFSM;
 	//ProfileContext* profileFSM;
 public:
 	Running(HAL& hal,dataClass& data);
