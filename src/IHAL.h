@@ -62,6 +62,8 @@ public:
     // Pusher
     virtual void openPusher() = 0;
     virtual void closePusher() = 0;
+    virtual void sortItemOut() = 0;
+    virtual void letItemPass() = 0;
 
     // LEDs
     virtual void ledButtonStart() = 0;
