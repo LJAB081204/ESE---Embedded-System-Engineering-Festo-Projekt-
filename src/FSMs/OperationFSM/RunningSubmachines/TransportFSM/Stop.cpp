@@ -22,8 +22,6 @@
 
 	void Stop::eventItemAtEntry(TransportContext& ctx){
 		exit(ctx);
-		ctx.data.addItem();
-		ctx.data.addItem();
 		new(this) Forward;
 		entry(ctx);
 	}
