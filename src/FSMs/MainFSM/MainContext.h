@@ -14,6 +14,7 @@
 #include "Operation.h"
 #include "EStop.h"
 #include "Error.h"
+#include "../../dataClass.h"
 
 
 class MainContext {
@@ -21,7 +22,8 @@ class MainContext {
     MainBase* currentState = reinterpret_cast<MainBase*>(stateBuffer);
 public:
     HAL& hal;
-    MainContext(HAL& hal) : hal(hal) {
+    dataClass& data;
+    MainContext(HAL& hal,dataClass& data) : hal(hal),data(data) {
         new(currentState) Operation(hal);
         currentState->entry(*this);
     }

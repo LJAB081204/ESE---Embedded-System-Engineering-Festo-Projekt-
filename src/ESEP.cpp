@@ -7,6 +7,7 @@
 #include "Dispatcher.h"
 #include "timer.h"
 #include "HeightSensor.h"
+#include "dataClass.h"
 using namespace std;
 
 
@@ -35,6 +36,8 @@ int main(int argc, char **argv) {
 
 
         HAL hal;
+        dataClass data;
+
 //        hal.getActors()->greenLampOff();
 //        hal.getActors()->yellowLampOff();
 //        hal.getActors()->redLampOff();
@@ -52,7 +55,7 @@ int main(int argc, char **argv) {
 		*/
 
 
-    	Dispatcher dispatcher(local,remote,hal);
+    	Dispatcher dispatcher(local,remote,hal,data);
         TSCADC tsc;
         HeightSensor hs (tsc,dispatcher.getConnectionID());
     	Demultiplexer demux(dispatcher.getConnectionID());
