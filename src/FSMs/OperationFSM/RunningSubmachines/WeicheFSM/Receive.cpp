@@ -33,7 +33,9 @@ void Receive::eventItemAtPusher(WeicheContext& ctx){
 	entry(ctx);
 }
 void Receive::eventItemMetal(WeicheContext& ctx){
-	ctx.data.section2.front().metal = true;
+	if(!ctx.data.section2.empty()){
+			ctx.data.section2.front().metal = true;
+	}
 	exit(ctx);
 	new (this) Receive;
 	entry(ctx);
