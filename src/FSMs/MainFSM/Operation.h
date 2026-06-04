@@ -46,6 +46,12 @@ public:
     void eventHeightFlat(MainContext& ctx) override;
     void eventHeightHole(MainContext& ctx) override;
     void eventHeightWrong(MainContext& ctx) override;
+
+    void eventItemWrong(MainContext& ctx) override;
+    void eventItemCorrect(MainContext& ctx) override;
+    void eventUpdate(MainContext& ctx) override;
+
+    void eventTimerExpired(MainContext& ctx) override;
 };
 
 
