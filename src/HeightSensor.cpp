@@ -116,7 +116,7 @@ void HeightSensor::detectHeight(int value){
         }
 
     //If Abfrage für puffer, damit bei kurzem schwanken nicht neue Höhe detektiert wird
-    if(heightCounter > 70 && currentHeight != previousHeight){
+    if(heightCounter > 20 && currentHeight != previousHeight){
         switch(currentHeight) {
             case HEIGHT_CONVEYOR:      MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT_LOCAL,HEIGHT_CONVEYOR);break;
             case HEIGHT_DRILLING:      MsgSendPulse(dispCoid,SIGEV_PULSE_PRIO_INHERIT,PULSE_NEW_HEIGHT_LOCAL,HEIGHT_DRILLING);break;

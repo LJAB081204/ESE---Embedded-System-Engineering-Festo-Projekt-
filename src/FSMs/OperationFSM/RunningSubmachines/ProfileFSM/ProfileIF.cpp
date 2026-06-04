@@ -16,10 +16,16 @@
 ProfileIF::ProfileIF(){};
 
 void ProfileIF::entry(ProfileContext& ctx) {
-	std::cout << "ProfileIF detected" << std::endl;
+	std::cout << "//////////////////////ProfileIF detected" << std::endl;
 }
 
 void ProfileIF::exit(ProfileContext& ctx) {}
+
+void ProfileIF::eventHeightHigh(ProfileContext& ctx) {
+	exit(ctx);
+	new(this) IU;
+	entry(ctx);
+}
 
 void ProfileIF::eventHeightHole(ProfileContext& ctx) {
 	exit(ctx);

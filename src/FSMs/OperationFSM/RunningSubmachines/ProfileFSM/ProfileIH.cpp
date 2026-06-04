@@ -11,11 +11,12 @@
 #include "ProfileIH.h"
 #include "Default.h"
 #include "IS.h"
+#include "IU.h"
 
 ProfileIH::ProfileIH(){};
 
 void ProfileIH::entry(ProfileContext& ctx) {
-	std::cout << "ProfileIH detected" << std::endl;
+	std::cout << "////////////////////ProfileIH detected" << std::endl;
 }
 
 void ProfileIH::exit(ProfileContext& ctx) {}
@@ -24,6 +25,17 @@ void ProfileIH::eventItemGone(ProfileContext& ctx) {
 	exit(ctx);
 	//in die Datenklasse schreiben
 	new(this) Default;
+	entry(ctx);
+}
+void ProfileIH::eventHeightFlat(ProfileContext& ctx) {
+	exit(ctx);
+	new(this) IU;
+	entry(ctx);
+}
+
+void ProfileIH::eventHeightHigh(ProfileContext& ctx) {
+	exit(ctx);
+	new(this) IU;
 	entry(ctx);
 }
 

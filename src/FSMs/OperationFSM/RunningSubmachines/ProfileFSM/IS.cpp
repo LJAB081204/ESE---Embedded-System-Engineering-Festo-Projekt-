@@ -13,16 +13,13 @@
 IS::IS(){};
 
 void IS::entry(ProfileContext& ctx) {
-	std::cout << "IS detected" << std::endl ;
+	std::cout << "//////////////////IS detected" << std::endl ;
 	//Datenklasse
-	//Error raisen mit ErrorCode
+	//ErrorCode setzten
 }
 
 void IS::exit(ProfileContext& ctx) {}
 
-void IS::eventError(ProfileContext& ctx){
-
-}
 
 void IS::eventItemGone(ProfileContext& ctx){
 	exit(ctx);

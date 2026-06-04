@@ -11,11 +11,12 @@
 #include "I.h"
 #include "IS.h"
 #include "ProfileIF.h"
+#include "IU.h"
 
 Default::Default(){};
 
 void Default::entry(ProfileContext& ctx) {
-	std::cout<< "Default detected" << std::endl;
+	std::cout<< "//////////////////Default detected" << std::endl;
 }
 
 void Default::exit(ProfileContext& ctx) {}
@@ -29,6 +30,12 @@ void Default::eventHeightHigh(ProfileContext& ctx) {
 void Default::eventHeightFlat(ProfileContext& ctx) {
 	exit(ctx);
 	new(this) ProfileIF;
+	entry(ctx);
+}
+
+void Default::eventHeightHole(ProfileContext& ctx){
+	exit(ctx);
+	new(this) IU;
 	entry(ctx);
 }
 

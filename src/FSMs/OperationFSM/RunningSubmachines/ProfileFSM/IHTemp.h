@@ -16,7 +16,10 @@ public:
 	void entry(ProfileContext& ctx) override;
 	void exit(ProfileContext& ctx) override;
 
+	virtual void eventItemGone(ProfileContext& fsm)override;
+
 	virtual void eventHeightHigh(ProfileContext& fsm)override;
+	virtual void eventHeightHole(ProfileContext& fsm)override;
 	virtual void eventHeightWrong(ProfileContext& fsm)override;
 };
 
