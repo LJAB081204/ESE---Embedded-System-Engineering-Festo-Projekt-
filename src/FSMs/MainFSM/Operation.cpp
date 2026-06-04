@@ -48,7 +48,7 @@ void Operation::eventItemAtPusher(MainContext& ctx) {
     operationFSM.eventItemAtPusher();
 }
 void Operation::eventItemLeftPusher(MainContext& ctx) {
-    operationFSM.eventItemLeftExit();
+    operationFSM.eventItemLeftPusher();
 }
 
 void Operation::eventItemInSlide(MainContext& ctx) {
@@ -82,5 +82,19 @@ void Operation::eventHeightHole(MainContext& ctx){
 void Operation::eventHeightWrong(MainContext& ctx){
 	operationFSM.eventHeightWrong();
 }
+void Operation::eventItemWrong(MainContext& ctx){
+	operationFSM.eventItemWrong();
+}
+void Operation::eventItemCorrect(MainContext& ctx){
+	operationFSM.eventItemCorrect();
+}
+void Operation::eventUpdate(MainContext& ctx){
+	operationFSM.eventUpdate();
+}
+
+void Operation::eventTimerExpired(MainContext& ctx){
+	operationFSM.eventTimerExpired();
+}
+
 
 
