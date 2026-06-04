@@ -11,11 +11,12 @@
 #include "Default.h"
 #include "IS.h"
 #include "IHTemp.h"
+#include "IU.h"
 
 I :: I(){}
 
 void I::entry(ProfileContext& ctx) {
-	std::cout << "I detected" << std::endl;
+	std::cout << "///////////////I detected" << std::endl;
 }
 
 void I::exit(ProfileContext& ctx) {}
@@ -23,6 +24,12 @@ void I::exit(ProfileContext& ctx) {}
 void I::eventHeightHole(ProfileContext& ctx) {
 	exit(ctx);
 	new(this) IHTemp;
+	entry(ctx);
+}
+
+void I::eventHeightFlat(ProfileContext& ctx){
+	exit(ctx);
+	new(this) IU;
 	entry(ctx);
 }
 

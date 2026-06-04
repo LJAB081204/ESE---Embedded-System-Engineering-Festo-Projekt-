@@ -16,8 +16,6 @@ public:
 	void entry(ProfileContext& ctx) override;
 	void exit(ProfileContext& ctx) override;
 
-	virtual void eventError(ProfileContext& ctx)override;
-
 	virtual void eventItemGone(ProfileContext& ctx)override;
 
 };
