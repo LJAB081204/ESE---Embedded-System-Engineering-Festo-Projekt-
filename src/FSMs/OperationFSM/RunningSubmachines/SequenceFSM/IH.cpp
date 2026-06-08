@@ -11,6 +11,7 @@
 #include "IM.h"
 #include "../../../../PulseMessages.h"
 #include <sys/neutrino.h>
+#include "IF.h"
 
 	IH::IH(){
 	}
@@ -24,7 +25,7 @@
 	}
 
 	void IH::eventUpdate(SequenceContext& ctx){
-		resolveProfile();		//profilierung
+		ctx.resolveProfile();		//profilierung
 		if(ctx.data.section2.front().item == IM_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 			exit(ctx);
 			raiseItemCorrect(ctx);
@@ -39,17 +40,17 @@
 		}
 
 	void IH::eventGoBack(SequenceContext& ctx){
-		if(data.nextItem.front().item == UNDEFINED_PROFILE){ //oneRound raus?
+		if(ctx.data.nextItem.front().item == UNDEFINED_PROFILE){ //oneRound raus?
 			exit(ctx);
 			new(this) waitingForProfile;
 			entry(ctx);
 		}
-		else if (data.nextItem.front().item == IHM_PROFILE){
+		else if (ctx.data.nextItem.front().item == IHM_PROFILE){
 			exit(ctx);
 			new(this) IHM;
 			entry(ctx);
 		}
-		else if(data.nextItem.front().item == IM_PROFILE){
+		else if(ctx.data.nextItem.front().item == IM_PROFILE){
 			exit(ctx);
 			new(this) IM;
 			entry(ctx);

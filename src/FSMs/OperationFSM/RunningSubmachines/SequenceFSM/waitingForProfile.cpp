@@ -12,11 +12,12 @@
 #include "../../../../PulseMessages.h"
 #include <sys/neutrino.h>
 
+
 	waitingForProfile::waitingForProfile(){
 	}
 
 	void waitingForProfile::entry(SequenceContext& ctx){
-		oneRound = false;
+		ctx.oneRound = false;
 	}
 
 	void waitingForProfile::exit(SequenceContext& ctx){
@@ -24,8 +25,7 @@
 	}
 
 	void waitingForProfile::eventUpdate(SequenceContext& ctx){
-
-		resolveProfile();									//Profilierung
+		ctx.resolveProfile();									//Profilierung
 		if(ctx.data.section2.front().item == IH_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 			exit(ctx);
 			raiseItemCorrect(ctx);

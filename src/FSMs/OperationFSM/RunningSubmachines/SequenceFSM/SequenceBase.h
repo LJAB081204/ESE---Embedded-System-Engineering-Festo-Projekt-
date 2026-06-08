@@ -17,6 +17,8 @@ public:
 	virtual void eventUpdate(SequenceContext &fsm)			{}
 	virtual void eventItemCorrect(SequenceContext &fsm)		{}
 	virtual void eventItemWrong(SequenceContext &fsm)		{}
+	virtual void eventGoBack(SequenceContext &fsm)			{}
+
 
 	virtual void entry(SequenceContext &fsm){}
 	virtual void exit(SequenceContext &fsm) {}
