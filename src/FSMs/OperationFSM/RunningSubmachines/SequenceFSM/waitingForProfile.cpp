@@ -16,7 +16,7 @@
 	}
 
 	void waitingForProfile::entry(SequenceContext& ctx){
-		//History angucken
+		oneRound = false;
 	}
 
 	void waitingForProfile::exit(SequenceContext& ctx){
@@ -24,9 +24,9 @@
 	}
 
 	void waitingForProfile::eventUpdate(SequenceContext& ctx){
-		//if IH == true -> IH && raise eventItemCorrect
-		//else raise eventItemWrong
-		if(ctx.data.section2.front().item == IH_PROFILE){
+
+		resolveProfile();									//Profilierung
+		if(ctx.data.section2.front().item == IH_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 			exit(ctx);
 			raiseItemCorrect(ctx);
 			new (this) IH;
