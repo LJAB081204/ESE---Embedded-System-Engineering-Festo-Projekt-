@@ -20,8 +20,12 @@ public:
 	virtual void eventButtonStartPressedLong(MainContext& fsm){}
 	virtual void eventButtonStopPressed(MainContext& fsm)     {}
 	virtual void eventButtonResetPressed(MainContext& fsm)    {}
+	virtual void eventButtonResetPressedRemote(MainContext& fsm)    {}
 	virtual void eventButtonEstopPressed(MainContext& fsm)    {}
+	virtual void eventButtonEstopPressedRemote(MainContext& fsm)    {}
 	virtual void eventButtonEstopReleased(MainContext& fsm)   {}
+	virtual void eventButtonEstopReleasedRemote(MainContext& fsm)   {}
+
 
 
 	virtual void eventItemAtEntry(MainContext& fsm)   {}

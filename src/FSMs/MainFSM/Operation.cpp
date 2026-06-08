@@ -4,7 +4,7 @@
  *  Created on: 31.05.2026
  *      Author: tayla
  */
-
+#include <new>
 #include "MainContext.h"
 #include "Operation.h"
 #include "EStop.h"
@@ -27,7 +27,7 @@ void Operation::eventButtonResetPressed(MainContext& ctx) {
 }
 void Operation::eventButtonEstopPressed(MainContext& ctx) {
     exit(ctx);
-    new(this) EStop;
+    new(this) EStop(ctx.hal);
     entry(ctx);
 }
 void Operation::eventItemAtEntry(MainContext& ctx) {

@@ -17,10 +17,27 @@ void EStop::entry(MainContext& ctx) {
 void EStop::exit(MainContext& ctx) {
 }
 
+void EStop::eventButtonEstopPressed(MainContext& ctx) {
+    eStopFSM.eventButtonEstopPressed();
+}
+void EStop::eventButtonEstopReleased(MainContext& ctx) {
+    eStopFSM.eventButtonEstopReleased();
+}
 void EStop::eventButtonResetPressed(MainContext& ctx) {
-	if(!ctx.hal.getSensors()->isEStopTriggered()){
-		exit(ctx);
-		new(this) Operation(ctx.hal,ctx.data);
-		entry(ctx);
-	}
+    eStopFSM.eventButtonResetPressed();
+    if(!eStopFSM.isActive()) {
+        exit(ctx);
+        new(this) Operation(ctx.hal, ctx.data);
+        entry(ctx);
+    }
+}
+
+void EStop::eventButtonEstopPressedRemote(MainContext& ctx) {
+    eStopFSM.eventButtonEstopPressedRemote();
+}
+void EStop::eventButtonEstopReleasedRemote(MainContext& ctx) {
+    eStopFSM.eventButtonEstopReleasedRemote();
+}
+void EStop::eventButtonResetPressedRemote(MainContext& ctx) {
+    eStopFSM.eventButtonResetPressedRemote();
 }
