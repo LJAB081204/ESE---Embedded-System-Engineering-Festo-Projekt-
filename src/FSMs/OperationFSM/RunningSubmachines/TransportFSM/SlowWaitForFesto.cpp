@@ -10,10 +10,13 @@
 #include "ForwardSlow.h"
 #include "SlowWaitForFesto.h"
 
+#include <iostream>
+
 	SlowWaitForFesto::SlowWaitForFesto(){
 	}
 
 	void SlowWaitForFesto::entry(TransportContext& ctx){
+		std::cout<<"SlowWaitForFesto" << std::endl;
 		ctx.hal.getActors()->motorStop();
 	}
 

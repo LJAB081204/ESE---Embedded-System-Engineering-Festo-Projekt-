@@ -16,6 +16,8 @@
 #include "../../Running.h"
 #include "Forward.h"
 
+#include <iostream>
+
 class TransportContext{
 	//Kontext
 	alignas(Forward) char stateBuffer[sizeof(Forward)];
@@ -34,6 +36,7 @@ public:
 	void eventItemInSlide()          { currentState->eventItemInSlide(*this); }
 	void eventItemAtEntryRemote()    { currentState->eventItemAtEntryRemote(*this); }
 	void eventItemAtExit()           { currentState->eventItemAtExit(*this); }
+	void eventItemLeftExit()   		 { currentState->eventItemLeftExit(*this); }
 	void eventItemLeftExitRemote()   { currentState->eventItemLeftExitRemote(*this); }
 	void eventItemInSlideRemote()    { currentState->eventItemInSlideRemote(*this); }
 	void eventItemGone()             { currentState->eventItemGone(*this); }

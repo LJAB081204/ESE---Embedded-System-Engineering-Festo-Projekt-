@@ -9,11 +9,14 @@
 #include "Stop.h"
 #include "Forward.h"
 
+#include <iostream>
+
 
 	Stop::Stop(){
 	}
 
 	void Stop::entry(TransportContext& ctx){
+		std::cout<<"Stop" << std::endl;
 		ctx.hal.getActors()->motorStop();
 	}
 
@@ -22,6 +25,8 @@
 
 	void Stop::eventItemAtEntry(TransportContext& ctx){
 		exit(ctx);
+		std::cout<<"+1 Item" << std::endl;
+		//ItemCount erhöhen
 		new(this) Forward;
 		entry(ctx);
 	}

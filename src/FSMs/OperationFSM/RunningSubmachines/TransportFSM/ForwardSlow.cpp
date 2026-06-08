@@ -9,11 +9,15 @@
 #include "TransportContext.h"
 #include "Forward.h"
 #include "ForwardSlow.h"
+#include "SlowWaitForFesto.h"
+
+#include <iostream>
 
 	ForwardSlow::ForwardSlow(){
 	}
 
 	void ForwardSlow::entry(TransportContext& ctx){
+		std::cout<<"ForwardSlow" << std::endl;
 		ctx.hal.getActors()->motorSlow();
 	}
 
@@ -28,6 +32,12 @@
 //			new(this) Forward;
 //		}
 		new(this) Forward;		//Datenklasse fehlt noch
+		entry(ctx);
+	}
+
+	void ForwardSlow::eventItemAtExit(TransportContext& ctx){
+		exit(ctx);
+		new(this) SlowWaitForFesto;
 		entry(ctx);
 	}
 

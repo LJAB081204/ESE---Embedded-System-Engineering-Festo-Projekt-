@@ -13,6 +13,7 @@
 	}
 
 	void WaitForFesto::entry(TransportContext& ctx){
+		std::cout<<"WaitForFesto" << std::endl;
 		ctx.hal.getActors()->motorStop();
 	}
 

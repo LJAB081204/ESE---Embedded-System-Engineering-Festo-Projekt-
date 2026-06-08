@@ -18,6 +18,7 @@ public:
 
 	void eventItemAtExit(TransportContext& ctx)override;
 	void eventItemArrived(TransportContext& ctx)override;
+	void eventItemLeftExit(TransportContext& ctx)override;
 };
 
 
