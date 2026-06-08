@@ -6,6 +6,7 @@
 #include <sys/neutrino.h>
 #include <chrono>
 #include "Config.h"
+#include "dataClass.h"
 #include "HAL.h"
 #include "FSMs/MainFSM/MainContext.h"
 
@@ -17,6 +18,7 @@ private:
     int remoteConnectionID;
     std::chrono::steady_clock::time_point buttonPressStart;
     HAL& hal;
+    dataClass& data;
     MainContext FSM;
 
 #ifndef LOCAL_VERSION
@@ -33,7 +35,7 @@ private:
     _pulse msg;
     void run();
 public:
-    Dispatcher(const char* localName, const char* remoteName,HAL& hal);
+    Dispatcher(const char* localName, const char* remoteName,HAL& hal,dataClass& data);
     ~Dispatcher();
     int getConnectionID();
 };

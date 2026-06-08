@@ -20,7 +20,7 @@ void EStop::exit(MainContext& ctx) {
 void EStop::eventButtonResetPressed(MainContext& ctx) {
 	if(!ctx.hal.getSensors()->isEStopTriggered()){
 		exit(ctx);
-		new(this) Operation(ctx.hal);
+		new(this) Operation(ctx.hal,ctx.data);
 		entry(ctx);
 	}
 }

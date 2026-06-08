@@ -1,4 +1,4 @@
-/*
+ /*
  * HAL.cpp
  *
  *  Created on: 21.04.2026
@@ -28,6 +28,7 @@ using namespace std;
 	    if (adcBaseAddr == MAP_DEVICE_FAILED) {
 	        throw std::runtime_error("Failed to map ADC_BASE");
 	    }
+
 	}
 
 	SensorWrapper::~SensorWrapper(){
@@ -77,7 +78,7 @@ using namespace std;
 
     // Actor Wrapper Implementation
 
-    ActorWrapper::ActorWrapper(){
+    ActorWrapper::ActorWrapper(bool isJunction) : sorterIsJunction(isJunction){
 		gpio_bank_1 = mmap_device_io(GPIO_REGISTER_LENGHT, (uint64_t) GPIO_PORT1);
 	    if (gpio_bank_1 == MAP_DEVICE_FAILED) {
 	        throw std::runtime_error("Failed to map GPIO1");
@@ -216,6 +217,16 @@ using namespace std;
     void ActorWrapper::closePusher(){
     	out32((uintptr_t) (gpio_bank_1 + CLR_REGISTER), OPEN_PUSHER);
     }
+    void ActorWrapper::letItemPass(){
+    	if(sorterIsJunction){
+    		openPusher();
+    	}
+    }
+    void ActorWrapper::sortItemOut(){
+    	if(!sorterIsJunction){
+    		openPusher();
+    	}
+    }
 
     void ActorWrapper::ledButtonStart(){
     	out32((uintptr_t) (gpio_bank_2 + SET_REGISTER), LED_BUTTON_START);
@@ -245,7 +256,7 @@ using namespace std;
 
 
     HAL::HAL()
-    	: sensors(), actors(){}
+    	: sensors(), actors(sensors.isPusherOpen()==false){}
 
 
 

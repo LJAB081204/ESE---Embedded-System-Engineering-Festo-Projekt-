@@ -9,17 +9,21 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNING_H_
 
 #include "OperationBase.h"
+#include "../../dataClass.h"
+
 
 class TransportContext;
 class WeicheContext;
+class SequenceContext;
+class ProfileContext;
 
 class Running : public OperationBase{
 	TransportContext* transportFSM;
 	WeicheContext* weicheFSM;
-	//SequenceContext* sequenceFSM;
-	//ProfileContext* profileFSM;
+	SequenceContext* sequenceFSM;
+	ProfileContext* profileFSM;
 public:
-	Running(HAL& hal);
+	Running(HAL& hal,dataClass& data);
 	void entry(OperationContext& ctx)override;
 	void exit(OperationContext& ctx)override;
 	void eventButtonStopPressed(OperationContext& ctx)override;
@@ -37,6 +41,14 @@ public:
 	void eventUpdate(OperationContext& ctx)override;
 	void eventTimerExpired(OperationContext& ctx)override;
 	void eventError(OperationContext& ctx)override;
+
+	//Profile
+	void eventHeightHigh(OperationContext& ctx)override;
+	void eventHeightFlat(OperationContext& ctx)override;
+	void eventHeightHole(OperationContext& ctx)override;
+	void eventHeightWrong(OperationContext& ctx)override;
+
+
 
 
 };

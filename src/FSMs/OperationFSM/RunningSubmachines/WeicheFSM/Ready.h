@@ -13,6 +13,7 @@
 class Ready : public WeicheBase{
 public:
 	Ready();
+	void raiseError(WeicheContext& ctx);
 	void eventItemWrong(WeicheContext& ctx)override;
 	void eventItemCorrect(WeicheContext& ctx)override;
 };

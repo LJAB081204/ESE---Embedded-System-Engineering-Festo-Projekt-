@@ -17,7 +17,7 @@ public:
 	void exit(WeicheContext& ctx)override;
 	void eventItemAtPusher(WeicheContext& ctx)override;
 	void eventItemMetal(WeicheContext& ctx)override;
-	void eventUpdate(WeicheContext& ctx)override;
+	void raiseUpdate(WeicheContext& ctx);
 };
 
 

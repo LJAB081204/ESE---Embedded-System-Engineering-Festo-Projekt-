@@ -14,6 +14,7 @@
 #include "Operation.h"
 #include "EStop.h"
 #include "Error.h"
+#include "../../dataClass.h"
 
 
 class MainContext {
@@ -21,8 +22,9 @@ class MainContext {
     MainBase* currentState = reinterpret_cast<MainBase*>(stateBuffer);
 public:
     HAL& hal;
-    MainContext(HAL& hal) : hal(hal) {
-        new(currentState) Operation(hal);
+    dataClass& data;
+    MainContext(HAL& hal,dataClass& data) : hal(hal),data(data) {
+        new(currentState) Operation(hal,data);
         currentState->entry(*this);
     }
 
@@ -49,7 +51,7 @@ public:
         void eventItemArrived() 		   { currentState->eventItemArrived(*this);}
         void eventItemGone()			   { currentState->eventItemGone(*this);}
 
-        void eventHeightHigh()			   { currentState->eventHeightHigh(*this); }
+        void eventHeightHigh()			   {currentState->eventHeightHigh(*this); }
         void eventHeightFlat()			   { currentState->eventHeightFlat(*this); }
         void eventHeightHole()			   { currentState->eventHeightHole(*this); }
         void eventHeightWrong()			   { currentState->eventHeightWrong(*this); }

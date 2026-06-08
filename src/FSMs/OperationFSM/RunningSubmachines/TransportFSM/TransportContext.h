@@ -9,6 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTCONTEXT_H_
 
 #include "../../../../HAL.h"
+#include "../../../../dataClass.h"
 #include <new>
 #include "TransportBase.h"
 #include "Stop.h"
@@ -23,8 +24,8 @@ class TransportContext{
 
 public:
 	HAL& hal;
-	//dataclass& data
-	TransportContext(HAL& hal) : hal(hal){
+	dataClass& data;
+	TransportContext(HAL& hal,dataClass& data) : hal(hal),data(data){
 		new (currentState) Stop;
 		currentState->entry(*this);
 	}

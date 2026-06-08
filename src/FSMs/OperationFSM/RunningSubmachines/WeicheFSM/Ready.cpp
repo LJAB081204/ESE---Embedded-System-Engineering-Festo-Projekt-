@@ -9,26 +9,35 @@
 #include "WeicheContext.h"
 #include "Ready.h"
 #include "LetItemPass.h"
+#include "PutItemInSlide.h"
+#include <sys/neutrino.h>
+#include "../../../../PulseMessages.h"
 Ready::Ready(){
 }
-
+void Ready::raiseError(WeicheContext& ctx){
+	ctx.data.err = BOTH_SLIDES_FULL;
+	MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
+}
 void Ready::eventItemCorrect(WeicheContext& ctx){
 	exit(ctx);
 	new (this) LetItemPass;
 	entry(ctx);
 }
 void Ready::eventItemWrong(WeicheContext& ctx){
-	/*
-	 * if (slideFull == false){
-	 * 		new (this) putItemInSlide;
-	 * 		entry(ctx)
-	 * }
-	 * else if(slideFull == true && slideFullRemote){
-	 * 	     new(this) letItemPass;
-	 * 	     entry(ctx);
-	 * } else if(slideFull == true && slideFullRemote == true){
-	 * 		raise Error
-	 */
+
+	if (ctx.data.slideFull == false){
+		new (this) PutItemInSlide;
+	  	entry(ctx);
+	}
+	else if(ctx.data.slideFull == true && ctx.data.slideFullRemote == false){
+		exit(ctx);
+		new(this) LetItemPass;
+	  	entry(ctx);
+	}
+	else if(ctx.data.slideFull == true && ctx.data.slideFullRemote == true){
+		raiseError(ctx);
+	}
+
 }
 
 

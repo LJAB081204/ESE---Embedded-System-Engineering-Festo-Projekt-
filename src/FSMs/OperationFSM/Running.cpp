@@ -10,15 +10,19 @@
 #include "OperationContext.h"
 #include "RunningSubmachines/TransportFSM/TransportContext.h"
 #include "RunningSubmachines/WeicheFSM/WeicheContext.h"
+#include "RunningSubmachines/SequenceFSM/SequenceContext.h"
+#include "RunningSubmachines/ProfileFSM/ProfileContext.h"
 #include "Idle.h"
 #include "Running.h"
 
+#include <iostream>
 
-	Running::Running(HAL& hal){
-		transportFSM = new TransportContext(hal);
-		weicheFSM = new WeicheContext(hal);
-		//sequenceFSM = new SequenceContext();
-		//profileFSM = new ProfileContext();
+
+	Running::Running(HAL& hal,dataClass& data){
+		transportFSM = new TransportContext(hal,data);
+		weicheFSM = new WeicheContext(hal,data);
+		sequenceFSM = new SequenceContext(data);
+		profileFSM = new ProfileContext(data);
 	}
 
 
@@ -29,8 +33,8 @@
 	void Running::exit(OperationContext& ctx){
 		delete transportFSM;
 		delete weicheFSM;
-		//delete sequenceFSM;
-		//delete profileFSM;
+		delete sequenceFSM;
+		delete profileFSM;
 	}
 
 	void Running::eventButtonStopPressed(OperationContext& ctx){
@@ -49,6 +53,7 @@
 	}
 	void Running::eventItemGone(OperationContext& ctx){
 		transportFSM->eventItemGone();
+		profileFSM->eventItemGone();
 	}
 	void Running::eventItemArrived(OperationContext& ctx){
 		transportFSM->eventItemArrived();
@@ -78,3 +83,17 @@
 
 	}
 	void Running::eventError(OperationContext& ctx){}
+
+	//Profile
+	void Running::eventHeightHigh(OperationContext& ctx){
+		profileFSM->eventHeightHigh();
+	}
+	void Running::eventHeightFlat(OperationContext& ctx){
+		profileFSM->eventHeightFlat();
+	}
+	void Running::eventHeightHole(OperationContext& ctx){
+		profileFSM->eventHeightHole();
+	}
+	void Running::eventHeightWrong(OperationContext& ctx){
+		profileFSM->eventHeightWrong();
+	}
