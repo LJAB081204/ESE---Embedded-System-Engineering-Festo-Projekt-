@@ -19,7 +19,8 @@ class SequenceContext{
 	alignas(IHM) char stateBuffer[sizeof(IHM)];
 	SequenceBase* currentState = reinterpret_cast<SequenceBase*>(stateBuffer);
 
-
+private:
+	bool oneRound = false;
 public:
 	dataClass& data;
 	SequenceContext(dataClass& data) : data(data){
@@ -27,7 +28,18 @@ public:
 		currentState->entry(*this);
 	}
 
+	void resolveProfile() {
+	        if (item.special)                                         { data.section2.front() = IS_PROFILE;  return; }
+	        if (item.flat && !item.high && !item.hole && !item.metal) { data.section2.front() = IF_PROFILE;  return; }
+	        if (item.high && item.hole && item.metal)                 { data.section2.front() = IHM_PROFILE; return; }
+	        if (item.high && item.metal && !item.hole)                { data.section2.front() = IM_PROFILE;  return; }
+	        if (item.high && item.hole && !item.metal)                { data.section2.front() = IH_PROFILE;  return; }
+	        if (item.high && !item.hole && !item.metal)               { data.section2.front() = I_PROFILE;   return; }
+	        data.section2.front() = IU_PROFILE;
+	    }
+
 	virtual void eventUpdate(SequenceContext &fsm)			{currentState->eventUpdate(*this);}
+	virtual void eventGoBack(SequenceContext &fsm)			{currentState->eventGoBack(*this);}
 	virtual void eventItemCorrect(SequenceContext &fsm)		{currentState->eventItemCorrect(*this);}
 	virtual void eventItemWrong(SequenceContext &fsm)		{currentState->eventItemWrong(*this);}
 
