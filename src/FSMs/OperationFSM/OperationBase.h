@@ -50,6 +50,8 @@ public:
 
 	virtual void eventTimerExpired(OperationContext& fsm){}
 	virtual void eventError(OperationContext& fsm) {}
+
+	virtual void eventItemAtEntryRemote(OperationContext& fsm) {}
 };
 
 
