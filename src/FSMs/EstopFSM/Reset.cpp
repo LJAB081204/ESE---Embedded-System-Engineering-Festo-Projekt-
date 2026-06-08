@@ -15,10 +15,7 @@ Reset::Reset(){
 }
 
 void Reset::entry(EStopContext& ctx){
-	ctx.hal.getActors()->motorStop();
-	ctx.hal.getActors()->closePusher();
-	ctx.hal.getActors()->redLampOn();
-	ctx.setActive(true);
+	ctx.hal.getActors()->ledButtonResetOff();
 }
 
 void Reset::exit(EStopContext& ctx){
@@ -34,6 +31,8 @@ void Reset::eventButtonEstopPressed(EStopContext& ctx){
 	new (this) EStopState;
 	entry(ctx);
 }
+
+
 void Reset::eventButtonResetPressedRemote(EStopContext& ctx){
 	exit(ctx);
 	ctx.setActive(false);

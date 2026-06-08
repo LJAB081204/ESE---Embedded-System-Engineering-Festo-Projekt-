@@ -31,6 +31,14 @@ void EStop::eventButtonResetPressed(MainContext& ctx) {
         entry(ctx);
     }
 }
+void EStop::eventButtonResetPressedRemote(MainContext& ctx) {
+    eStopFSM.eventButtonResetPressedRemote();
+    if(!eStopFSM.isActive()) {
+        exit(ctx);
+        new(this) Operation(ctx.hal, ctx.data);
+        entry(ctx);
+    }
+}
 
 void EStop::eventButtonEstopPressedRemote(MainContext& ctx) {
     eStopFSM.eventButtonEstopPressedRemote();
@@ -38,6 +46,5 @@ void EStop::eventButtonEstopPressedRemote(MainContext& ctx) {
 void EStop::eventButtonEstopReleasedRemote(MainContext& ctx) {
     eStopFSM.eventButtonEstopReleasedRemote();
 }
-void EStop::eventButtonResetPressedRemote(MainContext& ctx) {
-    eStopFSM.eventButtonResetPressedRemote();
-}
+
+

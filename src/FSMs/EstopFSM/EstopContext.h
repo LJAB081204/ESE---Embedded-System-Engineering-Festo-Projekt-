@@ -10,6 +10,8 @@
 #include "Reset.h"
 #include "ResetRemote.h"
 
+enum class EStopSource {LOCAL,REMOTE};
+
 class EStopContext {
     alignas(BothEStop) char stateBuffer[sizeof(BothEStop)];
     EStopBase* currentState = reinterpret_cast<EStopBase*>(stateBuffer);
@@ -19,8 +21,12 @@ public:
     bool isActive() { return active; }
     void setActive(bool a) { active = a; }
 
-    EStopContext(HAL& hal) : hal(hal) {
-        new(currentState) EStopState;
+    EStopContext(HAL& hal,EStopSource source) : hal(hal) {
+    	if(source == EStopSource::LOCAL)
+    		new(currentState) EStopState;
+    	else{
+    		new(currentState) EStopRemote;
+    	}
         currentState->entry(*this);
     }
 

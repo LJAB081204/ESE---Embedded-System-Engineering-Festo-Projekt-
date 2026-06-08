@@ -32,8 +32,14 @@ public:
         void eventButtonStartPressedLong() { currentState->eventButtonStartPressedLong(*this); }
         void eventButtonStopPressed()      { currentState->eventButtonStopPressed(*this); }
         void eventButtonResetPressed()     { currentState->eventButtonResetPressed(*this); }
+        void eventButtonResetPressedRemote()     { currentState->eventButtonResetPressedRemote(*this); }
+
         void eventButtonEstopPressed()     { currentState->eventButtonEstopPressed(*this); }
+        void eventButtonEstopPressedRemote(){ currentState->eventButtonEstopPressedRemote(*this); }
+
         void eventButtonEstopReleased()    { currentState->eventButtonEstopReleased(*this); }
+        void eventButtonEstopReleasedRemote()    { currentState->eventButtonEstopReleasedRemote(*this); }
+
 
         void eventItemAtEntry()            { currentState->eventItemAtEntry(*this); }
         void eventItemLeftEntry()          { currentState->eventItemLeftEntry(*this); }

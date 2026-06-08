@@ -9,6 +9,9 @@
 #include "Operation.h"
 #include "EStop.h"
 #include "Error.h"
+#include "../EstopFSM/EstopBase.h"
+#include "../EstopFSM/EstopContext.h"
+
 
 void Operation::entry(MainContext& ctx) {}
 void Operation::exit(MainContext& ctx)  {}
@@ -25,9 +28,16 @@ void Operation::eventButtonStopPressed(MainContext& ctx) {
 void Operation::eventButtonResetPressed(MainContext& ctx) {
     operationFSM.eventButtonResetPressed();
 }
+void Operation::eventButtonResetPressedRemote(MainContext& ctx) {
+}
 void Operation::eventButtonEstopPressed(MainContext& ctx) {
     exit(ctx);
-    new(this) EStop(ctx.hal);
+    new(this) EStop(ctx.hal, EStopSource::LOCAL);
+    entry(ctx);
+}
+void Operation::eventButtonEstopPressedRemote(MainContext& ctx) {
+    exit(ctx);
+    new(this) EStop(ctx.hal, EStopSource::REMOTE);
     entry(ctx);
 }
 void Operation::eventItemAtEntry(MainContext& ctx) {

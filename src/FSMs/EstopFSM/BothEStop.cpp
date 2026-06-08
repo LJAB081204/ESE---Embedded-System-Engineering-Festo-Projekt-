@@ -20,7 +20,6 @@
 #include "EStopRemote.h"
 #include "BothEStop.h"
 #include "Reset.h"
-#include "../MainFSM/EStop.h"
 
 BothEStop::BothEStop(){
 }
