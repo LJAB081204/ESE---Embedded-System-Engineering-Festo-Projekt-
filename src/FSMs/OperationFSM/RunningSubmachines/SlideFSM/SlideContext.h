@@ -8,6 +8,12 @@
 #ifndef SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SLIDEFSM_SLIDECONTEXT_H_
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SLIDEFSM_SLIDECONTEXT_H_
 
+#include "../../../../dataClass.h"
+#include "../../../../HAL.h"
+#include <new>
+#include "SlideBase.h"
+#include "Free.h"
+
 
 class SlideContext{
 	//Kontext
@@ -23,8 +29,10 @@ public:
 		currentState->entry(*this);
 	}
 
-	void eventItemLeftSlide()		{currentState->eventItemLeftSide(*this); }
-	void
+	virtual void eventItemLeftSlide(SlideContext &fsm)		{currentState->eventItemLeftSlide(*this);}
+	virtual void eventItemAtSlide(SlideContext &fsm)		{currentState->eventItemAtSlide(*this);}
+	virtual void eventSlideTimerExpired(SlideContext &fsm)	{currentState->eventSlideTimerExpired(*this);}
+	virtual void eventStopSlideTimer(SlideContext &fsm)		{currentState->eventStopSlideTimer(*this);}
 
 };
 
