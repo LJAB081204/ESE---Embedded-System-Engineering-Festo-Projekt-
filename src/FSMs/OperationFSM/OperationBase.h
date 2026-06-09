@@ -17,25 +17,56 @@ public:
 	virtual void exit(OperationContext& fsm){}
 
 	virtual void eventButtonStartPressed(OperationContext& fsm) {}
+	virtual void eventButtonStartPressedRemote(OperationContext& fsm)  {}
+
 	virtual void eventButtonStartPressedLong(OperationContext& fsm){}
+	virtual void eventButtonStartPressedLongRemote(OperationContext& fsm) {}
+
 	virtual void eventButtonStopPressed(OperationContext& fsm)  {}
+	virtual void eventButtonStopPressedRemote(OperationContext& fsm)      {}
+
 	virtual void eventButtonResetPressed(OperationContext& fsm) {}
+	virtual void eventButtonResetPressedRemote(OperationContext& fsm) {}
+
+
 	virtual void eventButtonEstopPressed(OperationContext& fsm) {}
+	virtual void eventButtonEstopPressedRemote(OperationContext& fsm) {}
+
 	virtual void eventButtonEstopReleased(OperationContext& fsm) {}
+	virtual void eventButtonEstopReleasedRemote(OperationContext& fsm) {}
 
 	virtual void eventItemAtEntry(OperationContext& fsm) {}
+	virtual void eventItemAtEntryRemote(OperationContext& fsm)  {}
+
+
 	virtual void eventItemLeftEntry(OperationContext& fsm) {}
+	virtual void eventItemLeftEntryRemote(OperationContext& fsm){}
+
 
 	virtual void eventItemAtExit(OperationContext& fsm) {}
+	virtual void eventItemAtExitRemote(OperationContext& fsm) {}
+
 	virtual void eventItemLeftExit(OperationContext& fsm) {}
+	virtual void eventItemLeftExitRemote(OperationContext& fsm) {}
+
 
 	virtual void eventItemAtPusher(OperationContext& fsm) {}
+	virtual void eventItemAtPusherRemote(OperationContext& fsm)           {}
+
 	virtual void eventItemLeftPusher(OperationContext& fsm) {}
+	virtual void eventItemLeftPusherRemote(OperationContext& fsm)         {}
+
 
 	virtual void eventItemInSlide(OperationContext& fsm) {}
+	virtual void eventItemInSlideRemote(OperationContext& fsm)            {}
+
 	virtual void eventItemLeftSlide(OperationContext& fsm) {}
+	virtual void eventItemLeftSlideRemote(OperationContext& fsm)          {}
+
 
 	virtual void eventItemMetal(OperationContext& fsm) {}
+	virtual void eventItemMetalRemote(OperationContext& fsm)              {}
+
 	virtual void eventItemArrived(OperationContext& fsm){}
 	virtual void eventItemGone (OperationContext& fsm){}
 
@@ -54,7 +85,9 @@ public:
 	virtual void eventTimerExpired(OperationContext& fsm){}
 	virtual void eventError(OperationContext& fsm) {}
 
-	virtual void eventItemAtEntryRemote(OperationContext& fsm) {}
+
+	virtual void eventSlideFull(OperationContext& fsm)                    {}
+	virtual void eventSlideFullRemote(OperationContext& fsm)              {}
 };
 
 
