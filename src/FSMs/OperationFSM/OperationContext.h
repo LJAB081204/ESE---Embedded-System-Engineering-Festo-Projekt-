@@ -44,18 +44,18 @@ public:
     void eventItemAtExit()             { currentState->eventItemAtExit(*this); }
     void eventItemLeftExit()           { currentState->eventItemLeftExit(*this); }
 
-    void eventItemAtPusher()           { currentState->eventItemAtPusher(*this); }
+    void eventItemAtPusher()           { std::cout<< "pusher bekommt" << std::endl; currentState->eventItemAtPusher(*this); }
     void eventItemLeftPusher()         { currentState->eventItemLeftPusher(*this); }
 
     void eventItemInSlide()            { currentState->eventItemInSlide(*this); }
     void eventItemLeftSlide()          { currentState->eventItemLeftSlide(*this); }
 
     void eventItemMetal()			   { currentState->eventItemMetal(*this); }
-    void eventItemArrived()			   { std::cout<<"WWWWWWWW" << std::endl; currentState->eventItemArrived(*this);}
+    void eventItemArrived()			   { currentState->eventItemArrived(*this);}
     void eventItemGone()			   { currentState->eventItemGone(*this);}
 
     void eventFestoReady()			   { currentState->eventItemGone(*this);}
-    void eventFestoNotReady()			   { currentState->eventItemGone(*this);}
+    void eventFestoNotReady()		   { currentState->eventItemGone(*this);}
 
     void eventHeightHigh()			   {currentState->eventHeightHigh(*this); }
     void eventHeightFlat()			   { currentState->eventHeightFlat(*this); }
