@@ -23,14 +23,13 @@ void PusherCalibration::entry(OperationContext& ctx) {
 }
 
 void PusherCalibration::exit(OperationContext& ctx) {
-	ctx.hal.getActors()->closePusher();
 	//timer setzten
 }
 
-void PusherCalibration::eventItemAtExit(OperationContext& ctx) {
+void PusherCalibration::eventItemLeftPusher(OperationContext& ctx) {
 	exit(ctx);
 	//timer starten
-	new(this) ExitCalibration;
+	new(this) waitForExit;
 	entry(ctx);
 }
 

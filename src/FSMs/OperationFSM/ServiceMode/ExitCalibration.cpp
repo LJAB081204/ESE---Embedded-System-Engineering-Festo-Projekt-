@@ -24,7 +24,7 @@ void ExitCalibration::exit(OperationContext& ctx) {
 	//timer setzten
 }
 
-void ExitCalibration::eventItemLeftExit(OperationContext& ctx) {
+void ExitCalibration::eventItemAtExit(OperationContext& ctx) {
 	exit(ctx);
 	new(this) Service;
 	entry(ctx);

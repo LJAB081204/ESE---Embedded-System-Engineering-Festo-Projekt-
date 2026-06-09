@@ -15,7 +15,7 @@ public:
 	PusherCalibration();
 	void entry(OperationContext& ctx) override;
 	void exit(OperationContext& ctx) override;
-	void eventItemAtExit(OperationContext& ctx)override;
+	void eventItemLeftPusher(OperationContext& ctx)override;
 	void eventButtonStartPressedLong(OperationContext& ctx)override;
 
 };
