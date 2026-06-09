@@ -42,6 +42,13 @@ public:
 	void eventItemGone()             { currentState->eventItemGone(*this); }
 	void eventItemArrived()          { currentState->eventItemArrived(*this); }
 
+	void eventFestoEmpty() 			 { currentState->eventItemArrived(*this); }
+
+	void eventFestoReady() 			 { currentState->eventItemArrived(*this); }
+	void eventFestoNotReady() 			 { currentState->eventItemArrived(*this); }
+
+
+
 };
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTCONTEXT_H_ */

@@ -24,6 +24,11 @@ public:
 	virtual void eventItemGone(TransportContext& fsm)            {}
 	virtual void eventItemArrived(TransportContext& fsm)         {}
 
+	virtual void eventFestoEmpty(TransportContext& fsm)         {}
+
+	virtual void eventFestoReady(TransportContext& fsm)         {}
+	virtual void eventFestoNotReady(TransportContext& fsm)         {}
+
 	virtual void entry(TransportContext& fsm){}
 	virtual void exit(TransportContext& fsm){}
 };

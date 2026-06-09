@@ -25,13 +25,11 @@
 	}
 
 	void Forward::eventItemAtExit(TransportContext& ctx){
-		if(!ctx.data.readyForItemRemote){
+		exit(ctx);
+//		if(!ctx.data.readyForItemRemote){ (raise requestTransfer
 			//Datenklasse fehlt noch
-			exit(ctx);
 			new(this) WaitForFesto;
-			entry(ctx);
-		}
-		//new (this) Stop;
+//		}
 		entry(ctx);
 
 	}
@@ -46,9 +44,20 @@
 	void Forward::eventItemLeftExit(TransportContext& ctx){
 		exit(ctx);
 		std::cout<<"-1 Item" << std::endl;
-		//Wenn ItemCount 0 ist new(this) Stopp
+//		if(ItemCount == 0){
+//			new(this) Stop;
+//		}
 		entry(ctx);
 	}
+
+	//Fehlt noch in MainContext
+	void Forward::eventFestoEmpty(TransportContext& ctx){
+		exit(ctx);
+		new(this) Stop;
+		entry(ctx);
+	}
+
+
 
 
 
