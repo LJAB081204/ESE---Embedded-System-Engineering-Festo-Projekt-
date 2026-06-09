@@ -96,9 +96,9 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal,d
 				    case PULSE_BTN_ESTOP_REMOTE:
 				        cout << "ESTOP Remote Pulse reached dispatcher" << endl;
 				        if(msg.value.sival_int == 0){
-				            hal.getActors()->motorForwards();
+				            FSM.eventButtonEstopReleasedRemote();
 				        } else {
-				            hal.getActors()->motorStop();
+				            FSM.eventButtonEstopPressedRemote();
 				        }
 				        break;
 
@@ -145,6 +145,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal,d
 				            cout << "Reset pressed on remote!" << endl;
 				        } else {
 				            cout << "Reset released on remote!" << endl;
+				            FSM.eventButtonResetPressedRemote();
 				        }
 				        break;
 
