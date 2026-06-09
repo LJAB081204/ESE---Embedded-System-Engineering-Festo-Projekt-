@@ -16,8 +16,8 @@ public:
 	void entry(TransportContext& ctx)override;
 	void exit(TransportContext& ctx)override;
 
-	void eventItemLeftExitRemote(TransportContext& ctx)override;
-	void eventItemInSlideRemote(TransportContext& ctx)override;
+	void eventFestoReady(TransportContext& ctx)override;
+	void eventFestoNotReady(TransportContext& ctx)override;
 };
 
 

@@ -17,6 +17,8 @@ public:
 	void exit(TransportContext& ctx)override;
 
 	void eventItemGone(TransportContext& ctx)override;
+	void eventItemAtExit(TransportContext& ctx)override;
+	void eventFestoEmpty(TransportContext& ctx)override;
 };
 
 

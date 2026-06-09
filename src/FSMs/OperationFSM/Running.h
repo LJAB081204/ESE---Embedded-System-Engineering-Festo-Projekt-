@@ -36,6 +36,7 @@ public:
 	void eventItemMetal(OperationContext& ctx)override;
 	void eventItemAtPusher(OperationContext& ctx)override;
 	void eventItemLeftPusher(OperationContext& ctx)override;
+	void eventItemLeftExit(OperationContext& ctx)override;
 	void eventItemWrong(OperationContext& ctx)override;
 	void eventItemCorrect(OperationContext& ctx)override;
 	void eventUpdate(OperationContext& ctx)override;

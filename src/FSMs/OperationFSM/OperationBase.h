@@ -39,6 +39,9 @@ public:
 	virtual void eventItemArrived(OperationContext& fsm){}
 	virtual void eventItemGone (OperationContext& fsm){}
 
+	virtual void eventFestoReady (OperationContext& fsm){}
+	virtual void eventFestoNotReady (OperationContext& fsm){}
+
 	virtual void eventHeightHigh(OperationContext& fsm){}
 	virtual void eventHeightFlat(OperationContext& fsm){}
 	virtual void eventHeightHole(OperationContext& fsm){}

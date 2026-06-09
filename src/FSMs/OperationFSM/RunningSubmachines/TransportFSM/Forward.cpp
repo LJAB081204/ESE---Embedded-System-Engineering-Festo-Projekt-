@@ -11,10 +11,13 @@
 #include "WaitForFesto.h"
 #include "ForwardSlow.h"
 
+#include <iostream>
+
 	Forward::Forward(){
 	}
 
 	void Forward::entry(TransportContext& ctx){
+		std::cout<<"Forward" << std::endl;
 		ctx.hal.getActors()->motorForwards();
 	}
 
@@ -22,12 +25,11 @@
 	}
 
 	void Forward::eventItemAtExit(TransportContext& ctx){
-		if(!ctx.data.readyForItemRemote){					//Datenklasse fehlt noch
-			exit(ctx);
+		exit(ctx);
+//		if(!ctx.data.readyForItemRemote){ (raise requestTransfer
+			//Datenklasse fehlt noch
 			new(this) WaitForFesto;
-			entry(ctx);
-		}
-		new (this) Stop;
+//		}
 		entry(ctx);
 
 	}
@@ -37,6 +39,25 @@
 		new(this) ForwardSlow;
 		entry(ctx);
 	}
+
+
+	void Forward::eventItemLeftExit(TransportContext& ctx){
+		exit(ctx);
+		std::cout<<"-1 Item" << std::endl;
+//		if(ItemCount == 0){
+//			new(this) Stop;
+//		}
+		entry(ctx);
+	}
+
+	//Fehlt noch in MainContext
+	void Forward::eventFestoEmpty(TransportContext& ctx){
+		exit(ctx);
+		new(this) Stop;
+		entry(ctx);
+	}
+
+
 
 
 

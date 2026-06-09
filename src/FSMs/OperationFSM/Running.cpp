@@ -70,6 +70,9 @@
 	void Running::eventItemLeftPusher(OperationContext& ctx){
 	    weicheFSM->eventItemLeftPusher();
 	}
+	void Running::eventItemLeftExit(OperationContext& ctx){
+		transportFSM->eventItemLeftExit();
+	}
 	void Running::eventItemWrong(OperationContext& ctx){
 		weicheFSM->eventItemWrong();
 	}

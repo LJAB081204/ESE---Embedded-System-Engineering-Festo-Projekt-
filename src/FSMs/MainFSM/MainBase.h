@@ -27,7 +27,6 @@ public:
 	virtual void eventButtonEstopReleasedRemote(MainContext& fsm)   {}
 
 
-
 	virtual void eventItemAtEntry(MainContext& fsm)   {}
 	virtual void eventItemLeftEntry(MainContext& fsm) {}
 
@@ -43,6 +42,9 @@ public:
 	virtual void eventItemMetal(MainContext& fsm){}
 	virtual void eventItemArrived (MainContext& fsm){}
 	virtual void eventItemGone (MainContext& fsm){}
+
+	virtual void eventFestoReady (MainContext& fsm){}
+	virtual void eventFestoNotReady (MainContext& fsm){}
 
 	virtual void eventHeightHigh(MainContext& fsm){}
 	virtual void eventHeightFlat(MainContext& fsm){}

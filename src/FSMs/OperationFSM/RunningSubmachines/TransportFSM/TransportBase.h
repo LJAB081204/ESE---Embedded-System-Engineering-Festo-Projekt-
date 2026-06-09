@@ -18,10 +18,16 @@ public:
 	virtual void eventItemInSlide(TransportContext& fsm)         {}
 	virtual void eventItemAtEntryRemote(TransportContext& fsm)   {}
 	virtual void eventItemAtExit(TransportContext& fsm)          {}
+	virtual void eventItemLeftExit(TransportContext& fsm)  {}
 	virtual void eventItemLeftExitRemote(TransportContext& fsm)  {}
 	virtual void eventItemInSlideRemote(TransportContext& fsm)   {}
 	virtual void eventItemGone(TransportContext& fsm)            {}
 	virtual void eventItemArrived(TransportContext& fsm)         {}
+
+	virtual void eventFestoEmpty(TransportContext& fsm)         {}
+
+	virtual void eventFestoReady(TransportContext& fsm)         {}
+	virtual void eventFestoNotReady(TransportContext& fsm)         {}
 
 	virtual void entry(TransportContext& fsm){}
 	virtual void exit(TransportContext& fsm){}
