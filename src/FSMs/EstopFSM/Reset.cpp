@@ -19,7 +19,7 @@ void Reset::entry(EStopContext& ctx){
 }
 
 void Reset::exit(EStopContext& ctx){
-
+	ctx.hal.getActors()->ledButtonResetOff();
 }
 void Reset::eventButtonEstopPressedRemote(EStopContext& ctx){
 	exit(ctx);

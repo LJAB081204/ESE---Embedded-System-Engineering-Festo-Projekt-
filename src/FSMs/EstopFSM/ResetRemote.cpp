@@ -16,12 +16,11 @@ ResetRemote::ResetRemote(){
 }
 
 void ResetRemote::entry(EStopContext& ctx){
-	ctx.hal.getActors()->ledButtonResetOff();
 	ctx.setActive(true);
 }
 
 void ResetRemote::exit(EStopContext& ctx){
-
+	ctx.hal.getActors()->ledButtonResetOff();
 }
 void ResetRemote::eventButtonEstopPressedRemote(EStopContext& ctx){
 	exit(ctx);

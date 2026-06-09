@@ -20,6 +20,7 @@ void BothReleased::entry(EStopContext& ctx){
 	ctx.hal.getActors()->motorStop();
 	ctx.hal.getActors()->closePusher();
 	ctx.hal.getActors()->redLampOn();
+	ctx.hal.getActors()->ledButtonReset();
 	ctx.setActive(true);
 }
 

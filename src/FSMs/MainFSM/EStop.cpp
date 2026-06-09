@@ -12,9 +12,10 @@ void EStop::entry(MainContext& ctx) {
     ctx.hal.getActors()->motorStop();
     ctx.hal.getActors()->greenLampOff();
     ctx.hal.getActors()->redLampOn();
-    ctx.hal.getActors()->ledButtonReset();
+    ctx.hal.getActors()->ledButtonStartOff();
 }
 void EStop::exit(MainContext& ctx) {
+	ctx.hal.getActors()->redLampOff();
 }
 
 void EStop::eventButtonEstopPressed(MainContext& ctx) {
@@ -27,7 +28,7 @@ void EStop::eventButtonResetPressed(MainContext& ctx) {
     eStopFSM.eventButtonResetPressed();
     if(!eStopFSM.isActive()) {
         exit(ctx);
-        new(this) Operation(ctx.hal, ctx.data);
+        new(this) Operation(ctx.getOperationFSM());
         entry(ctx);
     }
 }
@@ -35,7 +36,7 @@ void EStop::eventButtonResetPressedRemote(MainContext& ctx) {
     eStopFSM.eventButtonResetPressedRemote();
     if(!eStopFSM.isActive()) {
         exit(ctx);
-        new(this) Operation(ctx.hal, ctx.data);
+        new(this) Operation(ctx.getOperationFSM());
         entry(ctx);
     }
 }
