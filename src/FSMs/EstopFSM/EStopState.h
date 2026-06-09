@@ -16,8 +16,9 @@ public:
 	EStopState();
 	void entry(EStopContext& ctx)override;
 	void exit(EStopContext& ctx)override;
-	void eventButtonEstopPressedRemote(EStopContext& ctx)override;
 	void eventButtonEstopReleased(EStopContext& ctx)override;
+	void eventButtonEstopPressedRemote(EStopContext& ctx)override;
+
 };
 
 

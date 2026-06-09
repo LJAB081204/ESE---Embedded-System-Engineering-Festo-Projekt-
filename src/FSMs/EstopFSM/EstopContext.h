@@ -9,6 +9,8 @@
 #include "EStopState.h"
 #include "Reset.h"
 #include "ResetRemote.h"
+#include "HandShakeEStopLocalNotPressed.h"
+#include "HandShakeEStopLocalPressed.h"
 
 enum class EStopSource {LOCAL,REMOTE};
 
@@ -36,6 +38,19 @@ public:
     void eventButtonEstopReleasedRemote() { currentState->eventButtonEstopReleasedRemote(*this); }
     void eventButtonResetPressed()        { currentState->eventButtonResetPressed(*this); }
     void eventButtonResetPressedRemote()  { currentState->eventButtonResetPressedRemote(*this); }
+    void handshakeEStopRemoteIsPressed()    { currentState->handshakeEStopRemoteIsPressed(*this); }
+    void handshakeEStopRemoteIsNotPressed() { currentState->handshakeEStopRemoteIsNotPressed(*this); }
+
+    void enterHandshakeLocalPressed() {
+        new(currentState) HandShakeEStopLocalPressed;
+        currentState->entry(*this);
+    }
+
+    void enterHandshakeLocalNotPressed() {
+        new(currentState) HandShakeEStopLocalNotPressed;
+        currentState->entry(*this);
+    }
+
 };
 
 #endif

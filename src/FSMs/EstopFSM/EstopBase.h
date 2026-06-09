@@ -14,6 +14,8 @@ public:
     virtual void eventButtonEstopReleasedRemote(EStopContext& ctx){}
     virtual void eventButtonResetPressed(EStopContext& ctx)       {}
     virtual void eventButtonResetPressedRemote(EStopContext& ctx) {}
+	virtual void handshakeEStopRemoteIsPressed(EStopContext& ctx) {}
+	virtual void handshakeEStopRemoteIsNotPressed(EStopContext& ctx){}
 };
 
 #endif
