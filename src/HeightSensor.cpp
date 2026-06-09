@@ -116,7 +116,7 @@ void HeightSensor::detectHeight(int value){
         }
 
     //If Abfrage für puffer, damit bei kurzem schwanken nicht neue Höhe detektiert wird
-    if(heightCounter > 20 && currentHeight != previousHeight){
+    if(heightCounter > 15 && currentHeight != previousHeight){
 	 // Werkstück aufgetaucht
 		if(previousHeight == HEIGHT_CONVEYOR && currentHeight != HEIGHT_CONVEYOR){
 			MsgSendPulse(dispCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_ARRIVED, currentHeight);
