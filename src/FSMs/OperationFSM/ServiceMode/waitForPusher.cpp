@@ -24,7 +24,6 @@ void waitForPusher::exit(OperationContext& ctx) {}
 
 void waitForPusher::eventItemAtPusher(OperationContext& ctx) {
 	exit(ctx);
-	std::cout<< "3" << std::endl;
 	new(this) PusherCalibration;
 	entry(ctx);
 }

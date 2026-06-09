@@ -22,13 +22,19 @@ void EntryCalibration::exit(OperationContext& ctx) {
 	//Timer setzten
 }
 
-void EntryCalibration::eventHeightHigh(OperationContext& ctx) {
-	exit(ctx);
-	new(this) HeightDetect;
-	entry(ctx);
-}
+//void EntryCalibration::eventHeightHigh(OperationContext& ctx) {
+//	exit(ctx);
+//	new(this) HeightDetect;
+//	entry(ctx);
+//}
+//
+//void EntryCalibration::eventHeightFlat(OperationContext& ctx) {
+//	exit(ctx);
+//	new(this) HeightDetect;
+//	entry(ctx);
+//}
 
-void EntryCalibration::eventHeightFlat(OperationContext& ctx) {
+void EntryCalibration::eventItemArrived(OperationContext& ctx){
 	exit(ctx);
 	new(this) HeightDetect;
 	entry(ctx);
