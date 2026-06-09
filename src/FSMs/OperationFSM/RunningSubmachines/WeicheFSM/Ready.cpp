@@ -29,15 +29,11 @@ void Ready::eventItemWrong(WeicheContext& ctx){
 		new (this) PutItemInSlide;
 	  	entry(ctx);
 	}
-	else if(ctx.data.slideFull == true && ctx.data.slideFullRemote == false){
+	else if(ctx.data.slideFull == true){
 		exit(ctx);
 		new(this) LetItemPass;
 	  	entry(ctx);
 	}
-	else if(ctx.data.slideFull == true && ctx.data.slideFullRemote == true){
-		raiseError(ctx);
-	}
-
 }
 
 
