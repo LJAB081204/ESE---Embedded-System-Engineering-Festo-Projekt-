@@ -20,8 +20,11 @@ public:
 	virtual void eventButtonStartPressedLong(MainContext& fsm){}
 	virtual void eventButtonStopPressed(MainContext& fsm)     {}
 	virtual void eventButtonResetPressed(MainContext& fsm)    {}
+	virtual void eventButtonResetPressedRemote(MainContext& fsm)    {}
 	virtual void eventButtonEstopPressed(MainContext& fsm)    {}
+	virtual void eventButtonEstopPressedRemote(MainContext& fsm)    {}
 	virtual void eventButtonEstopReleased(MainContext& fsm)   {}
+	virtual void eventButtonEstopReleasedRemote(MainContext& fsm)   {}
 
 
 	virtual void eventItemAtEntry(MainContext& fsm)   {}
@@ -39,6 +42,9 @@ public:
 	virtual void eventItemMetal(MainContext& fsm){}
 	virtual void eventItemArrived (MainContext& fsm){}
 	virtual void eventItemGone (MainContext& fsm){}
+
+	virtual void eventFestoReady (MainContext& fsm){}
+	virtual void eventFestoNotReady (MainContext& fsm){}
 
 	virtual void eventHeightHigh(MainContext& fsm){}
 	virtual void eventHeightFlat(MainContext& fsm){}

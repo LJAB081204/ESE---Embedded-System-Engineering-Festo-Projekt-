@@ -80,6 +80,18 @@ void Operation::eventItemGone(MainContext& ctx){
 	operationFSM.eventItemGone();
 }
 
+void Operation::eventItemArrived(MainContext& ctx){
+	operationFSM.eventItemArrived();
+}
+
+void Operation::eventFestoReady(MainContext& ctx){
+	operationFSM.eventFestoReady();
+}
+
+void Operation::eventFestoNotReady(MainContext& ctx){
+	operationFSM.eventFestoNotReady();
+}
+
 void Operation::eventHeightHigh(MainContext& ctx){
 	operationFSM.eventHeightHigh();
 }

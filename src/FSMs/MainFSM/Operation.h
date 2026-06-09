@@ -42,6 +42,10 @@ public:
     void eventError(MainContext& ctx) override;
 
     void eventItemGone(MainContext& ctx) override;
+    void eventItemArrived(MainContext& ctx) override;
+
+    void eventFestoReady(MainContext& ctx) override;
+    void eventFestoNotReady(MainContext& ctx) override;
 
     void eventHeightHigh(MainContext& ctx) override;
     void eventHeightFlat(MainContext& ctx) override;

@@ -57,6 +57,9 @@ public:
         void eventItemArrived() 		   { currentState->eventItemArrived(*this);}
         void eventItemGone()			   { currentState->eventItemGone(*this);}
 
+        void eventFestoReady()			   { currentState->eventFestoReady(*this);}
+        void eventFestoNotReady()		   { currentState->eventFestoNotReady(*this);}
+
         void eventHeightHigh()			   {currentState->eventHeightHigh(*this); }
         void eventHeightFlat()			   { currentState->eventHeightFlat(*this); }
         void eventHeightHole()			   { currentState->eventHeightHole(*this); }
