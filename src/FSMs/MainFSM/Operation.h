@@ -22,8 +22,9 @@ public:
 	void eventButtonStartPressedLong(MainContext& ctx) override;
 	void eventButtonStopPressed(MainContext& ctx) override;
 	void eventButtonResetPressed(MainContext& ctx) override;
+	void eventButtonResetPressedRemote(MainContext& ctx) override;
 	void eventButtonEstopPressed(MainContext& ctx) override;
-
+	void eventButtonEstopPressedRemote(MainContext& ctx) override;
     void eventItemAtEntry(MainContext& ctx) override;
     void eventItemLeftEntry(MainContext& ctx) override;
 
