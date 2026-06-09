@@ -1,15 +1,21 @@
-/*
- * EstopBase.h
- *
- *  Created on: 01.06.2026
- *      Author: tayla
- */
+#ifndef ESTOPBASE_H
+#define ESTOPBASE_H
 
-#ifndef SRC_FSMS_ESTOPFSM_ESTOPBASE_H_
-#define SRC_FSMS_ESTOPFSM_ESTOPBASE_H_
+class EStopContext;
 
+class EStopBase {
+public:
+    virtual ~EStopBase() = default;
+    virtual void entry(EStopContext& ctx) {}
+    virtual void exit(EStopContext& ctx)  {}
+    virtual void eventButtonEstopPressed(EStopContext& ctx)       {}
+    virtual void eventButtonEstopReleased(EStopContext& ctx)      {}
+    virtual void eventButtonEstopPressedRemote(EStopContext& ctx) {}
+    virtual void eventButtonEstopReleasedRemote(EStopContext& ctx){}
+    virtual void eventButtonResetPressed(EStopContext& ctx)       {}
+    virtual void eventButtonResetPressedRemote(EStopContext& ctx) {}
+	virtual void handshakeEStopRemoteIsPressed(EStopContext& ctx) {}
+	virtual void handshakeEStopRemoteIsNotPressed(EStopContext& ctx){}
+};
 
-
-
-
-#endif /* SRC_FSMS_ESTOPFSM_ESTOPBASE_H_ */
+#endif

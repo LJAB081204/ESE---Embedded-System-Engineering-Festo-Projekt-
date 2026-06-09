@@ -284,6 +284,13 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal,d
 				        }
 				        break;
 
+				    case PULSE_ITEM_GONE:
+				    	FSM.eventItemGone();
+				    	break;
+				    case PULSE_ITEM_ARRIVED:
+				    	FSM.eventItemArrived();
+				    	break;
+
 				    case PULSE_NEW_HEIGHT_LOCAL:
 				    	switch(msg.value.sival_int){
 				    	case HEIGHT_CONVEYOR: // Height Conveyer
