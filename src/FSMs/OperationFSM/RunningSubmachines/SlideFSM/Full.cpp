@@ -19,7 +19,7 @@
 
 	}
 	void Full::entry(SlideContext& ctx){
-
+		ctx.hal.getActors()->yellowLampBlink(1000);
 	}
 	void Full::exit(SlideContext& ctx){
 
