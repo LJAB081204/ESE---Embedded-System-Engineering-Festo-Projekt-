@@ -32,26 +32,56 @@ public:
 	}
 
 	void eventButtonStartPressed()     { currentState->eventButtonStartPressed(*this); }
+    void eventButtonStartPressedRemote()     { currentState->eventButtonStartPressedRemote(*this); }
+
     void eventButtonStartPressedLong() { currentState->eventButtonStartPressedLong(*this); }
+    void eventButtonStartPressedLongRemote() { currentState->eventButtonStartPressedLongRemote(*this); }
+
     void eventButtonStopPressed()      { currentState->eventButtonStopPressed(*this); }
+    void eventButtonStopPressedRemote()      { currentState->eventButtonStopPressedRemote(*this); }
+
     void eventButtonResetPressed()     { currentState->eventButtonResetPressed(*this); }
+    void eventButtonResetPressedRemote()     { currentState->eventButtonResetPressedRemote(*this); }
+
     void eventButtonEstopPressed()     { currentState->eventButtonEstopPressed(*this); }
+    void eventButtonEstopPressedRemote()     { currentState->eventButtonEstopPressedRemote(*this); }
+
     void eventButtonEstopReleased()    { currentState->eventButtonEstopReleased(*this); }
+    void eventButtonEstopReleasedRemote()    { currentState->eventButtonEstopReleasedRemote(*this); }
+
 
     void eventItemAtEntry()            { currentState->eventItemAtEntry(*this); }
+    void eventItemAtEntryRemote()            { currentState->eventItemAtEntryRemote(*this); }
+
     void eventItemLeftEntry()          { currentState->eventItemLeftEntry(*this); }
+    void eventItemLeftEntryRemote()          { currentState->eventItemLeftEntryRemote(*this); }
+
 
     void eventItemAtExit()             { currentState->eventItemAtExit(*this); }
-    void eventItemLeftExit()           { currentState->eventItemLeftExit(*this); }
+    void eventItemAtExitRemote()             { currentState->eventItemAtExitRemote(*this); }
 
-    void eventItemAtPusher()           { std::cout<< "pusher bekommt" << std::endl; currentState->eventItemAtPusher(*this); }
+    void eventItemLeftExit()           { currentState->eventItemLeftExit(*this); }
+    void eventItemLeftExitRemote()           { currentState->eventItemLeftExitRemote(*this); }
+
+
+    void eventItemAtPusher()           { currentState->eventItemAtPusher(*this); }
+    void eventItemAtPusherRemote()           { currentState->eventItemAtPusherRemote(*this); }
+
     void eventItemLeftPusher()         { currentState->eventItemLeftPusher(*this); }
+    void eventItemLeftPusherRemote()         { currentState->eventItemLeftPusherRemote(*this); }
+
 
     void eventItemInSlide()            { currentState->eventItemInSlide(*this); }
+    void eventItemInSlideRemote()            { currentState->eventItemInSlideRemote(*this); }
+
     void eventItemLeftSlide()          { currentState->eventItemLeftSlide(*this); }
+    void eventItemLeftSlideRemote()          { currentState->eventItemLeftSlideRemote(*this); }
+
 
     void eventItemMetal()			   { currentState->eventItemMetal(*this); }
-    void eventItemArrived()			   { currentState->eventItemArrived(*this);}
+    void eventItemMetalRemote()              { currentState->eventItemMetalRemote(*this); }
+
+    void eventItemArrived()			   { std::cout<<"WWWWWWWW" << std::endl; currentState->eventItemArrived(*this);}
     void eventItemGone()			   { currentState->eventItemGone(*this);}
 
     void eventFestoReady()			   { currentState->eventItemGone(*this);}
@@ -69,6 +99,11 @@ public:
     void eventTimerExpired()			   { currentState->eventTimerExpired(*this); }
 
     void eventError()                  { currentState->eventError(*this); }
+
+
+
+    void eventSlideFull()                    { currentState->eventSlideFull(*this); }
+    void eventSlideFullRemote()              { currentState->eventSlideFullRemote(*this); }
 };
 
 
