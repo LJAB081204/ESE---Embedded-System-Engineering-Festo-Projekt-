@@ -18,15 +18,22 @@
 
 
 class MainContext {
-    alignas(Operation) char stateBuffer[sizeof(Operation)];
+	OperationContext* operationFSM;
+    alignas(EStop) char stateBuffer[sizeof(EStop)];
     MainBase* currentState = reinterpret_cast<MainBase*>(stateBuffer);
 public:
     HAL& hal;
     dataClass& data;
     MainContext(HAL& hal,dataClass& data) : hal(hal),data(data) {
-        new(currentState) Operation(hal,data);
+    	operationFSM = new OperationContext(hal,data);
+        new(currentState) Operation(*operationFSM);
         currentState->entry(*this);
     }
+    ~MainContext(){
+    	delete operationFSM;
+    }
+
+    	OperationContext& getOperationFSM() { return *operationFSM; }
 
     	void eventButtonStartPressed()     { currentState->eventButtonStartPressed(*this); }
         void eventButtonStartPressedLong() { currentState->eventButtonStartPressedLong(*this); }

@@ -13,9 +13,9 @@
 #include "../../dataClass.h"
 
 class Operation : public MainBase{
-	OperationContext operationFSM;
+	OperationContext& operationFSM;
 public:
-	Operation(HAL& hal,dataClass& data) : operationFSM(hal,data) {}
+    Operation(OperationContext& fsm) : operationFSM(fsm) {}
 	void entry(MainContext& ctx) override;
 	void exit(MainContext& ctx) override;
 	void eventButtonStartPressed(MainContext& ctx) override;
