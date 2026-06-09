@@ -176,7 +176,7 @@ void HeightSensor::detectHeight(int value){
     }
 
     // Erst nach 20 stabilen Werten neue Höhe melden
-    if(heightCounter > 20 && currentHeight != previousHeight){
+    if(heightCounter > 15 && currentHeight != previousHeight){
         // Werkstück aufgetaucht
         if(previousHeight == HEIGHT_CONVEYOR && currentHeight != HEIGHT_CONVEYOR){
             MsgSendPulse(dispCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_ARRIVED, currentHeight);
