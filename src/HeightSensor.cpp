@@ -147,7 +147,7 @@ void HeightSensor::saveCalibration(){
 bool HeightSensor::loadCalibration(){
     std::ifstream file(CALIBRATION_FILE);
     if(!file.is_open()){
-        std::cerr << "Fehler: Keine Kalibrierungsdatei gefunden, Service Mode noetig" << std::endl;
+       // std::cerr << "Fehler: Keine Kalibrierungsdatei gefunden, Service Mode noetig" << std::endl;
         return false;
     }
     bool calibrated = false;
@@ -190,14 +190,11 @@ void HeightSensor::stop(){
 //HS Thread Funktion
 void HeightSensor::threadFunc(){
     adc.registerAdcISR(coid, ADC_TYPE);  // Registrieren der ISR
-    //calibrate();
     // Kalibrierungswerte laden, falls nicht vorhanden -> Service Mode nötig
+   /*if(!loadCalibration){
+	   std::cout << "Kalibrierung fehlt, bitte in den Service Mode!" << std::endl;
+   }*/
    while(!loadCalibration()){
-        //running = false;
-        //adc.unregisterAdcISR();
-	   //calibrate();
-	   //saveCalibration();
-        //return;
     }
     struct _pulse pulse;
     while(running){
@@ -251,10 +248,27 @@ void HeightSensor::detectHeight(int value){
         lastCandidate = currentHeight;
     }
 }
+
+void HeightSensor::resetCalibration(){
+    std::ofstream file(CALIBRATION_FILE);
+    if(file.is_open()){
+        file << "calibrated=0\n";
+        file << "refConveyor=0\n";
+        file << "refHigh=0\n";
+        file << "refDrilling=0\n";
+        file << "refFlat=0\n";
+        file.close();
+    }
+}
+
 int HeightSensor::getCoid(){
     return coid;
 }
 
 int HeightSensor::getChid(){
     return chid;
+}
+
+void HeightSensor::setCoId(int CoId){
+	this->dispCoid = CoId;
 }

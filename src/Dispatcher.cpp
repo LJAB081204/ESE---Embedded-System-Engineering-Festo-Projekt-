@@ -14,8 +14,8 @@
 
 using namespace std;
 
-Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data)
-    : hal(hal), data(data),FSM(hal,data), conCtrlConnectionID(conCtrlConnectionID) {
+Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, HeightSensor& hs)
+    : hal(hal), data(data),FSM(hal,data,hs), conCtrlConnectionID(conCtrlConnectionID) {
 
     if ((ownChannelID = ChannelCreate(0)) == -1){
         cout << "ChannelCreate failed" << endl;

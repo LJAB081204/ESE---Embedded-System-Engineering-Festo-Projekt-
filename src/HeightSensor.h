@@ -30,6 +30,7 @@ public:
     void calibrate();    // jetzt public für Service Mode
     int getCoid();
     int getChid();
+    void setCoId(int CoId);
 private:
     // Referenzwerte aus Kalibrierung
     int refConveyor;
@@ -52,5 +53,6 @@ private:
     void detectHeight(int value);
     void saveCalibration();   // Refs in Datei schreiben
     bool loadCalibration();   // Refs aus Datei lesen, false wenn Datei nicht existiert
+    void resetCalibration();
 };
 #endif

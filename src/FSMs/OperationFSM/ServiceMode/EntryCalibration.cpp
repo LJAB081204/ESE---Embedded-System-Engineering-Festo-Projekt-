@@ -16,7 +16,7 @@ EntryCalibration::EntryCalibration(){};
 void EntryCalibration::entry(OperationContext& ctx) {
 	std::cout<< "1" << std::endl;
 	ctx.hal.getActors()->motorForwards();
-
+	ctx.hs.calibrate();
 }
 
 void EntryCalibration::exit(OperationContext& ctx) {
