@@ -14,7 +14,7 @@
 #include "OperationBase.h"
 #include "Idle.h"
 #include "Running.h"
-
+#include "RunningSubmachines/SequenceFSM/SequenceContext.h"
 #include <iostream>
 
 class OperationContext{
@@ -26,6 +26,7 @@ public:
 	HAL& hal;
 	int connectionID = -1;
 	dataClass& data;
+	SequenceContext sequenceFSM{data};
 	Running* savedRunning = nullptr;
 	OperationBase* currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 	HistorySource historySource = HistorySource::NONE_HISTORY;
@@ -45,6 +46,21 @@ public:
 			currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 			currentState->entry(*this);
 		}
+		else if (source == HistorySource::ESTOP_HISTORY){
+			if (currentState != reinterpret_cast<OperationBase*>(stateBuffer)){
+				currentState->exit(*this);
+				delete currentState;
+			}
+			if (savedRunning != nullptr){
+				savedRunning->exit(*this);
+				delete savedRunning;
+				savedRunning = nullptr;
+			}
+			new (stateBuffer) Idle;
+			currentState = reinterpret_cast<OperationBase*>(stateBuffer);
+		}
+
+
 	}
 	void restoreHistory(){
 		currentState->onRestore(historySource, *this);
