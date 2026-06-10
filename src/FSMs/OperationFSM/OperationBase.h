@@ -8,11 +8,16 @@
 #ifndef SRC_FSMS_OPERATIONFSM_OPERATIONBASE_H_
 #define SRC_FSMS_OPERATIONFSM_OPERATIONBASE_H_
 
+enum class HistorySource {NONE_HISTORY, STOP_HISTORY, ESTOP_HISTORY, ERROR_HISTORY};
+
 class OperationContext; // Vorwärtsdekleration
 
 class OperationBase{
 public:
 	virtual ~OperationBase() = default;
+
+	virtual void onRestore(HistorySource source,OperationContext& ctx) {}
+
 	virtual void entry(OperationContext& fsm){}
 	virtual void exit(OperationContext& fsm){}
 

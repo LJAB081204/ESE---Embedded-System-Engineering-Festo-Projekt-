@@ -24,9 +24,11 @@ class Running : public OperationBase{
 	ProfileContext* profileFSM;
 public:
 	Running(HAL& hal,dataClass& data);
+	void onRestore(HistorySource source,OperationContext& ctx)override;
 	void entry(OperationContext& ctx)override;
 	void exit(OperationContext& ctx)override;
 	void eventButtonStopPressed(OperationContext& ctx)override;
+	void eventButtonStopPressedRemote(OperationContext& ctx)override;
 	void eventItemAtEntry(OperationContext& ctx)override;
 	void eventItemAtExit(OperationContext& ctx)override;
 	void eventItemInSlide(OperationContext& ctx)override;
