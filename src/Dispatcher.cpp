@@ -131,7 +131,7 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data)
 				            cout << "Stop pressed on remote!" << endl;
 				        } else {
 				            cout << "Stop released on remote!" << endl;
-				            FSM.eventButtonStartPressedRemote();
+				            FSM.eventButtonStopPressedRemote();
 				        }
 				        break;
 
