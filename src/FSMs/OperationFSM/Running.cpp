@@ -18,10 +18,10 @@
 #include <iostream>
 
 
-	Running::Running(HAL& hal,dataClass& data){
+	Running::Running(HAL& hal,dataClass& data,SequenceContext& sequence){
 		transportFSM = new TransportContext(hal,data);
 		weicheFSM = new WeicheContext(hal,data);
-		sequenceFSM = new SequenceContext(data);
+		sequenceFSM = &sequence;
 		profileFSM = new ProfileContext(data);
 	}
 
@@ -33,7 +33,6 @@
 	void Running::exit(OperationContext& ctx){
 		delete transportFSM;
 		delete weicheFSM;
-		delete sequenceFSM;
 		delete profileFSM;
 	}
 
