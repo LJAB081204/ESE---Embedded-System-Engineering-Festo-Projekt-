@@ -18,6 +18,7 @@
 
 	void Forward::entry(TransportContext& ctx){
 		std::cout<<"Forward" << std::endl;
+		ctx.hal.getActors()->motorStop();
 		ctx.hal.getActors()->motorForwards();
 	}
 
@@ -34,6 +35,13 @@
 
 	}
 
+	void Forward::eventItemAtEntry(TransportContext& ctx){
+		exit(ctx);
+		ctx.data.itemCount = ctx.data.itemCount + 1;
+		std::cout<< ctx.data.itemCount << std::endl;
+		entry(ctx);
+	}
+
 	void Forward::eventItemArrived(TransportContext& ctx){
 		exit(ctx);
 		new(this) ForwardSlow;
@@ -41,20 +49,24 @@
 	}
 
 
-	void Forward::eventItemLeftExit(TransportContext& ctx){
+	void Forward::eventItemAtEntryRemote(TransportContext& ctx){
 		exit(ctx);
-		std::cout<<"-1 Item" << std::endl;
-//		if(ItemCount == 0){
-//			new(this) Stop;
-//		}
+		ctx.data.itemCount = ctx.data.itemCount - 1;
+		std::cout<< ctx.data.itemCount << std::endl;
+		if(ctx.data.itemCount == 0){
+			new(this) Stop;
+		}
 		entry(ctx);
 	}
 
-	//Fehlt noch in MainContext
-	void Forward::eventFestoEmpty(TransportContext& ctx){
-		exit(ctx);
-		new(this) Stop;
-		entry(ctx);
+	void Forward::eventItemInSlide(TransportContext& ctx){
+			exit(ctx);
+			ctx.data.itemCount = ctx.data.itemCount - 1;
+			std::cout<< ctx.data.itemCount << std::endl;
+			if(ctx.data.itemCount == 0){
+				new(this) Stop;
+			}
+			entry(ctx);
 	}
 
 

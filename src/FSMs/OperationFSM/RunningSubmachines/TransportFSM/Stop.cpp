@@ -25,8 +25,8 @@
 
 	void Stop::eventItemAtEntry(TransportContext& ctx){
 		exit(ctx);
-		std::cout<<"+1 Item" << std::endl;
-		//ItemCount erhöhen
+		ctx.data.itemCount = ctx.data.itemCount + 1;
+		std::cout<< ctx.data.itemCount << std::endl;
 		new(this) Forward;
 		entry(ctx);
 	}

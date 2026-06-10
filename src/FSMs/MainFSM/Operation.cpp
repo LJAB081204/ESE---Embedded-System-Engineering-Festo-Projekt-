@@ -45,11 +45,13 @@ void Operation::eventButtonResetPressedRemote(MainContext& ctx) {
 	operationFSM.eventButtonResetPressedRemote();
 }
 void Operation::eventButtonEstopPressed(MainContext& ctx) {
+	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
     new(this) EStop(ctx.hal, EStopSource::LOCAL);
     entry(ctx);
 }
 void Operation::eventButtonEstopPressedRemote(MainContext& ctx) {
+	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
     new(this) EStop(ctx.hal, EStopSource::REMOTE);
     entry(ctx);
@@ -116,6 +118,7 @@ void Operation::eventItemMetalRemote(MainContext& ctx) {
     operationFSM.eventItemMetalRemote();
 }
 void Operation::eventError(MainContext& ctx) {
+	ctx.getOperationFSM().saveHistory(HistorySource::ERROR_HISTORY);
     exit(ctx);
     //new(this) Error;
     entry(ctx);
