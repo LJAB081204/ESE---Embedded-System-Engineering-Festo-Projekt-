@@ -9,6 +9,7 @@
 #include "dataClass.h"
 #include "HAL.h"
 #include "FSMs/MainFSM/MainContext.h"
+#include "HeightSensor.h"
 
 
 
@@ -30,7 +31,7 @@ private:
     _pulse msg;
     void run();
 public:
-    Dispatcher(int conCtrlConnectionID, HAL& hal, dataClass& data);
+    Dispatcher(int conCtrlConnectionID, HAL& hal, dataClass& data, HeightSensor& hs);
     ~Dispatcher();
     int getConnectionID();
 };

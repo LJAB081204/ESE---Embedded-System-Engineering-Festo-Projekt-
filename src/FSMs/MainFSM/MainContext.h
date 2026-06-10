@@ -15,6 +15,7 @@
 #include "EStop.h"
 #include "Error.h"
 #include "../../dataClass.h"
+#include "../../HeightSensor.h"
 
 
 class MainContext {
