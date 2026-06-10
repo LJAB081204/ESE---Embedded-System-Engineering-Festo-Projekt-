@@ -14,6 +14,7 @@
 #include "OperationBase.h"
 #include "Idle.h"
 #include "Running.h"
+#include "../../HeightSensor.h"
 
 #include <iostream>
 
@@ -26,7 +27,8 @@ public:
 	HAL& hal;
 	int connectionID = -1;
 	dataClass& data;
-	OperationContext(HAL& hal,dataClass& data) : hal(hal),data(data){
+	HeightSensor& hs;
+	OperationContext(HAL& hal,dataClass& data,HeightSensor& hs) : hal(hal),data(data),hs(hs){
 		new (currentState) Idle;
 		currentState->entry(*this);
 	}
