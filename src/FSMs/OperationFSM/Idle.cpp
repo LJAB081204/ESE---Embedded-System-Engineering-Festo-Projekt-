@@ -33,14 +33,40 @@
 
 	void Idle::eventButtonStartPressed(OperationContext& ctx){
 		exit(ctx);
-		new (this) Running(ctx.hal,ctx.data);
-		entry(ctx);
+		if (ctx.savedRunning){
+			ctx.currentState = ctx.savedRunning;
+			ctx.savedRunning = nullptr;
+			ctx.currentState->onRestore(ctx.historySource, ctx);
+			ctx.historySource = HistorySource::NONE_HISTORY;
+			ctx.currentState->entry(ctx);
+		} else {
+	        ctx.currentState = new Running(ctx.hal, ctx.data);  // Heap, nicht new(this)
+	        ctx.currentState->entry(ctx);
 		}
+	}
+	void Idle::eventButtonStartPressedRemote(OperationContext& ctx){
+		exit(ctx);
+		if (ctx.savedRunning){
+			ctx.currentState = ctx.savedRunning;
+			ctx.savedRunning = nullptr;
+			ctx.historySource = HistorySource::NONE_HISTORY;
+			ctx.currentState->entry(ctx);
+		} else {
+	        ctx.currentState = new Running(ctx.hal, ctx.data);
+	        ctx.currentState->entry(ctx);
+		}
+	}
 	void Idle::eventButtonStartPressedLong(OperationContext& ctx){
 		exit(ctx);
 		new (this) Service;
 		entry(ctx);
 	}
+	void Idle::eventButtonStartPressedLongRemote(OperationContext& ctx){
+		exit(ctx);
+		new (this) Service;
+		entry(ctx);
+	}
+
 
 
 

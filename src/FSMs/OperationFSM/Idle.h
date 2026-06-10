@@ -15,8 +15,13 @@ public:
 	Idle();
 	void entry(OperationContext& ctx)override;
 	void exit(OperationContext& ctx)override;
+
 	void eventButtonStartPressed(OperationContext& ctx)override;
+	void eventButtonStartPressedRemote(OperationContext& ctx)override;
+
 	void eventButtonStartPressedLong(OperationContext& ctx)override;
+	void eventButtonStartPressedLongRemote(OperationContext& ctx)override;
+
 
 
 };

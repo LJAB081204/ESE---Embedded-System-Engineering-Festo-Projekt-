@@ -96,9 +96,9 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal,d
 				    case PULSE_BTN_ESTOP_REMOTE:
 				        cout << "ESTOP Remote Pulse reached dispatcher" << endl;
 				        if(msg.value.sival_int == 0){
-				            hal.getActors()->motorForwards();
+				            FSM.eventButtonEstopReleasedRemote();
 				        } else {
-				            hal.getActors()->motorStop();
+				            FSM.eventButtonEstopPressedRemote();
 				        }
 				        break;
 
@@ -126,6 +126,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal,d
 				            cout << "Start pressed on remote!" << endl;
 				        } else {
 				            cout << "Start released on remote!" << endl;
+				            FSM.eventButtonStartPressedRemote();
 				        }
 				        break;
 
@@ -145,6 +146,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal,d
 				            cout << "Reset pressed on remote!" << endl;
 				        } else {
 				            cout << "Reset released on remote!" << endl;
+				            FSM.eventButtonResetPressedRemote();
 				        }
 				        break;
 
@@ -164,6 +166,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal,d
 				            cout << "Stop pressed on remote!" << endl;
 				        } else {
 				            cout << "Stop released on remote!" << endl;
+				            FSM.eventButtonStartPressedRemote();
 				        }
 				        break;
 
@@ -182,8 +185,10 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal,d
 				    case PULSE_ITEM_AT_ENTRY_REMOTE:
 				        if(msg.value.sival_int == 1){
 				            cout << "Item at entry on remote!" << endl;
+				            FSM.eventItemAtEntryRemote();
 				        } else {
 				            cout << "Item left entry on remote!" << endl;
+				            FSM.eventItemLeftEntryRemote();
 				        }
 				        break;
 
@@ -202,8 +207,11 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal,d
 				    case PULSE_ITEM_AT_EXIT_REMOTE:
 				        if(msg.value.sival_int == 1){
 				            cout << "Item at exit on remote!" << endl;
+				            FSM.eventItemAtExitRemote();
 				        } else {
 				            cout << "Item left exit on remote!" << endl;
+				            FSM.eventItemLeftExitRemote();
+
 				        }
 				        break;
 
@@ -222,8 +230,11 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal,d
 				    case PULSE_ITEM_AT_PUSHER_REMOTE:
 				        if(msg.value.sival_int == 1){
 				            cout << "Item in pusher on remote!" << endl;
+				            FSM.eventItemAtPusherRemote();
 				        } else {
 				            cout << "Item left pusher on remote!" << endl;
+				            FSM.eventItemLeftPusherRemote();
+
 				        }
 				        break;
 
@@ -241,6 +252,7 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal,d
 				    case PULSE_ITEM_METAL_REMOTE:
 				        if(msg.value.sival_int == 1){
 				            cout << "Item is metal on remote!" << endl;
+				            FSM.eventItemMetalRemote();
 				        } else {
 				            cout << "Item is not metal on remote!" << endl;
 				        }
@@ -279,8 +291,11 @@ Dispatcher::Dispatcher(const char* localName, const char* remoteName, HAL& hal,d
 				    case PULSE_SLIDE_FULL_REMOTE:
 				        if(msg.value.sival_int == 1){
 				            cout << "Slide is full on remote!" << endl;
+				            FSM.eventItemInSlideRemote();
 				        } else {
 				            cout << "Slide cleared on remote!" << endl;
+				            FSM.eventItemLeftSlideRemote();
+
 				        }
 				        break;
 
