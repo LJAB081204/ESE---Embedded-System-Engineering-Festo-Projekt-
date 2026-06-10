@@ -35,6 +35,15 @@ int main(int argc, char **argv) {
 			remote = SYSTEM1;
 		}
 
+		if (strcmp(argv[1],"-c") == 0){
+			local = SYSTEM1;
+			remote = SYSTEM2;
+		}
+		else{
+			local = SYSTEM2;
+			remote = SYSTEM1;
+		}
+
 		cout << "local: " << local << " remote: " << remote << endl;
 
         HAL hal;

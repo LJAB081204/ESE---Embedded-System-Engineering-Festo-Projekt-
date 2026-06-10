@@ -17,7 +17,7 @@ public:
 	void exit(TransportContext& ctx)override;
 
 	void eventFestoReady(TransportContext& ctx)override;
-	void eventFestoNotReady(TransportContext& ctx)override;
+	void eventItemAtEntry(TransportContext& ctx)override;
 };
 
 

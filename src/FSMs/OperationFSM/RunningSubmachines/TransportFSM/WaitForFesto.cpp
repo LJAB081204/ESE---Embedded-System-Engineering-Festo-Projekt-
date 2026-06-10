@@ -28,12 +28,10 @@
 		entry(ctx);
 	}
 
-	void WaitForFesto::eventFestoNotReady(TransportContext& ctx){
-		exit(ctx);
-//		if(!data.getReadyForItemRemote()){					//Datenklasse fehlt noch
-		new(this) WaitForFesto;
-//		}
-		entry(ctx);
+	void WaitForFesto::eventItemAtEntry(TransportContext& ctx){
+		ctx.data.itemCount = ctx.data.itemCount + 1;
+		std::cout<< ctx.data.itemCount << std::endl;
 	}
+
 
 

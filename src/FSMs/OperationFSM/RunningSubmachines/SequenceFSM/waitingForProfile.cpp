@@ -25,6 +25,7 @@
 	}
 
 	void waitingForProfile::eventUpdate(SequenceContext& ctx){
+		if(ctx.data.section2.empty()) return;
 		ctx.resolveProfile();									//Profilierung
 		if(ctx.data.section2.front().item == IH_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 			exit(ctx);

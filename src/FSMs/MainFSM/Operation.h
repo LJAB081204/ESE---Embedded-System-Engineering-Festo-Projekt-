@@ -18,26 +18,53 @@ public:
     Operation(OperationContext& fsm) : operationFSM(fsm) {}
 	void entry(MainContext& ctx) override;
 	void exit(MainContext& ctx) override;
+
 	void eventButtonStartPressed(MainContext& ctx) override;
+    void eventButtonStartPressedRemote(MainContext& ctx) override;
+
 	void eventButtonStartPressedLong(MainContext& ctx) override;
+    void eventButtonStartPressedLongRemote(MainContext& ctx) override;
+
+
 	void eventButtonStopPressed(MainContext& ctx) override;
+    void eventButtonStopPressedRemote(MainContext& ctx) override;
+
 	void eventButtonResetPressed(MainContext& ctx) override;
 	void eventButtonResetPressedRemote(MainContext& ctx) override;
+
 	void eventButtonEstopPressed(MainContext& ctx) override;
 	void eventButtonEstopPressedRemote(MainContext& ctx) override;
+
     void eventItemAtEntry(MainContext& ctx) override;
+    void eventItemAtEntryRemote(MainContext& ctx) override;
+
     void eventItemLeftEntry(MainContext& ctx) override;
+    void eventItemLeftEntryRemote(MainContext& ctx) override;
 
     void eventItemAtExit(MainContext& ctx) override;
+    void eventItemAtExitRemote(MainContext& ctx) override;
+
     void eventItemLeftExit(MainContext& ctx) override;
+    void eventItemLeftExitRemote(MainContext& ctx) override;
+
 
     void eventItemAtPusher(MainContext& ctx) override;
+    void eventItemAtPusherRemote(MainContext& ctx) override;
+
     void eventItemLeftPusher(MainContext& ctx) override;
+    void eventItemLeftPusherRemote(MainContext& ctx) override;
+
 
     void eventItemInSlide(MainContext& ctx) override;
+    void eventItemInSlideRemote(MainContext& ctx) override;
+
     void eventItemLeftSlide(MainContext& ctx) override;
+    void eventItemLeftSlideRemote(MainContext& ctx) override;
+
 
     void eventItemMetal(MainContext& ctx) override;
+    void eventItemMetalRemote(MainContext& ctx) override;
+
 
     void eventError(MainContext& ctx) override;
 
@@ -57,6 +84,12 @@ public:
     void eventUpdate(MainContext& ctx) override;
 
     void eventTimerExpired(MainContext& ctx) override;
+
+
+
+
+    void eventSlideFull(MainContext& ctx) override;
+    void eventSlideFullRemote(MainContext& ctx) override;
 };
 
 
