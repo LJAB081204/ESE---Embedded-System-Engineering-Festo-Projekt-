@@ -2,7 +2,7 @@
 #define SRC_ADC_SOURCES_HEIGHTSENSOR_H_
 
 #define ADC_THRESHOLD 50
-#define CALIBRATION_FILE "calibration.cfg" // Pfad anpassen
+#define CALIBRATION_FILE "/etc/heightsensor/calibration.cfg"
 
 enum Height {
     HEIGHT_UNINITIALIZED,
