@@ -11,7 +11,7 @@
 #include <queue>
 
 enum systemState { IDLE_STATE,RUNNING_STATE,ERROR_STATE,ESTOP_STATE };
-enum itemProfile { IH_PROFILE, IM_PROFILE, IF_PROFILE, IHM_PROFILE, IU_PROFILE, IS_PROFILE, UNDEFINED_PROFILE};
+enum itemProfile { IH_PROFILE, IM_PROFILE, IF_PROFILE, IHM_PROFILE, IU_PROFILE, IS_PROFILE, I_PROFILE, UNDEFINED_PROFILE};
 enum errors { ERROR_CLEARED, ITEM_GONE, ITEM_APPEARED, BOTH_SLIDES_FULL, ITEM_SPECIAL, CONNECTION_LOST, HW_CONTROL_FAILED, PUSHER_OPEN_TOO_LONG };
 
 struct itemData{
@@ -38,6 +38,8 @@ class dataClass{
 	std::queue<itemData> section1;   // Einlauf -> Höhensensor
 	std::queue<itemData> section2;   // Höhensensor -> Weiche
 	std::queue<itemData> section3;   // Weiche -> Bandende
+
+	std::queue<itemData> nextItem;		// in Transport FSM -> bei LeftExit hinzufügen
 
 	//item
 	int itemCount = 0;

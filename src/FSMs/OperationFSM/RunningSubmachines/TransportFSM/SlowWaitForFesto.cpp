@@ -10,30 +10,31 @@
 #include "ForwardSlow.h"
 #include "SlowWaitForFesto.h"
 
+#include <iostream>
+
 	SlowWaitForFesto::SlowWaitForFesto(){
 	}
 
 	void SlowWaitForFesto::entry(TransportContext& ctx){
+		std::cout<<"SlowWaitForFesto" << std::endl;
 		ctx.hal.getActors()->motorStop();
 	}
 
 	void SlowWaitForFesto::exit(TransportContext& ctx){
 	}
 
-	void SlowWaitForFesto::eventItemInSlideRemote(TransportContext& ctx){
+
+	void SlowWaitForFesto::eventFestoReady(TransportContext& ctx){
+		exit(ctx);
 //		if(data.getReadyForItemRemote()){					//Datenklasse fehlt noch
-//			entry(ctx);
-//			new(this) ForwardSlow;
-//			exit(ctx);
+		new(this) ForwardSlow;
 //		}
+		entry(ctx);
 	}
 
-	void SlowWaitForFesto::eventItemLeftExitRemote(TransportContext& ctx){
-//		if(data.getReadyForItemRemote()){					//Datenklasse fehlt noch
-//			entry(ctx);
-//			new(this) ForwardSlow;
-//			exit(ctx);
-//		}
+	void SlowWaitForFesto::eventItemAtEntry(TransportContext& ctx){
+		ctx.data.itemCount = ctx.data.itemCount + 1;
+		std::cout<< ctx.data.itemCount << std::endl;
 	}
 
 

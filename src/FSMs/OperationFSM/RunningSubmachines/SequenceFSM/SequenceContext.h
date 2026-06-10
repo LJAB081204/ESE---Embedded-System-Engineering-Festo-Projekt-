@@ -20,6 +20,7 @@ class SequenceContext{
 	SequenceBase* currentState = reinterpret_cast<SequenceBase*>(stateBuffer);
 
 
+
 public:
 	dataClass& data;
 	SequenceContext(dataClass& data) : data(data){
@@ -27,9 +28,22 @@ public:
 		currentState->entry(*this);
 	}
 
-	virtual void eventUpdate(SequenceContext &fsm)			{currentState->eventUpdate(*this);}
-	virtual void eventItemCorrect(SequenceContext &fsm)		{currentState->eventItemCorrect(*this);}
-	virtual void eventItemWrong(SequenceContext &fsm)		{currentState->eventItemWrong(*this);}
+	bool oneRound = false;
+
+	void resolveProfile() {
+	    if (data.section2.front().special)                                                                                { data.section2.front().item = IS_PROFILE;  return; }
+	    if (data.section2.front().flat && !data.section2.front().high && !data.section2.front().hole && !data.section2.front().metal) { data.section2.front().item = IF_PROFILE;  return; }
+	    if (data.section2.front().high && data.section2.front().hole && data.section2.front().metal)                      { data.section2.front().item = IHM_PROFILE; return; }
+	    if (data.section2.front().high && data.section2.front().metal && !data.section2.front().hole)                     { data.section2.front().item = IM_PROFILE;  return; }
+	    if (data.section2.front().high && data.section2.front().hole && !data.section2.front().metal)                     { data.section2.front().item = IH_PROFILE;  return; }
+	    if (data.section2.front().high && !data.section2.front().hole && !data.section2.front().metal)                    { data.section2.front().item = I_PROFILE;   return; }
+	    data.section2.front().item = IU_PROFILE;
+	}
+
+	void eventUpdate()      { currentState->eventUpdate(*this); }
+	void eventGoBack()      { currentState->eventGoBack(*this); }
+	void eventItemCorrect() { currentState->eventItemCorrect(*this); }
+	void eventItemWrong()   { currentState->eventItemWrong(*this); }
 
 };
 
