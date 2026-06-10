@@ -14,20 +14,15 @@
 
 class Dispatcher {
 private:
-    int localConnectionID;
-    int remoteConnectionID;
+	int ownConnectionID;
+    int conCtrlConnectionID;
     std::chrono::steady_clock::time_point buttonPressStart;
     HAL& hal;
     dataClass& data;
     MainContext FSM;
 
-#ifndef LOCAL_VERSION
-    //GLOBAL VERSION
-    name_attach_t* attach;
-#else
-    //LOCAL VERSION
-    int channelID;
-#endif
+    int ownChannelID;
+
 
 
     bool waitForMessages;
@@ -35,7 +30,7 @@ private:
     _pulse msg;
     void run();
 public:
-    Dispatcher(const char* localName, const char* remoteName,HAL& hal,dataClass& data);
+    Dispatcher(int conCtrlConnectionID, HAL& hal, dataClass& data);
     ~Dispatcher();
     int getConnectionID();
 };

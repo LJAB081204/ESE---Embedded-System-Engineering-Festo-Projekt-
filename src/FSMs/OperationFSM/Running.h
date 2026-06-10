@@ -23,7 +23,7 @@ class Running : public OperationBase{
 	SequenceContext* sequenceFSM;
 	ProfileContext* profileFSM;
 public:
-	Running(HAL& hal,dataClass& data);
+	Running(HAL& hal,dataClass& data,SequenceContext& seq);
 
 	void onRestore(HistorySource source,OperationContext& ctx)override;
 	void entry(OperationContext& ctx)override;

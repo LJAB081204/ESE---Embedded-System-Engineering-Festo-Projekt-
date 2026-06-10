@@ -40,7 +40,7 @@
 			ctx.historySource = HistorySource::NONE_HISTORY;
 			ctx.currentState->entry(ctx);
 		} else {
-	        ctx.currentState = new Running(ctx.hal, ctx.data);  // Heap, nicht new(this)
+	        ctx.currentState = new Running(ctx.hal, ctx.data,ctx.sequenceFSM);  // Heap, nicht new(this)
 	        ctx.currentState->entry(ctx);
 		}
 	}
@@ -53,7 +53,7 @@
 			ctx.historySource = HistorySource::NONE_HISTORY;
 			ctx.currentState->entry(ctx);
 		} else {
-	        ctx.currentState = new Running(ctx.hal, ctx.data);
+	        ctx.currentState = new Running(ctx.hal, ctx.data,ctx.sequenceFSM);
 	        ctx.currentState->entry(ctx);
 		}
 	}
