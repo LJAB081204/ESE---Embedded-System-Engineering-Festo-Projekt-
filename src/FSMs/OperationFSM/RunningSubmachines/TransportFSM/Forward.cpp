@@ -19,6 +19,7 @@
 	void Forward::entry(TransportContext& ctx){
 		std::cout<<"Forward" << std::endl;
 		ctx.hal.getActors()->motorForwards();
+		std::cout<< ctx.data.itemCount << std::endl;
 	}
 
 	void Forward::exit(TransportContext& ctx){
@@ -28,10 +29,17 @@
 		exit(ctx);
 //		if(!ctx.data.readyForItemRemote){ (raise requestTransfer
 			//Datenklasse fehlt noch
-			new(this) WaitForFesto;
+//			new(this) WaitForFesto;
 //		}
 		entry(ctx);
 
+	}
+
+	void Forward::eventItemAtEntry(TransportContext& ctx){
+		exit(ctx);
+		ctx.data.itemCount = ctx.data.itemCount + 1;
+		std::cout<< ctx.data.itemCount << std::endl;
+		entry(ctx);
 	}
 
 	void Forward::eventItemArrived(TransportContext& ctx){
@@ -43,12 +51,23 @@
 
 	void Forward::eventItemLeftExit(TransportContext& ctx){
 		exit(ctx);
-		std::cout<<"-1 Item" << std::endl;
-//		if(ItemCount == 0){
-//			new(this) Stop;
-//		}
+		ctx.data.itemCount = ctx.data.itemCount - 1;
+		std::cout<< ctx.data.itemCount << std::endl;
+		if(ctx.data.itemCount == 0){
+			new(this) Stop;
+		}
 		entry(ctx);
 	}
+
+	void Forward::eventItemInSlide(TransportContext& ctx){
+			exit(ctx);
+			ctx.data.itemCount = ctx.data.itemCount - 1;
+			std::cout<< ctx.data.itemCount << std::endl;
+			if(ctx.data.itemCount == 0){
+				new(this) Stop;
+			}
+			entry(ctx);
+		}
 
 	//Fehlt noch in MainContext
 	void Forward::eventFestoEmpty(TransportContext& ctx){

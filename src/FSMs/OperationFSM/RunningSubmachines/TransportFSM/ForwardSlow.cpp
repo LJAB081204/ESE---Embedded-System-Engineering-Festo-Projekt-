@@ -40,11 +40,7 @@
 		exit(ctx);
 		//if(!ctx.data.readyForItemRemote){ (raise requestTransfer)
 		//Datenklasse fehlt noch
-
-		//nur zum Testen If case
-		if(true){
-			new(this) SlowWaitForFesto;
-		}
+//			new(this) SlowWaitForFesto;
 		//}
 		entry(ctx);
 	}

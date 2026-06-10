@@ -20,6 +20,8 @@ public:
 	void eventItemArrived(TransportContext& ctx)override;
 	void eventItemLeftExit(TransportContext& ctx)override;
 	void eventFestoEmpty(TransportContext& ctx)override;
+	void eventItemAtEntry(TransportContext& ctx)override;
+	void eventItemInSlide(TransportContext& ctx)override;
 };
 
 
