@@ -37,10 +37,26 @@
 		delete profileFSM;
 	}
 
+	void Running::onRestore(HistorySource source, OperationContext& ctx){
+		if (source == HistorySource::ESTOP_HISTORY){
+			delete transportFSM;
+			transportFSM = new TransportContext(ctx.hal,ctx.data);
+			delete weicheFSM;
+			weicheFSM = new WeicheContext(ctx.hal,ctx.data);
+			delete profileFSM;
+			profileFSM = new ProfileContext(ctx.data);
+		}
+		else{
+			transportFSM->reactivate();
+		}
+	}
+
 	void Running::eventButtonStopPressed(OperationContext& ctx){
-		exit(ctx);
-		new (this) Idle;
-		entry(ctx);
+		ctx.saveHistory(HistorySource::STOP_HISTORY);
+	}
+	void Running::eventButtonStopPressedRemote(OperationContext& ctx){
+		ctx.saveHistory(HistorySource::STOP_HISTORY);
+
 	}
 	void Running::eventItemAtEntry(OperationContext& ctx){
 		transportFSM->eventItemAtEntry();
