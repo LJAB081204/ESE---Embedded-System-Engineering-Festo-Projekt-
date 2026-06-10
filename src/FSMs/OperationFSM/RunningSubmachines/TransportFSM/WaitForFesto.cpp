@@ -28,5 +28,10 @@
 		entry(ctx);
 	}
 
+	void WaitForFesto::eventItemAtEntry(TransportContext& ctx){
+		ctx.data.itemCount = ctx.data.itemCount + 1;
+		std::cout<< ctx.data.itemCount << std::endl;
+	}
+
 
 

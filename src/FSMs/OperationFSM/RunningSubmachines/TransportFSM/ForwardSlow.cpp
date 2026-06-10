@@ -44,3 +44,15 @@
 		entry(ctx);
 	}
 
+	void ForwardSlow::eventItemAtEntry(TransportContext& ctx){
+		ctx.data.itemCount = ctx.data.itemCount + 1;
+		std::cout<< ctx.data.itemCount << std::endl;
+	}
+
+	void ForwardSlow::eventItemInSlide(TransportContext& ctx){
+		ctx.data.itemCount = ctx.data.itemCount - 1;
+		std::cout<< ctx.data.itemCount << std::endl;
+		if(ctx.data.itemCount == 0){
+			new(this) Stop;
+		}
+	}

@@ -20,7 +20,6 @@
 		std::cout<<"Forward" << std::endl;
 		ctx.hal.getActors()->motorStop();
 		ctx.hal.getActors()->motorForwards();
-		std::cout<< ctx.data.itemCount << std::endl;
 	}
 
 	void Forward::exit(TransportContext& ctx){
@@ -68,7 +67,7 @@
 				new(this) Stop;
 			}
 			entry(ctx);
-		}
+	}
 
 
 
