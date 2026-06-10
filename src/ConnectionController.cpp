@@ -13,34 +13,26 @@ using namespace std;
 // ------------------------------------------------------------
 // Constructor
 // ------------------------------------------------------------
-ConnectionController::ConnectionController(const char* localName,
-                                           const char* remoteName)
+ConnectionController::ConnectionController(const char* localName, const char* remoteName)
 {
-    cout << "ConCon created!" << endl;
-
-    // Remote INPUT
     remoteIn = name_attach(NULL, localName, NAME_FLAG_ATTACH_GLOBAL);
     if (!remoteIn) { cout << "name_attach failed" << endl; return; }
-    cout << "name_attach success, chid: " << remoteIn->chid << endl;
 
-    wakeRemoteCoid = ConnectAttach(0, 0, remoteIn->chid, _NTO_SIDE_CHANNEL, 0);
-    if (wakeRemoteCoid == -1) cout << "wakeRemoteCoid failed" << endl;
-
-    // Dispatcher INPUT channel
     dispatcherInChid = ChannelCreate(0);
-    cout << "ChannelCreate: " << dispatcherInChid << endl;
-    if (dispatcherInChid == -1) cout << "ChannelCreate failed" << endl;
+    wakeDispatcherCoid = dispatcherInCoid;  // gleiche connection, doppelter Zweck
+    dispatcherInCoid = ConnectAttach(0, 0, dispatcherInChid, _NTO_SIDE_CHANNEL, 0);
+    wakeRemoteCoid   = ConnectAttach(0, 0, remoteIn->chid,   _NTO_SIDE_CHANNEL, 0);
 
-    wakeDispatcherCoid = ConnectAttach(0, 0, dispatcherInChid, _NTO_SIDE_CHANNEL, 0);
-    if (wakeDispatcherCoid == -1) cout << "wakeDispatcherCoid failed" << endl;
+    // Receive-Thread starten BEVOR name_open blockieren kann
+    tRemote = thread(&ConnectionController::runReceiveFromRemote, this);
 
-    cout << "starting name_open for: " << remoteName << endl;
-	remoteOutCoid = -1;
-	while ((remoteOutCoid = name_open(remoteName, NAME_FLAG_ATTACH_GLOBAL)) == -1) {
-		sleep(1);
-		cout << "trying to connect..." << endl;
-	}
-	cout << "connection established, coid: " << remoteOutCoid << endl;
+    remoteOutCoid = -1;
+    while ((remoteOutCoid = name_open(remoteName, NAME_FLAG_ATTACH_GLOBAL)) == -1) {
+        sleep(1);
+        cout << "trying to connect..." << endl;
+    }
+    cout << "connection established, coid: " << remoteOutCoid << endl;
+
 }
 
 
@@ -68,14 +60,10 @@ ConnectionController::~ConnectionController()
 // ------------------------------------------------------------
 // Start threads
 // ------------------------------------------------------------
-void ConnectionController::start(int dispatcherOut)
-{
+void ConnectionController::start(int dispatcherOut){
     dispatcherOutCoid = dispatcherOut;
-
-    tRemote    = thread(&ConnectionController::runReceiveFromRemote, this);
     tDispatcher = thread(&ConnectionController::runReceiveFromDisp, this);
 }
-
 // ------------------------------------------------------------
 // Dispatcher -> Remote
 // ------------------------------------------------------------
@@ -97,6 +85,10 @@ void ConnectionController::runReceiveFromDisp()
             }
 
             MsgSendPulse(remoteOutCoid, SIGEV_PULSE_PRIO_INHERIT, msgFromDispatcher.code, msgFromDispatcher.value.sival_int);
+        }
+        else{
+            MsgReply(rcvid, 0, nullptr, 0);
+
         }
     }
 }
@@ -124,6 +116,9 @@ void ConnectionController::runReceiveFromRemote()
 
             MsgSendPulse( dispatcherOutCoid, SIGEV_PULSE_PRIO_INHERIT, msgFromRemote.code, msgFromRemote.value.sival_int);
         }
+        else{
+            MsgReply(rcvid, 0, nullptr, 0);
+        }
     }
 }
 
@@ -132,5 +127,5 @@ void ConnectionController::runReceiveFromRemote()
 // ------------------------------------------------------------
 int ConnectionController::getConnectionID()
 {
-    return dispatcherInChid;
+    return dispatcherInCoid;
 }

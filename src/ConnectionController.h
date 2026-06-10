@@ -24,6 +24,7 @@ private:
 
 	int remoteOutCoid;
 	int dispatcherOutCoid = -1;
+	int dispatcherInCoid;
 
 	int wakeRemoteCoid;
 	int wakeDispatcherCoid;
