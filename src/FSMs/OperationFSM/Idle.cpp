@@ -49,6 +49,7 @@
 		if (ctx.savedRunning){
 			ctx.currentState = ctx.savedRunning;
 			ctx.savedRunning = nullptr;
+			ctx.currentState->onRestore(ctx.historySource, ctx);
 			ctx.historySource = HistorySource::NONE_HISTORY;
 			ctx.currentState->entry(ctx);
 		} else {

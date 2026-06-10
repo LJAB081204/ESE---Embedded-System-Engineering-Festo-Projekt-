@@ -40,10 +40,10 @@ public:
 	    data.section2.front().item = IU_PROFILE;
 	}
 
-	virtual void eventUpdate(SequenceContext &fsm)			{currentState->eventUpdate(*this);}
-	virtual void eventGoBack(SequenceContext &fsm)			{currentState->eventGoBack(*this);}
-	virtual void eventItemCorrect(SequenceContext &fsm)		{currentState->eventItemCorrect(*this);}
-	virtual void eventItemWrong(SequenceContext &fsm)		{currentState->eventItemWrong(*this);}
+	void eventUpdate()      { currentState->eventUpdate(*this); }
+	void eventGoBack()      { currentState->eventGoBack(*this); }
+	void eventItemCorrect() { currentState->eventItemCorrect(*this); }
+	void eventItemWrong()   { currentState->eventItemWrong(*this); }
 
 };
 

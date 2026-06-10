@@ -20,19 +20,19 @@ int main(int argc, char **argv) {
 		const char* local = SYSTEM1;
 		const char* remote = SYSTEM2;
 
-//		if (argc < 2) {
-//	        printf("Usage %s -s | -c \n", argv[0]);
-//	        return 0;
-//	    }
-//
-//		if (strcmp(argv[1],"-c") == 0){
-//			local = SYSTEM1;
-//			remote = SYSTEM2;
-//		}
-//		else{
-//			local = SYSTEM2;
-//			remote = SYSTEM1;
-//		}
+		if (argc < 2) {
+	        printf("Usage %s -s | -c \n", argv[0]);
+	        return 0;
+	    }
+
+		if (strcmp(argv[1],"-c") == 0){
+			local = SYSTEM1;
+			remote = SYSTEM2;
+		}
+		else{
+			local = SYSTEM2;
+			remote = SYSTEM1;
+		}
 
 
         HAL hal;
