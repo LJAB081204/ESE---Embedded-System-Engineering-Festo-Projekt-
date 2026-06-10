@@ -47,7 +47,7 @@
 			profileFSM = new ProfileContext(ctx.data);
 		}
 		else{
-			//transportFSM->reactivate();
+			transportFSM->reactivate();
 		}
 	}
 
