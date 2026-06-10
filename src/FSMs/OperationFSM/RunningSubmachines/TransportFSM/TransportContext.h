@@ -45,6 +45,7 @@ public:
 
 	void eventFestoReady() 			 { currentState->eventFestoReady(*this); }
 	void eventFestoNotReady() 			 { currentState->eventFestoNotReady(*this); }
+	void reactivate() 			 { currentState->entry(*this); }
 
 
 
