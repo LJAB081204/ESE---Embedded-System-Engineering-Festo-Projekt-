@@ -18,6 +18,7 @@
 
 	void Forward::entry(TransportContext& ctx){
 		std::cout<<"Forward" << std::endl;
+		ctx.hal.getActors()->motorStop();
 		ctx.hal.getActors()->motorForwards();
 		std::cout<< ctx.data.itemCount << std::endl;
 	}
@@ -29,7 +30,7 @@
 		exit(ctx);
 //		if(!ctx.data.readyForItemRemote){ (raise requestTransfer
 			//Datenklasse fehlt noch
-//			new(this) WaitForFesto;
+			new(this) WaitForFesto;
 //		}
 		entry(ctx);
 
@@ -49,7 +50,7 @@
 	}
 
 
-	void Forward::eventItemLeftExit(TransportContext& ctx){
+	void Forward::eventItemAtEntryRemote(TransportContext& ctx){
 		exit(ctx);
 		ctx.data.itemCount = ctx.data.itemCount - 1;
 		std::cout<< ctx.data.itemCount << std::endl;
@@ -68,13 +69,6 @@
 			}
 			entry(ctx);
 		}
-
-	//Fehlt noch in MainContext
-	void Forward::eventFestoEmpty(TransportContext& ctx){
-		exit(ctx);
-		new(this) Stop;
-		entry(ctx);
-	}
 
 
 

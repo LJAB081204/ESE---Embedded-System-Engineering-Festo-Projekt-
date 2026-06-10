@@ -26,22 +26,21 @@
 
 	void ForwardSlow::eventItemGone(TransportContext& ctx){
 		exit(ctx);
-		new(this) Forward;		//Datenklasse fehlt noch
-		entry(ctx);
-	}
-
-	void ForwardSlow::eventFestoEmpty(TransportContext& ctx){
-		exit(ctx);
-		new(this) Stop;
+		if(ctx.data.itemCount != 0){
+			new(this) Forward;		//Datenklasse fehlt noch
+		}
+		else{
+			new(this) Stop;
+		}
 		entry(ctx);
 	}
 
 	void ForwardSlow::eventItemAtExit(TransportContext& ctx){
 		exit(ctx);
-		//if(!ctx.data.readyForItemRemote){ (raise requestTransfer)
-		//Datenklasse fehlt noch
-//			new(this) SlowWaitForFesto;
-		//}
+//		if(!ctx.data.readyForItemRemote){ (raise requestTransfer)
+//		Datenklasse fehlt noch
+			new(this) SlowWaitForFesto;
+//		}
 		entry(ctx);
 	}
 

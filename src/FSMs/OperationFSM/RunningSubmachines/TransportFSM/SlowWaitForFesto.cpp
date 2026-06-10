@@ -32,12 +32,5 @@
 		entry(ctx);
 	}
 
-	void SlowWaitForFesto::eventFestoNotReady(TransportContext& ctx){
-		exit(ctx);
-//		if(!data.getReadyForItemRemote()){					//Datenklasse fehlt noch
-		new(this) SlowWaitForFesto;
-//		}
-		entry(ctx);
-	}
 
 
