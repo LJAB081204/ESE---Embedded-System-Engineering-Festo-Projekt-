@@ -123,7 +123,7 @@ public:
     void eventItemMetal()			   { currentState->eventItemMetal(*this); }
     void eventItemMetalRemote()              { currentState->eventItemMetalRemote(*this); }
 
-    void eventItemArrived()			   { std::cout<<"WWWWWWWW" << std::endl; currentState->eventItemArrived(*this);}
+    void eventItemArrived()			   { currentState->eventItemArrived(*this);}
     void eventItemGone()			   { currentState->eventItemGone(*this);}
 
     void eventFestoReady()			   { currentState->eventItemGone(*this);}

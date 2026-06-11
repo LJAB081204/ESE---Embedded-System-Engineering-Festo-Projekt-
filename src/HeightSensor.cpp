@@ -41,6 +41,7 @@ HeightSensor::~HeightSensor(){
 // Reihenfolge ist fest vorgegeben:
 // 1. Laufband leer, 2. Hohes Werkstück, 3. Bohrung, 4. High(skip), 5. Laufband(skip), 6. Flat
 void HeightSensor::calibrate() {
+	this->calibrateRunning = true;
 	int tmpConveyor, tmpHigh, tmpDrilling,tmpFlat;
     struct _pulse pulse;
     int state = 1;
@@ -52,8 +53,8 @@ void HeightSensor::calibrate() {
         MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
         sum += pulse.value.sival_int;
     }
-    tmpConveyor = sum / 20;
-    std::cout << "Kalibrierung: refConveyor=" << tmpConveyor << std::endl;
+    refConveyor = sum / 20;
+    std::cout << "Kalibrierung: refConveyor=" << refConveyor << std::endl;
 
     while(state != 6 && calibrateRunning){
 
@@ -81,12 +82,12 @@ void HeightSensor::calibrate() {
             }
             if(!calibrateRunning){
                 	return;
-
             }
+
             long drillingSum = 0;
             for(int i = 0; i < 5; i++) drillingSum += window[i];
-            tmpDrilling = drillingSum / 5;
-            std::cout << "Kalibrierung: refDrilling=" << tmpDrilling << std::endl;
+            refDrilling = drillingSum / 5;
+            std::cout << "Kalibrierung: refDrilling=" << refDrilling << std::endl;
             state = 3;
             continue;
         }
@@ -97,6 +98,8 @@ void HeightSensor::calibrate() {
         while(!validHeight && calibrateRunning){
             int window[20] = {};
             int idx = 0, stableCount = 0;
+
+            //int requiredStable = (state == 3 || state == 4) ? 1 : 5;
             while(stableCount < 5 && calibrateRunning){
                 adc.sample();
                 MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
@@ -128,20 +131,20 @@ void HeightSensor::calibrate() {
         }
 
         switch(state){
-            case 1: tmpHigh = measuredVal; std::cout << "Kalibrierung: refHigh=" << tmpHigh << std::endl; state = 2; break;
+            case 1: refHigh = measuredVal; std::cout << "Kalibrierung: refHigh=" << refHigh << std::endl; state = 2; break;
             case 3: state = 4; break;
             case 4: state = 5; break;
-            case 5: tmpFlat = measuredVal; std::cout << "Kalibrierung: refFlat=" << tmpFlat << std::endl; state = 6; break;
+            case 5: refFlat = measuredVal; std::cout << "Kalibrierung: refFlat=" << refFlat << std::endl; state = 6; break;
         }
     }
     if(!calibrateRunning){
     	return;
     }
 
-    refConveyor = tmpConveyor;
+    /*refConveyor = tmpConveyor;
     refHigh = tmpHigh;
     refDrilling = tmpDrilling;
-    refFlat = tmpFlat;
+    refFlat = tmpFlat;*/
 
     saveCalibration();
     std::cout << "Kalibrierung: Abgeschlossen" << std::endl;
@@ -313,9 +316,9 @@ void HeightSensor::setStartCalibration(){
 }
 
 void HeightSensor::stopCalibration(){
-	if(!calibrateRunning){
+	if(calibrateRunning){
 		calibrateRunning = false;
-		doCalibrate=true;
+		doCalibrate=false;
 	}
 
 }

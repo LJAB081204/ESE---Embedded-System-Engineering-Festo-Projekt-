@@ -20,6 +20,8 @@
 	void Service::entry(OperationContext& ctx){
 		ctx.hal.getActors()->greenLampBlink(1000);
 		ctx.hal.getActors()->ledButtonReset();
+		ctx.hal.getActors()->ledButtonStartOff();
+		ctx.hal.getActors()->motorStop();
 	}
 
 	void Service::exit(OperationContext& ctx){
@@ -38,9 +40,9 @@
 	}
 
 	void Service::eventButtonResetPressed(OperationContext& ctx){
-			exit(ctx);
-			new (this) HeightCalibration;
-			entry(ctx);
+		exit(ctx);
+		new (this) HeightCalibration;
+		entry(ctx);
 	}
 
 

@@ -42,11 +42,11 @@ using namespace std;
 		ThreadCtl(_NTO_TCTL_IO, 0); // Request IO privileges for this thread.
 		_pulse msg;
 		while(waitForMessages){
-			std::cout << "Waiting for pulse..." << std::endl;
+			//std::cout << "Waiting for pulse..." << std::endl;
 
 		    int recvid = MsgReceivePulse(channelID, &msg, sizeof(_pulse), nullptr);
 
-		    	std::cout << "Pulse received: " << msg.code << std::endl;
+		    	//std::cout << "Pulse received: " << msg.code << std::endl;
 				switch(msg.code){
 
 				case PULSE_BTN_ESTOP_LOCAL:
