@@ -98,11 +98,21 @@ void HeightSensor::calibrate() {
         while(!validHeight && calibrateRunning){
             int window[20] = {};
             int idx = 0, stableCount = 0;
-
+            bool itemArrived = false;
             //int requiredStable = (state == 3 || state == 4) ? 1 : 5;
             while(stableCount < 5 && calibrateRunning){
                 adc.sample();
                 MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
+                int val = pulse.value.sival_int;
+                // Sofort Pulse wenn Werkstück erkannt
+			    if(!itemArrived && abs(val - refConveyor) >= ADC_THRESHOLD){
+			    	if(state ==1 || state ==5){
+				    MsgSendPulse(dispCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_ARRIVED, 0);
+
+				    itemArrived = true;
+			    	}
+			    }
+
                 window[idx % windowSize] = pulse.value.sival_int;
                 idx++;
                 if(idx >= windowSize){
