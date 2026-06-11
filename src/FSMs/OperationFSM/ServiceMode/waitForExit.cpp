@@ -18,7 +18,6 @@ waitForExit::waitForExit(){};
 
 void waitForExit::entry(OperationContext& ctx) {
 	std::cout<< "waitForExit" << std::endl;
-	ctx.hal.getActors()->closePusher();
 }
 
 void waitForExit::exit(OperationContext& ctx) {}

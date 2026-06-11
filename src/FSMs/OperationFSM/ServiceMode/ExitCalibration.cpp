@@ -17,14 +17,14 @@ ExitCalibration::ExitCalibration(){};
 
 void ExitCalibration::entry(OperationContext& ctx) {
 	std::cout<< "ExitCalibration" << std::endl;
-//	ctx.hal.getActors()->motorStop();
+	ctx.hal.getActors()->motorStop();
 }
 
 void ExitCalibration::exit(OperationContext& ctx) {
 	//timer setzten
 }
 
-void ExitCalibration::eventItemAtExit(OperationContext& ctx) {
+void ExitCalibration::eventItemLeftExit(OperationContext& ctx) {
 	exit(ctx);
 	new(this) Service;
 	entry(ctx);
