@@ -24,7 +24,10 @@ void ProfileIH::exit(ProfileContext& ctx) {}
 
 void ProfileIH::eventItemGone(ProfileContext& ctx) {
 	exit(ctx);
-	//in die Datenklasse schreiben
+	if(!ctx.data.section1.empty()){
+		ctx.data.section1.front().hole = true;
+		ctx.data.moveFrom1To2();
+	}
 	new(this) Default;
 	entry(ctx);
 }
