@@ -13,13 +13,14 @@
 #include <sys/neutrino.h>
 #include "IF.h"
 #include "IM.h"
+#include <iostream>
 namespace M1{
 
 	IHM::IHM(){
 	}
 
 	void IHM::entry(SequenceContext& ctx){
-
+		std::cout << "IHM --- next expected -> IH" << std::endl;
 	}
 
 	void IHM::exit(SequenceContext& ctx){

@@ -12,13 +12,14 @@
 #include "IH.h"
 #include "../../../../PulseMessages.h"
 #include <sys/neutrino.h>
+#include <iostream>
 namespace M1{
 
 	IM::IM(){
 	}
 
 	void IM::entry(SequenceContext& ctx){
-
+		std::cout << "IM --- next expected -> IF" << std::endl;
 	}
 
 	void IM::exit(SequenceContext& ctx){

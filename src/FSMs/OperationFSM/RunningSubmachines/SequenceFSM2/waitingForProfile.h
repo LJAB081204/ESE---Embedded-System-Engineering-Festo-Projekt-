@@ -18,8 +18,11 @@ public:
 	void exit(SequenceContext& ctx)override;
 
 	void eventUpdate(SequenceContext& ctx)override;
+	void eventItemAtPusher(SequenceContext& ctx) override;
 	void raiseItemWrong(SequenceContext& ctx);
 	void raiseItemCorrect(SequenceContext& ctx);
+	void raiseGoBackWFP(SequenceContext& ctx);
+	void raiseRequestSlide(SequenceContext& ctx);
 };
 
 }

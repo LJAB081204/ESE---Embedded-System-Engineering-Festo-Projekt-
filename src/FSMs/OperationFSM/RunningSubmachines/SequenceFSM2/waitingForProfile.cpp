@@ -11,6 +11,8 @@
 #include "IH.h"
 #include "../../../../PulseMessages.h"
 #include <sys/neutrino.h>
+#include <iostream>
+
 namespace M2{
 
 
@@ -19,6 +21,7 @@ namespace M2{
 
 	void waitingForProfile::entry(SequenceContext& ctx){
 		ctx.oneRound = false;
+		std::cout << "Next expected -> IH" << std::endl;
 	}
 
 	void waitingForProfile::exit(SequenceContext& ctx){
@@ -27,7 +30,7 @@ namespace M2{
 
 	void waitingForProfile::eventUpdate(SequenceContext& ctx){
 		if(ctx.data.section2.empty()) return;
-		ctx.resolveProfile();									//Profilierung
+		ctx.resolveProfile();	//Profilierung
 		if(ctx.data.section2.front().item == IH_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 			exit(ctx);
 			raiseItemCorrect(ctx);
@@ -41,10 +44,28 @@ namespace M2{
 		}
 	}
 
+	void waitingForProfile::eventItemAtPusher(SequenceContext& ctx){
+		itemProfile item = ctx.resolveProfile();
+		if(item != ctx.data.nextItem.front().item){
+			ctx.data.nextItem.pop();
+			raiseGoBackWFP(ctx);
+			std::cout << "Wrong Item Detected" << std::endl;
+			//error falsches werkstück erkannt
+		}
+		else{
+			ctx.data.nextItem.pop();
+		}
+	}
+
 	void waitingForProfile::raiseItemCorrect(SequenceContext& ctx){
 		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ITEM_CORRECT, 0);
 	}
 	void waitingForProfile::raiseItemWrong(SequenceContext& ctx){
 		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ITEM_WRONG, 0);
 	}
+
+	void waitingForProfile::raiseGoBackWFP(SequenceContext& ctx){
+		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_WFP, 0);
+	}
+
 }

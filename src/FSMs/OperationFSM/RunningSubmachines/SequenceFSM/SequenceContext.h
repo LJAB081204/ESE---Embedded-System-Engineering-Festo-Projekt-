@@ -31,15 +31,16 @@ public:
 
 	bool oneRound = false;
 
-	void resolveProfile() {
-	    if (data.section2.empty()) return;
-	    if (data.section2.front().special)                                                                                { data.section2.front().item = IS_PROFILE;  return; }
-	    if (data.section2.front().flat && !data.section2.front().high && !data.section2.front().hole && !data.section2.front().metal) { data.section2.front().item = IF_PROFILE;  return; }
-	    if (data.section2.front().high && data.section2.front().hole && data.section2.front().metal)                      { data.section2.front().item = IHM_PROFILE; return; }
-	    if (data.section2.front().high && data.section2.front().metal && !data.section2.front().hole)                     { data.section2.front().item = IM_PROFILE;  return; }
-	    if (data.section2.front().high && data.section2.front().hole && !data.section2.front().metal)                     { data.section2.front().item = IH_PROFILE;  return; }
-	    if (data.section2.front().high && !data.section2.front().hole && !data.section2.front().metal)                    { data.section2.front().item = I_PROFILE;   return; }
+	itemProfile resolveProfile() {
+	    if (data.section2.empty()) return UNDEFINED_PROFILE;
+	    if (data.section2.front().special)                                                                                { data.section2.front().item = IS_PROFILE;  return IS_PROFILE; }
+	    if (data.section2.front().flat && !data.section2.front().high && !data.section2.front().hole && !data.section2.front().metal) { data.section2.front().item = IF_PROFILE;  return IF_PROFILE; }
+	    if (data.section2.front().high && data.section2.front().hole && data.section2.front().metal)                      { data.section2.front().item = IHM_PROFILE; return IHM_PROFILE; }
+	    if (data.section2.front().high && data.section2.front().metal && !data.section2.front().hole)                     { data.section2.front().item = IM_PROFILE;  return IM_PROFILE; }
+	    if (data.section2.front().high && data.section2.front().hole && !data.section2.front().metal)                     { data.section2.front().item = IH_PROFILE;  return IH_PROFILE; }
+	    if (data.section2.front().high && !data.section2.front().hole && !data.section2.front().metal)                    { data.section2.front().item = I_PROFILE;   return I_PROFILE; }
 	    data.section2.front().item = IU_PROFILE;
+	    return IU_PROFILE;
 	}
 
 	void eventUpdate()      { currentState->eventUpdate(*this); }
