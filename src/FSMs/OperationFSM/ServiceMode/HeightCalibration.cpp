@@ -18,6 +18,7 @@
 	}
 
 	void HeightCalibration::entry(OperationContext& ctx){
+		std::cout << "HeightCalibration" << std::endl;
 		ctx.hal.getActors()->greenLampBlink(500);
 		ctx.hal.getActors()->ledButtonStart();
 		ctx.hal.getActors()->ledButtonResetOff();
@@ -25,6 +26,7 @@
 	}
 
 	void HeightCalibration::exit(OperationContext& ctx){
+		ctx.hal.getActors()->greenLampBlinkOff();
 		ctx.hs.stopCalibration();
 		std::cout << "exit calibration" << std::endl;
 	}
@@ -41,9 +43,37 @@
 		entry(ctx);
 	}
 
+	void HeightCalibration::eventButtonStartPressedLongRemote(OperationContext& ctx){
+		exit(ctx);
+		new (this) Idle;
+		entry(ctx);
+	}
+
+	void HeightCalibration::eventButtonStartPressedRemote(OperationContext& ctx){
+		exit(ctx);
+		new (this) Service;
+		entry(ctx);
+	}
+
 	void HeightCalibration::eventItemAtEntry(OperationContext& ctx){
 		ctx.hal.getActors()->motorForwards();
-//		ctx.hs.calibrate();
+	}
+
+	void HeightCalibration::eventItemArrived(OperationContext& ctx){
+		ctx.hal.getActors()->motorSlow();
+	}
+
+	void HeightCalibration::eventItemGone(OperationContext& ctx){
+		ctx.hal.getActors()->motorForwards();
+	}
+
+	void HeightCalibration::eventItemAtPusher(OperationContext& ctx){
+			ctx.hal.getActors()->letItemPass();
+	}
+
+	void HeightCalibration::eventItemAtExit(OperationContext& ctx){
+			ctx.hal.getActors()->motorStop();
+			ctx.hal.getActors()->closePusher();
 	}
 
 

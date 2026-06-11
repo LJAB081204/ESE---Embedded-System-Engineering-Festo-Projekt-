@@ -10,6 +10,7 @@
 #include "../OperationBase.h"
 #include "../OperationContext.h"
 #include "PusherCalibration.h"
+#include "../Service.h"
 
 #include "waitForExit.h"
 
@@ -18,8 +19,8 @@
 PusherCalibration::PusherCalibration(){};
 
 void PusherCalibration::entry(OperationContext& ctx) {
-	std::cout<< "4" << std::endl;
-	ctx.hal.getActors()->openPusher();
+	std::cout<< "PusherCalibration" << std::endl;
+	ctx.hal.getActors()->letItemPass();
 }
 
 void PusherCalibration::exit(OperationContext& ctx) {
@@ -36,5 +37,17 @@ void PusherCalibration::eventItemLeftPusher(OperationContext& ctx) {
 void PusherCalibration::eventButtonStartPressedLong(OperationContext& ctx){
 	exit(ctx);
 	new (this) Idle;
+	entry(ctx);
+}
+
+void PusherCalibration::eventButtonStopPressed(OperationContext& ctx){
+	exit(ctx);
+	new (this) Service;
+	entry(ctx);
+}
+
+void PusherCalibration::eventButtonStopPressedRemote(OperationContext& ctx){
+	exit(ctx);
+	new (this) Service;
 	entry(ctx);
 }
