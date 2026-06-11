@@ -27,6 +27,7 @@ public:
 	HAL& hal;
 	int connectionID = -1;
 	dataClass& data;
+	HeightSensor& hs;
 	M1::SequenceContext sequenceFSM{data};
 	OperationBase* savedRunning = nullptr;
 	OperationBase* currentState = reinterpret_cast<OperationBase*>(stateBuffer);
