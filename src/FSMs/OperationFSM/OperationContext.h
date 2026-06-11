@@ -14,8 +14,9 @@
 #include "OperationBase.h"
 #include "Idle.h"
 #include "Running.h"
-
+#include "RunningSubmachines/SequenceFSM/SequenceContext.h"
 #include <iostream>
+#include "../../HeightSensor.h"
 
 class OperationContext{
 	//Kontext
@@ -26,11 +27,13 @@ public:
 	HAL& hal;
 	int connectionID = -1;
 	dataClass& data;
+	HeightSensor& hs;
+	SequenceContext sequenceFSM{data};
 	Running* savedRunning = nullptr;
 	OperationBase* currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 	HistorySource historySource = HistorySource::NONE_HISTORY;
 
-	OperationContext(HAL& hal,dataClass& data) : hal(hal),data(data){
+	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs) : hal(hal),data(data),hs(hs){
 		new (currentState) Idle;
 		currentState->entry(*this);
 	}
@@ -45,6 +48,21 @@ public:
 			currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 			currentState->entry(*this);
 		}
+		else if (source == HistorySource::ESTOP_HISTORY){
+			if (currentState != reinterpret_cast<OperationBase*>(stateBuffer)){
+				currentState->exit(*this);
+				delete currentState;
+			}
+			if (savedRunning != nullptr){
+				savedRunning->exit(*this);
+				delete savedRunning;
+				savedRunning = nullptr;
+			}
+			new (stateBuffer) Idle;
+			currentState = reinterpret_cast<OperationBase*>(stateBuffer);
+		}
+
+
 	}
 	void restoreHistory(){
 		currentState->onRestore(historySource, *this);
