@@ -69,4 +69,32 @@ bool dataClass::addItem(){
 	section1.push(item);
 	return true;
 }
-;
+
+bool dataClass::removeItem(int queue){
+	switch (queue){
+			case 1:
+				if(section1.empty()){
+					return false;
+				}
+				section1.pop();
+				itemCount--;
+				return true;
+			case 2:
+				if(section2.empty()){
+					return false;
+				}
+				section2.pop();
+				itemCount--;
+				return true;
+			case 3:
+				if(section3.empty()){
+					return false;
+				}
+				section3.pop();
+				itemCount--;
+				return true;
+			default:
+				return false;
+	}
+}
+

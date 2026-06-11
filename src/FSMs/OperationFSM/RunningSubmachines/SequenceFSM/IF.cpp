@@ -65,6 +65,7 @@ namespace M1{
 		}
 	}
 	void IF::raiseItemCorrect(SequenceContext& ctx){
+
 		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ITEM_CORRECT, 0);
 	}
 	void IF::raiseItemWrong(SequenceContext& ctx){
