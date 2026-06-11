@@ -42,7 +42,7 @@ HeightSensor::~HeightSensor(){
 // 1. Laufband leer, 2. Hohes Werkstück, 3. Bohrung, 4. High(skip), 5. Laufband(skip), 6. Flat
 void HeightSensor::calibrate() {
 	this->calibrateRunning = true;
-	int tmpConveyor, tmpHigh, tmpDrilling,tmpFlat;
+	//int tmpConveyor, tmpHigh, tmpDrilling,tmpFlat;
     struct _pulse pulse;
     int state = 1;
 
@@ -102,14 +102,22 @@ void HeightSensor::calibrate() {
             //int requiredStable = (state == 3 || state == 4) ? 1 : 5;
             while(stableCount < 5 && calibrateRunning){
                 adc.sample();
-                MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
+               MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
                 int val = pulse.value.sival_int;
                 // Sofort Pulse wenn Werkstück erkannt
 			    if(!itemArrived && abs(val - refConveyor) >= ADC_THRESHOLD){
-			    	if(state ==1 || state ==5){
+			    	if(state ==1 || state ==5){		//von conveyor auf high/flat
 				    MsgSendPulse(dispCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_ARRIVED, 0);
-
+				    std::cout << "Item Arrived" << std::endl;
 				    itemArrived = true;
+			    	}
+
+			    }
+			    else if(!itemArrived && abs(val - refConveyor) < ADC_THRESHOLD){
+			    	if(state ==4 || state ==6){		//von flat/high auf conveyor
+					MsgSendPulse(dispCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_GONE, 0);
+					std::cout << "Item Arrived" << std::endl;
+					itemArrived = true;
 			    	}
 			    }
 
