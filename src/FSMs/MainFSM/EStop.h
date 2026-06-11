@@ -15,7 +15,7 @@
 class EStop : public MainBase {
 	EStopContext eStopFSM;
 public:
-		EStop(HAL& hal, EStopSource source) : eStopFSM(hal, source) {}
+		EStop(HAL& hal,HeightSensor& hs, EStopSource source) : eStopFSM(hal, hs, source) {}
 		void entry(MainContext& ctx) override;
 	    void exit(MainContext& ctx) override;
 	    void eventButtonEstopPressed(MainContext& ctx) override;

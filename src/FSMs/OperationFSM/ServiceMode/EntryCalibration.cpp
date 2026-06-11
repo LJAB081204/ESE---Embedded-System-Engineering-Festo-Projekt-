@@ -16,24 +16,11 @@ EntryCalibration::EntryCalibration(){};
 void EntryCalibration::entry(OperationContext& ctx) {
 	std::cout<< "1" << std::endl;
 	ctx.hal.getActors()->motorForwards();
-	ctx.hs.calibrate();
 }
 
 void EntryCalibration::exit(OperationContext& ctx) {
 	//Timer setzten
 }
-
-//void EntryCalibration::eventHeightHigh(OperationContext& ctx) {
-//	exit(ctx);
-//	new(this) HeightDetect;
-//	entry(ctx);
-//}
-//
-//void EntryCalibration::eventHeightFlat(OperationContext& ctx) {
-//	exit(ctx);
-//	new(this) HeightDetect;
-//	entry(ctx);
-//}
 
 void EntryCalibration::eventItemArrived(OperationContext& ctx){
 	exit(ctx);
@@ -46,5 +33,6 @@ void EntryCalibration::eventButtonStartPressedLong(OperationContext& ctx){
 	new (this) Idle;
 	entry(ctx);
 }
+
 
 
