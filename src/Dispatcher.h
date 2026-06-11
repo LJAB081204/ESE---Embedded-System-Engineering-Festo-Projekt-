@@ -18,16 +18,17 @@ class Dispatcher {
 private:
 	int ownConnectionID;
     int conCtrlConnectionID;
-    std::chrono::steady_clock::time_point buttonPressStart;
-    RunningFactory& factory;
+
     HAL& hal;
     dataClass& data;
-    MainContext FSM;
+    RunningFactory& factory;
 
+    std::chrono::steady_clock::time_point buttonPressStart;
+	MainContext FSM;
     int ownChannelID;
 
 
-
+    bool itemAtExit;
     bool waitForMessages;
     std::thread DispatcherThread;
     _pulse msg;

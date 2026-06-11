@@ -31,6 +31,7 @@ class dataClass{
 
 	//Connection
 	int conId = -1;
+	int controllerConId = -1;
 
 	// Laufband
 	int nextItemID = 1;

@@ -21,8 +21,8 @@ class EStopContext {
     EStopBase* currentState = reinterpret_cast<EStopBase*>(stateBuffer);
     bool active = false;
 public:
-    HeightSensor& hs;
     HAL& hal;
+    HeightSensor& hs;
     bool isActive() { return active; }
     void setActive(bool a) { active = a; }
 

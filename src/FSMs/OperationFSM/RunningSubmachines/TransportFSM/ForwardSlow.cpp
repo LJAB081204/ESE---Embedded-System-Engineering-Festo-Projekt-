@@ -59,7 +59,7 @@ namespace M1{
 		}
 	}
 	void ForwardSlow::raiseRequestTransfer(TransportContext& ctx){
-			MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_REQUEST_TRANSFER,0);
+			MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_TRANSFER_REQUEST,0);
 
 		}
 }

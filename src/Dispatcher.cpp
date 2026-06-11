@@ -16,7 +16,7 @@
 using namespace std;
 
 Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory)
-    : hal(hal), data(data),factory(factory),FSM(hal,data,hs,factory), conCtrlConnectionID(conCtrlConnectionID) {
+: conCtrlConnectionID(conCtrlConnectionID), hal(hal), data(data), factory(factory), FSM(hal, data, hs, factory) {
 
     if ((ownChannelID = ChannelCreate(0)) == -1){
         //cout << "ChannelCreate failed" << endl;
@@ -29,6 +29,8 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
     DispatcherThread = thread(&Dispatcher::run, this);
 
     data.conId = ownConnectionID;
+    data.controllerConId = conCtrlConnectionID;
+    itemAtExit = false;
 }
 	Dispatcher::~Dispatcher(){
 		MsgSendPulse(ownConnectionID,-1,PULSE_STOP_RECEIVING,0);
@@ -89,8 +91,15 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 
 				    case PULSE_BTN_START_REMOTE:
 				        if(msg.value.sival_int == 1){
+				            buttonPressStart = chrono::steady_clock::now();
+
 				            //cout << "Start pressed on remote!" << endl;
 				        } else {
+				            auto diff = chrono::steady_clock::now() - buttonPressStart;
+				            auto ms = chrono::duration_cast<chrono::milliseconds>(diff).count();
+				            if(ms > 1000){
+				            	FSM.eventButtonStartPressedLongRemote();
+				            }
 				            //cout << "Start released on remote!" << endl;
 				            FSM.eventButtonStartPressedRemote();
 				        }
@@ -161,10 +170,12 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    case PULSE_ITEM_AT_EXIT_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            //cout << "Item at exit!" << endl;
+				        	itemAtExit = true;
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_EXIT_REMOTE, 1);
 				            FSM.eventItemAtExit();
 				        } else {
 				            //cout << "Item left exit!" << endl;
+				        	itemAtExit = false;
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_EXIT_REMOTE, 0);
 				            FSM.eventItemLeftExit();
 				        }
@@ -270,6 +281,32 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    	break;
 				    case PULSE_ITEM_ARRIVED:
 				    	FSM.eventItemArrived();
+				    	break;
+				    case PULSE_EVENT_TRANSFER_REQUEST:
+						std::cout<< "request arrived" << std::endl;
+
+				    	if(true){
+				    		std::cout<< "Festo ready" << std::endl;
+
+				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_TRANSFER_REPLY, 1);
+				    	}
+				    	else{
+				    		std::cout<< "Festo not ready" << std::endl;
+
+				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_TRANSFER_REPLY, 0);
+				    	}
+				    	break;
+				    case PULSE_EVENT_TRANSFER_REPLY:
+				    	if(msg.value.sival_int == 1){
+				    		std::cout<< "Festo ready arrived" << std::endl;
+
+				    		FSM.eventFestoReady();
+				    	}
+				    	else{
+				    		std::cout<< "Festo not ready  arrived" << std::endl;
+
+				    		FSM.eventFestoNotReady();
+				    	}
 				    	break;
 
 				    case PULSE_NEW_HEIGHT_LOCAL:

@@ -29,6 +29,8 @@ public:
 		new (currentState) Free;
 		currentState->entry(*this);
 	}
+	virtual ~SlideContext() = default;
+
 
 	virtual void eventItemLeftSlide(SlideContext &fsm)		{currentState->eventItemLeftSlide(*this);}
 	virtual void eventItemAtSlide(SlideContext &fsm)		{currentState->eventItemAtSlide(*this);}
