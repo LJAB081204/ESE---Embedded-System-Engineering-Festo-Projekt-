@@ -10,7 +10,8 @@
 #include "Forward.h"
 #include "ForwardSlow.h"
 #include "SlowWaitForFesto.h"
-
+#include "sys/neutrino.h"
+#include "../../../../PulseMessages.h"
 #include <iostream>
 namespace M1{
 
@@ -27,34 +28,38 @@ namespace M1{
 
 	void ForwardSlow::eventItemGone(TransportContext& ctx){
 		exit(ctx);
-		if(ctx.data.itemCount != 0){
-			new(this) Forward;		//Datenklasse fehlt noch
-		}
-		else{
-			new(this) Stop;
-		}
+		ctx.data.moveFrom1To2();
+		new (this) Forward;
+//		if(ctx.data.itemCount != 0){
+//			new(this) Forward;
+//		}
+//		else{
+//			new(this) Stop;
+//		}
 		entry(ctx);
 	}
 
 	void ForwardSlow::eventItemAtExit(TransportContext& ctx){
 		exit(ctx);
-//		if(!ctx.data.readyForItemRemote){ (raise requestTransfer)
-//		Datenklasse fehlt noch
-			new(this) SlowWaitForFesto;
-//		}
+		raiseRequestTransfer(ctx);
+		new(this) SlowWaitForFesto;
 		entry(ctx);
 	}
 
 	void ForwardSlow::eventItemAtEntry(TransportContext& ctx){
-		ctx.data.itemCount = ctx.data.itemCount + 1;
+		ctx.data.addItem();
 		std::cout<< ctx.data.itemCount << std::endl;
 	}
 
 	void ForwardSlow::eventItemInSlide(TransportContext& ctx){
-		ctx.data.itemCount = ctx.data.itemCount - 1;
+		ctx.data.removeItem(2);
 		std::cout<< ctx.data.itemCount << std::endl;
 		if(ctx.data.itemCount == 0){
 			new(this) Stop;
 		}
 	}
+	void ForwardSlow::raiseRequestTransfer(TransportContext& ctx){
+			MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_REQUEST_TRANSFER,0);
+
+		}
 }

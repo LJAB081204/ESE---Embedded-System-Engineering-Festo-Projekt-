@@ -61,6 +61,7 @@ class dataClass{
 	bool moveFrom1To2();
 	bool moveFrom2To3();
 	bool addItem();
+	bool removeItem(int queue);
 };
 
 

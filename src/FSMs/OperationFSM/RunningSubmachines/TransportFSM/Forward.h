@@ -22,6 +22,8 @@ public:
 	void eventItemAtEntryRemote(TransportContext& ctx)override;
 	void eventItemAtEntry(TransportContext& ctx)override;
 	void eventItemInSlide(TransportContext& ctx)override;
+
+	void raiseRequestTransfer(TransportContext& ctx);
 };
 
 }

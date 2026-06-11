@@ -30,7 +30,7 @@ namespace M1{
 	}
 
 	void WaitForFesto::eventItemAtEntry(TransportContext& ctx){
-		ctx.data.itemCount = ctx.data.itemCount + 1;
+		ctx.data.addItem();
 		std::cout<< ctx.data.itemCount << std::endl;
 	}
 

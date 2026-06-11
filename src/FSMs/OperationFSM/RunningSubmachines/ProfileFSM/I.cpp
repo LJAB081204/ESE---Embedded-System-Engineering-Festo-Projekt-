@@ -36,7 +36,6 @@ void I::eventHeightFlat(ProfileContext& ctx){
 
 void I::eventItemGone(ProfileContext& ctx) {
 	exit(ctx);
-	//in die Datenklasse schreiben
 	new(this) Default;
 	entry(ctx);
 }
