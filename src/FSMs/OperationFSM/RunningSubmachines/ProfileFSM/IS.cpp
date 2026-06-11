@@ -24,6 +24,10 @@ void IS::exit(ProfileContext& ctx) {}
 
 void IS::eventItemGone(ProfileContext& ctx){
 	exit(ctx);
+	if(!ctx.data.section1.empty()){
+		ctx.data.section1.front().special = true;
+		ctx.data.moveFrom1To2();
+	}
 	new(this) Default;
 	entry(ctx);
 }

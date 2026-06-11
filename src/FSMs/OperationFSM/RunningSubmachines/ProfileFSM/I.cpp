@@ -36,6 +36,10 @@ void I::eventHeightFlat(ProfileContext& ctx){
 
 void I::eventItemGone(ProfileContext& ctx) {
 	exit(ctx);
+	if(!ctx.data.section1.empty()){
+		ctx.data.section1.front().high = true;
+		ctx.data.moveFrom1To2();
+	}
 	new(this) Default;
 	entry(ctx);
 }
