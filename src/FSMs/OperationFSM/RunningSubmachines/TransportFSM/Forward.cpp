@@ -51,7 +51,7 @@ namespace M1{
 
 	void Forward::eventItemAtEntryRemote(TransportContext& ctx){
 		exit(ctx);
-		ctx.data.removeItem(2);
+		ctx.data.removeItem(3);
 		if(ctx.data.itemCount == 0){
 			new(this) Stop;
 		}
@@ -67,7 +67,7 @@ namespace M1{
 		entry(ctx);
 	}
 	void Forward::raiseRequestTransfer(TransportContext& ctx){
-		MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_TRANSFER_REQUEST,0);
+		MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_TRANSFER_REQUEST,0);
 
 	}
 }
