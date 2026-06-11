@@ -22,9 +22,11 @@ HeightSensor::HeightSensor(TSCADC& tscadc, int dispCoid)
     this->lastCandidate = HEIGHT_UNINITIALIZED;
     this->heightCounter = 0;
     this->dispCoid = dispCoid;
+    this->doCalibrate = false;
     chid = ChannelCreate(0);
     coid = ConnectAttach(0, 0, chid, _NTO_SIDE_CHANNEL, 0);
     this->running = false;
+    this->calibrateRunning = false;
     start();
 }
 
@@ -39,6 +41,7 @@ HeightSensor::~HeightSensor(){
 // Reihenfolge ist fest vorgegeben:
 // 1. Laufband leer, 2. Hohes Werkstück, 3. Bohrung, 4. High(skip), 5. Laufband(skip), 6. Flat
 void HeightSensor::calibrate() {
+	int tmpConveyor, tmpHigh, tmpDrilling,tmpFlat;
     struct _pulse pulse;
     int state = 1;
 
@@ -49,16 +52,16 @@ void HeightSensor::calibrate() {
         MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
         sum += pulse.value.sival_int;
     }
-    refConveyor = sum / 20;
-    std::cout << "Kalibrierung: refConveyor=" << refConveyor << std::endl;
+    tmpConveyor = sum / 20;
+    std::cout << "Kalibrierung: refConveyor=" << tmpConveyor << std::endl;
 
-    while(state != 6){
+    while(state != 6 && calibrateRunning){
 
         if(state == 2){
             bool started = false;
             int window[5] = {};
             int idx = 0, stableCount = 0;
-            while(stableCount < 3){
+            while(stableCount < 3 && calibrateRunning){
                 adc.sample();
                 MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
                 int val = pulse.value.sival_int;
@@ -76,10 +79,14 @@ void HeightSensor::calibrate() {
                     }
                 }
             }
+            if(!calibrateRunning){
+                	return;
+
+            }
             long drillingSum = 0;
             for(int i = 0; i < 5; i++) drillingSum += window[i];
-            refDrilling = drillingSum / 5;
-            std::cout << "Kalibrierung: refDrilling=" << refDrilling << std::endl;
+            tmpDrilling = drillingSum / 5;
+            std::cout << "Kalibrierung: refDrilling=" << tmpDrilling << std::endl;
             state = 3;
             continue;
         }
@@ -87,10 +94,10 @@ void HeightSensor::calibrate() {
         int windowSize = 20;
         int measuredVal = 0;
         bool validHeight = false;
-        while(!validHeight){
+        while(!validHeight && calibrateRunning){
             int window[20] = {};
             int idx = 0, stableCount = 0;
-            while(stableCount < 5){
+            while(stableCount < 5 && calibrateRunning){
                 adc.sample();
                 MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
                 window[idx % windowSize] = pulse.value.sival_int;
@@ -102,6 +109,10 @@ void HeightSensor::calibrate() {
                     else stableCount = 0;
                 }
             }
+            if(!calibrateRunning){
+                	return;
+             }
+
             long stableSum = 0;
             for(int i = 0; i < windowSize; i++) stableSum += window[i];
             measuredVal = stableSum / windowSize;
@@ -112,16 +123,31 @@ void HeightSensor::calibrate() {
             }
         }
 
+        if(!calibrateRunning){
+            	return;
+        }
+
         switch(state){
-            case 1: refHigh = measuredVal; std::cout << "Kalibrierung: refHigh=" << refHigh << std::endl; state = 2; break;
+            case 1: tmpHigh = measuredVal; std::cout << "Kalibrierung: refHigh=" << tmpHigh << std::endl; state = 2; break;
             case 3: state = 4; break;
             case 4: state = 5; break;
-            case 5: refFlat = measuredVal; std::cout << "Kalibrierung: refFlat=" << refFlat << std::endl; state = 6; break;
+            case 5: tmpFlat = measuredVal; std::cout << "Kalibrierung: refFlat=" << tmpFlat << std::endl; state = 6; break;
         }
     }
+    if(!calibrateRunning){
+    	return;
+    }
+
+    refConveyor = tmpConveyor;
+    refHigh = tmpHigh;
+    refDrilling = tmpDrilling;
+    refFlat = tmpFlat;
 
     saveCalibration();
     std::cout << "Kalibrierung: Abgeschlossen" << std::endl;
+    //MsgSendPulse(dispCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_CALIBRATION_DONE, 0);
+    return;
+
 }
 
 // Schreibt die Referenzwerte in die calibration.cfg
@@ -195,9 +221,18 @@ void HeightSensor::threadFunc(){
 	   std::cout << "Kalibrierung fehlt, bitte in den Service Mode!" << std::endl;
    }*/
    while(!loadCalibration()){
+	   while(!doCalibrate){
+		   std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	   }
+	   doCalibrate = false;
+	   calibrate();
     }
     struct _pulse pulse;
     while(running){
+    	if(doCalibrate){
+    		doCalibrate = false;
+    		calibrate();
+    	}
         adc.sample();                                    // ADC Wert holen
         MsgReceivePulse(chid, &pulse, sizeof(pulse), NULL);
         detectHeight(pulse.value.sival_int);
@@ -222,8 +257,8 @@ void HeightSensor::detectHeight(int value){
         heightCounter = 0;
     }
 
-    if(heightCounter > 15 && currentHeight != previousHeight){
-        std::cout << "Neue Hoehe: " << currentHeight << " rawValue=" << value << std::endl;
+    if(heightCounter > 10 && currentHeight != previousHeight){
+        //std::cout << "Neue Hoehe: " << currentHeight << " rawValue=" << value << std::endl;
         if(previousHeight == HEIGHT_CONVEYOR && currentHeight != HEIGHT_CONVEYOR){
         	std::cout << "Item arrived" << std::endl;
             MsgSendPulse(dispCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_ARRIVED, currentHeight);
@@ -272,3 +307,16 @@ int HeightSensor::getChid(){
 void HeightSensor::setCoId(int CoId){
 	this->dispCoid = CoId;
 }
+
+void HeightSensor::setStartCalibration(){
+	this->doCalibrate = true;
+}
+
+void HeightSensor::stopCalibration(){
+	if(!calibrateRunning){
+		calibrateRunning = false;
+		doCalibrate=true;
+	}
+
+}
+
