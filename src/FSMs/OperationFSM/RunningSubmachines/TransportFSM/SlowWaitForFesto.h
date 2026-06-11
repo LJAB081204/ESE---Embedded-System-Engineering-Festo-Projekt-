@@ -9,6 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_SLOWWAITFORFESTO_H_
 
 #include "TransportBase.h"
+namespace M1{
 
 class SlowWaitForFesto : public TransportBase{
 public:
@@ -19,6 +20,6 @@ public:
 	void eventFestoReady(TransportContext& ctx)override;
 	void eventItemAtEntry(TransportContext& ctx)override;
 };
-
+}
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_SLOWWAITFORFESTO_H_ */

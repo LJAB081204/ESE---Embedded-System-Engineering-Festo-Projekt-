@@ -9,6 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_STOP_H_
 
 #include "TransportBase2.h"
+namespace M2{
 
 class Stop2 : public TransportBase2{
 public:
@@ -20,6 +21,6 @@ public:
 	void eventItemLeftExitRemote(TransportContext2& ctx)override;
 };
 
-
+}
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_STOP_H_ */

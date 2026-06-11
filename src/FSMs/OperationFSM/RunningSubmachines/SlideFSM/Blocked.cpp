@@ -14,6 +14,7 @@
 #include <sys/neutrino.h>
 #include "../../../../PulseMessages.h"
 
+namespace M1{
 
 	Blocked::Blocked(){
 		}
@@ -40,4 +41,4 @@
 		void Blocked::raiseStopSlideTimer(SlideContext& ctx){
 			MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_STOP_SLIDE_TIMER, 0);
 		}
-
+}

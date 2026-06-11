@@ -9,6 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_WEICHEFSM_READY_H_
 
 #include "WeicheBase.h"
+namespace M1{
 
 class Ready : public WeicheBase{
 public:
@@ -19,5 +20,5 @@ public:
 };
 
 
-
+}
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_WEICHEFSM_READY_H_ */

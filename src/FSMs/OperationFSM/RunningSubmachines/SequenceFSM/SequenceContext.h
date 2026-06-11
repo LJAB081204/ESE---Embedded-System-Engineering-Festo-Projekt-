@@ -13,6 +13,7 @@
 #include "IHM.h"
 #include "../../../../dataClass.h"
 #include "waitingForProfile.h"
+namespace M1{
 
 class SequenceContext{
 	//Kontext
@@ -31,6 +32,7 @@ public:
 	bool oneRound = false;
 
 	void resolveProfile() {
+	    if (data.section2.empty()) return;
 	    if (data.section2.front().special)                                                                                { data.section2.front().item = IS_PROFILE;  return; }
 	    if (data.section2.front().flat && !data.section2.front().high && !data.section2.front().hole && !data.section2.front().metal) { data.section2.front().item = IF_PROFILE;  return; }
 	    if (data.section2.front().high && data.section2.front().hole && data.section2.front().metal)                      { data.section2.front().item = IHM_PROFILE; return; }
@@ -48,5 +50,5 @@ public:
 };
 
 
-
+}
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SEQUENCEFSM_SEQUENCECONTEXT_H_ */

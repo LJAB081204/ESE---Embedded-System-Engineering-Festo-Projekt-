@@ -12,6 +12,7 @@
 #include "HandShakeEStopLocalNotPressed.h"
 #include "HandShakeEStopLocalPressed.h"
 
+
 enum class EStopSource {LOCAL,REMOTE};
 
 class EStopContext {

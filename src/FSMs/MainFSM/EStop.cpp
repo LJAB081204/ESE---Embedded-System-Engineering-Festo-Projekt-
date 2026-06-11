@@ -8,6 +8,7 @@
 #include "EStop.h"
 #include "Operation.h"
 
+
 void EStop::entry(MainContext& ctx) {
     ctx.hal.getActors()->motorStop();
     ctx.hal.getActors()->greenLampOff();

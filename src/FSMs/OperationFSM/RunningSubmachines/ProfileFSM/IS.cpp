@@ -9,6 +9,7 @@
 
 #include "ProfileContext.h"
 #include "IS.h"
+namespace M1{
 
 IS::IS(){};
 
@@ -26,4 +27,4 @@ void IS::eventItemGone(ProfileContext& ctx){
 	new(this) Default;
 	entry(ctx);
 }
-
+}

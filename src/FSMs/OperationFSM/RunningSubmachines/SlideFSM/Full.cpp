@@ -14,6 +14,7 @@
 #include "Full.h"
 #include <sys/neutrino.h>
 #include "../../../../PulseMessages.h"
+namespace M1{
 
 	Full::Full(){
 
@@ -31,3 +32,4 @@
 		entry(ctx);
 	}
 
+}

@@ -11,6 +11,7 @@
 #include "IU.h"
 #include "Default.h"
 #include "IS.h"
+namespace M1{
 
 IU::IU(){};
 
@@ -34,5 +35,5 @@ void IU::eventHeightWrong(ProfileContext& ctx) {
 	entry(ctx);
 }
 
-
+}
 

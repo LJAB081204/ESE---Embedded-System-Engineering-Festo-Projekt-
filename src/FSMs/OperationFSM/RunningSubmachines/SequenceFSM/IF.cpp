@@ -14,7 +14,7 @@
 #include "../../../../PulseMessages.h"
 #include <sys/neutrino.h>
 #
-
+namespace M1{
 
 	IF::IF(){
 	}
@@ -70,5 +70,4 @@
 	void IF::raiseItemWrong(SequenceContext& ctx){
 		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ITEM_WRONG, 0);
 	}
-
-
+}

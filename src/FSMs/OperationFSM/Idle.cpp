@@ -10,7 +10,6 @@
 #include "Idle.h"
 #include "Running.h"
 #include "Service.h"
-
 	Idle::Idle(){
 	}
 
@@ -40,7 +39,7 @@
 			ctx.historySource = HistorySource::NONE_HISTORY;
 			ctx.currentState->entry(ctx);
 		} else {
-	        ctx.currentState = new Running(ctx.hal, ctx.data,ctx.sequenceFSM);  // Heap, nicht new(this)
+	        ctx.currentState = new M1::Running(ctx.hal, ctx.data,ctx.sequenceFSM);  // Heap, nicht new(this)
 	        ctx.currentState->entry(ctx);
 		}
 	}
@@ -53,7 +52,7 @@
 			ctx.historySource = HistorySource::NONE_HISTORY;
 			ctx.currentState->entry(ctx);
 		} else {
-	        ctx.currentState = new Running(ctx.hal, ctx.data,ctx.sequenceFSM);
+	        ctx.currentState = new M1::Running(ctx.hal, ctx.data,ctx.sequenceFSM);
 	        ctx.currentState->entry(ctx);
 		}
 	}
@@ -67,8 +66,6 @@
 		new (this) Service;
 		entry(ctx);
 	}
-
-
 
 
 

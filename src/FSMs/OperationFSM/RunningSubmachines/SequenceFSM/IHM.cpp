@@ -13,6 +13,7 @@
 #include <sys/neutrino.h>
 #include "IF.h"
 #include "IM.h"
+namespace M1{
 
 	IHM::IHM(){
 	}
@@ -70,4 +71,4 @@
 		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ITEM_WRONG, 0);
 	}
 
-
+}

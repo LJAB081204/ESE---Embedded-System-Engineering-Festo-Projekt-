@@ -9,6 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SEQUENCEFSM_IHM_H_
 
 #include "SequenceBase.h"
+namespace M1{
 
 class IHM : public SequenceBase{
 public:
@@ -22,6 +23,6 @@ public:
 	void raiseItemCorrect(SequenceContext& ctx);
 };
 
-
+}
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SEQUENCEFSM_IHM_H_ */

@@ -19,8 +19,8 @@ ConnectionController::ConnectionController(const char* localName, const char* re
     if (!remoteIn) { cout << "name_attach failed" << endl; return; }
 
     dispatcherInChid = ChannelCreate(0);
-    wakeDispatcherCoid = dispatcherInCoid;  // gleiche connection, doppelter Zweck
     dispatcherInCoid = ConnectAttach(0, 0, dispatcherInChid, _NTO_SIDE_CHANNEL, 0);
+    wakeDispatcherCoid = dispatcherInCoid;
     wakeRemoteCoid   = ConnectAttach(0, 0, remoteIn->chid,   _NTO_SIDE_CHANNEL, 0);
 
     // Receive-Thread starten BEVOR name_open blockieren kann

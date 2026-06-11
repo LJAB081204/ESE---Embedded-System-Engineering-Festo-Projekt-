@@ -13,6 +13,7 @@
 #include "WeicheContext.h"
 #include "../../../../PulseMessages.h"
 
+namespace M1{
 
 Receive::Receive(){
 
@@ -47,5 +48,5 @@ void Receive::raiseUpdate(WeicheContext& ctx){
 	MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_UPDATE,0);
 }
 
-
+}
 

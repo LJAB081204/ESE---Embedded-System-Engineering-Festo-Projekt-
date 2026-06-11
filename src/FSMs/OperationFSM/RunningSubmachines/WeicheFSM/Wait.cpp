@@ -10,6 +10,7 @@
 #include "WeicheContext.h"
 #include "Ready.h"
 #include "Wait.h"
+namespace M1{
 
 Wait::Wait(){
 
@@ -19,5 +20,5 @@ void Wait::eventTimerExpired(WeicheContext& ctx){
 	new (this) Ready;
 	entry(ctx);
 }
-
+}
 

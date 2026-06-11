@@ -9,7 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_FORWARD_H_
 
 #include "TransportBase2.h"
-
+namespace M2{
 class Forward2 : public TransportBase2{
 public:
 	Forward2();
@@ -21,6 +21,6 @@ public:
 	void eventItemArrived(TransportContext2& ctx)override;
 };
 
-
+}
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_FORWARD_H_ */

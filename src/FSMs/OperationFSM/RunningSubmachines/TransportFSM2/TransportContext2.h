@@ -17,6 +17,7 @@
 #include "Forward2.h"
 
 #include <iostream>
+namespace M2{
 
 class TransportContext2{
 	//Kontext
@@ -54,5 +55,6 @@ public:
 
 
 };
+}
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTCONTEXT_H_ */

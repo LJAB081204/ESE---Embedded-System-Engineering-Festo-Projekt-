@@ -12,6 +12,7 @@
 #include "../OperationFSM/OperationContext.h"
 #include "../../dataClass.h"
 
+
 class Operation : public MainBase{
 	OperationContext& operationFSM;
 public:

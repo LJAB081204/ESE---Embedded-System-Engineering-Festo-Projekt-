@@ -12,6 +12,8 @@
 #include "PutItemInSlide.h"
 #include <sys/neutrino.h>
 #include "../../../../PulseMessages.h"
+namespace M1{
+
 Ready::Ready(){
 }
 void Ready::raiseError(WeicheContext& ctx){
@@ -35,5 +37,5 @@ void Ready::eventItemWrong(WeicheContext& ctx){
 	  	entry(ctx);
 	}
 }
-
+}
 

@@ -10,6 +10,7 @@
 #include "WeicheContext.h"
 #include "PutItemInSlide.h"
 #include "Receive.h"
+namespace M1{
 
 PutItemInSlide::PutItemInSlide(){
 }
@@ -21,4 +22,4 @@ void PutItemInSlide::eventItemInSlide(WeicheContext& ctx){
 	new (this) Receive;
 	entry(ctx);
 }
-
+}

@@ -11,6 +11,7 @@
 
 #include "EstopBase.h"
 
+
 class Reset : public EStopBase{
 public:
 	Reset();

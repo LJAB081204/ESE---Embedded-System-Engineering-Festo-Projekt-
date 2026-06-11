@@ -12,6 +12,7 @@
 #include "SlowWaitForFesto.h"
 
 #include <iostream>
+namespace M1{
 
 	ForwardSlow::ForwardSlow(){
 	}
@@ -56,3 +57,4 @@
 			new(this) Stop;
 		}
 	}
+}

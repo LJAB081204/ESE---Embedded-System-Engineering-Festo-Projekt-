@@ -10,6 +10,9 @@
 
 
 #include "SlideBase.h"
+
+namespace M1{
+
 class Free : public SlideBase{
 public:
 	Free();
@@ -19,5 +22,5 @@ public:
 	void eventItemAtSlide(SlideContext& ctx)override;
 };
 
-
+}
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SLIDEFSM_FREE_H_ */

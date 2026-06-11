@@ -17,7 +17,7 @@
 
 #include <iostream>
 
-
+namespace M1{
 	Running::Running(HAL& hal,dataClass& data,SequenceContext& sequence){
 		transportFSM = new TransportContext(hal,data);
 		weicheFSM = new WeicheContext(hal,data);
@@ -158,3 +158,4 @@
 	}
 	void Running::eventError(OperationContext& ctx){}
 	void Running::eventTimerExpired(OperationContext& ctx){}
+}
