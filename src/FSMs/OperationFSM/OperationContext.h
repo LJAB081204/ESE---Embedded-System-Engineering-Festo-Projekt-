@@ -17,6 +17,7 @@
 #include "RunningSubmachines/SequenceFSM/SequenceContext.h"
 #include <iostream>
 #include "../../HeightSensor.h"
+#include "RunningFactory.h"
 
 class OperationContext{
 	//Kontext
@@ -28,12 +29,13 @@ public:
 	int connectionID = -1;
 	dataClass& data;
 	HeightSensor& hs;
-	M1::SequenceContext sequenceFSM{data};
+	RunningFactory& factory;
 	OperationBase* savedRunning = nullptr;
 	OperationBase* currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 	HistorySource historySource = HistorySource::NONE_HISTORY;
 
-	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs) : hal(hal),data(data),hs(hs){
+	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory)
+	: hal(hal),data(data),hs(hs),factory(factory){
 		new (currentState) Idle;
 		currentState->entry(*this);
 	}

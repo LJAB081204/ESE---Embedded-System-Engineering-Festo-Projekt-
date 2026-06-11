@@ -9,6 +9,11 @@
 #include "HeightSensor.h"
 #include "dataClass.h"
 #include "ConnectionController.h"
+#include "FSMs/OperationFSM/RunningFactory.h"
+#include "FSMs/OperationFSM/Factory.h"
+#include "FSMs/OperationFSM/Factory2.h"
+
+
 using namespace std;
 
 
@@ -21,6 +26,10 @@ int main(int argc, char **argv) {
 		const char* local = SYSTEM1;
 		const char* remote = SYSTEM2;
 
+        RunningFactory* factory;
+        HAL hal;
+        dataClass data;
+
 		if (argc < 2) {
 	        printf("Usage %s -s | -c \n", argv[0]);
 	        return 0;
@@ -29,31 +38,25 @@ int main(int argc, char **argv) {
 		if (strcmp(argv[1],"-c") == 0){
 			local = SYSTEM1;
 			remote = SYSTEM2;
+			factory = new M1::Factory(data);
 		}
 		else{
 			local = SYSTEM2;
 			remote = SYSTEM1;
+			factory = new M2::Factory2(data);
+
 		}
 
-		if (strcmp(argv[1],"-c") == 0){
-			local = SYSTEM1;
-			remote = SYSTEM2;
-		}
-		else{
-			local = SYSTEM2;
-			remote = SYSTEM1;
-		}
 
 		cout << "local: " << local << " remote: " << remote << endl;
 
-        HAL hal;
-        dataClass data;
+
         TSCADC tsc;
 		HeightSensor hs (tsc,-1);
 
 
         ConnectionController conctrl(local,remote);
-        Dispatcher dispatcher(conctrl.getConnectionID(), hal, data,hs);
+        Dispatcher dispatcher(conctrl.getConnectionID(), hal, data,hs,*factory);
         hs.setCoId(dispatcher.getConnectionID());
         conctrl.start(dispatcher.getConnectionID());
 

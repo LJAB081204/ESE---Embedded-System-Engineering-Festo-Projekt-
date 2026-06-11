@@ -12,10 +12,11 @@
 #include <chrono>
 #include <sys/dispatch.h>
 
+
 using namespace std;
 
-Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, HeightSensor& hs)
-    : hal(hal), data(data),FSM(hal,data,hs), conCtrlConnectionID(conCtrlConnectionID) {
+Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory)
+    : hal(hal), data(data),factory(factory),FSM(hal,data,hs,factory), conCtrlConnectionID(conCtrlConnectionID) {
 
     if ((ownChannelID = ChannelCreate(0)) == -1){
         cout << "ChannelCreate failed" << endl;
