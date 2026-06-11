@@ -39,7 +39,7 @@
 			ctx.historySource = HistorySource::NONE_HISTORY;
 			ctx.currentState->entry(ctx);
 		} else {
-	        ctx.currentState = new M1::Running(ctx.hal, ctx.data,ctx.sequenceFSM);  // Heap, nicht new(this)
+	        ctx.currentState = ctx.factory.createRunning(ctx.hal, ctx.data);
 	        ctx.currentState->entry(ctx);
 		}
 	}
@@ -52,7 +52,7 @@
 			ctx.historySource = HistorySource::NONE_HISTORY;
 			ctx.currentState->entry(ctx);
 		} else {
-	        ctx.currentState = new M1::Running(ctx.hal, ctx.data,ctx.sequenceFSM);
+	        ctx.currentState = ctx.factory.createRunning(ctx.hal, ctx.data);
 	        ctx.currentState->entry(ctx);
 		}
 	}

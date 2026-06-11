@@ -16,6 +16,7 @@
 #include "Error.h"
 #include "../../dataClass.h"
 #include "../../HeightSensor.h"
+#include "../OperationFSM/RunningFactory.h"
 
 
 
@@ -27,8 +28,9 @@ public:
     HAL& hal;
     dataClass& data;
     HeightSensor& hs;
-    MainContext(HAL& hal,dataClass& data,HeightSensor& hs) : hal(hal),data(data), hs(hs) {
-    	operationFSM = new OperationContext(hal,data,hs);
+    RunningFactory& factory;
+    MainContext(HAL& hal,dataClass& data,HeightSensor& hs,RunningFactory& factory) : hal(hal),data(data), hs(hs), factory(factory) {
+    	operationFSM = new OperationContext(hal,data,hs,factory);
         new(currentState) Operation(*operationFSM);
         currentState->entry(*this);
     }
