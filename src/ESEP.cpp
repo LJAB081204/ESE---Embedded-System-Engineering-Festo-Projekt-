@@ -48,15 +48,16 @@ int main(int argc, char **argv) {
 
         HAL hal;
         dataClass data;
-
+        TSCADC tsc;
+		HeightSensor hs (tsc,-1);
 
 
         ConnectionController conctrl(local,remote);
-        Dispatcher dispatcher(conctrl.getConnectionID(), hal, data);
+        Dispatcher dispatcher(conctrl.getConnectionID(), hal, data,hs);
+        hs.setCoId(dispatcher.getConnectionID());
         conctrl.start(dispatcher.getConnectionID());
 
-        TSCADC tsc;
-        HeightSensor hs (tsc,dispatcher.getConnectionID());
+
     	Demultiplexer demux(dispatcher.getConnectionID());
     	InterruptHandler handler(demux.getConnectionID());
 

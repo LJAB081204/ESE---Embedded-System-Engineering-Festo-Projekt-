@@ -16,6 +16,8 @@
 #include "Running.h"
 #include "RunningSubmachines/SequenceFSM/SequenceContext.h"
 #include <iostream>
+#include "../../HeightSensor.h"
+
 class OperationContext{
 	//Kontext
 	alignas(Idle) char stateBuffer[sizeof(Idle)];
@@ -30,7 +32,7 @@ public:
 	OperationBase* currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 	HistorySource historySource = HistorySource::NONE_HISTORY;
 
-	OperationContext(HAL& hal,dataClass& data) : hal(hal),data(data){
+	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs) : hal(hal),data(data),hs(hs){
 		new (currentState) Idle;
 		currentState->entry(*this);
 	}

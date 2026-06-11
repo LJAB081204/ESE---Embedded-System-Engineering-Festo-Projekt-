@@ -15,6 +15,7 @@
 #include "EStop.h"
 #include "Error.h"
 #include "../../dataClass.h"
+#include "../../HeightSensor.h"
 
 
 
@@ -25,8 +26,9 @@ class MainContext {
 public:
     HAL& hal;
     dataClass& data;
-    MainContext(HAL& hal,dataClass& data) : hal(hal),data(data) {
-    	operationFSM = new OperationContext(hal,data);
+    HeightSensor& hs;
+    MainContext(HAL& hal,dataClass& data,HeightSensor& hs) : hal(hal),data(data), hs(hs) {
+    	operationFSM = new OperationContext(hal,data,hs);
         new(currentState) Operation(*operationFSM);
         currentState->entry(*this);
     }
