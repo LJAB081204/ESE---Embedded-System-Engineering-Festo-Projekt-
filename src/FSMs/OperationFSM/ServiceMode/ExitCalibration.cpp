@@ -43,5 +43,11 @@ void ExitCalibration::eventButtonStopPressed(OperationContext& ctx){
 	entry(ctx);
 }
 
+void ExitCalibration::eventButtonStopPressedRemote(OperationContext& ctx){
+	exit(ctx);
+	new (this) Service;
+	entry(ctx);
+}
+
 
 

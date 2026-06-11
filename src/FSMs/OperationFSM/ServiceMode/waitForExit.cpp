@@ -20,7 +20,9 @@ void waitForExit::entry(OperationContext& ctx) {
 	std::cout<< "waitForExit" << std::endl;
 }
 
-void waitForExit::exit(OperationContext& ctx) {}
+void waitForExit::exit(OperationContext& ctx) {
+	ctx.hal.getActors()->closePusher();
+}
 
 void waitForExit::eventItemAtExit(OperationContext& ctx) {
 	exit(ctx);
@@ -35,6 +37,12 @@ void waitForExit::eventButtonStartPressedLong(OperationContext& ctx){
 }
 
 void waitForExit::eventButtonStopPressed(OperationContext& ctx){
+	exit(ctx);
+	new (this) Service;
+	entry(ctx);
+}
+
+void waitForExit::eventButtonStopPressedRemote(OperationContext& ctx){
 	exit(ctx);
 	new (this) Service;
 	entry(ctx);

@@ -35,11 +35,22 @@ void EntryCalibration::eventButtonStartPressedLong(OperationContext& ctx){
 	entry(ctx);
 }
 
+void EntryCalibration::eventButtonStartPressedLongRemote(OperationContext& ctx){
+	exit(ctx);
+	new (this) Idle;
+	entry(ctx);
+}
+
 void EntryCalibration::eventButtonStopPressed(OperationContext& ctx){
 	exit(ctx);
 	new (this) Service;
 	entry(ctx);
 }
 
+void EntryCalibration::eventButtonStopPressedRemote(OperationContext& ctx){
+	exit(ctx);
+	new (this) Service;
+	entry(ctx);
+}
 
 

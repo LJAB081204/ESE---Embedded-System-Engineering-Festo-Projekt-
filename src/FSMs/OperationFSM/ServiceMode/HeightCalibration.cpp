@@ -43,6 +43,18 @@
 		entry(ctx);
 	}
 
+	void HeightCalibration::eventButtonStartPressedLongRemote(OperationContext& ctx){
+		exit(ctx);
+		new (this) Idle;
+		entry(ctx);
+	}
+
+	void HeightCalibration::eventButtonStartPressedRemote(OperationContext& ctx){
+		exit(ctx);
+		new (this) Service;
+		entry(ctx);
+	}
+
 	void HeightCalibration::eventItemAtEntry(OperationContext& ctx){
 		ctx.hal.getActors()->motorForwards();
 	}
@@ -54,4 +66,15 @@
 	void HeightCalibration::eventItemGone(OperationContext& ctx){
 		ctx.hal.getActors()->motorForwards();
 	}
+
+	void HeightCalibration::eventItemAtPusher(OperationContext& ctx){
+			ctx.hal.getActors()->letItemPass();
+	}
+
+	void HeightCalibration::eventItemAtExit(OperationContext& ctx){
+			ctx.hal.getActors()->motorStop();
+			ctx.hal.getActors()->closePusher();
+	}
+
+
 

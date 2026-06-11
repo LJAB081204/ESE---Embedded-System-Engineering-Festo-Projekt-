@@ -16,10 +16,14 @@ public:
 	void entry(OperationContext& ctx)override;
 	void exit(OperationContext& ctx)override;
 	void eventButtonStartPressedLong(OperationContext& ctx)override;
+	void eventButtonStartPressedLongRemote(OperationContext& ctx)override;
 	void eventItemAtEntry(OperationContext& ctx)override;
 	void eventButtonStartPressed(OperationContext& ctx)override;
+	void eventButtonStartPressedRemote(OperationContext& ctx)override;
 	void eventItemArrived(OperationContext& ctx)override;
 	void eventItemGone(OperationContext& ctx)override;
+	void eventItemAtPusher(OperationContext& ctx)override;
+	void eventItemAtExit(OperationContext& ctx)override;
 };
 
 

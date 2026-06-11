@@ -42,3 +42,9 @@ void HeightDetect::eventButtonStopPressed(OperationContext& ctx){
 	new (this) Service;
 	entry(ctx);
 }
+
+void HeightDetect::eventButtonStopPressedRemote(OperationContext& ctx){
+	exit(ctx);
+	new (this) Service;
+	entry(ctx);
+}

@@ -108,7 +108,6 @@ void HeightSensor::calibrate() {
 			    if(!itemArrived && abs(val - refConveyor) >= ADC_THRESHOLD){
 			    	if(state ==1 || state ==5){		//von conveyor auf high/flat
 				    MsgSendPulse(dispCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_ARRIVED, 0);
-				    std::cout << "Item Arrived" << std::endl;
 				    itemArrived = true;
 			    	}
 
@@ -116,7 +115,6 @@ void HeightSensor::calibrate() {
 			    else if(!itemArrived && abs(val - refConveyor) < ADC_THRESHOLD){
 			    	if(state ==4 || state ==6){		//von flat/high auf conveyor
 					MsgSendPulse(dispCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_GONE, 0);
-					std::cout << "Item Arrived" << std::endl;
 					itemArrived = true;
 			    	}
 			    }

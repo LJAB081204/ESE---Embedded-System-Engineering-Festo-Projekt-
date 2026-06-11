@@ -45,3 +45,9 @@ void PusherCalibration::eventButtonStopPressed(OperationContext& ctx){
 	new (this) Service;
 	entry(ctx);
 }
+
+void PusherCalibration::eventButtonStopPressedRemote(OperationContext& ctx){
+	exit(ctx);
+	new (this) Service;
+	entry(ctx);
+}
