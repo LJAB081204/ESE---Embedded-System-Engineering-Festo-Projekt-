@@ -18,6 +18,7 @@
 	}
 
 	void HeightCalibration::entry(OperationContext& ctx){
+		std::cout << "HeightCalibration" << std::endl;
 		ctx.hal.getActors()->greenLampBlink(500);
 		ctx.hal.getActors()->ledButtonStart();
 		ctx.hal.getActors()->ledButtonResetOff();
@@ -25,6 +26,7 @@
 	}
 
 	void HeightCalibration::exit(OperationContext& ctx){
+		ctx.hal.getActors()->greenLampBlinkOff();
 		ctx.hs.stopCalibration();
 		std::cout << "exit calibration" << std::endl;
 	}

@@ -10,13 +10,14 @@
 #include "../OperationBase.h"
 #include "../OperationContext.h"
 #include "waitForExit.h"
+#include "../Service.h"
 
 #include "ExitCalibration.h"
 
 waitForExit::waitForExit(){};
 
 void waitForExit::entry(OperationContext& ctx) {
-	std::cout<< "5" << std::endl;
+	std::cout<< "waitForExit" << std::endl;
 	ctx.hal.getActors()->closePusher();
 }
 
@@ -31,5 +32,11 @@ void waitForExit::eventItemAtExit(OperationContext& ctx) {
 void waitForExit::eventButtonStartPressedLong(OperationContext& ctx){
 	exit(ctx);
 	new (this) Idle;
+	entry(ctx);
+}
+
+void waitForExit::eventButtonStopPressed(OperationContext& ctx){
+	exit(ctx);
+	new (this) Service;
 	entry(ctx);
 }

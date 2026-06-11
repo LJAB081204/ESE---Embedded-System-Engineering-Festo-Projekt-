@@ -10,11 +10,12 @@
 #include "../OperationContext.h"
 #include "EntryCalibration.h"
 #include "HeightDetect.h"
+#include "../Service.h"
 
 EntryCalibration::EntryCalibration(){};
 
 void EntryCalibration::entry(OperationContext& ctx) {
-	std::cout<< "1" << std::endl;
+	std::cout<< "EntryCalibration" << std::endl;
 	ctx.hal.getActors()->motorForwards();
 }
 
@@ -31,6 +32,12 @@ void EntryCalibration::eventItemArrived(OperationContext& ctx){
 void EntryCalibration::eventButtonStartPressedLong(OperationContext& ctx){
 	exit(ctx);
 	new (this) Idle;
+	entry(ctx);
+}
+
+void EntryCalibration::eventButtonStopPressed(OperationContext& ctx){
+	exit(ctx);
+	new (this) Service;
 	entry(ctx);
 }
 

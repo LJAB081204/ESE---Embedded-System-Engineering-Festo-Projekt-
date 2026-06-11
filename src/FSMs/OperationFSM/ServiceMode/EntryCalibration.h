@@ -15,10 +15,9 @@ public:
 	EntryCalibration();
 	void entry(OperationContext& ctx) override;
 	void exit(OperationContext& ctx) override;
-//	void eventHeightHigh(OperationContext& ctx)override;
-//	void eventHeightFlat(OperationContext& ctx)override;
 	void eventItemArrived(OperationContext& ctx)override;
 	void eventButtonStartPressedLong(OperationContext& ctx)override;
+	void eventButtonStopPressed(OperationContext& ctx)override;
 
 };
 

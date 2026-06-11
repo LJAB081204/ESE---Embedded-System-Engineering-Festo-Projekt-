@@ -25,6 +25,7 @@
 	}
 
 	void Service::exit(OperationContext& ctx){
+		ctx.hal.getActors()->greenLampBlinkOff();
 	}
 
 	void Service::eventButtonStartPressedLong(OperationContext& ctx){
