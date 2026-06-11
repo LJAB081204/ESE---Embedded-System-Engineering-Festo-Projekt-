@@ -9,6 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_FORWARDSLOW_H_
 
 #include "TransportBase.h"
+namespace M1{
 
 class ForwardSlow : public TransportBase{
 public:
@@ -23,5 +24,5 @@ public:
 };
 
 
-
+}
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_FORWARDSLOW_H_ */

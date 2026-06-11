@@ -11,6 +11,7 @@
 #include "MainBase.h"
 #include "../EstopFSM/EstopContext.h"
 
+
 class EStop : public MainBase {
 	EStopContext eStopFSM;
 public:

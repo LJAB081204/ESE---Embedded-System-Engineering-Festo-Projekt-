@@ -11,6 +11,7 @@
 #include "Forward2.h"
 
 #include <iostream>
+namespace M2{
 
 
 	Stop2::Stop2(){
@@ -39,3 +40,4 @@
 		entry(ctx);
 	}
 
+}

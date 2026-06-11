@@ -11,6 +11,7 @@
 #include "ForwardSlow2.h"
 
 #include <iostream>
+namespace M2{
 
 	ForwardSlow2::ForwardSlow2(){
 	}
@@ -33,5 +34,5 @@
 		}
 		entry(ctx);
 	}
-
+}
 

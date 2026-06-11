@@ -7,6 +7,7 @@
 
 #ifndef SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SEQUENCEFSM_SEQUENCEBASE_H_
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SEQUENCEFSM_SEQUENCEBASE_H_
+namespace M1{
 
 class SequenceContext;	//Vorwärtsdeklaration
 
@@ -24,5 +25,5 @@ public:
 	virtual void exit(SequenceContext &fsm) {}
 };
 
-
+}
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SEQUENCEFSM_SEQUENCEBASE_H_ */

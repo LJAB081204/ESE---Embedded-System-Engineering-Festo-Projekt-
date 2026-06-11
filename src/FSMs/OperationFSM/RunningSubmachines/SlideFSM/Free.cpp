@@ -11,6 +11,7 @@
 #include "Blocked.h"
 #include <sys/neutrino.h>
 #include "../../../../PulseMessages.h"
+namespace M1{
 
 	Free::Free(){
 	}
@@ -27,3 +28,4 @@
 		new (this) Blocked;
 		entry(ctx);
 	}
+}

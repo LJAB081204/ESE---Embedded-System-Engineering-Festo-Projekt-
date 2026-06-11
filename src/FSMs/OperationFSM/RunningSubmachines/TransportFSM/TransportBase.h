@@ -7,6 +7,7 @@
 
 #ifndef SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTBASE_H_
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTBASE_H_
+namespace M1{
 
 class TransportContext;  // Vorwärtsdekleration
 
@@ -31,6 +32,6 @@ public:
 	virtual void exit(TransportContext& fsm){}
 };
 
-
+}
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTBASE_H_ */

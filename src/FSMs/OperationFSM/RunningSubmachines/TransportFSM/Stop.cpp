@@ -11,6 +11,7 @@
 
 #include <iostream>
 
+namespace M1{
 
 	Stop::Stop(){
 	}
@@ -30,4 +31,4 @@
 		new(this) Forward;
 		entry(ctx);
 	}
-
+}

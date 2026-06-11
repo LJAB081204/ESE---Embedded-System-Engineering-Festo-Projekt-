@@ -11,6 +11,7 @@
 
 #include "EstopBase.h"
 
+
 class ResetRemote : public EStopBase{
 public:
 	ResetRemote();

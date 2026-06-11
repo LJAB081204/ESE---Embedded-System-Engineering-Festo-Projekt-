@@ -11,6 +11,7 @@
 #include "SlowWaitForFesto.h"
 
 #include <iostream>
+namespace M1{
 
 	SlowWaitForFesto::SlowWaitForFesto(){
 	}
@@ -37,4 +38,4 @@
 		std::cout<< ctx.data.itemCount << std::endl;
 	}
 
-
+}

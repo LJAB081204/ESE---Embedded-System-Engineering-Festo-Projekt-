@@ -12,10 +12,12 @@
 #include "../../dataClass.h"
 
 
+namespace M1{
+
 class TransportContext;
 class WeicheContext;
-class SequenceContext;
 class ProfileContext;
+class SequenceContext;
 
 class Running : public OperationBase{
 	TransportContext* transportFSM;
@@ -77,5 +79,5 @@ public:
 
 };
 
-
+}
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNING_H_ */

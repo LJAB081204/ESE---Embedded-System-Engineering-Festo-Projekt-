@@ -9,6 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SEQUENCEFSM_IH_H_
 
 #include "SequenceBase.h"
+namespace M1{
 
 class IH : public SequenceBase{
 public:
@@ -23,5 +24,5 @@ public:
 };
 
 
-
+}
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SEQUENCEFSM_IH_H_ */

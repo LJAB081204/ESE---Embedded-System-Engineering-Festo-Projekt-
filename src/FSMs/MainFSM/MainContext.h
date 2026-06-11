@@ -17,6 +17,7 @@
 #include "../../dataClass.h"
 
 
+
 class MainContext {
 	OperationContext* operationFSM;
     alignas(EStop) char stateBuffer[sizeof(EStop)];

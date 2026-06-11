@@ -11,6 +11,7 @@
 #include "Receive.h"
 #include "Wait.h"
 #include "LetItemPass.h"
+namespace M1{
 
 LetItemPass::LetItemPass(){
 }
@@ -28,5 +29,5 @@ void LetItemPass::eventItemLeftPusher(WeicheContext& ctx){
 	new (this) Wait;
 	entry(ctx);
 }
-
+}
 

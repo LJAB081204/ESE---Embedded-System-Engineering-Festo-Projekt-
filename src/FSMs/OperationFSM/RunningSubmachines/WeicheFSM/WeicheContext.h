@@ -13,6 +13,7 @@
 #include "../../../../dataClass.h"
 #include "WeicheBase.h"
 #include "Receive.h"
+namespace M1{
 
 class WeicheContext{
 	alignas(Receive) char stateBuffer[sizeof(Receive)];
@@ -41,7 +42,7 @@ public:
 
 
 };
-
+}
 
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_WEICHEFSM_WEICHECONTEXT_CPP_ */

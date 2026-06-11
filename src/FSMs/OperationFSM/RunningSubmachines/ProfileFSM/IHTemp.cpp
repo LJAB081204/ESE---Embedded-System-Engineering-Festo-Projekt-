@@ -12,6 +12,7 @@
 #include "IU.h"
 
 #include <iostream>
+namespace M1{
 
 IHTemp::IHTemp(){};
 
@@ -45,6 +46,6 @@ void IHTemp::eventHeightWrong(ProfileContext& ctx) {
 	new(this) IS;
 	entry(ctx);
 }
-
+}
 
 

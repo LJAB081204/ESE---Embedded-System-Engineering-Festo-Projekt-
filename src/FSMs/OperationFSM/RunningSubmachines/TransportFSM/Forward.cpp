@@ -12,6 +12,7 @@
 #include "ForwardSlow.h"
 
 #include <iostream>
+namespace M1{
 
 	Forward::Forward(){
 	}
@@ -68,7 +69,7 @@
 			}
 			entry(ctx);
 	}
-
+}
 
 
 

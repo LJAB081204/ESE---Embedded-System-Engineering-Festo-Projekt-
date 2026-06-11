@@ -11,6 +11,7 @@
 #include "EStopState.h"
 #include "BothEStop.h"
 
+
 HandShakeEStopLocalPressed::HandShakeEStopLocalPressed(){
 }
 

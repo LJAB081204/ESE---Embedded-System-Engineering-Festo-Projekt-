@@ -9,6 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_FORWARD_H_
 
 #include "TransportBase.h"
+namespace M1{
 
 class Forward : public TransportBase{
 public:
@@ -23,6 +24,6 @@ public:
 	void eventItemInSlide(TransportContext& ctx)override;
 };
 
-
+}
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_FORWARD_H_ */

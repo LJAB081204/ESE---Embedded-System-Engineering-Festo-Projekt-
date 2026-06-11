@@ -13,10 +13,10 @@
 #include <new>
 #include "TransportBase.h"
 #include "Stop.h"
-#include "../../Running.h"
 #include "Forward.h"
 
 #include <iostream>
+namespace M1{
 
 class TransportContext{
 	//Kontext
@@ -50,5 +50,6 @@ public:
 
 
 };
+}
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTCONTEXT_H_ */
