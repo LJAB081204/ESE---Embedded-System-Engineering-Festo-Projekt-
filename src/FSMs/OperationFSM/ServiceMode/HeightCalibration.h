@@ -18,6 +18,8 @@ public:
 	void eventButtonStartPressedLong(OperationContext& ctx)override;
 	void eventItemAtEntry(OperationContext& ctx)override;
 	void eventButtonStartPressed(OperationContext& ctx)override;
+	void eventItemArrived(OperationContext& ctx)override;
+	void eventItemGone(OperationContext& ctx)override;
 };
 
 

@@ -45,8 +45,13 @@
 
 	void HeightCalibration::eventItemAtEntry(OperationContext& ctx){
 		ctx.hal.getActors()->motorForwards();
-//		ctx.hs.calibrate();
 	}
 
+	void HeightCalibration::eventItemArrived(OperationContext& ctx){
+		ctx.hal.getActors()->motorSlow();
+	}
 
+	void HeightCalibration::eventItemGone(OperationContext& ctx){
+		ctx.hal.getActors()->motorForwards();
+	}
 
