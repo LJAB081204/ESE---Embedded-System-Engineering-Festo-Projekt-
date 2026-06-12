@@ -93,7 +93,7 @@ public:
 
 	virtual void eventSlideFull(OperationContext& fsm)                    {}
 	virtual void eventSlideFullRemote(OperationContext& fsm)              {}
-	virtual void eventItemTransfer(OperationContext& fsm)              {}
+	virtual void eventItemTransfer(uint32_t itemCode, OperationContext& fsm)              {}
 	virtual void eventSlideTimerExpired(OperationContext& fsm)              {}
 
 };

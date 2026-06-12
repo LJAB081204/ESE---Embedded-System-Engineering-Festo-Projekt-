@@ -113,7 +113,7 @@ public:
 
         void eventSlideFull()                    { currentState->eventSlideFull(*this); }
         void eventSlideFullRemote()              { currentState->eventSlideFullRemote(*this); }
-        void eventItemTransfer() 			{currentState->eventItemTransfer(*this);}
+        void eventItemTransfer(uint32_t itemCode) 			{currentState->eventItemTransfer(itemCode,*this);}
         void eventSlideTimerExpired()              { currentState->eventSlideTimerExpired(*this); }
 
     };
