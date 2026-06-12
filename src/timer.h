@@ -30,7 +30,7 @@ public:
      * @param dispatcherCoid Connection-ID des Dispatcher-Channels, auf dem
      *                      der Expired-Pulse empfangen werden soll.
      */
-    SimpleTimer(int id, int dispatcherCoid);
+    SimpleTimer(int dispatcherCoid, int pulseMessage);
 
     /**
      * @brief Stoppt den Timer, löscht den Systemtimer und trennt die
@@ -53,7 +53,6 @@ public:
     void stop();
 
 private:
-    int     id_;       ///< Timer-ID, die im Pulse-Value übertragen wird
     int     coid_;     ///< Connection-ID zum Dispatcher-Channel
     timer_t timerId_;  ///< Handle des POSIX-Systemtimers
 };

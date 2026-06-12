@@ -98,3 +98,19 @@ bool dataClass::removeItem(int queue){
 	}
 }
 
+uint32_t dataClass::convertItemToInt(const itemData& item)
+{
+    return (static_cast<uint32_t>(item.id) << 4) |
+           static_cast<uint32_t>(item.item);
+}
+
+itemData dataClass::convertIntToItem(uint32_t itemCode)
+{
+    itemData item;
+
+    item.item = static_cast<itemProfile>(itemCode & 0xF); // untere 4 Bits
+    item.id = itemCode >> 4;                                // obere 28 Bits
+
+    return item;
+}
+
