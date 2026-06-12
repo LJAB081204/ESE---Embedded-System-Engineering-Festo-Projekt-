@@ -232,3 +232,8 @@ void* TimerHandler::receiverThread(void* arg)
     }
     return nullptr;
 }
+
+void TimerHandler::setCoid(int dispCoid){
+	this->coidDispatcher_ = dispCoid;
+
+}

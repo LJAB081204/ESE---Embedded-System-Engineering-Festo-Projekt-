@@ -33,6 +33,7 @@ namespace M1{
 	}
 
 	void Running::exit(OperationContext& ctx){
+		ctx.hal.getActors()->greenLampOff();
 		delete transportFSM;
 		delete weicheFSM;
 		delete profileFSM;
@@ -171,6 +172,9 @@ namespace M1{
 	}
 	void Running::eventError(OperationContext& ctx){}
 	void Running::eventTimerExpired(OperationContext& ctx){}
+
+
+
 
 
 

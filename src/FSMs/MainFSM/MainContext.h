@@ -17,7 +17,7 @@
 #include "../../dataClass.h"
 #include "../../HeightSensor.h"
 #include "../OperationFSM/RunningFactory.h"
-
+#include "../../timer.h"
 
 
 class MainContext {
@@ -29,7 +29,9 @@ public:
     dataClass& data;
     HeightSensor& hs;
     RunningFactory& factory;
-    MainContext(HAL& hal,dataClass& data,HeightSensor& hs,RunningFactory& factory) : hal(hal),data(data), hs(hs), factory(factory) {
+    TimerHandler timerHandler;
+    MainContext(HAL& hal,dataClass& data,HeightSensor& hs,RunningFactory& factory,TimerHandler timerHandler)
+    : hal(hal),data(data), hs(hs), factory(factory),timerHandler(timerHandler) {
     	operationFSM = new OperationContext(hal,data,hs,factory);
         new(currentState) Operation(*operationFSM);
         currentState->entry(*this);
@@ -111,7 +113,9 @@ public:
 
         void eventSlideFull()                    { currentState->eventSlideFull(*this); }
         void eventSlideFullRemote()              { currentState->eventSlideFullRemote(*this); }
-        void eventItemTransfer(uint32_t itemCode) 			{currentState->eventItemTransfer(itemCode, *this);}
+        void eventItemTransfer() 			{currentState->eventItemTransfer(*this);}
+        void eventSlideTimerExpired()              { currentState->eventSlideTimerExpired(*this); }
+
     };
 
 

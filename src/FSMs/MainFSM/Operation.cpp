@@ -15,7 +15,9 @@
 
 
 void Operation::entry(MainContext& ctx) {}
-void Operation::exit(MainContext& ctx)  {}
+void Operation::exit(MainContext& ctx)  {
+	ctx.hal.getActors()->greenLampOff();
+}
 
 void Operation::eventButtonStartPressed(MainContext& ctx) {
     operationFSM.eventButtonStartPressed();
