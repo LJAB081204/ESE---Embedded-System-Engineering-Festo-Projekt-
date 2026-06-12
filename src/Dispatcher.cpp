@@ -15,8 +15,8 @@
 
 using namespace std;
 
-Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory)
-: conCtrlConnectionID(conCtrlConnectionID), hal(hal), data(data), factory(factory), FSM(hal, data, hs, factory) {
+Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory,TimerHandler& timerHandler)
+: conCtrlConnectionID(conCtrlConnectionID), hal(hal), data(data), factory(factory),timerHandler(timerHandler), FSM(hal, data, hs, factory,timerHandler) {
 
     if ((ownChannelID = ChannelCreate(0)) == -1){
         //cout << "ChannelCreate failed" << endl;
@@ -30,6 +30,7 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 
     data.conId = ownConnectionID;
     data.controllerConId = conCtrlConnectionID;
+    timerHandler.setCoid(ownConnectionID);
     itemAtExit = false;
 }
 	Dispatcher::~Dispatcher(){
