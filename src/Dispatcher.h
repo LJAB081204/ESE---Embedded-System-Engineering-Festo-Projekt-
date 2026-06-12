@@ -11,6 +11,8 @@
 #include "FSMs/MainFSM/MainContext.h"
 #include "HeightSensor.h"
 #include "FSMs/OperationFSM/RunningFactory.h"
+#include "timer.h"
+
 
 
 
@@ -22,6 +24,7 @@ private:
     HAL& hal;
     dataClass& data;
     RunningFactory& factory;
+    TimerHandler& timerHandler;
 
     std::chrono::steady_clock::time_point buttonPressStart;
 	MainContext FSM;
@@ -34,7 +37,7 @@ private:
     _pulse msg;
     void run();
 public:
-    Dispatcher(int conCtrlConnectionID, HAL& hal, dataClass& data, HeightSensor& hs,RunningFactory& factory);
+    Dispatcher(int conCtrlConnectionID, HAL& hal, dataClass& data, HeightSensor& hs,RunningFactory& factory,TimerHandler& timerHandler);
     ~Dispatcher();
     int getConnectionID();
 };
