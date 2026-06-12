@@ -131,6 +131,10 @@ namespace M1{
 	    // kein Sub-FSM braucht das aktuell
 	}
 
+	void Running::eventSlideTimerExpired(OperationContext& ctx){
+		slideFSM->eventSlideTimerExpired();
+	}
+
 	// Höhensensor / Profil
 	void Running::eventHeightHigh(OperationContext& ctx){
 	    profileFSM->eventHeightHigh();

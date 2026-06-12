@@ -24,6 +24,7 @@ namespace M1{
 	void Full::entry(SlideContext& ctx){
 		if(ctx.hal.getSensors()->isSlideFull()){
 			ctx.hal.getActors()->yellowLampBlink(1000);
+			ctx.data.slideFull = true;
 			std::cout << "Slide Full"<<std::endl;
 		}
 		else{
@@ -33,7 +34,7 @@ namespace M1{
 		}
 	}
 	void Full::exit(SlideContext& ctx){
-
+//		ctx.hal.getActors()->yellowLampBlinkOff();
 	}
 
 	void Full::eventItemLeftSlide(SlideContext& ctx){

@@ -20,7 +20,16 @@ namespace M1{
 	}
 
 	void Free::entry(SlideContext& ctx){
-		std::cout << "Slide Free"<<std::endl;
+		if(!ctx.hal.getSensors()->isSlideFull()){
+			ctx.hal.getActors()->yellowLampBlinkOff();
+			ctx.data.slideFull = false;
+			std::cout << "Slide Free"<<std::endl;
+		}
+		else{
+			exit(ctx);
+			new(this) Blocked;
+			entry(ctx);
+		}
 	}
 	void Free::exit(SlideContext& ctx){
 

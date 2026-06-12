@@ -173,5 +173,8 @@ void Operation::eventSlideFull(MainContext& ctx) {
 void Operation::eventSlideFullRemote(MainContext& ctx) {
     operationFSM.eventSlideFullRemote();
 }
+void Operation::eventSlideTimerExpired(MainContext& ctx) {
+    operationFSM.eventSlideTimerExpired();
+}
 
 
