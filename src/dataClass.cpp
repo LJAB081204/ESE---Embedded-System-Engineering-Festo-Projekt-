@@ -69,4 +69,48 @@ bool dataClass::addItem(){
 	section1.push(item);
 	return true;
 }
-;
+
+bool dataClass::removeItem(int queue){
+	switch (queue){
+			case 1:
+				if(section1.empty()){
+					return false;
+				}
+				section1.pop();
+				itemCount--;
+				return true;
+			case 2:
+				if(section2.empty()){
+					return false;
+				}
+				section2.pop();
+				itemCount--;
+				return true;
+			case 3:
+				if(section3.empty()){
+					return false;
+				}
+				section3.pop();
+				itemCount--;
+				return true;
+			default:
+				return false;
+	}
+}
+
+uint32_t dataClass::convertItemToInt(const itemData& item)
+{
+    return (static_cast<uint32_t>(item.id) << 4) |
+           static_cast<uint32_t>(item.item);
+}
+
+itemData dataClass::convertIntToItem(uint32_t itemCode)
+{
+    itemData item;
+
+    item.item = static_cast<itemProfile>(itemCode & 0xF); // untere 4 Bits
+    item.id = itemCode >> 4;                                // obere 28 Bits
+
+    return item;
+}
+

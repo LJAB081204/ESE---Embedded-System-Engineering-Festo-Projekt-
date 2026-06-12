@@ -9,33 +9,32 @@
 #include "dataClass.h"
 #include "HAL.h"
 #include "FSMs/MainFSM/MainContext.h"
+#include "HeightSensor.h"
+#include "FSMs/OperationFSM/RunningFactory.h"
 
 
 
 class Dispatcher {
 private:
-    int localConnectionID;
-    int remoteConnectionID;
-    std::chrono::steady_clock::time_point buttonPressStart;
+	int ownConnectionID;
+    int conCtrlConnectionID;
+
     HAL& hal;
     dataClass& data;
-    MainContext FSM;
+    RunningFactory& factory;
 
-#ifndef LOCAL_VERSION
-    //GLOBAL VERSION
-    name_attach_t* attach;
-#else
-    //LOCAL VERSION
-    int channelID;
-#endif
+    std::chrono::steady_clock::time_point buttonPressStart;
+	MainContext FSM;
+    int ownChannelID;
 
 
+    bool itemAtExit;
     bool waitForMessages;
     std::thread DispatcherThread;
     _pulse msg;
     void run();
 public:
-    Dispatcher(const char* localName, const char* remoteName,HAL& hal,dataClass& data);
+    Dispatcher(int conCtrlConnectionID, HAL& hal, dataClass& data, HeightSensor& hs,RunningFactory& factory);
     ~Dispatcher();
     int getConnectionID();
 };

@@ -10,11 +10,17 @@
 #include "Stop.h"
 #include "WaitForFesto.h"
 #include "ForwardSlow.h"
+#include "../../../../PulseMessages.h"
+#include <iostream>
+#include <sys/neutrino.h>
+namespace M1{
 
 	Forward::Forward(){
 	}
 
 	void Forward::entry(TransportContext& ctx){
+		std::cout<<"Forward" << std::endl;
+		ctx.hal.getActors()->motorStop();
 		ctx.hal.getActors()->motorForwards();
 	}
 
@@ -22,14 +28,19 @@
 	}
 
 	void Forward::eventItemAtExit(TransportContext& ctx){
-		if(!ctx.data.readyForItemRemote){					//Datenklasse fehlt noch
-			exit(ctx);
-			new(this) WaitForFesto;
-			entry(ctx);
-		}
-		new (this) Stop;
+		exit(ctx);
+		raiseRequestTransfer(ctx);
+		new(this) WaitForFesto;
 		entry(ctx);
+	}
 
+
+	void Forward::eventItemAtEntry(TransportContext& ctx){
+		exit(ctx);
+		std::cout<<"ITEM AT ENTRY"<< std::endl;
+		ctx.data.addItem();
+		std::cout<< ctx.data.itemCount << std::endl;
+		entry(ctx);
 	}
 
 	void Forward::eventItemArrived(TransportContext& ctx){
@@ -37,6 +48,30 @@
 		new(this) ForwardSlow;
 		entry(ctx);
 	}
+
+
+	void Forward::eventItemAtEntryRemote(TransportContext& ctx){
+		exit(ctx);
+		ctx.data.removeItem(3);
+		if(ctx.data.itemCount == 0){
+			new(this) Stop;
+		}
+		entry(ctx);
+	}
+
+	void Forward::eventItemInSlide(TransportContext& ctx){
+		exit(ctx);
+		ctx.data.removeItem(2);
+		if(ctx.data.itemCount == 0){
+			new(this) Stop;
+		}
+		entry(ctx);
+	}
+	void Forward::raiseRequestTransfer(TransportContext& ctx){
+		MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_TRANSFER_REQUEST,0);
+
+	}
+}
 
 
 

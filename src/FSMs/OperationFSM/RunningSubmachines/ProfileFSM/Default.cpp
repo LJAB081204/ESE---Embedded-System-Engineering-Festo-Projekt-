@@ -12,7 +12,7 @@
 #include "IS.h"
 #include "ProfileIF.h"
 #include "IU.h"
-
+namespace M1{
 Default::Default(){};
 
 void Default::entry(ProfileContext& ctx) {
@@ -43,4 +43,5 @@ void Default::eventHeightWrong(ProfileContext& ctx) {
 	exit(ctx);
 	new(this) IS;
 	entry(ctx);
+}
 }

@@ -11,6 +11,8 @@
 #include "ResetRemote.h"
 #include "HandShakeEStopLocalNotPressed.h"
 #include "HandShakeEStopLocalPressed.h"
+#include "../../HeightSensor.h"
+
 
 enum class EStopSource {LOCAL,REMOTE};
 
@@ -20,10 +22,11 @@ class EStopContext {
     bool active = false;
 public:
     HAL& hal;
+    HeightSensor& hs;
     bool isActive() { return active; }
     void setActive(bool a) { active = a; }
 
-    EStopContext(HAL& hal,EStopSource source) : hal(hal) {
+    EStopContext(HAL& hal,HeightSensor& hs,EStopSource source) : hal(hal), hs(hs) {
     	if(source == EStopSource::LOCAL)
     		new(currentState) EStopState;
     	else{

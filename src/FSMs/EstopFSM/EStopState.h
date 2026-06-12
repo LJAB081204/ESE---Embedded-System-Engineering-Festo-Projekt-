@@ -11,6 +11,7 @@
 #include "EstopBase.h"
 
 
+
 class EStopState : public EStopBase{
 public:
 	EStopState();

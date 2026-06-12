@@ -8,31 +8,31 @@
 #include "TransportContext.h"
 #include "Forward.h"
 #include "WaitForFesto.h"
+namespace M1{
 
 	WaitForFesto::WaitForFesto(){
 	}
 
 	void WaitForFesto::entry(TransportContext& ctx){
+		std::cout<<"WaitForFesto" << std::endl;
 		ctx.hal.getActors()->motorStop();
 	}
 
 	void WaitForFesto::exit(TransportContext& ctx){
 	}
 
-	void WaitForFesto::eventItemInSlideRemote(TransportContext& ctx){
-//		if(data.getReadyForItemRemote()){					//Datenklasse fehlt noch
-//			entry(ctx);
-//			new(this) Forward;
-//			exit(ctx);
+	void WaitForFesto::eventFestoReady(TransportContext& ctx){
+		exit(ctx);
+//		if(!data.getReadyForItemRemote()){					//Datenklasse fehlt noch
+		new(this) Forward;
 //		}
+		entry(ctx);
 	}
 
-	void WaitForFesto::eventItemLeftExitRemote(TransportContext& ctx){
-//		if(data.getReadyForItemRemote()){					//Datenklasse fehlt noch
-//			entry(ctx);
-//			new(this) Forward;
-//			exit(ctx);
-//		}
+	void WaitForFesto::eventItemAtEntry(TransportContext& ctx){
+		ctx.data.addItem();
+		std::cout<< ctx.data.itemCount << std::endl;
 	}
 
+}
 

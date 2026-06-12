@@ -10,14 +10,15 @@
 #include "../OperationBase.h"
 #include "../OperationContext.h"
 #include "HeightDetect.h"
+#include "../Service.h"
 
 #include "waitForPusher.h"
 
 HeightDetect::HeightDetect(){};
 
 void HeightDetect::entry(OperationContext& ctx) {
-	std::cout<< "2" << std::endl;
 	ctx.hal.getActors()->motorSlow();
+	std::cout<< "HeightDetect" << std::endl;
 }
 
 void HeightDetect::exit(OperationContext& ctx) {
@@ -33,5 +34,17 @@ void HeightDetect::eventItemGone(OperationContext& ctx) {
 void HeightDetect::eventButtonStartPressedLong(OperationContext& ctx){
 	exit(ctx);
 	new (this) Idle;
+	entry(ctx);
+}
+
+void HeightDetect::eventButtonStopPressed(OperationContext& ctx){
+	exit(ctx);
+	new (this) Service;
+	entry(ctx);
+}
+
+void HeightDetect::eventButtonStopPressedRemote(OperationContext& ctx){
+	exit(ctx);
+	new (this) Service;
 	entry(ctx);
 }

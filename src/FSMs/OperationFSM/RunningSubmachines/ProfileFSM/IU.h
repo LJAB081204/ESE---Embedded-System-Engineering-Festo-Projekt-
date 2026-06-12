@@ -9,6 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_PROFILEFSM_IU_H_
 
 #include "ProfileBase.h"
+namespace M1{
 
 class IU : public ProfileBase{
 public:
@@ -20,6 +21,6 @@ public:
 
 	virtual void eventHeightWrong(ProfileContext& ctx)override;
 };
-
+}
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_PROFILEFSM_IU_H_ */

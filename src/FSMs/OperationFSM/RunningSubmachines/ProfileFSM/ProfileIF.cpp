@@ -12,11 +12,13 @@
 #include "IU.h"
 #include "Default.h"
 #include "IS.h"
+namespace M1{
 
 ProfileIF::ProfileIF(){};
 
 void ProfileIF::entry(ProfileContext& ctx) {
 	std::cout << "//////////////////////ProfileIF detected" << std::endl;
+	ctx.data.section1.front().flat = true;
 }
 
 void ProfileIF::exit(ProfileContext& ctx) {}
@@ -36,7 +38,9 @@ void ProfileIF::eventHeightHole(ProfileContext& ctx) {
 void ProfileIF::eventItemGone(ProfileContext& ctx) {
 	exit(ctx);
 	std::cout << "ProfileIF" << std::endl;
-	//in die Datenklasse schreiben
+	if(!ctx.data.section1.empty()){
+		ctx.data.moveFrom1To2();
+	}
 	new(this) Default;
 	entry(ctx);
 }
@@ -46,5 +50,5 @@ void ProfileIF::eventHeightWrong(ProfileContext& ctx) {
 	new(this) IS;
 	entry(ctx);
 }
-
+}
 

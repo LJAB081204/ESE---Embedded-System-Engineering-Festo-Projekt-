@@ -12,8 +12,8 @@
 
 enum systemState { IDLE_STATE,RUNNING_STATE,ERROR_STATE,ESTOP_STATE };
 enum itemProfile { IH_PROFILE, IM_PROFILE, IF_PROFILE, IHM_PROFILE, IU_PROFILE, IS_PROFILE, I_PROFILE, UNDEFINED_PROFILE};
-enum errors { ERROR_CLEARED, ITEM_GONE, ITEM_APPEARED, BOTH_SLIDES_FULL, ITEM_SPECIAL, CONNECTION_LOST, HW_CONTROL_FAILED, PUSHER_OPEN_TOO_LONG };
-
+enum errors { ERROR_CLEARED, ITEM_SPECIAL, ITEM_GONE, BOTH_SLIDES_FULL, ITEM_APPEARED,CONNECTION_LOST};
+				//0				1				2			3					4			5
 struct itemData{
 		int id = 0;
 		bool flat = false;
@@ -31,6 +31,7 @@ class dataClass{
 
 	//Connection
 	int conId = -1;
+	int controllerConId = -1;
 
 	// Laufband
 	int nextItemID = 1;
@@ -61,6 +62,10 @@ class dataClass{
 	bool moveFrom1To2();
 	bool moveFrom2To3();
 	bool addItem();
+	bool removeItem(int queue);
+
+	uint32_t convertItemToInt(const itemData& item);
+	itemData convertIntToItem(uint32_t itemCode);
 };
 
 

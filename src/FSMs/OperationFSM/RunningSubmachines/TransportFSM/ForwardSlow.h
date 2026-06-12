@@ -9,6 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_FORWARDSLOW_H_
 
 #include "TransportBase.h"
+namespace M1{
 
 class ForwardSlow : public TransportBase{
 public:
@@ -17,8 +18,13 @@ public:
 	void exit(TransportContext& ctx)override;
 
 	void eventItemGone(TransportContext& ctx)override;
+	void eventItemAtExit(TransportContext& ctx)override;
+	void eventItemAtEntry(TransportContext& ctx)override;
+	void eventItemInSlide(TransportContext& ctx)override;
+
+	void raiseRequestTransfer(TransportContext& ctx);
 };
 
 
-
+}
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_FORWARDSLOW_H_ */

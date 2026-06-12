@@ -14,12 +14,13 @@
 #include "Full.h"
 #include <sys/neutrino.h>
 #include "../../../../PulseMessages.h"
+namespace M1{
 
 	Full::Full(){
 
 	}
 	void Full::entry(SlideContext& ctx){
-
+		ctx.hal.getActors()->yellowLampBlink(1000);
 	}
 	void Full::exit(SlideContext& ctx){
 
@@ -31,3 +32,4 @@
 		entry(ctx);
 	}
 
+}

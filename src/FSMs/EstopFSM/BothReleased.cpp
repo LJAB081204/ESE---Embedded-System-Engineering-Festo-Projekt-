@@ -13,6 +13,7 @@
 #include "BothReleased.h"
 #include "Reset.h"
 
+
 BothReleased::BothReleased(){
 }
 
@@ -20,6 +21,7 @@ void BothReleased::entry(EStopContext& ctx){
 	ctx.hal.getActors()->motorStop();
 	ctx.hal.getActors()->closePusher();
 	ctx.hal.getActors()->redLampOn();
+	ctx.hal.getActors()->ledButtonReset();
 	ctx.setActive(true);
 }
 

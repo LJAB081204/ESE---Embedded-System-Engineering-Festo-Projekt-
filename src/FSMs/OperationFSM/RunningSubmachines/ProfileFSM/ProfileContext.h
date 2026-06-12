@@ -13,6 +13,7 @@
 #include <new>
 #include "ProfileBase.h"
 #include "Default.h"
+namespace M1{
 
 class ProfileContext {
     alignas(Default) char stateBuffer[sizeof(Default)];
@@ -34,7 +35,7 @@ public:
 
         void eventError()                  { currentState->eventError(*this); }
     };
-
+}
 
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_PROFILEFSM_PROFILECONTEXT_H_ */

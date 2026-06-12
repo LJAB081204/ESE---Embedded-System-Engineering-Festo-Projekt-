@@ -9,6 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_WEICHEFSM_RECEIVE_H_
 
 #include "WeicheBase.h"
+namespace M1{
 
 class Receive : public WeicheBase{
 public:
@@ -19,6 +20,6 @@ public:
 	void eventItemMetal(WeicheContext& ctx)override;
 	void raiseUpdate(WeicheContext& ctx);
 };
-
+}
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_WEICHEFSM_RECEIVE_H_ */

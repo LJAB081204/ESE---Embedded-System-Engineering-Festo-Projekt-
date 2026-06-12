@@ -13,8 +13,10 @@
 #include <new>
 #include "TransportBase.h"
 #include "Stop.h"
-#include "../../Running.h"
 #include "Forward.h"
+
+#include <iostream>
+namespace M1{
 
 class TransportContext{
 	//Kontext
@@ -34,11 +36,20 @@ public:
 	void eventItemInSlide()          { currentState->eventItemInSlide(*this); }
 	void eventItemAtEntryRemote()    { currentState->eventItemAtEntryRemote(*this); }
 	void eventItemAtExit()           { currentState->eventItemAtExit(*this); }
+	void eventItemLeftExit()   		 { currentState->eventItemLeftExit(*this); }
 	void eventItemLeftExitRemote()   { currentState->eventItemLeftExitRemote(*this); }
 	void eventItemInSlideRemote()    { currentState->eventItemInSlideRemote(*this); }
 	void eventItemGone()             { currentState->eventItemGone(*this); }
 	void eventItemArrived()          { currentState->eventItemArrived(*this); }
 
+
+	void eventFestoReady() 			 { currentState->eventFestoReady(*this); }
+	void eventFestoNotReady() 			 { currentState->eventFestoNotReady(*this); }
+	void reactivate() 			 { currentState->entry(*this); }
+
+
+
 };
+}
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTCONTEXT_H_ */

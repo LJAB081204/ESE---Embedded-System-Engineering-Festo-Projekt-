@@ -15,22 +15,40 @@
 #include "EStop.h"
 #include "Error.h"
 #include "../../dataClass.h"
+#include "../../HeightSensor.h"
+#include "../OperationFSM/RunningFactory.h"
+
 
 
 class MainContext {
-    alignas(Operation) char stateBuffer[sizeof(Operation)];
+	OperationContext* operationFSM;
+    alignas(EStop) char stateBuffer[sizeof(EStop)];
     MainBase* currentState = reinterpret_cast<MainBase*>(stateBuffer);
 public:
     HAL& hal;
     dataClass& data;
-    MainContext(HAL& hal,dataClass& data) : hal(hal),data(data) {
-        new(currentState) Operation(hal,data);
+    HeightSensor& hs;
+    RunningFactory& factory;
+    MainContext(HAL& hal,dataClass& data,HeightSensor& hs,RunningFactory& factory) : hal(hal),data(data), hs(hs), factory(factory) {
+    	operationFSM = new OperationContext(hal,data,hs,factory);
+        new(currentState) Operation(*operationFSM);
         currentState->entry(*this);
     }
+    ~MainContext(){
+    	delete operationFSM;
+    }
+
+    	OperationContext& getOperationFSM() { return *operationFSM; }
 
     	void eventButtonStartPressed()     { currentState->eventButtonStartPressed(*this); }
+        void eventButtonStartPressedRemote()     { currentState->eventButtonStartPressedRemote(*this); }
+
         void eventButtonStartPressedLong() { currentState->eventButtonStartPressedLong(*this); }
+        void eventButtonStartPressedLongRemote() { currentState->eventButtonStartPressedLongRemote(*this); }
+
         void eventButtonStopPressed()      { currentState->eventButtonStopPressed(*this); }
+        void eventButtonStopPressedRemote()      { currentState->eventButtonStopPressedRemote(*this); }
+
         void eventButtonResetPressed()     { currentState->eventButtonResetPressed(*this); }
         void eventButtonResetPressedRemote()     { currentState->eventButtonResetPressedRemote(*this); }
 
@@ -42,20 +60,41 @@ public:
 
 
         void eventItemAtEntry()            { currentState->eventItemAtEntry(*this); }
+        void eventItemAtEntryRemote()            { currentState->eventItemAtEntryRemote(*this); }
+
         void eventItemLeftEntry()          { currentState->eventItemLeftEntry(*this); }
+        void eventItemLeftEntryRemote()          { currentState->eventItemLeftEntryRemote(*this); }
+
 
         void eventItemAtExit()             { currentState->eventItemAtExit(*this); }
+        void eventItemAtExitRemote()             { currentState->eventItemAtExitRemote(*this); }
+
         void eventItemLeftExit()           { currentState->eventItemLeftExit(*this); }
+        void eventItemLeftExitRemote()           { currentState->eventItemLeftExitRemote(*this); }
+
 
         void eventItemAtPusher()           { currentState->eventItemAtPusher(*this); }
+        void eventItemAtPusherRemote()           { currentState->eventItemAtPusherRemote(*this); }
+
         void eventItemLeftPusher()         { currentState->eventItemLeftPusher(*this); }
+        void eventItemLeftPusherRemote()         { currentState->eventItemLeftPusherRemote(*this); }
+
 
         void eventItemInSlide()            { currentState->eventItemInSlide(*this); }
+        void eventItemInSlideRemote()            { currentState->eventItemInSlideRemote(*this); }
+
         void eventItemLeftSlide()          { currentState->eventItemLeftSlide(*this); }
+        void eventItemLeftSlideRemote()          { currentState->eventItemLeftSlideRemote(*this); }
+
 
         void eventItemMetal()			   { currentState->eventItemMetal(*this); }
+        void eventItemMetalRemote()              { currentState->eventItemMetalRemote(*this); }
+
         void eventItemArrived() 		   { currentState->eventItemArrived(*this);}
         void eventItemGone()			   { currentState->eventItemGone(*this);}
+
+        void eventFestoReady()			   { currentState->eventFestoReady(*this);}
+        void eventFestoNotReady()		   { currentState->eventFestoNotReady(*this);}
 
         void eventHeightHigh()			   {currentState->eventHeightHigh(*this); }
         void eventHeightFlat()			   { currentState->eventHeightFlat(*this); }
@@ -69,6 +108,9 @@ public:
         void eventTimerExpired()			   { currentState->eventTimerExpired(*this); }
 
         void eventError()                  { currentState->eventError(*this); }
+
+        void eventSlideFull()                    { currentState->eventSlideFull(*this); }
+        void eventSlideFullRemote()              { currentState->eventSlideFullRemote(*this); }
     };
 
 

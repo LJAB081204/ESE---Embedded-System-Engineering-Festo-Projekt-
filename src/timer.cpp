@@ -12,13 +12,12 @@ static const int TIMER_TICK = _PULSE_CODE_MINAVAIL;
 // SimpleTimer
 // ===========================================================================
 
-SimpleTimer::SimpleTimer(int id, int dispatcherCoid)
-    : id_(id), coid_(dispatcherCoid)
+SimpleTimer::SimpleTimer(int dispatcherCoid, int pulseMessage)
+    : coid_(dispatcherCoid)
 {
-    // sigevent konfigurieren: Bei Timer-Ablauf wird ein Pulse mit Code
-    // PULSE_TIMER_EXPIRED und Value id_ an den Dispatcher-Channel gesendet.
+    // sigevent konfigurieren: Bei Timer-Ablauf wird ein Pulse an den Dispatcher-Channel gesendet.
     struct sigevent event;
-    SIGEV_PULSE_INIT(&event, coid_, SIGEV_PULSE_PRIO_INHERIT, PULSE_TIMER_EXPIRED, id_);
+    SIGEV_PULSE_INIT(&event, coid_, SIGEV_PULSE_PRIO_INHERIT, pulseMessage, 0);
 
     // Monotonischen POSIX-Timer anlegen (nicht durch Systemzeit-Änderungen beeinflussbar)
     timer_create(CLOCK_MONOTONIC, &event, &timerId_);
@@ -212,7 +211,7 @@ void TimerHandler::processTick()
             t->virtualTime_ = t->targetTime_;  // Zähler auf exakte Zielzeit kappen
 
             // Expired-Pulse mit der Timer-ID als Value an den Dispatcher senden
-            MsgSendPulse(coidDispatcher_, SIGEV_PULSE_PRIO_INHERIT, PULSE_TIMER_EXPIRED, t->id_);
+            MsgSendPulse(coidDispatcher_, SIGEV_PULSE_PRIO_INHERIT, PULSE_DYNAMIC_TIMER_EXPIRED, t->id_);
         }
     }
 }

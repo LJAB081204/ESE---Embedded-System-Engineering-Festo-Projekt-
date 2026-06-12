@@ -14,6 +14,7 @@
 #include "SlideBase.h"
 #include "Free.h"
 
+namespace M1{
 
 class SlideContext{
 	//Kontext
@@ -28,6 +29,7 @@ public:
 		new (currentState) Free;
 		currentState->entry(*this);
 	}
+	virtual ~SlideContext() = default;
 
 	virtual void eventItemLeftSlide(SlideContext &fsm)		{currentState->eventItemLeftSlide(*this);}
 	virtual void eventItemAtSlide(SlideContext &fsm)		{currentState->eventItemAtSlide(*this);}
@@ -35,7 +37,7 @@ public:
 	virtual void eventStopSlideTimer(SlideContext &fsm)		{currentState->eventStopSlideTimer(*this);}
 
 };
-
+}
 
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SLIDEFSM_SLIDECONTEXT_H_ */

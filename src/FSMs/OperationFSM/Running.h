@@ -12,10 +12,12 @@
 #include "../../dataClass.h"
 
 
+namespace M1{
+
 class TransportContext;
 class WeicheContext;
-class SequenceContext;
 class ProfileContext;
+class SequenceContext;
 
 class Running : public OperationBase{
 	TransportContext* transportFSM;
@@ -23,35 +25,59 @@ class Running : public OperationBase{
 	SequenceContext* sequenceFSM;
 	ProfileContext* profileFSM;
 public:
-	Running(HAL& hal,dataClass& data);
+	Running(HAL& hal,dataClass& data,SequenceContext& seq);
+
+	void onRestore(HistorySource source,OperationContext& ctx)override;
 	void entry(OperationContext& ctx)override;
 	void exit(OperationContext& ctx)override;
-	void eventButtonStopPressed(OperationContext& ctx)override;
-	void eventItemAtEntry(OperationContext& ctx)override;
-	void eventItemAtExit(OperationContext& ctx)override;
-	void eventItemInSlide(OperationContext& ctx)override;
-	void eventItemLeftSlide(OperationContext& ctx)override;
-	void eventItemGone(OperationContext& ctx)override;
-	void eventItemArrived(OperationContext& ctx)override;
-	void eventItemMetal(OperationContext& ctx)override;
-	void eventItemAtPusher(OperationContext& ctx)override;
-	void eventItemLeftPusher(OperationContext& ctx)override;
-	void eventItemWrong(OperationContext& ctx)override;
-	void eventItemCorrect(OperationContext& ctx)override;
-	void eventUpdate(OperationContext& ctx)override;
-	void eventTimerExpired(OperationContext& ctx)override;
-	void eventError(OperationContext& ctx)override;
+	// Buttons
+	void eventButtonStopPressed(OperationContext& ctx) override;
+	void eventButtonStopPressedRemote(OperationContext& ctx) override;
 
-	//Profile
-	void eventHeightHigh(OperationContext& ctx)override;
-	void eventHeightFlat(OperationContext& ctx)override;
-	void eventHeightHole(OperationContext& ctx)override;
-	void eventHeightWrong(OperationContext& ctx)override;
+	// Sensoren lokal
+	void eventItemAtEntry(OperationContext& ctx) override;
+	void eventItemAtExit(OperationContext& ctx) override;
+	void eventItemLeftExit(OperationContext& ctx) override;
+	void eventItemAtPusher(OperationContext& ctx) override;
+	void eventItemLeftPusher(OperationContext& ctx) override;
+	void eventItemInSlide(OperationContext& ctx) override;
+	void eventItemLeftSlide(OperationContext& ctx) override;
+	void eventItemMetal(OperationContext& ctx) override;
+	void eventItemGone(OperationContext& ctx) override;
+	void eventItemArrived(OperationContext& ctx) override;
 
+	// Sensoren remote
+	void eventItemAtEntryRemote(OperationContext& ctx) override;
+	void eventItemLeftEntryRemote(OperationContext& ctx) override;
+	void eventItemAtExitRemote(OperationContext& ctx) override;
+	void eventItemLeftExitRemote(OperationContext& ctx) override;
+	void eventItemAtPusherRemote(OperationContext& ctx) override;
+	void eventItemLeftPusherRemote(OperationContext& ctx) override;
+	void eventItemInSlideRemote(OperationContext& ctx) override;
+	void eventItemLeftSlideRemote(OperationContext& ctx) override;
+	void eventItemMetalRemote(OperationContext& ctx) override;
+	void eventSlideFullRemote(OperationContext& ctx) override;
+
+	// Höhensensor / Profil
+	void eventHeightHigh(OperationContext& ctx) override;
+	void eventHeightFlat(OperationContext& ctx) override;
+	void eventHeightHole(OperationContext& ctx) override;
+	void eventHeightWrong(OperationContext& ctx) override;
+
+	// Festo
+	void eventFestoReady(OperationContext& ctx) override;
+	void eventFestoNotReady(OperationContext& ctx) override;
+
+	// Logik
+	void eventItemCorrect(OperationContext& ctx) override;
+	void eventItemWrong(OperationContext& ctx) override;
+	void eventUpdate(OperationContext& ctx) override;
+	void eventError(OperationContext& ctx) override;
+	void eventTimerExpired(OperationContext& ctx) override;
 
 
 
 };
 
-
+}
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNING_H_ */

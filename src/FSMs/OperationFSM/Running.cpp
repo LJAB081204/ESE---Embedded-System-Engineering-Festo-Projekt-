@@ -17,11 +17,11 @@
 
 #include <iostream>
 
-
-	Running::Running(HAL& hal,dataClass& data){
+namespace M1{
+	Running::Running(HAL& hal,dataClass& data,SequenceContext& sequence){
 		transportFSM = new TransportContext(hal,data);
 		weicheFSM = new WeicheContext(hal,data);
-		sequenceFSM = new SequenceContext(data);
+		sequenceFSM = &sequence;
 		profileFSM = new ProfileContext(data);
 	}
 
@@ -33,36 +33,40 @@
 	void Running::exit(OperationContext& ctx){
 		delete transportFSM;
 		delete weicheFSM;
-		delete sequenceFSM;
 		delete profileFSM;
 	}
 
-	void Running::eventButtonStopPressed(OperationContext& ctx){
-		exit(ctx);
-		new (this) Idle;
-		entry(ctx);
+	void Running::onRestore(HistorySource source, OperationContext& ctx){
+		if (source == HistorySource::ESTOP_HISTORY){
+			delete transportFSM;
+			transportFSM = new TransportContext(ctx.hal,ctx.data);
+			delete weicheFSM;
+			weicheFSM = new WeicheContext(ctx.hal,ctx.data);
+			delete profileFSM;
+			profileFSM = new ProfileContext(ctx.data);
+		}
+		else{
+			transportFSM->reactivate();
+		}
 	}
+
+	// Buttons
+	void Running::eventButtonStopPressed(OperationContext& ctx){
+	    ctx.saveHistory(HistorySource::STOP_HISTORY);
+	}
+	void Running::eventButtonStopPressedRemote(OperationContext& ctx){
+	    ctx.saveHistory(HistorySource::STOP_HISTORY);
+	}
+
+	// Sensoren lokal
 	void Running::eventItemAtEntry(OperationContext& ctx){
-		transportFSM->eventItemAtEntry();
+	    transportFSM->eventItemAtEntry();
 	}
 	void Running::eventItemAtExit(OperationContext& ctx){
-		transportFSM->eventItemAtExit();
+	    transportFSM->eventItemAtExit();
 	}
-	void Running::eventItemInSlide(OperationContext& ctx){
-		transportFSM->eventItemInSlide();
-	}
-	void Running::eventItemGone(OperationContext& ctx){
-		transportFSM->eventItemGone();
-		profileFSM->eventItemGone();
-	}
-	void Running::eventItemArrived(OperationContext& ctx){
-		transportFSM->eventItemArrived();
-	}
-	void Running::eventItemMetal(OperationContext& ctx){
-		weicheFSM->eventItemMetal();
-	}
-	void Running::eventItemLeftSlide(OperationContext& ctx){
-
+	void Running::eventItemLeftExit(OperationContext& ctx){
+	    transportFSM->eventItemLeftExit();
 	}
 	void Running::eventItemAtPusher(OperationContext& ctx){
 	    weicheFSM->eventItemAtPusher();
@@ -70,30 +74,89 @@
 	void Running::eventItemLeftPusher(OperationContext& ctx){
 	    weicheFSM->eventItemLeftPusher();
 	}
-	void Running::eventItemWrong(OperationContext& ctx){
-		weicheFSM->eventItemWrong();
+	void Running::eventItemInSlide(OperationContext& ctx){
+	    transportFSM->eventItemInSlide();
+	    weicheFSM->eventItemInSlide();
 	}
-	void Running::eventItemCorrect(OperationContext& ctx){
-		weicheFSM->eventItemCorrect();
+	void Running::eventItemLeftSlide(OperationContext& ctx){
+	    weicheFSM->eventItemLeftSlide();
 	}
-	void Running::eventUpdate(OperationContext& ctx){
-		weicheFSM->eventUpdate();
+	void Running::eventItemMetal(OperationContext& ctx){
+	    weicheFSM->eventItemMetal();
 	}
-	void Running::eventTimerExpired(OperationContext& ctx){
+	void Running::eventItemGone(OperationContext& ctx){
+	    transportFSM->eventItemGone();
+	    profileFSM->eventItemGone();
+	}
+	void Running::eventItemArrived(OperationContext& ctx){
+	    transportFSM->eventItemArrived();
+	}
 
+	// Sensoren remote
+	void Running::eventItemAtEntryRemote(OperationContext& ctx){
+	    transportFSM->eventItemAtEntryRemote();
 	}
-	void Running::eventError(OperationContext& ctx){}
+	void Running::eventItemLeftEntryRemote(OperationContext& ctx){
+	    // kein Sub-FSM braucht das aktuell
+	}
+	void Running::eventItemAtExitRemote(OperationContext& ctx){
+	    // kein Sub-FSM braucht das aktuell
+	}
+	void Running::eventItemLeftExitRemote(OperationContext& ctx){
+	    transportFSM->eventItemLeftExitRemote();
+	}
+	void Running::eventItemAtPusherRemote(OperationContext& ctx){
+	    // kein Sub-FSM braucht das aktuell
+	}
+	void Running::eventItemLeftPusherRemote(OperationContext& ctx){
+	    // kein Sub-FSM braucht das aktuell
+	}
+	void Running::eventItemInSlideRemote(OperationContext& ctx){
+	    transportFSM->eventItemInSlideRemote();
+	}
+	void Running::eventItemLeftSlideRemote(OperationContext& ctx){
+	    // kein Sub-FSM braucht das aktuell
+	}
+	void Running::eventItemMetalRemote(OperationContext& ctx){
+	    // kein Sub-FSM braucht das aktuell
+	}
+	void Running::eventSlideFullRemote(OperationContext& ctx){
+	    // kein Sub-FSM braucht das aktuell
+	}
 
-	//Profile
+	// Höhensensor / Profil
 	void Running::eventHeightHigh(OperationContext& ctx){
-		profileFSM->eventHeightHigh();
+	    profileFSM->eventHeightHigh();
 	}
 	void Running::eventHeightFlat(OperationContext& ctx){
-		profileFSM->eventHeightFlat();
+	    profileFSM->eventHeightFlat();
 	}
 	void Running::eventHeightHole(OperationContext& ctx){
-		profileFSM->eventHeightHole();
+	    profileFSM->eventHeightHole();
 	}
 	void Running::eventHeightWrong(OperationContext& ctx){
-		profileFSM->eventHeightWrong();
+	    profileFSM->eventHeightWrong();
 	}
+
+	// Festo
+	void Running::eventFestoReady(OperationContext& ctx){
+	    transportFSM->eventFestoReady();
+	}
+	void Running::eventFestoNotReady(OperationContext& ctx){
+	    transportFSM->eventFestoNotReady();
+	}
+
+	// Logik
+	void Running::eventItemCorrect(OperationContext& ctx){
+	    weicheFSM->eventItemCorrect();
+	}
+	void Running::eventItemWrong(OperationContext& ctx){
+	    weicheFSM->eventItemWrong();
+	}
+	void Running::eventUpdate(OperationContext& ctx){
+	    weicheFSM->eventUpdate();
+	    sequenceFSM->eventUpdate();
+	}
+	void Running::eventError(OperationContext& ctx){}
+	void Running::eventTimerExpired(OperationContext& ctx){}
+}

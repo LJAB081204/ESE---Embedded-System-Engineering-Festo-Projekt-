@@ -2,7 +2,7 @@
 #define SRC_ADC_SOURCES_HEIGHTSENSOR_H_
 
 #define ADC_THRESHOLD 50
-#define CALIBRATION_FILE "calibration.cfg" // Pfad anpassen
+#define CALIBRATION_FILE "/etc/heightsensor/calibration.cfg"
 
 enum Height {
     HEIGHT_UNINITIALIZED,
@@ -28,8 +28,12 @@ public:
     void start();
     void stop();
     void calibrate();    // jetzt public für Service Mode
+    void setStartCalibration();
+    void stopCalibration();
     int getCoid();
     int getChid();
+    void setCoId(int CoId);
+    void resetCalibration();
 private:
     // Referenzwerte aus Kalibrierung
     int refConveyor;
@@ -46,11 +50,14 @@ private:
     int dispCoid;
     int chid;
     int coid;
+    bool doCalibrate;
+    bool calibrateRunning;
     std::thread threadHS;
     bool running;
     void threadFunc();
     void detectHeight(int value);
     void saveCalibration();   // Refs in Datei schreiben
     bool loadCalibration();   // Refs aus Datei lesen, false wenn Datei nicht existiert
+
 };
 #endif

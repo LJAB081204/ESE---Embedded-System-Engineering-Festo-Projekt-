@@ -8,6 +8,12 @@
 #include "timer.h"
 #include "HeightSensor.h"
 #include "dataClass.h"
+#include "ConnectionController.h"
+#include "FSMs/OperationFSM/RunningFactory.h"
+#include "FSMs/OperationFSM/Factory.h"
+#include "FSMs/OperationFSM/Factory2.h"
+
+
 using namespace std;
 
 
@@ -20,58 +26,43 @@ int main(int argc, char **argv) {
 		const char* local = SYSTEM1;
 		const char* remote = SYSTEM2;
 
-//		if (argc < 2) {
-//	        printf("Usage %s -s | -c \n", argv[0]);
-//	        return 0;
-//	    }
-//
-//		if (strcmp(argv[1],"-c") == 0){
-//			local = SYSTEM1;
-//			remote = SYSTEM2;
-//		}
-//		else{
-//			local = SYSTEM2;
-//			remote = SYSTEM1;
-//		}
-
-
+        RunningFactory* factory;
         HAL hal;
         dataClass data;
 
-//        hal.getActors()->greenLampOff();
-//        hal.getActors()->yellowLampOff();
-//        hal.getActors()->redLampOff();
-//        hal.getActors()->motorStop();
-        /*
-        hal.getActors()->greenLampBlink(500);
-        hal.getActors()->yellowLampBlink(500);
-        hal.getActors()->redLampBlink(500);
+		if (argc < 2) {
+	        printf("Usage %s -s | -c \n", argv[0]);
+	        return 0;
+	    }
 
-        this_thread::sleep_for(chrono::seconds(10));
+		if (strcmp(argv[1],"-c") == 0){
+			local = SYSTEM1;
+			remote = SYSTEM2;
+			factory = new M1::Factory(data);
+		}
+		else{
+			local = SYSTEM2;
+			remote = SYSTEM1;
+			factory = new M2::Factory2(data);
 
-        hal.getActors()->greenLampBlinkOff();
-        hal.getActors()->yellowLampBlinkOff();
-        hal.getActors()->redLampBlinkOff();
-		*/
+		}
 
 
-    	Dispatcher dispatcher(local,remote,hal,data);
+		cout << "local: " << local << " remote: " << remote << endl;
+
+
         TSCADC tsc;
-        HeightSensor hs (tsc,dispatcher.getConnectionID());
+		HeightSensor hs (tsc,-1);
+
+
+        ConnectionController conctrl(local,remote);
+        Dispatcher dispatcher(conctrl.getConnectionID(), hal, data,hs,*factory);
+        hs.setCoId(dispatcher.getConnectionID());
+        conctrl.start(dispatcher.getConnectionID());
+
+
     	Demultiplexer demux(dispatcher.getConnectionID());
     	InterruptHandler handler(demux.getConnectionID());
-
-    	TimerHandler* th = new TimerHandler(dispatcher.getConnectionID());
-
-    	DynamicTimer dt1(1, *th);
-    	SimpleTimer st1(2,dispatcher.getConnectionID());
-    	SimpleTimer st2(3,dispatcher.getConnectionID());
-    	cout << "blabla" << endl;
-    	st1.start(2000);
-    	sleep(1);
-    	st2.start(2000);
-    	sleep(3);
-    	cout << "blabla" << endl;
 
 
 
