@@ -348,8 +348,9 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 					case PULSE_EVENT_ITEM_WRONG:
 							FSM.eventItemWrong();
 							break;
-					case PULSE_EVENT_SLIDE_TIMER:
-							FSM.eventSlideTimerExpired();
+
+					case PULSE_ITEM_TRANSFER:
+						FSM.eventItemTransfer();
 				}
 
 
