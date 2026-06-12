@@ -85,6 +85,8 @@ public:
 	virtual void eventSlideFull(MainContext& fsm)      {}
 	virtual void eventSlideFullRemote(MainContext& fsm)      {}
 
+	virtual void eventSlideTimerExpired(MainContext& fsm)      {}
+
 };
 
 

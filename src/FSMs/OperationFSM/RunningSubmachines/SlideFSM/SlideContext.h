@@ -8,11 +8,14 @@
 #ifndef SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SLIDEFSM_SLIDECONTEXT_H_
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SLIDEFSM_SLIDECONTEXT_H_
 
+#include <sys/neutrino.h>
 #include "../../../../dataClass.h"
+#include "../../../../PulseMessages.h"
 #include "../../../../HAL.h"
 #include <new>
 #include "SlideBase.h"
 #include "Free.h"
+#include "../../../../timer.h"
 
 namespace M1{
 
@@ -25,16 +28,21 @@ class SlideContext{
 public:
 	HAL& hal;
 	dataClass& data;
+	SimpleTimer* slideTimer;
+
 	SlideContext(HAL& hal,dataClass& data) : hal(hal),data(data){
+		slideTimer = new SimpleTimer(data.conId,PULSE_EVENT_SLIDE_TIMER);
 		new (currentState) Free;
 		currentState->entry(*this);
 	}
 	virtual ~SlideContext() = default;
 
-	virtual void eventItemLeftSlide(SlideContext &fsm)		{currentState->eventItemLeftSlide(*this);}
-	virtual void eventItemAtSlide(SlideContext &fsm)		{currentState->eventItemAtSlide(*this);}
-	virtual void eventSlideTimerExpired(SlideContext &fsm)	{currentState->eventSlideTimerExpired(*this);}
-	virtual void eventStopSlideTimer(SlideContext &fsm)		{currentState->eventStopSlideTimer(*this);}
+	void eventItemLeftSlide()		{currentState->eventItemLeftSlide(*this);}
+	void eventItemInSlide()			{currentState->eventItemAtSlide(*this);}
+	void eventSlideTimerExpired()	{currentState->eventSlideTimerExpired(*this);}
+	void eventStopSlideTimer()		{currentState->eventStopSlideTimer(*this);}
+
+	void reactivate() 			 { currentState->entry(*this); }
 
 };
 }

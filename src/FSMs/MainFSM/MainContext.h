@@ -111,7 +111,9 @@ public:
 
         void eventSlideFull()                    { currentState->eventSlideFull(*this); }
         void eventSlideFullRemote()              { currentState->eventSlideFullRemote(*this); }
-    };
+
+        void eventSlideTimerExpired()              { currentState->eventSlideTimerExpired(*this); }
+};
 
 
 
