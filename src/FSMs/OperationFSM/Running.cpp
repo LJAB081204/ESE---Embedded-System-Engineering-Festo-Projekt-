@@ -76,6 +76,7 @@ namespace M1{
 	}
 	void Running::eventItemInSlide(OperationContext& ctx){
 	    transportFSM->eventItemInSlide();
+	    weicheFSM->eventItemInSlide();
 	}
 	void Running::eventItemLeftSlide(OperationContext& ctx){
 	    weicheFSM->eventItemLeftSlide();

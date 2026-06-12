@@ -53,7 +53,6 @@ namespace M1{
 	void Forward::eventItemAtEntryRemote(TransportContext& ctx){
 		exit(ctx);
 		ctx.data.removeItem(3);
-		ctx.data.itemCount--;
 		if(ctx.data.itemCount == 0){
 			new(this) Stop;
 		}
