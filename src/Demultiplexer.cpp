@@ -155,10 +155,10 @@ using namespace std;
 
 				case PULSE_SLIDE_FULL_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & SLIDE_FULL) {
-				        cout << "Slide cleared!" << endl;
+				        //cout << "Slide cleared!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_SLIDE_FULL_LOCAL,0);
 				    } else {
-				        cout << "Slide is full!" << endl;
+				        //cout << "Slide is full!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_SLIDE_FULL_LOCAL,1);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0), SLIDE_FULL);

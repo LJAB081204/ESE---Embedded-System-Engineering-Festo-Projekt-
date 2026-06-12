@@ -18,8 +18,6 @@ public:
 
 	void eventSlideTimerExpired(SlideContext& ctx)override;
 	void eventItemLeftSlide(SlideContext& ctx)override;
-
-	void raiseStopSlideTimer(SlideContext& ctx);
 };
 
 }

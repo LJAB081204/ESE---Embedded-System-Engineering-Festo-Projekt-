@@ -11,21 +11,33 @@
 #include "Blocked.h"
 #include <sys/neutrino.h>
 #include "../../../../PulseMessages.h"
+
+#include <iostream>
+
 namespace M2{
 
-	Free::Free(){
+Free::Free(){
+}
+
+void Free::entry(SlideContext& ctx){
+	if(!ctx.hal.getSensors()->isSlideFull()){
+		ctx.hal.getActors()->yellowLampBlinkOff();
+		ctx.data.slideFull = false;
+		std::cout << "Slide Free"<<std::endl;
 	}
-
-	void Free::entry(SlideContext& ctx){
-
-	}
-	void Free::exit(SlideContext& ctx){
-
-	}
-
-	void Free::eventItemAtSlide(SlideContext& ctx){
+	else{
 		exit(ctx);
-		new (this) Blocked;
+		new(this) Blocked;
 		entry(ctx);
 	}
+}
+void Free::exit(SlideContext& ctx){
+
+}
+
+void Free::eventItemAtSlide(SlideContext& ctx){
+	exit(ctx);
+	new (this) Blocked;
+	entry(ctx);
+}
 }

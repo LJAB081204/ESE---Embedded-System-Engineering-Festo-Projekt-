@@ -86,6 +86,8 @@ public:
 	virtual void eventSlideFullRemote(MainContext& fsm)      {}
 	virtual void eventItemTransfer(MainContext& fsm)      {}
 
+	virtual void eventSlideTimerExpired(MainContext& fsm)      {}
+
 };
 
 

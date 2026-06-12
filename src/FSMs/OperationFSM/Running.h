@@ -18,12 +18,15 @@ class TransportContext;
 class WeicheContext;
 class ProfileContext;
 class SequenceContext;
+class SlideContext;
 
 class Running : public OperationBase{
 	TransportContext* transportFSM;
 	WeicheContext* weicheFSM;
 	SequenceContext* sequenceFSM;
 	ProfileContext* profileFSM;
+	SlideContext* slideFSM;
+
 public:
 	Running(HAL& hal,dataClass& data,SequenceContext& seq);
 
@@ -57,6 +60,8 @@ public:
 	void eventItemLeftSlideRemote(OperationContext& ctx) override;
 	void eventItemMetalRemote(OperationContext& ctx) override;
 	void eventSlideFullRemote(OperationContext& ctx) override;
+
+	void eventSlideTimerExpired(OperationContext& ctx) override;
 
 	// Höhensensor / Profil
 	void eventHeightHigh(OperationContext& ctx) override;
