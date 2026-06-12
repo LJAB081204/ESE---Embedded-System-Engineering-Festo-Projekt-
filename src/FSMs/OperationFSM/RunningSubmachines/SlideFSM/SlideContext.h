@@ -31,10 +31,12 @@ public:
 	}
 	virtual ~SlideContext() = default;
 
-	virtual void eventItemLeftSlide(SlideContext &fsm)		{currentState->eventItemLeftSlide(*this);}
-	virtual void eventItemAtSlide(SlideContext &fsm)		{currentState->eventItemAtSlide(*this);}
-	virtual void eventSlideTimerExpired(SlideContext &fsm)	{currentState->eventSlideTimerExpired(*this);}
-	virtual void eventStopSlideTimer(SlideContext &fsm)		{currentState->eventStopSlideTimer(*this);}
+	void eventItemLeftSlide()		{currentState->eventItemLeftSlide(*this);}
+	void eventItemInSlide()			{currentState->eventItemAtSlide(*this);}
+	void eventSlideTimerExpired()	{currentState->eventSlideTimerExpired(*this);}
+	void eventStopSlideTimer()		{currentState->eventStopSlideTimer(*this);}
+
+	void reactivate() 			 { currentState->entry(*this); }
 
 };
 }

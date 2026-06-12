@@ -20,6 +20,7 @@ public:
 	void eventItemLeftSlide(SlideContext& ctx)override;
 
 	void raiseStopSlideTimer(SlideContext& ctx);
+	void raiseStartSlideTimer(SlideContext& ctx);
 };
 
 }

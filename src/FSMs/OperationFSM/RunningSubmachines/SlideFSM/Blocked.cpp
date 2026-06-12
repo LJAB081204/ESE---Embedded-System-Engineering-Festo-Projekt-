@@ -14,13 +14,16 @@
 #include <sys/neutrino.h>
 #include "../../../../PulseMessages.h"
 
+#include <iostream>
+
 namespace M1{
 
 	Blocked::Blocked(){
 		}
 
 		void Blocked::entry(SlideContext& ctx){
-
+			raiseStartSlideTimer(ctx);
+			std::cout << "Slide Blocked"<<std::endl;
 		}
 		void Blocked::exit(SlideContext& ctx){
 
@@ -36,9 +39,15 @@ namespace M1{
 			exit(ctx);
 			raiseStopSlideTimer(ctx);
 			new (this) Free;
+			entry(ctx);
+
 		}
 
 		void Blocked::raiseStopSlideTimer(SlideContext& ctx){
+			MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_STOP_SLIDE_TIMER, 0);
+		}
+
+		void Blocked::raiseStartSlideTimer(SlideContext& ctx){
 			MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_STOP_SLIDE_TIMER, 0);
 		}
 }

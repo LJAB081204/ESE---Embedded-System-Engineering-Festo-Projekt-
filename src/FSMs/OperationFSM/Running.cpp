@@ -12,6 +12,7 @@
 #include "RunningSubmachines/WeicheFSM/WeicheContext.h"
 #include "RunningSubmachines/SequenceFSM/SequenceContext.h"
 #include "RunningSubmachines/ProfileFSM/ProfileContext.h"
+#include "RunningSubmachines/SlideFSM/SlideContext.h"
 #include "Idle.h"
 #include "Running.h"
 
@@ -23,6 +24,7 @@ namespace M1{
 		weicheFSM = new WeicheContext(hal,data);
 		sequenceFSM = &sequence;
 		profileFSM = new ProfileContext(data);
+		slideFSM = new SlideContext(hal,data);
 	}
 
 
@@ -34,6 +36,7 @@ namespace M1{
 		delete transportFSM;
 		delete weicheFSM;
 		delete profileFSM;
+		delete slideFSM;
 	}
 
 	void Running::onRestore(HistorySource source, OperationContext& ctx){
@@ -44,9 +47,12 @@ namespace M1{
 			weicheFSM = new WeicheContext(ctx.hal,ctx.data);
 			delete profileFSM;
 			profileFSM = new ProfileContext(ctx.data);
+			delete slideFSM;
+			slideFSM = new SlideContext(ctx.hal,ctx.data);
 		}
 		else{
 			transportFSM->reactivate();
+			slideFSM->reactivate();
 		}
 	}
 
@@ -75,9 +81,11 @@ namespace M1{
 	    weicheFSM->eventItemLeftPusher();
 	}
 	void Running::eventItemInSlide(OperationContext& ctx){
+		slideFSM->eventItemInSlide();
 	    transportFSM->eventItemInSlide();
 	}
 	void Running::eventItemLeftSlide(OperationContext& ctx){
+		slideFSM->eventItemLeftSlide();
 	    weicheFSM->eventItemLeftSlide();
 	}
 	void Running::eventItemMetal(OperationContext& ctx){

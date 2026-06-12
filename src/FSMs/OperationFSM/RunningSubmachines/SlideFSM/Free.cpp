@@ -11,13 +11,16 @@
 #include "Blocked.h"
 #include <sys/neutrino.h>
 #include "../../../../PulseMessages.h"
+
+#include <iostream>
+
 namespace M1{
 
 	Free::Free(){
 	}
 
 	void Free::entry(SlideContext& ctx){
-
+		std::cout << "Slide Free"<<std::endl;
 	}
 	void Free::exit(SlideContext& ctx){
 
