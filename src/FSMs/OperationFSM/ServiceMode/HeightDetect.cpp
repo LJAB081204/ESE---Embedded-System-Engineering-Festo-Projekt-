@@ -17,8 +17,8 @@
 HeightDetect::HeightDetect(){};
 
 void HeightDetect::entry(OperationContext& ctx) {
-	std::cout<< "HeightDetect" << std::endl;
 	ctx.hal.getActors()->motorSlow();
+	std::cout<< "HeightDetect" << std::endl;
 }
 
 void HeightDetect::exit(OperationContext& ctx) {

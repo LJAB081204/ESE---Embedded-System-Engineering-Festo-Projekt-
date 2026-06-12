@@ -16,8 +16,8 @@
 ExitCalibration::ExitCalibration(){};
 
 void ExitCalibration::entry(OperationContext& ctx) {
-	std::cout<< "ExitCalibration" << std::endl;
 	ctx.hal.getActors()->motorStop();
+	std::cout<< "ExitCalibration" << std::endl;
 }
 
 void ExitCalibration::exit(OperationContext& ctx) {

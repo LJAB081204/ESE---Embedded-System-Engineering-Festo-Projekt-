@@ -19,8 +19,8 @@
 PusherCalibration::PusherCalibration(){};
 
 void PusherCalibration::entry(OperationContext& ctx) {
-	std::cout<< "PusherCalibration" << std::endl;
 	ctx.hal.getActors()->letItemPass();
+	std::cout<< "PusherCalibration" << std::endl;
 }
 
 void PusherCalibration::exit(OperationContext& ctx) {
