@@ -53,10 +53,11 @@ int main(int argc, char **argv) {
 
         TSCADC tsc;
 		HeightSensor hs (tsc,-1);
+		TimerHandler timerHandler(-1);
 
 
         ConnectionController conctrl(local,remote);
-        Dispatcher dispatcher(conctrl.getConnectionID(), hal, data,hs,*factory);
+        Dispatcher dispatcher(conctrl.getConnectionID(), hal, data,hs,*factory,timerHandler);
         hs.setCoId(dispatcher.getConnectionID());
         conctrl.start(dispatcher.getConnectionID());
 
