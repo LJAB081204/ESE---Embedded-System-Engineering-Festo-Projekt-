@@ -34,6 +34,7 @@ public:
 	virtual void exit(TransportContext2& fsm){}
 
 	virtual void eventItemAtSlide(TransportContext2& fsm){}
+	virtual void eventItemTransfer(TransportContext2& fsm) {}
 };
 }
 
