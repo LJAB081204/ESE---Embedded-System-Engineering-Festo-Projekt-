@@ -12,17 +12,19 @@
 #include "RunningSubmachines/WeicheFSM2/WeicheContext.h"
 #include "RunningSubmachines/SequenceFSM2/SequenceContext.h"
 #include "RunningSubmachines/ProfileFSM2/ProfileContext.h"
+#include "RunningSubmachines/SlideFSM2/SlideContext.h"
 #include "Idle.h"
 #include "Running2.h"
 
 #include <iostream>
 
 namespace M2{
-	Running2::Running2(HAL& hal,dataClass& data,SequenceContext& sequence){
+Running2::Running2(HAL& hal,dataClass& data,SequenceContext& sequence){
 		transportFSM = new TransportContext2(hal,data);
 		weicheFSM = new WeicheContext(hal,data);
 		sequenceFSM = &sequence;
 		profileFSM = new ProfileContext(data);
+		slideFSM = new SlideContext(hal,data);
 	}
 
 
@@ -34,6 +36,7 @@ namespace M2{
 		delete transportFSM;
 		delete weicheFSM;
 		delete profileFSM;
+		delete slideFSM;
 	}
 
 	void Running2::onRestore(HistorySource source, OperationContext& ctx){
@@ -44,9 +47,12 @@ namespace M2{
 			weicheFSM = new WeicheContext(ctx.hal,ctx.data);
 			delete profileFSM;
 			profileFSM = new ProfileContext(ctx.data);
+			delete slideFSM;
+			slideFSM = new SlideContext(ctx.hal,ctx.data);
 		}
 		else{
-			//transportFSM->reactivate();
+			transportFSM->reactivate();
+			slideFSM->reactivate();
 		}
 	}
 
@@ -75,9 +81,11 @@ namespace M2{
 	    weicheFSM->eventItemLeftPusher();
 	}
 	void Running2::eventItemInSlide(OperationContext& ctx){
+		slideFSM->eventItemInSlide();
 	    transportFSM->eventItemInSlide();
 	}
 	void Running2::eventItemLeftSlide(OperationContext& ctx){
+		slideFSM->eventItemLeftSlide();
 	    weicheFSM->eventItemLeftSlide();
 	}
 	void Running2::eventItemMetal(OperationContext& ctx){
@@ -121,6 +129,10 @@ namespace M2{
 	}
 	void Running2::eventSlideFullRemote(OperationContext& ctx){
 	    // kein Sub-FSM braucht das aktuell
+	}
+
+	void Running2::eventSlideTimerExpired(OperationContext& ctx){
+		slideFSM->eventSlideTimerExpired();
 	}
 
 	// Höhensensor / Profil

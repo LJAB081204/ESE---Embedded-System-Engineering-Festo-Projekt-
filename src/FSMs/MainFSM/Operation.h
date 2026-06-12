@@ -91,6 +91,8 @@ public:
 
     void eventSlideFull(MainContext& ctx) override;
     void eventSlideFullRemote(MainContext& ctx) override;
+
+    void eventSlideTimerExpired(MainContext& ctx) override;
 };
 
 
