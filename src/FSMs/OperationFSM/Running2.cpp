@@ -158,4 +158,8 @@ namespace M2{
 	}
 	void Running2::eventError(OperationContext& ctx){}
 	void Running2::eventTimerExpired(OperationContext& ctx){}
+
+	void Running2::eventItemTransfer(OperationContext& ctx){
+			transportFSM ->eventItemTransfer();
+		}
 }

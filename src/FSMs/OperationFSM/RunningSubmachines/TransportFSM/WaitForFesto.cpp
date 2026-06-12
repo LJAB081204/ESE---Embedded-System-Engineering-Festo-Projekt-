@@ -23,9 +23,8 @@ namespace M1{
 
 	void WaitForFesto::eventFestoReady(TransportContext& ctx){
 		exit(ctx);
-//		if(!data.getReadyForItemRemote()){					//Datenklasse fehlt noch
+
 		new(this) Forward;
-//		}
 		entry(ctx);
 	}
 

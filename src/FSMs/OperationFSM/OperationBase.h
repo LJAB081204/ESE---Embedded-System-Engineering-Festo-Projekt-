@@ -92,6 +92,7 @@ public:
 
 	virtual void eventSlideFull(OperationContext& fsm)                    {}
 	virtual void eventSlideFullRemote(OperationContext& fsm)              {}
+	virtual void eventItemTransfer(OperationContext& fsm)              {}
 };
 
 

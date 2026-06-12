@@ -332,7 +332,7 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    	}
 				    	break;
 
-					case PULSE_TIMER_EXPIRED:
+					case PULSE_DYNAMIC_TIMER_EXPIRED:
 							//cout << "Timer " << msg.value.sival_int << " abgelaufen" << endl;
 							FSM.eventTimerExpired();
 							break;
@@ -348,6 +348,9 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 					case PULSE_EVENT_ITEM_WRONG:
 							FSM.eventItemWrong();
 							break;
+
+					case PULSE_ITEM_TRANSFER:
+						FSM.eventItemTransfer();
 				}
 			}
 			else{

@@ -52,6 +52,9 @@ namespace M1{
 
 	void Forward::eventItemAtEntryRemote(TransportContext& ctx){
 		exit(ctx);
+		itemData item = ctx.data.section3.front();
+		uint32_t itemCode = ctx.data.convertItemToInt(item);
+		MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_ITEM_TRANSFER,itemCode);
 		ctx.data.removeItem(3);
 		if(ctx.data.itemCount == 0){
 			new(this) Stop;

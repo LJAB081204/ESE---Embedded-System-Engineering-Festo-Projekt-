@@ -74,7 +74,7 @@ public:
 	void eventUpdate(OperationContext& ctx) override;
 	void eventError(OperationContext& ctx) override;
 	void eventTimerExpired(OperationContext& ctx) override;
-
+	void eventItemTransfer(OperationContext& ctx) override;
 
 
 };
