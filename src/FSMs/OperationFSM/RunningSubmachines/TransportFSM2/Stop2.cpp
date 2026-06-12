@@ -27,7 +27,7 @@ namespace M2{
 
 	void Stop2::eventItemLeftExitRemote(TransportContext2& ctx){
 		exit(ctx);
-		ctx.data.itemCount = ctx.data.itemCount + 1;
+		ctx.data.itemCount = ctx.data.itemCount + 1;	//?
 		new(this) Forward2;
 		entry(ctx);
 	}

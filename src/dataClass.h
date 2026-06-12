@@ -63,6 +63,7 @@ class dataClass{
 	bool moveFrom2To3();
 	bool addItem();
 	bool removeItem(int queue);
+	bool addTransferredItem(itemData item);
 
 	uint32_t convertItemToInt(const itemData& item);
 	itemData convertIntToItem(uint32_t itemCode);

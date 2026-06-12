@@ -47,7 +47,7 @@ public:
 	void eventFestoReady() 			 { currentState->eventFestoReady(*this); }
 	void eventFestoNotReady() 			 { currentState->eventFestoNotReady(*this); }
 	void reactivate() 			 { currentState->entry(*this); }
-	void eventItemTransfer()	{currentState-> eventItemTransfer(*this); }
+	void eventItemTransfer(uint32_t itemCode)	{currentState-> eventItemTransfer(itemCode,*this); }
 
 
 	//Festo2
