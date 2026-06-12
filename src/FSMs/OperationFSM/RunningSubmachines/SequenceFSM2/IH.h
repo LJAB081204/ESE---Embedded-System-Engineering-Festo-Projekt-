@@ -17,10 +17,15 @@ public:
 	void entry(SequenceContext& ctx)override;
 	void exit(SequenceContext& ctx)override;
 
+	//void eventItemAtPusher(SequenceContext& ctx) override;
 	void eventUpdate(SequenceContext& ctx)override;
 	void eventGoBack(SequenceContext& ctx)override;
 	void raiseItemWrong(SequenceContext& ctx);
 	void raiseItemCorrect(SequenceContext& ctx);
+	void raiseGoBackIH(SequenceContext& ctx);
+
+private:
+	itemProfile item;
 };
 
 

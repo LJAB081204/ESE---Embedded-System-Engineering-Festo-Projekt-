@@ -26,6 +26,9 @@ void LetItemPass::exit(WeicheContext& ctx){
 }
 void LetItemPass::eventItemLeftPusher(WeicheContext& ctx){
 	exit(ctx);
+	if(!ctx.data.section2.empty()){
+		ctx.data.moveFrom2To3();
+	}
 	new (this) Wait;
 	entry(ctx);
 }

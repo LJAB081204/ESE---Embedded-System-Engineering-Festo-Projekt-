@@ -11,6 +11,7 @@
 #include "IH.h"
 #include "../../../../PulseMessages.h"
 #include <sys/neutrino.h>
+#include <iostream>
 namespace M1{
 
 
@@ -19,6 +20,7 @@ namespace M1{
 
 	void waitingForProfile::entry(SequenceContext& ctx){
 		ctx.oneRound = false;
+		std::cout << "Next expected -> IH" << std::endl;
 	}
 
 	void waitingForProfile::exit(SequenceContext& ctx){
