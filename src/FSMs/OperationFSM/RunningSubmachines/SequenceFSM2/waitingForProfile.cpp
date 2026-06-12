@@ -17,6 +17,7 @@ namespace M2{
 
 
 	waitingForProfile::waitingForProfile(){
+		this->item = UNDEFINED_PROFILE;
 	}
 
 	void waitingForProfile::entry(SequenceContext& ctx){
@@ -31,31 +32,34 @@ namespace M2{
 	void waitingForProfile::eventUpdate(SequenceContext& ctx){
 		if(ctx.data.section2.empty()) return;
 		ctx.resolveProfile();	//Profilierung
-		if(ctx.data.section2.front().item == IH_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
-			exit(ctx);
-			raiseItemCorrect(ctx);
-			new (this) IH;
-			entry(ctx);
+		item = ctx.data.nextItem.front().item;
+		ctx.data.nextItem.pop();
+		if(item != ctx.data.section2.front().item){
+			raiseGoBackWFP(ctx);
 		}
 		else{
-			exit(ctx);
-			raiseItemWrong(ctx);
-			entry(ctx);
+			if(ctx.data.section2.front().item == IH_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
+				exit(ctx);
+				raiseItemCorrect(ctx);
+				new (this) IH;
+				entry(ctx);
+			}
+			else{
+				exit(ctx);
+				raiseItemWrong(ctx);
+				entry(ctx);
+			}
 		}
 	}
 
-	void waitingForProfile::eventItemAtPusher(SequenceContext& ctx){
+	/*void waitingForProfile::eventItemAtPusher(SequenceContext& ctx){
 		itemProfile item = ctx.resolveProfile();
 		if(item != ctx.data.nextItem.front().item){
-			ctx.data.nextItem.pop();
-			raiseGoBackWFP(ctx);
+			raiseGoBack(ctx);
 			std::cout << "Wrong Item Detected" << std::endl;
 			//error falsches werkstück erkannt
 		}
-		else{
-			ctx.data.nextItem.pop();
-		}
-	}
+	}*/
 
 	void waitingForProfile::raiseItemCorrect(SequenceContext& ctx){
 		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ITEM_CORRECT, 0);

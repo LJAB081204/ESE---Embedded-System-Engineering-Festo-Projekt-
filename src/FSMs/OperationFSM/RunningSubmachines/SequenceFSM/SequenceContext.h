@@ -44,9 +44,13 @@ public:
 	}
 
 	void eventUpdate()      { currentState->eventUpdate(*this); }
-	void eventGoBack()      { currentState->eventGoBack(*this); }
 	void eventItemCorrect() { currentState->eventItemCorrect(*this); }
 	void eventItemWrong()   { currentState->eventItemWrong(*this); }
+	void eventGoBackWFP()   { currentState->eventGoBackWFP(*this); }
+	void eventGoBackIH()   { currentState->eventGoBackIH(*this); }
+	void eventGoBackIM()   { currentState->eventGoBackIM(*this); }
+	void eventGoBackIF()   { currentState->eventGoBackIF(*this); }
+	void eventGoBackIHM()   { currentState->eventGoBackIHM(*this); }
 
 };
 

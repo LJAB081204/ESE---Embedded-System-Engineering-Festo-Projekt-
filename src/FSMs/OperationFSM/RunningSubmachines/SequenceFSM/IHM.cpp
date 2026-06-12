@@ -28,6 +28,7 @@ namespace M1{
 	}
 
 	void IHM::eventUpdate(SequenceContext& ctx){
+		if(ctx.data.section2.empty()) return;
 		ctx.resolveProfile();		//Profilierung
 		if(ctx.data.section2.front().item == IH_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 			exit(ctx);
@@ -42,7 +43,7 @@ namespace M1{
 		}
 	}
 
-	void IHM::eventGoBack(SequenceContext& ctx){
+	/*void IHM::eventGoBack(SequenceContext& ctx){
 		if(ctx.data.nextItem.front().item == UNDEFINED_PROFILE){ //oneRound raus?
 			exit(ctx);
 			new(this) waitingForProfile;
@@ -63,6 +64,28 @@ namespace M1{
 			new(this) IM;
 			entry(ctx);
 		}
+	}*/
+
+	void IHM::eventGoBackWFP(SequenceContext& ctx){
+		exit(ctx);
+		new(this) waitingForProfile;
+		entry(ctx);
+	}
+
+	void IHM::eventGoBackIH(SequenceContext& ctx){
+		exit(ctx);
+		new(this) IH;
+		entry(ctx);
+	}
+	void IHM::eventGoBackIF(SequenceContext& ctx){
+		exit(ctx);
+		new(this) IF;
+		entry(ctx);
+	}
+	void IHM::eventGoBackIM(SequenceContext& ctx){
+		exit(ctx);
+		new(this) IM;
+		entry(ctx);
 	}
 
 	void IHM::raiseItemCorrect(SequenceContext& ctx){
