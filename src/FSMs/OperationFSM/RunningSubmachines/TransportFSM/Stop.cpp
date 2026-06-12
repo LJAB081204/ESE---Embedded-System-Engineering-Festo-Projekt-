@@ -26,6 +26,7 @@ namespace M1{
 
 	void Stop::eventItemAtEntry(TransportContext& ctx){
 		exit(ctx);
+		std::cout<<"ITEM AT ENTRY"<< std::endl;
 		ctx.data.addItem();
 		std::cout<< ctx.data.itemCount << std::endl;
 		new(this) Forward;

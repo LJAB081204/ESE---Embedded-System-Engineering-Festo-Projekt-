@@ -37,6 +37,7 @@ namespace M1{
 
 	void Forward::eventItemAtEntry(TransportContext& ctx){
 		exit(ctx);
+		std::cout<<"ITEM AT ENTRY"<< std::endl;
 		ctx.data.addItem();
 		std::cout<< ctx.data.itemCount << std::endl;
 		entry(ctx);
@@ -52,6 +53,7 @@ namespace M1{
 	void Forward::eventItemAtEntryRemote(TransportContext& ctx){
 		exit(ctx);
 		ctx.data.removeItem(3);
+		ctx.data.itemCount--;
 		if(ctx.data.itemCount == 0){
 			new(this) Stop;
 		}

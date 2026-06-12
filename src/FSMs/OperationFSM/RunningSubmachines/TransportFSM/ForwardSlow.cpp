@@ -28,7 +28,9 @@ namespace M1{
 
 	void ForwardSlow::eventItemGone(TransportContext& ctx){
 		exit(ctx);
-		ctx.data.moveFrom1To2();
+		std::cout<< ctx.data.section1.size() << std::endl;
+		//ctx.data.moveFrom1To2();
+		std::cout<< ctx.data.section2.size() << std::endl;
 		new (this) Forward;
 //		if(ctx.data.itemCount != 0){
 //			new(this) Forward;
