@@ -12,13 +12,14 @@
 #include "../../../../PulseMessages.h"
 #include <sys/neutrino.h>
 #include "IF.h"
+#include <iostream>
 namespace M1{
 
 	IH::IH(){
 	}
 
 	void IH::entry(SequenceContext& ctx){
-		//nichts?
+		std::cout << "IH --- next expected -> IM" << std::endl;
 	}
 
 	void IH::exit(SequenceContext& ctx){
@@ -26,6 +27,7 @@ namespace M1{
 	}
 
 	void IH::eventUpdate(SequenceContext& ctx){
+		if(ctx.data.section2.empty()) return;
 		ctx.resolveProfile();		//profilierung
 		if(ctx.data.section2.front().item == IM_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 			exit(ctx);
@@ -37,15 +39,11 @@ namespace M1{
 			exit(ctx);
 			raiseItemWrong(ctx);
 			entry(ctx);
-				}
 		}
+	}
 
-	void IH::eventGoBack(SequenceContext& ctx){
-		if(ctx.data.nextItem.front().item == UNDEFINED_PROFILE){ //oneRound raus?
-			exit(ctx);
-			new(this) waitingForProfile;
-			entry(ctx);
-		}
+	/*void IH::eventGoBack(SequenceContext& ctx){
+
 		else if (ctx.data.nextItem.front().item == IHM_PROFILE){
 			exit(ctx);
 			new(this) IHM;
@@ -61,6 +59,28 @@ namespace M1{
 			new(this) IF;
 			entry(ctx);
 		}
+	}*/
+
+	void IH::eventGoBackWFP(SequenceContext& ctx){
+		exit(ctx);
+		new(this) waitingForProfile;
+		entry(ctx);
+	}
+
+	void IH::eventGoBackIM(SequenceContext& ctx){
+		exit(ctx);
+		new(this) IM;
+		entry(ctx);
+	}
+	void IH::eventGoBackIF(SequenceContext& ctx){
+		exit(ctx);
+		new(this) IF;
+		entry(ctx);
+	}
+	void IH::eventGoBackIHM(SequenceContext& ctx){
+		exit(ctx);
+		new(this) IHM;
+		entry(ctx);
 	}
 
 	void IH::raiseItemCorrect(SequenceContext& ctx){

@@ -21,6 +21,10 @@ public:
 	void eventGoBack(SequenceContext& ctx)override;
 	void raiseItemWrong(SequenceContext& ctx);
 	void raiseItemCorrect(SequenceContext& ctx);
+	void raiseGoBackIM(SequenceContext& ctx);
+
+private:
+	itemProfile item;
 };
 
 
