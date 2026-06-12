@@ -17,8 +17,8 @@
 waitForPusher::waitForPusher(){};
 
 void waitForPusher::entry(OperationContext& ctx) {
-	std::cout<< "waitForPusher" << std::endl;
 	ctx.hal.getActors()->motorForwards();
+	std::cout<< "waitForPusher" << std::endl;
 }
 
 void waitForPusher::exit(OperationContext& ctx) {}

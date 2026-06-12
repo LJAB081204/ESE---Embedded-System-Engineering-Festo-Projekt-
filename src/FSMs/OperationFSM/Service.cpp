@@ -22,7 +22,6 @@
 		ctx.hal.getActors()->closePusher();
 		ctx.hal.getActors()->greenLampBlink(1000);
 		ctx.hal.getActors()->ledButtonReset();
-		ctx.hal.getActors()->ledButtonStartOff();
 	}
 
 	void Service::exit(OperationContext& ctx){}
@@ -32,7 +31,6 @@
 		new (this) Idle;
 		entry(ctx);
 	}
-
 	void Service::eventButtonStartPressedLongRemote(OperationContext& ctx){
 		exit(ctx);
 		new (this) Idle;
