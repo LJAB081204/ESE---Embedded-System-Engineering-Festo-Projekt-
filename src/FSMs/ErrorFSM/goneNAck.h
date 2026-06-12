@@ -18,6 +18,7 @@ public:
 
 	void eventButtonResetPressed(ErrorContext& ctx)override;
 	void errorPusherTimerExpired(ErrorContext& ctx)override;
+
 };
 
 
