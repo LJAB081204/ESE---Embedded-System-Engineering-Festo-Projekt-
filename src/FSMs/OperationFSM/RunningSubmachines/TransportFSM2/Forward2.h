@@ -19,6 +19,7 @@ public:
 	void eventItemAtExit(TransportContext2& ctx)override;
 	void eventItemAtSlide(TransportContext2& ctx)override;
 	void eventItemArrived(TransportContext2& ctx)override;
+	void eventItemTransfer(uint32_t itemCode, TransportContext2& ctx)override;
 };
 
 }

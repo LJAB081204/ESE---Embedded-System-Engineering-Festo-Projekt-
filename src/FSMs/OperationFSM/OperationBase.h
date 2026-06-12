@@ -8,6 +8,7 @@
 #ifndef SRC_FSMS_OPERATIONFSM_OPERATIONBASE_H_
 #define SRC_FSMS_OPERATIONFSM_OPERATIONBASE_H_
 enum class HistorySource {NONE_HISTORY, STOP_HISTORY, ESTOP_HISTORY, ERROR_HISTORY};
+#include <stdint.h>
 
 class OperationContext; // Vorwärtsdekleration
 

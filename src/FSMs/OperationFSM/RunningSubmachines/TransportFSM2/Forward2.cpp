@@ -48,6 +48,11 @@ namespace M2{
 		}
 		entry(ctx);
 	}
+
+	void Forward2::eventItemTransfer(uint32_t itemCode, TransportContext2& ctx){
+		itemData item = ctx.data.convertIntToItem(itemCode);
+		ctx.data.addTransferredItem(item);
+	}
 }
 
 

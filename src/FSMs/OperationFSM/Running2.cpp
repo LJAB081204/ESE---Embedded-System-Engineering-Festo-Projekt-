@@ -171,7 +171,7 @@ Running2::Running2(HAL& hal,dataClass& data,SequenceContext& sequence){
 	void Running2::eventError(OperationContext& ctx){}
 	void Running2::eventTimerExpired(OperationContext& ctx){}
 
-	void Running2::eventItemTransfer(OperationContext& ctx){
-			transportFSM ->eventItemTransfer();
+	void Running2::eventItemTransfer(uint32_t itemCode, OperationContext& ctx){
+			transportFSM ->eventItemTransfer(itemCode);
 		}
 }

@@ -70,6 +70,13 @@ bool dataClass::addItem(){
 	return true;
 }
 
+bool dataClass::addTransferredItem(itemData item){
+	item.id = nextItemID++;
+	itemCount++;
+	section1.push(item);
+	return true;
+}
+
 bool dataClass::removeItem(int queue){
 	switch (queue){
 			case 1:
