@@ -12,22 +12,24 @@
 #include "HeightDetect.h"
 #include "../Service.h"
 
-#include "waitForPusher.h"
+#include "PusherCalibration.h"
 
 HeightDetect::HeightDetect(){};
 
 void HeightDetect::entry(OperationContext& ctx) {
+	ctx.calTimer->start(10000);
 	ctx.hal.getActors()->motorSlow();
 	std::cout<< "HeightDetect" << std::endl;
 }
 
 void HeightDetect::exit(OperationContext& ctx) {
-	//Timer setzten
+	int heightDetect = ctx.calTimer->stop();
+	std::cout<< heightDetect << std::endl;
 }
 
 void HeightDetect::eventItemGone(OperationContext& ctx) {
 	exit(ctx);
-	new(this) waitForPusher;
+	new(this) PusherCalibration;
 	entry(ctx);
 }
 

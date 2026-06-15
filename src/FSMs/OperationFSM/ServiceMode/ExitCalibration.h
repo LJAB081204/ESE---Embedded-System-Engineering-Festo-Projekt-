@@ -15,6 +15,7 @@ public:
 	ExitCalibration();
 	void entry(OperationContext& ctx) override;
 	void exit(OperationContext& ctx) override;
+	void eventItemAtExit(OperationContext& ctx)override;
 	void eventItemLeftExit(OperationContext& ctx)override;
 	void eventButtonStartPressedLong(OperationContext& ctx)override;
 	void eventButtonStopPressed(OperationContext& ctx)override;

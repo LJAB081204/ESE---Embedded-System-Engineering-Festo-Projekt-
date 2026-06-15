@@ -17,11 +17,15 @@
 waitForPusher::waitForPusher(){};
 
 void waitForPusher::entry(OperationContext& ctx) {
+	ctx.calTimer->start(5000);
 	ctx.hal.getActors()->motorForwards();
 	std::cout<< "waitForPusher" << std::endl;
 }
 
-void waitForPusher::exit(OperationContext& ctx) {}
+void waitForPusher::exit(OperationContext& ctx) {
+	int pusher = ctx.calTimer->stop();
+	std::cout<< pusher << std::endl;
+}
 
 void waitForPusher::eventItemAtPusher(OperationContext& ctx) {
 	exit(ctx);

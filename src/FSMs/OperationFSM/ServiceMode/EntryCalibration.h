@@ -20,6 +20,7 @@ public:
 	void eventButtonStartPressedLongRemote(OperationContext& ctx)override;
 	void eventButtonStopPressed(OperationContext& ctx)override;
 	void eventButtonStopPressedRemote(OperationContext& ctx)override;
+	void eventItemLeftEntry(OperationContext& ctx)override;
 
 };
 

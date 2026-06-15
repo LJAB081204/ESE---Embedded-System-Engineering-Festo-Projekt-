@@ -16,12 +16,16 @@
 ExitCalibration::ExitCalibration(){};
 
 void ExitCalibration::entry(OperationContext& ctx) {
-	ctx.hal.getActors()->motorStop();
+	ctx.calTimer->start(5000);
 	std::cout<< "ExitCalibration" << std::endl;
 }
 
-void ExitCalibration::exit(OperationContext& ctx) {
-	//timer setzten
+void ExitCalibration::exit(OperationContext& ctx) {}
+
+void ExitCalibration::eventItemAtExit(OperationContext& ctx) {
+	int exit = ctx.calTimer->stop();
+	std::cout<< exit << std::endl;
+	ctx.hal.getActors()->motorStop();
 }
 
 void ExitCalibration::eventItemLeftExit(OperationContext& ctx) {
@@ -29,7 +33,6 @@ void ExitCalibration::eventItemLeftExit(OperationContext& ctx) {
 	new(this) Service;
 	entry(ctx);
 }
-
 
 void ExitCalibration::eventButtonStartPressedLong(OperationContext& ctx){
 	exit(ctx);

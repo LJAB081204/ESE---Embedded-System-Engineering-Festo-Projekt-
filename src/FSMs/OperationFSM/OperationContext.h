@@ -18,6 +18,7 @@
 #include <iostream>
 #include "../../HeightSensor.h"
 #include "RunningFactory.h"
+#include "../../PulseMessages.h"
 #include "../../timer.h"
 
 
@@ -36,9 +37,11 @@ public:
 	OperationBase* savedRunning = nullptr;
 	OperationBase* currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 	HistorySource historySource = HistorySource::NONE_HISTORY;
+	SimpleTimer* calTimer;
 
 	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory,TimerHandler& timerHandler)
 	: hal(hal),data(data),hs(hs),factory(factory),timerHandler(timerHandler){
+		calTimer = new SimpleTimer(data.conId,PULSE_EVENT_SLIDE_TIMER);
 		new (currentState) Idle;
 		currentState->entry(*this);
 	}

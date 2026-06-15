@@ -20,7 +20,13 @@ void EntryCalibration::entry(OperationContext& ctx) {
 }
 
 void EntryCalibration::exit(OperationContext& ctx) {
-	//Timer setzten
+	int entry = ctx.calTimer->stop();
+	std::cout<< entry << std::endl;
+}
+
+void EntryCalibration::eventItemLeftEntry(OperationContext& ctx) {
+	ctx.calTimer->start(5000);
+	std::cout << "kommt an" << std::endl;
 }
 
 void EntryCalibration::eventItemArrived(OperationContext& ctx){
