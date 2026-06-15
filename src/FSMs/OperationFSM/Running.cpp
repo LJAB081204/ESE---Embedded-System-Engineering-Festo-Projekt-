@@ -170,7 +170,9 @@ namespace M1{
 	    sequenceFSM->eventUpdate();
 	}
 	void Running::eventError(OperationContext& ctx){}
-	void Running::eventTimerExpired(OperationContext& ctx){}
+	void Running::eventTimerExpired(OperationContext& ctx){
+		weicheFSM->eventTimerExpired();
+	}
 
 
 

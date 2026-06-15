@@ -10,14 +10,24 @@
 #include "WeicheContext.h"
 #include "Ready.h"
 #include "Wait.h"
+#include <iostream>
 namespace M1{
 
 Wait::Wait(){
 
 }
+void Wait::entry(WeicheContext& ctx){
+    std::cout << "Wait::entry - timer start" << std::endl;
+	ctx.pusherTimer.start(2000);
+}
+
+void Wait::exit(WeicheContext& ctx){
+	ctx.hal.getActors()->closePusher();
+}
 void Wait::eventTimerExpired(WeicheContext& ctx){
+    std::cout << "Wait::entry - timer end" << std::endl;
 	exit(ctx);
-	new (this) Ready;
+	new (this) Receive;
 	entry(ctx);
 }
 }

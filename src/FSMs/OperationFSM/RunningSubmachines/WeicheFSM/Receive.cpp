@@ -35,6 +35,7 @@ void Receive::eventItemAtPusher(WeicheContext& ctx){
 }
 void Receive::eventItemMetal(WeicheContext& ctx){
 	exit(ctx);
+	std::cout << "section2 size: " << ctx.data.section2.size() << std::endl;
 	if(!ctx.data.section2.empty()){
 			ctx.data.section2.front().metal = true;
 	}

@@ -34,5 +34,6 @@ void Ready::eventItemWrong(WeicheContext& ctx){
 	  	entry(ctx);
 	}
 }
+
 }
 
