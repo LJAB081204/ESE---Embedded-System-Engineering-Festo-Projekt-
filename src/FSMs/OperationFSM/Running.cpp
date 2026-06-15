@@ -15,13 +15,12 @@
 #include "RunningSubmachines/SlideFSM/SlideContext.h"
 #include "Idle.h"
 #include "Running.h"
-
 #include <iostream>
 
 namespace M1{
-	Running::Running(HAL& hal,dataClass& data,SequenceContext& sequence){
+	Running::Running(HAL& hal,dataClass& data,SequenceContext& sequence,TimerHandler& timerHandler){
 		transportFSM = new TransportContext(hal,data);
-		weicheFSM = new WeicheContext(hal,data);
+		weicheFSM = new WeicheContext(hal,data,timerHandler);
 		sequenceFSM = &sequence;
 		profileFSM = new ProfileContext(data);
 		slideFSM = new SlideContext(hal,data);
@@ -45,7 +44,7 @@ namespace M1{
 			delete transportFSM;
 			transportFSM = new TransportContext(ctx.hal,ctx.data);
 			delete weicheFSM;
-			weicheFSM = new WeicheContext(ctx.hal,ctx.data);
+			weicheFSM = new WeicheContext(ctx.hal,ctx.data,ctx.timerHandler);
 			delete profileFSM;
 			profileFSM = new ProfileContext(ctx.data);
 			delete slideFSM;

@@ -16,7 +16,7 @@ class Factory : public RunningFactory{
 	SequenceContext seq;
 public:
 	Factory(dataClass& data) : seq(data){}
-	OperationBase* createRunning(HAL& hal,dataClass& data) override;
+	OperationBase* createRunning(HAL& hal,dataClass& data,TimerHandler& timerHandler) override;
 };
 }
 

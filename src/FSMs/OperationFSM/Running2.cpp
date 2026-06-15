@@ -6,6 +6,7 @@
  */
 #include <new>
 #include "../../HAL.h"
+#include "../../timer.h"
 #include "OperationBase.h"
 #include "OperationContext.h"
 #include "RunningSubmachines/TransportFSM2/TransportContext2.h"
@@ -19,9 +20,9 @@
 #include <iostream>
 
 namespace M2{
-Running2::Running2(HAL& hal,dataClass& data,SequenceContext& sequence){
+Running2::Running2(HAL& hal,dataClass& data,SequenceContext& sequence,TimerHandler& timerHandler){
 		transportFSM = new TransportContext2(hal,data);
-		weicheFSM = new WeicheContext(hal,data);
+		weicheFSM = new WeicheContext(hal,data,timerHandler);
 		sequenceFSM = &sequence;
 		profileFSM = new ProfileContext(data);
 		slideFSM = new SlideContext(hal,data);
@@ -44,7 +45,7 @@ Running2::Running2(HAL& hal,dataClass& data,SequenceContext& sequence){
 			delete transportFSM;
 			transportFSM = new TransportContext2(ctx.hal,ctx.data);
 			delete weicheFSM;
-			weicheFSM = new WeicheContext(ctx.hal,ctx.data);
+			weicheFSM = new WeicheContext(ctx.hal,ctx.data,ctx.timerHandler);
 			delete profileFSM;
 			profileFSM = new ProfileContext(ctx.data);
 			delete slideFSM;

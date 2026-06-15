@@ -29,10 +29,10 @@ public:
     dataClass& data;
     HeightSensor& hs;
     RunningFactory& factory;
-    TimerHandler timerHandler;
-    MainContext(HAL& hal,dataClass& data,HeightSensor& hs,RunningFactory& factory,TimerHandler timerHandler)
+    TimerHandler& timerHandler;
+    MainContext(HAL& hal,dataClass& data,HeightSensor& hs,RunningFactory& factory,TimerHandler& timerHandler)
     : hal(hal),data(data), hs(hs), factory(factory),timerHandler(timerHandler) {
-    	operationFSM = new OperationContext(hal,data,hs,factory);
+    	operationFSM = new OperationContext(hal,data,hs,factory,timerHandler);
         new(currentState) Operation(*operationFSM);
         currentState->entry(*this);
     }

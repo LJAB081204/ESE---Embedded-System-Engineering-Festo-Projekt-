@@ -39,7 +39,7 @@
 			ctx.historySource = HistorySource::NONE_HISTORY;
 			ctx.currentState->entry(ctx);
 		} else {
-	        ctx.currentState = ctx.factory.createRunning(ctx.hal, ctx.data);
+	        ctx.currentState = ctx.factory.createRunning(ctx.hal, ctx.data,ctx.timerHandler);
 	        ctx.currentState->entry(ctx);
 		}
 	}
@@ -52,7 +52,7 @@
 			ctx.historySource = HistorySource::NONE_HISTORY;
 			ctx.currentState->entry(ctx);
 		} else {
-	        ctx.currentState = ctx.factory.createRunning(ctx.hal, ctx.data);
+	        ctx.currentState = ctx.factory.createRunning(ctx.hal, ctx.data,ctx.timerHandler);
 	        ctx.currentState->entry(ctx);
 		}
 	}
