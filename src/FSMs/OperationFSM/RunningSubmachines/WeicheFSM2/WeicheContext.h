@@ -10,6 +10,7 @@
 
 #include <new>
 #include "../../../../HAL.h"
+#include "../../../../timer.h"
 #include "../../../../dataClass.h"
 #include "WeicheBase.h"
 #include "Receive.h"
@@ -21,7 +22,9 @@ class WeicheContext{
 public:
 	HAL& hal;
 	dataClass& data;
-	WeicheContext(HAL& hal,dataClass& data) : hal(hal), data(data) {
+	TimerHandler& timerHandler;
+	WeicheContext(HAL& hal,dataClass& data,TimerHandler& timerHandler)
+	: hal(hal), data(data),timerHandler(timerHandler) {
 		new(currentState) Receive;
 		currentState->entry(*this);
 	}

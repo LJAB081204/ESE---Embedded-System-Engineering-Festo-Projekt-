@@ -12,11 +12,12 @@
 class OperationBase;
 class HAL;
 class dataClass;
+class TimerHandler;
 
 class RunningFactory {
 public:
 	virtual ~RunningFactory() = default;
-	virtual OperationBase* createRunning(HAL& hal,dataClass& data)=0;
+	virtual OperationBase* createRunning(HAL& hal,dataClass& data,TimerHandler& timerHandler)=0;
 };
 
 

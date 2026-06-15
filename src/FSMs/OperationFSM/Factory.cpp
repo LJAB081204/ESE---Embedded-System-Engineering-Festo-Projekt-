@@ -8,8 +8,8 @@
 #include "Factory.h"
 
 namespace M1{
-	OperationBase* Factory::createRunning(HAL& hal,dataClass& data){
-		return new Running(hal,data,seq);
+	OperationBase* Factory::createRunning(HAL& hal,dataClass& data,TimerHandler& timerHandler){
+		return new Running(hal,data,seq,timerHandler);
 	}
 
 }

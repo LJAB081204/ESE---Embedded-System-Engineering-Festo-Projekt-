@@ -10,6 +10,7 @@
 
 #include "OperationBase.h"
 #include "../../dataClass.h"
+#include "../../timer.h"
 
 
 namespace M2{
@@ -27,7 +28,7 @@ class Running2 : public OperationBase{
 	ProfileContext* profileFSM;
 	SlideContext* slideFSM;
 public:
-	Running2(HAL& hal,dataClass& data,SequenceContext& seq);
+	Running2(HAL& hal,dataClass& data,SequenceContext& seq,TimerHandler& timerHandler);
 
 	void onRestore(HistorySource source,OperationContext& ctx)override;
 	void entry(OperationContext& ctx)override;

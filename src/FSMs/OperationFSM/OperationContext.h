@@ -18,6 +18,8 @@
 #include <iostream>
 #include "../../HeightSensor.h"
 #include "RunningFactory.h"
+#include "../../timer.h"
+
 
 class OperationContext{
 	//Kontext
@@ -30,12 +32,13 @@ public:
 	dataClass& data;
 	HeightSensor& hs;
 	RunningFactory& factory;
+	TimerHandler& timerHandler;
 	OperationBase* savedRunning = nullptr;
 	OperationBase* currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 	HistorySource historySource = HistorySource::NONE_HISTORY;
 
-	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory)
-	: hal(hal),data(data),hs(hs),factory(factory){
+	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory,TimerHandler& timerHandler)
+	: hal(hal),data(data),hs(hs),factory(factory),timerHandler(timerHandler){
 		new (currentState) Idle;
 		currentState->entry(*this);
 	}
