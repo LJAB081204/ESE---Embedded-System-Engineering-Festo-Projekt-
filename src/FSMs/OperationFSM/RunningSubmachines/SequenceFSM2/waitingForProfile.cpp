@@ -32,12 +32,13 @@ namespace M2{
 	void waitingForProfile::eventUpdate(SequenceContext& ctx){
 		if(ctx.data.section2.empty()) return;
 		ctx.resolveProfile();	//Profilierung
-		item = ctx.data.nextItem.front().item;
-		ctx.data.nextItem.pop();
-		if(item != ctx.data.section2.front().item){
-			raiseGoBackWFP(ctx);
-		}
-		else{
+		//item = ctx.data.nextItem.front().item;
+		//ctx.data.nextItem.pop();
+		//if(item != ctx.data.section2.front().item){
+		//	raiseGoBackWFP(ctx);
+		//}
+
+		//else{
 			if(ctx.data.section2.front().item == IH_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 				exit(ctx);
 				raiseItemCorrect(ctx);
@@ -50,7 +51,7 @@ namespace M2{
 				entry(ctx);
 			}
 		}
-	}
+	//}
 
 	/*void waitingForProfile::eventItemAtPusher(SequenceContext& ctx){
 		itemProfile item = ctx.resolveProfile();
@@ -71,5 +72,5 @@ namespace M2{
 	void waitingForProfile::raiseGoBackWFP(SequenceContext& ctx){
 		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_WFP, 0);
 	}
-
 }
+

@@ -28,6 +28,8 @@ namespace M1{
 		exit(ctx);
 		std::cout<<"ITEM AT ENTRY"<< std::endl;
 		ctx.data.addItem();
+		std::cout<< ctx.data.section1.size() << std::endl;
+
 		std::cout<< ctx.data.itemCount << std::endl;
 		new(this) Forward;
 		entry(ctx);

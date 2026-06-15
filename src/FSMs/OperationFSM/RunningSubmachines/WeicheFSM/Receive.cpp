@@ -28,10 +28,8 @@ void Receive::exit(WeicheContext& ctx){
 }
 
 void Receive::eventItemAtPusher(WeicheContext& ctx){
-	exit(ctx);
-	raiseUpdate(ctx);
-	new (this) Ready;
-	entry(ctx);
+	ctx.pusherTimer.start(300);
+
 }
 void Receive::eventItemMetal(WeicheContext& ctx){
 	exit(ctx);
@@ -41,6 +39,14 @@ void Receive::eventItemMetal(WeicheContext& ctx){
 	}
 	new (this) Receive;
 	entry(ctx);
+}
+
+void Receive::eventTimerExpired(WeicheContext& ctx){
+	exit(ctx);
+	raiseUpdate(ctx);
+	new (this) Ready;
+	entry(ctx);
+
 }
 void Receive::raiseUpdate(WeicheContext& ctx){
 	MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_UPDATE,0);

@@ -84,6 +84,7 @@ Running2::Running2(HAL& hal,dataClass& data,SequenceContext& sequence,TimerHandl
 	void Running2::eventItemInSlide(OperationContext& ctx){
 		slideFSM->eventItemInSlide();
 	    transportFSM->eventItemInSlide();
+	    weicheFSM->eventItemInSlide();
 	}
 	void Running2::eventItemLeftSlide(OperationContext& ctx){
 		slideFSM->eventItemLeftSlide();
@@ -121,6 +122,7 @@ Running2::Running2(HAL& hal,dataClass& data,SequenceContext& sequence,TimerHandl
 	}
 	void Running2::eventItemInSlideRemote(OperationContext& ctx){
 	    transportFSM->eventItemInSlideRemote();
+
 	}
 	void Running2::eventItemLeftSlideRemote(OperationContext& ctx){
 	    // kein Sub-FSM braucht das aktuell
@@ -170,7 +172,9 @@ Running2::Running2(HAL& hal,dataClass& data,SequenceContext& sequence,TimerHandl
 	    sequenceFSM->eventUpdate();
 	}
 	void Running2::eventError(OperationContext& ctx){}
-	void Running2::eventTimerExpired(OperationContext& ctx){}
+	void Running2::eventTimerExpired(OperationContext& ctx){
+		weicheFSM->eventTimerExpired();
+	}
 
 	void Running2::eventItemTransfer(uint32_t itemCode, OperationContext& ctx){
 			transportFSM ->eventItemTransfer(itemCode);

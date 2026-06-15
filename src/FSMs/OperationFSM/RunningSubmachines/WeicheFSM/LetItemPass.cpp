@@ -18,11 +18,11 @@ LetItemPass::LetItemPass(){
 
 void LetItemPass::entry(WeicheContext& ctx){
 	ctx.hal.getActors()->letItemPass();
-	// start Timer Pusher
+
 }
 
 void LetItemPass::exit(WeicheContext& ctx){
-	// Start Timer 3s
+
 }
 void LetItemPass::eventItemLeftPusher(WeicheContext& ctx){
 	exit(ctx);
