@@ -66,12 +66,12 @@ bool dataClass::addItem(){
 	itemData item;
 	item.id = nextItemID++;
 	itemCount++;
+	//item.timer.DynamicTimer(id, handler);
 	section1.push(item);
 	return true;
 }
 
 bool dataClass::addTransferredItem(itemData item){
-	item.id = nextItemID++;
 	itemCount++;
 	section1.push(item);
 	return true;

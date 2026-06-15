@@ -9,6 +9,7 @@
 #define DATACLASS_H_
 
 #include <queue>
+#include "timer.h"
 
 enum systemState { IDLE_STATE,RUNNING_STATE,ERROR_STATE,ESTOP_STATE };
 enum itemProfile { IH_PROFILE, IM_PROFILE, IF_PROFILE, IHM_PROFILE, IU_PROFILE, IS_PROFILE, I_PROFILE, UNDEFINED_PROFILE};
@@ -24,6 +25,7 @@ struct itemData{
 		bool special = false;
 
 		itemProfile item = UNDEFINED_PROFILE;
+		//DynamicTimer timer;
 	};
 
 class dataClass{
