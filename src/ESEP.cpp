@@ -28,7 +28,8 @@ int main(int argc, char **argv) {
 
         RunningFactory* factory;
         HAL hal;
-        dataClass data;
+        TimerHandler timerHandler(-1);  // muss VOR dataClass stehen
+        dataClass data(timerHandler);
 
 		if (argc < 2) {
 	        printf("Usage %s -s | -c \n", argv[0]);
@@ -53,7 +54,6 @@ int main(int argc, char **argv) {
 
         TSCADC tsc;
 		HeightSensor hs (tsc,-1);
-		TimerHandler timerHandler(-1);
 
 
         ConnectionController conctrl(local,remote);
