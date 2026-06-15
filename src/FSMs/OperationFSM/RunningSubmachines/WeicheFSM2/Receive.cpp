@@ -34,13 +34,10 @@ void Receive::eventItemAtPusher(WeicheContext& ctx){
 	entry(ctx);
 }
 void Receive::eventItemMetal(WeicheContext& ctx){
+	exit(ctx);
 	if(!ctx.data.section2.empty()){
 			ctx.data.section2.front().metal = true;
 	}
-	std::cout << "ITEM DURCHLASSEN";
-	ctx.hal.getActors()->openPusher();
-	sleep(1);
-	exit(ctx);
 	new (this) Receive;
 	entry(ctx);
 }
