@@ -10,6 +10,7 @@
 
 #include <queue>
 #include "timer.h"
+//#include "Dispatcher.h"
 
 enum systemState { IDLE_STATE,RUNNING_STATE,ERROR_STATE,ESTOP_STATE };
 enum itemProfile { IH_PROFILE, IM_PROFILE, IF_PROFILE, IHM_PROFILE, IU_PROFILE, IS_PROFILE, I_PROFILE, UNDEFINED_PROFILE};
@@ -25,12 +26,13 @@ struct itemData{
 		bool special = false;
 
 		itemProfile item = UNDEFINED_PROFILE;
-		//DynamicTimer timer;
+		DynamicTimer* timer = nullptr;
 	};
 
 class dataClass{
 	public:
 
+	TimerHandler* handler;
 	//Connection
 	int conId = -1;
 	int controllerConId = -1;
@@ -60,6 +62,7 @@ class dataClass{
 	errors err = ERROR_CLEARED;
 	int errorLoc = 0;
 
+	dataClass(TimerHandler& handler);
 	void reset();
 	bool moveFrom1To2();
 	bool moveFrom2To3();

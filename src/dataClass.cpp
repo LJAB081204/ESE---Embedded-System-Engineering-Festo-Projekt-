@@ -7,6 +7,10 @@
 
 #include "dataClass.h"
 
+dataClass::dataClass(TimerHandler& handler)
+    : handler(&handler)
+{}
+
 void dataClass::reset(){
  // Connection
 	conId = -1;
@@ -66,13 +70,14 @@ bool dataClass::addItem(){
 	itemData item;
 	item.id = nextItemID++;
 	itemCount++;
-	//item.timer.DynamicTimer(id, handler);
+	item.timer = new DynamicTimer(item.id, *handler);
 	section1.push(item);
 	return true;
 }
 
 bool dataClass::addTransferredItem(itemData item){
 	itemCount++;
+	item.timer = new DynamicTimer(item.id, *handler);
 	section1.push(item);
 	return true;
 }
@@ -83,6 +88,7 @@ bool dataClass::removeItem(int queue){
 				if(section1.empty()){
 					return false;
 				}
+				delete section1.front().timer;
 				section1.pop();
 				itemCount--;
 				return true;
@@ -90,6 +96,7 @@ bool dataClass::removeItem(int queue){
 				if(section2.empty()){
 					return false;
 				}
+				delete section2.front().timer;
 				section2.pop();
 				itemCount--;
 				return true;
@@ -97,6 +104,7 @@ bool dataClass::removeItem(int queue){
 				if(section3.empty()){
 					return false;
 				}
+				delete section3.front().timer;
 				section3.pop();
 				itemCount--;
 				return true;
@@ -114,7 +122,6 @@ uint32_t dataClass::convertItemToInt(const itemData& item)
 itemData dataClass::convertIntToItem(uint32_t itemCode)
 {
     itemData item;
-
     item.item = static_cast<itemProfile>(itemCode & 0xF); // untere 4 Bits
     item.id = itemCode >> 4;                                // obere 28 Bits
 
