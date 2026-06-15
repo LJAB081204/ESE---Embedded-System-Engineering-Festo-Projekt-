@@ -15,9 +15,16 @@ namespace M2{
 Wait::Wait(){
 
 }
+void Wait::entry(WeicheContext& ctx){
+	ctx.pusherTimer.start(2000);
+}
+
+void Wait::exit(WeicheContext& ctx){
+	ctx.hal.getActors()->closePusher();
+}
 void Wait::eventTimerExpired(WeicheContext& ctx){
 	exit(ctx);
-	new (this) Ready;
+	new (this) Receive;
 	entry(ctx);
 }
 }

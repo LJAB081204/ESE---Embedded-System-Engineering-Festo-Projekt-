@@ -23,7 +23,12 @@ void IU::exit(ProfileContext& ctx) {}
 
 void IU::eventItemGone(ProfileContext& ctx) {
 	exit(ctx);
-	//in die Datenklasse schreiben
+
+	if(!ctx.data.section1.empty()){
+		ctx.data.section1.front().unknown = true;
+		ctx.data.moveFrom1To2();
+	}
+
 	new(this) Default;
 	entry(ctx);
 }

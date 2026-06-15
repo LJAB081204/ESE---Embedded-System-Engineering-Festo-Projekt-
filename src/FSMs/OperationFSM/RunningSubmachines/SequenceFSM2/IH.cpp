@@ -31,8 +31,8 @@ namespace M2{
 	void IH::eventUpdate(SequenceContext& ctx){
 		if(ctx.data.section2.empty()) return;
 		ctx.resolveProfile();	//Profilierung
-		item = ctx.data.nextItem.front().item;
-		ctx.data.nextItem.pop();
+		//item = ctx.data.nextItem.front().item;
+		//ctx.data.nextItem.pop();
 		if(item != ctx.data.section2.front().item){
 			raiseGoBackIH(ctx);
 		}

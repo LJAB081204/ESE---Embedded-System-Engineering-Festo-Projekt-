@@ -18,7 +18,6 @@ ProfileIF::ProfileIF(){};
 
 void ProfileIF::entry(ProfileContext& ctx) {
 	std::cout << "//////////////////////ProfileIF detected" << std::endl;
-	ctx.data.section1.front().flat = true;
 }
 
 void ProfileIF::exit(ProfileContext& ctx) {}
@@ -39,6 +38,7 @@ void ProfileIF::eventItemGone(ProfileContext& ctx) {
 	exit(ctx);
 	std::cout << "ProfileIF" << std::endl;
 	if(!ctx.data.section1.empty()){
+		ctx.data.section1.front().flat = true;
 		ctx.data.moveFrom1To2();
 	}
 	new(this) Default;

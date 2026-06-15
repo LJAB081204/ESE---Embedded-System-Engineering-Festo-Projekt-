@@ -6,6 +6,8 @@
  */
 
 #include "dataClass.h"
+#include "PulseMessages.h"
+#include "sys/neutrino.h"
 
 void dataClass::reset(){
  // Connection
@@ -78,6 +80,9 @@ bool dataClass::addTransferredItem(itemData item){
 }
 
 bool dataClass::removeItem(int queue){
+	if(checkReady()){
+		MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
+	}
 	switch (queue){
 			case 1:
 				if(section1.empty()){
@@ -119,5 +124,13 @@ itemData dataClass::convertIntToItem(uint32_t itemCode)
     item.id = itemCode >> 4;                                // obere 28 Bits
 
     return item;
+}
+bool dataClass::checkReady(){
+	if(itemCount < 2 && section1.empty() && itemAtExit == false){
+		return true;
+	}
+	else{
+		return false;
+	}
 }
 
