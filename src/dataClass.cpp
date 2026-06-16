@@ -54,6 +54,8 @@ bool dataClass::moveFrom1To2(){
 	if (section1.empty()){
 		return false;
 	}
+	section1.front().timer = new DynamicTimer(section1.front().id, *handler);
+	section1.front().timer->start(1000); //1000 test wert
 	section2.push(section1.front());
 	section1.pop();
 	return true;
@@ -63,6 +65,8 @@ bool dataClass::moveFrom2To3(){
 	 if (section2.empty()){
 		 return false;
 	 }
+	section2.front().timer = new DynamicTimer(section2.front().id, *handler);
+	section2.front().timer->start(1000); // Testwert
 	section3.push(section2.front());
 	section2.pop();
 	return true;
@@ -72,7 +76,8 @@ bool dataClass::addItem(){
 	itemData item;
 	item.id = nextItemID++;
 	itemCount++;
-	item.timer = new DynamicTimer(item.id, *handler);
+	item.timer = new DynamicTimer(section1.front().id, *handler);
+	section1.front().timer->start(1000); //1000 testwert
 	section1.push(item);
 	return true;
 }
@@ -80,6 +85,7 @@ bool dataClass::addItem(){
 bool dataClass::addTransferredItem(itemData item){
 	itemCount++;
 	item.timer = new DynamicTimer(item.id, *handler);
+	item.timer->start(1000);
 	section1.push(item);
 	return true;
 }

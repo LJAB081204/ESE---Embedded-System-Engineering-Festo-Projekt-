@@ -1,7 +1,7 @@
 #ifndef SRC_ADC_SOURCES_HEIGHTSENSOR_H_
 #define SRC_ADC_SOURCES_HEIGHTSENSOR_H_
 
-#define ADC_THRESHOLD 50
+#define ADC_THRESHOLD 100
 #define CALIBRATION_FILE "/etc/heightsensor/calibration.cfg"
 
 enum Height {
