@@ -351,7 +351,8 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 							break;
 
 					case PULSE_ITEM_TRANSFER:
-						FSM.eventItemTransfer(msg.value.sival_int);
+						//FSM.eventItemTransfer(msg.value.sival_int);
+						data.addTransferredItem(data.convertIntToItem(msg.value.sival_int));
 						break;
 					case PULSE_EVENT_SLIDE_TIMER:
 						FSM.eventSlideTimerExpired();

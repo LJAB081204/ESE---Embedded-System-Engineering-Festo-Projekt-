@@ -87,6 +87,7 @@ bool dataClass::addTransferredItem(itemData item){
 	item.timer = new DynamicTimer(item.id, *handler);
 	item.timer->start(1000);
 	section1.push(item);
+	nextItem.push(item);
 	return true;
 }
 

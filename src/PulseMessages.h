@@ -7,6 +7,7 @@
 
 #ifndef SRC_PULSEMESSAGES_H_
 #define SRC_PULSEMESSAGES_H_
+#include <sys/neutrino.h>
 
 
 // interne Pulse
