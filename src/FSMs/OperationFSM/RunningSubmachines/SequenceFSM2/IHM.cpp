@@ -33,6 +33,7 @@ namespace M2{
 	void IHM::eventUpdate(SequenceContext& ctx){
 		if(ctx.data.section2.empty()) return;
 		ctx.resolveProfile();	//Profilierung
+		if(ctx.data.nextItem.empty()) return;
 		item = ctx.data.nextItem.front().item;
 		ctx.data.nextItem.pop();
 		if(item != ctx.data.section2.front().item){
