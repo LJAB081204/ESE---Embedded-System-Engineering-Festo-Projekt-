@@ -25,8 +25,8 @@ void PusherCalibration::entry(OperationContext& ctx) {
 }
 
 void PusherCalibration::exit(OperationContext& ctx) {
-	int pusher = ctx.calTimer->stop();
-	std::cout<< pusher << std::endl;
+	uint32_t pusherTime = ctx.calTimer->stop();
+	ctx.saveCalibrationTime("timePusher", pusherTime);
 }
 
 void PusherCalibration::eventItemAtPusher(OperationContext& ctx) {

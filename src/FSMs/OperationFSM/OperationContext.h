@@ -41,7 +41,8 @@ public:
 
 	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory,TimerHandler& timerHandler)
 	: hal(hal),data(data),hs(hs),factory(factory),timerHandler(timerHandler){
-		calTimer = new SimpleTimer(data.conId,PULSE_EVENT_SLIDE_TIMER);
+		calTimer = new SimpleTimer(0,0);
+		std::cout<<data.conId<<std::endl;
 		new (currentState) Idle;
 		currentState->entry(*this);
 	}
@@ -76,6 +77,14 @@ public:
 		currentState->onRestore(historySource, *this);
 		currentState->entry(*this);
 		historySource = HistorySource::NONE_HISTORY;
+	}
+
+	void saveCalibrationTime(const std::string& key, uint32_t value) {
+	    std::ofstream file(CALIBRATION_FILE, std::ios::app);
+	    if (file.is_open()) {
+	        file << key << "=" << value << "\n";
+	        file.close();
+	    }
 	}
 
     HistorySource getHistorySource() const { return historySource; }

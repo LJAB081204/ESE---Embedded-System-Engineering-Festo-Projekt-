@@ -151,6 +151,7 @@ void HeightSensor::calibrate() {
             case 3: state = 4; break;
             case 4: state = 5; break;
             case 5: refFlat = measuredVal; std::cout << "Kalibrierung: refFlat=" << refFlat << std::endl; state = 6; break;
+            case 6: state = 7; break;
         }
     }
     if(!calibrateRunning){
@@ -327,7 +328,7 @@ void HeightSensor::setCoId(int CoId){
 	this->dispCoid = CoId;
 }
 
-void HeightSensor::setStartCalibration(){
+void HeightSensor::startCalibration(){
 	this->doCalibrate = true;
 }
 

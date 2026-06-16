@@ -41,19 +41,12 @@ SimpleTimer::~SimpleTimer()
 void SimpleTimer::start(uint32_t millisec)
 
 {
-
     startMs_ = millisec;   // merken für stop()
-
     struct itimerspec its;
-
     its.it_value.tv_sec     = millisec / 1000;
-
     its.it_value.tv_nsec    = (millisec % 1000) * 1000000L;
-
     its.it_interval.tv_sec  = 0;
-
     its.it_interval.tv_nsec = 0;
-
     timer_settime(timerId_, 0, &its, nullptr);
 
 }
@@ -61,19 +54,11 @@ void SimpleTimer::start(uint32_t millisec)
 uint32_t SimpleTimer::stop()
 
 {
-
     struct itimerspec its, remaining;
-
     memset(&its, 0, sizeof(its));
-
     timer_settime(timerId_, 0, &its, &remaining);   // Timer stoppen + Rest holen
-
     uint32_t remainingMs = remaining.it_value.tv_sec * 1000
-
                          + remaining.it_value.tv_nsec / 1000000L;
-
-    printf("startMs_=%u  remainingMs=%u\n", startMs_, remainingMs);
-
     return startMs_ - remainingMs;   // abgelaufene Zeit
 
 }
