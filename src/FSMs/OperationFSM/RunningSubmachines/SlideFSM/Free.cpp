@@ -12,11 +12,24 @@
 #include <sys/neutrino.h>
 #include "../../../../PulseMessages.h"
 
+#include <iostream>
+
+namespace M1{
+
 	Free::Free(){
 	}
 
 	void Free::entry(SlideContext& ctx){
-
+		if(!ctx.hal.getSensors()->isSlideFull()){
+			ctx.hal.getActors()->yellowLampBlinkOff();
+			ctx.data.slideFull = false;
+			std::cout << "Slide Free"<<std::endl;
+		}
+		else{
+			exit(ctx);
+			new(this) Blocked;
+			entry(ctx);
+		}
 	}
 	void Free::exit(SlideContext& ctx){
 
@@ -27,3 +40,4 @@
 		new (this) Blocked;
 		entry(ctx);
 	}
+}

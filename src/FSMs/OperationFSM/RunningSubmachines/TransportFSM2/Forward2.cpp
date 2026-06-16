@@ -11,7 +11,7 @@
 #include "ForwardSlow2.h"
 
 #include <iostream>
-
+namespace M2{
 	Forward2::Forward2(){
 	}
 
@@ -24,13 +24,13 @@
 	}
 
 	void Forward2::eventItemAtExit(TransportContext2& ctx){
+		ctx.data.itemAtExit = true;
+		std::cout<< ctx.data.itemCount << std::endl;
 		exit(ctx);
-		std::cout<<"-1 Item" << std::endl;
-		ctx.data.itemCount = ctx.data.itemCount -1;
 		new(this) Stop2;
 		entry(ctx);
-
 	}
+
 
 	void Forward2::eventItemArrived(TransportContext2& ctx){
 		exit(ctx);
@@ -39,16 +39,25 @@
 	}
 
 
-	void Forward2::eventItemAtSlide(TransportContext2& ctx){
+	void Forward2::eventItemInSlide(TransportContext2& ctx){
 		exit(ctx);
-		std::cout<<"-1 Item" << std::endl;
-		ctx.data.itemCount = ctx.data.itemCount -1;
-		if(ctx.data.itemCount == 0){
+		if(!ctx.data.section2.empty()){
+			ctx.data.removeItem(2);
+		}		if(ctx.data.itemCount == 0){
 			new(this) Stop2;
 		}
 		entry(ctx);
 	}
 
+	void Forward2::eventItemTransfer(uint32_t itemCode, TransportContext2& ctx){
+		itemData item = ctx.data.convertIntToItem(itemCode);
+		ctx.data.addTransferredItem(item);
+	}
+
+	void Forward2::eventItemLeftExitRemote(TransportContext2& ctx){
+		ctx.data.addItem();
+	}
+}
 
 
 

@@ -12,12 +12,11 @@
 #include "PutItemInSlide.h"
 #include <sys/neutrino.h>
 #include "../../../../PulseMessages.h"
+namespace M1{
+
 Ready::Ready(){
 }
-void Ready::raiseError(WeicheContext& ctx){
-	ctx.data.err = BOTH_SLIDES_FULL;
-	MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
-}
+
 void Ready::eventItemCorrect(WeicheContext& ctx){
 	exit(ctx);
 	new (this) LetItemPass;
@@ -36,4 +35,5 @@ void Ready::eventItemWrong(WeicheContext& ctx){
 	}
 }
 
+}
 

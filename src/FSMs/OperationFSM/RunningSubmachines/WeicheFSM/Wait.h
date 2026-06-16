@@ -10,12 +10,16 @@
 
 
 #include "WeicheBase.h"
+namespace M1{
 
 class Wait : public WeicheBase{
 public:
 	Wait();
+	void entry(WeicheContext& ctx)override;
+	void exit(WeicheContext& ctx) override;
+
 	void eventTimerExpired(WeicheContext& ctx) override;
 };
-
+}
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_WEICHEFSM_WAIT_H_ */

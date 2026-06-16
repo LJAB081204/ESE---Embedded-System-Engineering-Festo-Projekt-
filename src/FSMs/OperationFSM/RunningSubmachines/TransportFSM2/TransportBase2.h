@@ -5,8 +5,10 @@
  *      Author: tayla
  */
 
-#ifndef SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTBASE_H_
-#define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTBASE_H_
+#ifndef SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM2_TRANSPORTBASE_H_
+#define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM2_TRANSPORTBASE_H_
+#include <stdint.h>
+namespace M2{
 
 class TransportContext2;  // Vorwärtsdekleration
 
@@ -33,8 +35,9 @@ public:
 	virtual void exit(TransportContext2& fsm){}
 
 	virtual void eventItemAtSlide(TransportContext2& fsm){}
+	virtual void eventItemTransfer(uint32_t itemCode, TransportContext2& fsm) {}
 };
+}
 
 
-
-#endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTBASE_H_ */
+#endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM2_TRANSPORTBASE_H_ */

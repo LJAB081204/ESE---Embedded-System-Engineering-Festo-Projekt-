@@ -9,6 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SEQUENCEFSM_WAITINGFORPROFILE_H_
 
 #include "SequenceBase.h"
+namespace M1{
 
 class waitingForProfile : public SequenceBase{
 public:
@@ -21,6 +22,5 @@ public:
 	void raiseItemCorrect(SequenceContext& ctx);
 };
 
-
-
+}
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SEQUENCEFSM_WAITINGFORPROFILE_H_ */

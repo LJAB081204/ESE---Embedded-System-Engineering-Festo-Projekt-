@@ -10,6 +10,7 @@
 
 #include "EstopBase.h"
 
+
 class BothReleased : public EStopBase{
 public:
 	BothReleased();

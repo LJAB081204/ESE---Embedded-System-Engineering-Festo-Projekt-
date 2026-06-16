@@ -7,8 +7,8 @@
 
 #ifndef SRC_FSMS_OPERATIONFSM_OPERATIONBASE_H_
 #define SRC_FSMS_OPERATIONFSM_OPERATIONBASE_H_
-
 enum class HistorySource {NONE_HISTORY, STOP_HISTORY, ESTOP_HISTORY, ERROR_HISTORY};
+#include <stdint.h>
 
 class OperationContext; // Vorwärtsdekleration
 
@@ -93,6 +93,9 @@ public:
 
 	virtual void eventSlideFull(OperationContext& fsm)                    {}
 	virtual void eventSlideFullRemote(OperationContext& fsm)              {}
+	virtual void eventItemTransfer(uint32_t itemCode, OperationContext& fsm)              {}
+	virtual void eventSlideTimerExpired(OperationContext& fsm)              {}
+
 };
 
 

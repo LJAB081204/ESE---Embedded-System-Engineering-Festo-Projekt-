@@ -10,6 +10,9 @@
 #include "HAL.h"
 #include "FSMs/MainFSM/MainContext.h"
 #include "HeightSensor.h"
+#include "FSMs/OperationFSM/RunningFactory.h"
+#include "timer.h"
+
 
 
 
@@ -17,21 +20,24 @@ class Dispatcher {
 private:
 	int ownConnectionID;
     int conCtrlConnectionID;
-    std::chrono::steady_clock::time_point buttonPressStart;
+
     HAL& hal;
     dataClass& data;
-    MainContext FSM;
+    RunningFactory& factory;
+    TimerHandler& timerHandler;
 
+    std::chrono::steady_clock::time_point buttonPressStart;
+	MainContext FSM;
     int ownChannelID;
 
 
-
+    bool itemAtExit;
     bool waitForMessages;
     std::thread DispatcherThread;
     _pulse msg;
     void run();
 public:
-    Dispatcher(int conCtrlConnectionID, HAL& hal, dataClass& data, HeightSensor& hs);
+    Dispatcher(int conCtrlConnectionID, HAL& hal, dataClass& data, HeightSensor& hs,RunningFactory& factory,TimerHandler& timerHandler);
     ~Dispatcher();
     int getConnectionID();
 };

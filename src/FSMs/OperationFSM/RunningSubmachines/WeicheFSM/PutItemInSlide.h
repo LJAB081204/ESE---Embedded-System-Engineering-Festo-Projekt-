@@ -10,6 +10,7 @@
 
 
 #include "WeicheBase.h"
+namespace M1{
 
 class PutItemInSlide : public WeicheBase{
 public:
@@ -17,6 +18,6 @@ public:
 	void entry(WeicheContext& ctx)override;
 	void eventItemInSlide(WeicheContext& ctx)override;
 };
-
+}
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_WEICHEFSM_PUTITEMINSLIDE_H_ */

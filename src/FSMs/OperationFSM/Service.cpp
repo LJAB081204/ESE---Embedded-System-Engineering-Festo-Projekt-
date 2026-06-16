@@ -11,19 +11,27 @@
 #include "Idle.h"
 #include "Service.h"
 
-#include "SErviceMode/EntryCalibration.h"
+#include "ServiceMode/HeightCalibration.h"
+#include "ServiceMode/EntryCalibration.h"
 
 	Service::Service(){
 	}
 
 	void Service::entry(OperationContext& ctx){
+		ctx.hal.getActors()->motorStop();
+		ctx.hal.getActors()->closePusher();
 		ctx.hal.getActors()->greenLampBlink(1000);
+		ctx.hal.getActors()->ledButtonReset();
 	}
 
-	void Service::exit(OperationContext& ctx){
-	}
+	void Service::exit(OperationContext& ctx){}
 
 	void Service::eventButtonStartPressedLong(OperationContext& ctx){
+		exit(ctx);
+		new (this) Idle;
+		entry(ctx);
+	}
+	void Service::eventButtonStartPressedLongRemote(OperationContext& ctx){
 		exit(ctx);
 		new (this) Idle;
 		entry(ctx);
@@ -34,5 +42,18 @@
 		new (this) EntryCalibration;
 		entry(ctx);
 	}
+
+	void Service::eventButtonResetPressed(OperationContext& ctx){
+		exit(ctx);
+		new (this) HeightCalibration;
+		entry(ctx);
+	}
+
+	void Service::eventButtonResetPressedRemote(OperationContext& ctx){
+		exit(ctx);
+		new (this) HeightCalibration;
+		entry(ctx);
+	}
+
 
 

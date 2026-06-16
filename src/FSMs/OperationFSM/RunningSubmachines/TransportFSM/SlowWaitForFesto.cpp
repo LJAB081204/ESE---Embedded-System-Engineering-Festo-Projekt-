@@ -11,6 +11,7 @@
 #include "SlowWaitForFesto.h"
 
 #include <iostream>
+namespace M1{
 
 	SlowWaitForFesto::SlowWaitForFesto(){
 	}
@@ -26,15 +27,13 @@
 
 	void SlowWaitForFesto::eventFestoReady(TransportContext& ctx){
 		exit(ctx);
-//		if(data.getReadyForItemRemote()){					//Datenklasse fehlt noch
 		new(this) ForwardSlow;
-//		}
 		entry(ctx);
 	}
 
 	void SlowWaitForFesto::eventItemAtEntry(TransportContext& ctx){
-		ctx.data.itemCount = ctx.data.itemCount + 1;
+		ctx.data.addItem();
 		std::cout<< ctx.data.itemCount << std::endl;
 	}
 
-
+}

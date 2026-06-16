@@ -10,20 +10,26 @@
 
 #include "OperationBase.h"
 #include "../../dataClass.h"
+#include "../../timer.h"
 
+
+namespace M1{
 
 class TransportContext;
 class WeicheContext;
-class SequenceContext;
 class ProfileContext;
+class SequenceContext;
+class SlideContext;
 
 class Running : public OperationBase{
 	TransportContext* transportFSM;
 	WeicheContext* weicheFSM;
 	SequenceContext* sequenceFSM;
 	ProfileContext* profileFSM;
+	SlideContext* slideFSM;
+
 public:
-	Running(HAL& hal,dataClass& data,SequenceContext& seq);
+	Running(HAL& hal,dataClass& data,SequenceContext& seq,TimerHandler& timerHandler);
 
 	void onRestore(HistorySource source,OperationContext& ctx)override;
 	void entry(OperationContext& ctx)override;
@@ -56,6 +62,8 @@ public:
 	void eventItemMetalRemote(OperationContext& ctx) override;
 	void eventSlideFullRemote(OperationContext& ctx) override;
 
+	void eventSlideTimerExpired(OperationContext& ctx) override;
+
 	// Höhensensor / Profil
 	void eventHeightHigh(OperationContext& ctx) override;
 	void eventHeightFlat(OperationContext& ctx) override;
@@ -77,5 +85,5 @@ public:
 
 };
 
-
+}
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNING_H_ */

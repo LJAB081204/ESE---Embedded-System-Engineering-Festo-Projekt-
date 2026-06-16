@@ -5,18 +5,18 @@
  *      Author: mika2
  */
 
-#ifndef SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTCONTEXT_H_
-#define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTCONTEXT_H_
+#ifndef SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM2_TRANSPORTCONTEXT_H_
+#define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM2_TRANSPORTCONTEXT_H_
 
 #include "../../../../HAL.h"
 #include "../../../../dataClass.h"
 #include <new>
 #include "TransportBase2.h"
 #include "Stop2.h"
-#include "../../Running.h"
 #include "Forward2.h"
 
 #include <iostream>
+namespace M2{
 
 class TransportContext2{
 	//Kontext
@@ -44,8 +44,11 @@ public:
 
 	void eventFestoEmpty() 			 { currentState->eventItemArrived(*this); }
 
-	void eventFestoReady() 			 { currentState->eventItemArrived(*this); }
-	void eventFestoNotReady() 			 { currentState->eventItemArrived(*this); }
+	void eventFestoReady() 			 { currentState->eventFestoReady(*this); }
+	void eventFestoNotReady() 			 { currentState->eventFestoNotReady(*this); }
+	void reactivate() 			 { currentState->entry(*this); }
+	void eventItemTransfer(uint32_t itemCode)	{currentState-> eventItemTransfer(itemCode,*this); }
+
 
 	//Festo2
 
@@ -54,5 +57,6 @@ public:
 
 
 };
+}
 
-#endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_TRANSPORTCONTEXT_H_ */
+#endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM2_TRANSPORTCONTEXT_H_ */

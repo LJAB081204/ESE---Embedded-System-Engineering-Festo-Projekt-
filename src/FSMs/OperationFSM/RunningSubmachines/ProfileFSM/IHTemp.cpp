@@ -12,6 +12,7 @@
 #include "IU.h"
 
 #include <iostream>
+namespace M1{
 
 IHTemp::IHTemp(){};
 
@@ -23,6 +24,10 @@ void IHTemp::exit(ProfileContext& ctx) {}
 
 void IHTemp::eventItemGone(ProfileContext& ctx){
 	exit(ctx);
+	if(!ctx.data.section1.empty()){
+		ctx.data.section1.front().unknown = true;
+		ctx.data.moveFrom1To2();
+	}
 	//Datenklasse IU schreiben
 	new(this) Default;
 	entry(ctx);
@@ -45,6 +50,6 @@ void IHTemp::eventHeightWrong(ProfileContext& ctx) {
 	new(this) IS;
 	entry(ctx);
 }
-
+}
 
 

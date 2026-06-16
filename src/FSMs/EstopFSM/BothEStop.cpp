@@ -21,6 +21,7 @@
 #include "BothEStop.h"
 #include "Reset.h"
 
+
 BothEStop::BothEStop(){
 }
 
@@ -44,7 +45,6 @@ void BothEStop::eventButtonEstopReleased(EStopContext& ctx){
 	new (this) EStopRemote;
 	entry(ctx);
 }
-
 
 
 

@@ -12,12 +12,14 @@
 #include "IH.h"
 #include "../../../../PulseMessages.h"
 #include <sys/neutrino.h>
+#include <iostream>
+namespace M1{
 
 	IM::IM(){
 	}
 
 	void IM::entry(SequenceContext& ctx){
-
+		std::cout << "IM --- next expected -> IF" << std::endl;
 	}
 
 	void IM::exit(SequenceContext& ctx){
@@ -25,6 +27,7 @@
 	}
 
 	void IM::eventUpdate(SequenceContext& ctx){
+		if(ctx.data.section2.empty()) return;
 		ctx.resolveProfile();	//profilierung
 		if(ctx.data.section2.front().item == IF_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 		    exit(ctx);
@@ -39,7 +42,7 @@
 		}
 	}
 
-	void IM::eventGoBack(SequenceContext& ctx){
+	/*void IM::eventGoBack(SequenceContext& ctx){
 		if(ctx.data.nextItem.front().item == UNDEFINED_PROFILE){ //oneRound raus?
 			exit(ctx);
 			new(this) waitingForProfile;
@@ -60,6 +63,28 @@
 			new(this) IH;
 			entry(ctx);
 		}
+	}*/
+
+	void IM::eventGoBackWFP(SequenceContext& ctx){
+		exit(ctx);
+		new(this) waitingForProfile;
+		entry(ctx);
+	}
+
+	void IM::eventGoBackIH(SequenceContext& ctx){
+		exit(ctx);
+		new(this) IH;
+		entry(ctx);
+	}
+	void IM::eventGoBackIF(SequenceContext& ctx){
+		exit(ctx);
+		new(this) IF;
+		entry(ctx);
+	}
+	void IM::eventGoBackIHM(SequenceContext& ctx){
+		exit(ctx);
+		new(this) IHM;
+		entry(ctx);
 	}
 
 
@@ -70,5 +95,5 @@
 	void IM::raiseItemWrong(SequenceContext& ctx){
 		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ITEM_WRONG, 0);
 	}
-
+}
 

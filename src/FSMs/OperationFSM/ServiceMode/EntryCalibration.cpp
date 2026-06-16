@@ -10,30 +10,18 @@
 #include "../OperationContext.h"
 #include "EntryCalibration.h"
 #include "HeightDetect.h"
+#include "../Service.h"
 
 EntryCalibration::EntryCalibration(){};
 
 void EntryCalibration::entry(OperationContext& ctx) {
-	std::cout<< "1" << std::endl;
 	ctx.hal.getActors()->motorForwards();
-	ctx.hs.calibrate();
+	std::cout<< "EntryCalibration" << std::endl;
 }
 
 void EntryCalibration::exit(OperationContext& ctx) {
 	//Timer setzten
 }
-
-//void EntryCalibration::eventHeightHigh(OperationContext& ctx) {
-//	exit(ctx);
-//	new(this) HeightDetect;
-//	entry(ctx);
-//}
-//
-//void EntryCalibration::eventHeightFlat(OperationContext& ctx) {
-//	exit(ctx);
-//	new(this) HeightDetect;
-//	entry(ctx);
-//}
 
 void EntryCalibration::eventItemArrived(OperationContext& ctx){
 	exit(ctx);
@@ -44,6 +32,24 @@ void EntryCalibration::eventItemArrived(OperationContext& ctx){
 void EntryCalibration::eventButtonStartPressedLong(OperationContext& ctx){
 	exit(ctx);
 	new (this) Idle;
+	entry(ctx);
+}
+
+void EntryCalibration::eventButtonStartPressedLongRemote(OperationContext& ctx){
+	exit(ctx);
+	new (this) Idle;
+	entry(ctx);
+}
+
+void EntryCalibration::eventButtonStopPressed(OperationContext& ctx){
+	exit(ctx);
+	new (this) Service;
+	entry(ctx);
+}
+
+void EntryCalibration::eventButtonStopPressedRemote(OperationContext& ctx){
+	exit(ctx);
+	new (this) Service;
 	entry(ctx);
 }
 

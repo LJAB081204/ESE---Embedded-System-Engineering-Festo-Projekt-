@@ -12,6 +12,7 @@
 #include "../OperationFSM/OperationContext.h"
 #include "../../dataClass.h"
 
+
 class Operation : public MainBase{
 	OperationContext& operationFSM;
 public:
@@ -90,6 +91,8 @@ public:
 
     void eventSlideFull(MainContext& ctx) override;
     void eventSlideFullRemote(MainContext& ctx) override;
+
+    void eventSlideTimerExpired(MainContext& ctx) override;
 };
 
 

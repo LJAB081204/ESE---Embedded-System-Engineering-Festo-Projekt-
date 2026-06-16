@@ -11,22 +11,26 @@
 #include "Receive.h"
 #include "Wait.h"
 #include "LetItemPass.h"
+namespace M1{
 
 LetItemPass::LetItemPass(){
 }
 
 void LetItemPass::entry(WeicheContext& ctx){
 	ctx.hal.getActors()->letItemPass();
-	// start Timer Pusher
+
 }
 
 void LetItemPass::exit(WeicheContext& ctx){
-	// Start Timer 3s
+
 }
 void LetItemPass::eventItemLeftPusher(WeicheContext& ctx){
 	exit(ctx);
+	if(!ctx.data.section2.empty()){
+		ctx.data.moveFrom2To3();
+	}
 	new (this) Wait;
 	entry(ctx);
 }
-
+}
 

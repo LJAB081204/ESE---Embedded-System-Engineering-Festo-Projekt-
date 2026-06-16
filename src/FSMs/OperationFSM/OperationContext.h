@@ -17,10 +17,13 @@
 #include "RunningSubmachines/SequenceFSM/SequenceContext.h"
 #include <iostream>
 #include "../../HeightSensor.h"
+#include "RunningFactory.h"
+#include "../../timer.h"
+
 
 class OperationContext{
 	//Kontext
-	alignas(Running) char stateBuffer[sizeof(Running)];
+	alignas(Idle) char stateBuffer[sizeof(Idle)];
 
 
 public:
@@ -28,12 +31,14 @@ public:
 	int connectionID = -1;
 	dataClass& data;
 	HeightSensor& hs;
-	SequenceContext sequenceFSM{data};
-	Running* savedRunning = nullptr;
+	RunningFactory& factory;
+	TimerHandler& timerHandler;
+	OperationBase* savedRunning = nullptr;
 	OperationBase* currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 	HistorySource historySource = HistorySource::NONE_HISTORY;
 
-	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs) : hal(hal),data(data),hs(hs){
+	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory,TimerHandler& timerHandler)
+	: hal(hal),data(data),hs(hs),factory(factory),timerHandler(timerHandler){
 		new (currentState) Idle;
 		currentState->entry(*this);
 	}
@@ -43,7 +48,7 @@ public:
 	void saveHistory(HistorySource source){
 		historySource = source;
 		if (source == HistorySource::STOP_HISTORY){
-			savedRunning = static_cast<Running*>(currentState);
+			savedRunning = currentState;
 			new (stateBuffer) Idle;
 			currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 			currentState->entry(*this);
@@ -123,11 +128,11 @@ public:
     void eventItemMetal()			   { currentState->eventItemMetal(*this); }
     void eventItemMetalRemote()              { currentState->eventItemMetalRemote(*this); }
 
-    void eventItemArrived()			   { std::cout<<"WWWWWWWW" << std::endl; currentState->eventItemArrived(*this);}
+    void eventItemArrived()			   { currentState->eventItemArrived(*this);}
     void eventItemGone()			   { currentState->eventItemGone(*this);}
 
-    void eventFestoReady()			   { currentState->eventItemGone(*this);}
-    void eventFestoNotReady()		   { currentState->eventItemGone(*this);}
+    void eventFestoReady()			   { currentState->eventFestoReady(*this);}
+    void eventFestoNotReady()		   { currentState->eventFestoNotReady(*this);}
 
     void eventHeightHigh()			   {currentState->eventHeightHigh(*this); }
     void eventHeightFlat()			   { currentState->eventHeightFlat(*this); }
@@ -146,7 +151,11 @@ public:
 
     void eventSlideFull()                    { currentState->eventSlideFull(*this); }
     void eventSlideFullRemote()              { currentState->eventSlideFullRemote(*this); }
+    void eventItemTransfer(uint32_t itemCode)				{ currentState->eventItemTransfer(itemCode,*this);}
+    void eventSlideTimerExpired()              { currentState->eventSlideTimerExpired(*this); }
+
 };
+
 
 
 #endif /* SRC_FSMS_OPERATIONFSM_OPERATIONCONTEXT_H_ */

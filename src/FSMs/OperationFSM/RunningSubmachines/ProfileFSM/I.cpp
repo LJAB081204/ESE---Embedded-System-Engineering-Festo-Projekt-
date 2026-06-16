@@ -12,6 +12,7 @@
 #include "IS.h"
 #include "IHTemp.h"
 #include "IU.h"
+namespace M1{
 
 I :: I(){}
 
@@ -35,7 +36,10 @@ void I::eventHeightFlat(ProfileContext& ctx){
 
 void I::eventItemGone(ProfileContext& ctx) {
 	exit(ctx);
-	//in die Datenklasse schreiben
+	if(!ctx.data.section1.empty()){
+		ctx.data.section1.front().high = true;
+		ctx.data.moveFrom1To2();
+	}
 	new(this) Default;
 	entry(ctx);
 }
@@ -45,6 +49,5 @@ void I::eventHeightWrong(ProfileContext& ctx) {
 	new(this) IS;
 	entry(ctx);
 }
-
-
+}
 

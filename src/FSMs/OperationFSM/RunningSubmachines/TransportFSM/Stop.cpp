@@ -11,6 +11,7 @@
 
 #include <iostream>
 
+namespace M1{
 
 	Stop::Stop(){
 	}
@@ -18,6 +19,11 @@
 	void Stop::entry(TransportContext& ctx){
 		std::cout<<"Stop" << std::endl;
 		ctx.hal.getActors()->motorStop();
+		if(ctx.hal.getSensors()->isItemAtEntry()){
+			exit(ctx);
+			new (this) Forward;
+			entry(ctx);
+		}
 	}
 
 	void Stop::exit(TransportContext& ctx){
@@ -25,9 +31,12 @@
 
 	void Stop::eventItemAtEntry(TransportContext& ctx){
 		exit(ctx);
-		ctx.data.itemCount = ctx.data.itemCount + 1;
+		std::cout<<"ITEM AT ENTRY"<< std::endl;
+		ctx.data.addItem();
+		std::cout<< ctx.data.section1.size() << std::endl;
+
 		std::cout<< ctx.data.itemCount << std::endl;
 		new(this) Forward;
 		entry(ctx);
 	}
-
+}

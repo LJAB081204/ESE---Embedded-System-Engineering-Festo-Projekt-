@@ -12,6 +12,7 @@
 #include "EStopRemote.h"
 #include "BothReleased.h"
 
+
 HandShakeEStopLocalNotPressed::HandShakeEStopLocalNotPressed(){
 }
 
@@ -35,6 +36,5 @@ void HandShakeEStopLocalNotPressed::handshakeEStopRemoteIsNotPressed(EStopContex
 	new (this) BothReleased;
 	entry(ctx);
 }
-
 
 

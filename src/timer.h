@@ -30,7 +30,7 @@ public:
      * @param dispatcherCoid Connection-ID des Dispatcher-Channels, auf dem
      *                      der Expired-Pulse empfangen werden soll.
      */
-    SimpleTimer(int id, int dispatcherCoid);
+    SimpleTimer(int dispatcherCoid, int pulseMessage);
 
     /**
      * @brief Stoppt den Timer, löscht den Systemtimer und trennt die
@@ -51,9 +51,7 @@ public:
      *        Kein Pulse wird gesendet.
      */
     void stop();
-
 private:
-    int     id_;       ///< Timer-ID, die im Pulse-Value übertragen wird
     int     coid_;     ///< Connection-ID zum Dispatcher-Channel
     timer_t timerId_;  ///< Handle des POSIX-Systemtimers
 };
@@ -190,6 +188,7 @@ public:
      * @param t Zeiger auf den abzumeldenden Timer.
      */
     void unregisterTimer(DynamicTimer* t);
+    void setCoid(int dispCoid);
 
     mutable pthread_mutex_t mutex_; ///< Schützt timers_, paused_, slowFactor_
                                     ///< sowie die Felder aller DynamicTimer.

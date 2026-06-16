@@ -1,6 +1,7 @@
 #ifndef ESTOPBASE_H
 #define ESTOPBASE_H
 
+
 class EStopContext;
 
 class EStopBase {

@@ -84,7 +84,11 @@ public:
 
 	virtual void eventSlideFull(MainContext& fsm)      {}
 	virtual void eventSlideFullRemote(MainContext& fsm)      {}
+	virtual void eventItemTransfer(uint32_t itemCode, MainContext& fsm)      {}
+
+	virtual void eventSlideTimerExpired(MainContext& fsm)      {}
 
 };
+
 
 #endif /* SRC_FSMS_MAINFSM_MAINBASE_H_ */
