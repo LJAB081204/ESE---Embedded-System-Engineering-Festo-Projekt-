@@ -24,16 +24,13 @@ namespace M2{
 	}
 
 	void Forward2::eventItemAtExit(TransportContext2& ctx){
-		exit(ctx);
 		ctx.data.itemAtExit = true;
 		std::cout<<"-1 Item" << std::endl;
-		if(!ctx.data.section3.empty()){
-			ctx.data.removeItem(3);
-		}
+		exit(ctx);
 		new(this) Stop2;
 		entry(ctx);
-
 	}
+
 
 	void Forward2::eventItemArrived(TransportContext2& ctx){
 		exit(ctx);

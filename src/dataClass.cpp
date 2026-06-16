@@ -8,6 +8,7 @@
 #include "dataClass.h"
 #include "PulseMessages.h"
 #include "sys/neutrino.h"
+#include <iostream>
 
 dataClass::dataClass(TimerHandler& handler)
     : handler(&handler)
@@ -91,9 +92,7 @@ bool dataClass::addTransferredItem(itemData item){
 }
 
 bool dataClass::removeItem(int queue){
-	if(checkReady()){
-		MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
-	}
+
 	switch (queue){
 			case 1:
 				if(section1.empty()){
@@ -102,6 +101,11 @@ bool dataClass::removeItem(int queue){
 				delete section1.front().timer;
 				section1.pop();
 				itemCount--;
+				if(checkReady()){
+					MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
+					std::cout << "PULSE READY SEND" << std::endl;
+
+				}
 				return true;
 			case 2:
 				if(section2.empty()){
@@ -110,6 +114,11 @@ bool dataClass::removeItem(int queue){
 				delete section2.front().timer;
 				section2.pop();
 				itemCount--;
+				if(checkReady()){
+					MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
+					std::cout << "PULSE READY SEND" << std::endl;
+
+				}
 				return true;
 			case 3:
 				if(section3.empty()){
@@ -118,6 +127,10 @@ bool dataClass::removeItem(int queue){
 				delete section3.front().timer;
 				section3.pop();
 				itemCount--;
+				if(checkReady()){
+					MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
+					std::cout << "PULSE READY SEND" << std::endl;
+				}
 				return true;
 			default:
 				return false;

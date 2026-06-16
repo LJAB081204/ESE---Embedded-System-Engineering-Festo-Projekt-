@@ -171,12 +171,10 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    case PULSE_ITEM_AT_EXIT_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            //cout << "Item at exit!" << endl;
-				        	itemAtExit = true;
-				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_EXIT_REMOTE, 1);
+				        	MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_EXIT_REMOTE, 1);
 				            FSM.eventItemAtExit();
 				        } else {
 				            //cout << "Item left exit!" << endl;
-				        	itemAtExit = false;
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_EXIT_REMOTE, 0);
 				            FSM.eventItemLeftExit();
 				        }
@@ -286,14 +284,12 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    case PULSE_EVENT_TRANSFER_REQUEST:
 						std::cout<< "request arrived" << std::endl;
 
-				    	if(true){
+				    	if(data.checkReady()){
 				    		std::cout<< "Festo ready" << std::endl;
-
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_TRANSFER_REPLY, 1);
 				    	}
 				    	else{
 				    		std::cout<< "Festo not ready" << std::endl;
-
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_TRANSFER_REPLY, 0);
 				    	}
 				    	break;
@@ -344,9 +340,13 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 							FSM.eventUpdate();
 							break;
 					case PULSE_EVENT_ITEM_CORRECT:
+							cout << "ITEM CORRECT" << endl;
+
 							FSM.eventItemCorrect();
 							break;
 					case PULSE_EVENT_ITEM_WRONG:
+							cout << "ITEM WRONG" << endl;
+
 							FSM.eventItemWrong();
 							break;
 
@@ -356,7 +356,9 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 					case PULSE_EVENT_SLIDE_TIMER:
 						FSM.eventSlideTimerExpired();
 						break;
-
+					case PULSE_EVENT_FESTO_READY:
+						FSM.eventFestoReady();
+						break;
 				}
 
 
