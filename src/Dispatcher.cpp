@@ -330,8 +330,14 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    	break;
 
 					case PULSE_DYNAMIC_TIMER_EXPIRED:
-							//cout << "Timer " << msg.value.sival_int << " abgelaufen" << endl;
-							FSM.eventTimerExpired();
+						switch(msg.value.sival_int){
+							case 100:
+								FSM.eventTimerExpired();
+								break;
+							default:
+								//Item Timer Expired
+								break;
+						}
 							break;
 					case PULSE_EVENT_ERROR:
 							FSM.eventError();
@@ -352,6 +358,7 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 
 					case PULSE_ITEM_TRANSFER:
 						//FSM.eventItemTransfer(msg.value.sival_int);
+						cout << msg.value.sival_int << endl;
 						data.addTransferredItem(data.convertIntToItem(msg.value.sival_int));
 						break;
 					case PULSE_EVENT_SLIDE_TIMER:

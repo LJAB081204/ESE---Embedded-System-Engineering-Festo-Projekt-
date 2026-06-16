@@ -16,7 +16,7 @@ Wait::Wait(){
 
 }
 void Wait::entry(WeicheContext& ctx){
-	ctx.pusherTimer.start(2000);
+	ctx.pusherTimer.start(750);
 }
 
 void Wait::exit(WeicheContext& ctx){

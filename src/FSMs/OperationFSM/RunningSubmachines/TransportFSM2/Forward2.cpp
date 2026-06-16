@@ -25,7 +25,7 @@ namespace M2{
 
 	void Forward2::eventItemAtExit(TransportContext2& ctx){
 		ctx.data.itemAtExit = true;
-		std::cout<<"-1 Item" << std::endl;
+		std::cout<< ctx.data.itemCount << std::endl;
 		exit(ctx);
 		new(this) Stop2;
 		entry(ctx);
@@ -41,7 +41,6 @@ namespace M2{
 
 	void Forward2::eventItemInSlide(TransportContext2& ctx){
 		exit(ctx);
-		std::cout<<"-1 Item" << std::endl;
 		if(!ctx.data.section2.empty()){
 			ctx.data.removeItem(2);
 		}		if(ctx.data.itemCount == 0){
@@ -53,6 +52,10 @@ namespace M2{
 	void Forward2::eventItemTransfer(uint32_t itemCode, TransportContext2& ctx){
 		itemData item = ctx.data.convertIntToItem(itemCode);
 		ctx.data.addTransferredItem(item);
+	}
+
+	void Forward2::eventItemLeftExitRemote(TransportContext2& ctx){
+		ctx.data.addItem();
 	}
 }
 

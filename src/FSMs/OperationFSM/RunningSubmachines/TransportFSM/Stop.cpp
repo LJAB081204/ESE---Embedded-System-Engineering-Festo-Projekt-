@@ -19,6 +19,11 @@ namespace M1{
 	void Stop::entry(TransportContext& ctx){
 		std::cout<<"Stop" << std::endl;
 		ctx.hal.getActors()->motorStop();
+		if(ctx.hal.getSensors()->isItemAtEntry()){
+			exit(ctx);
+			new (this) Forward;
+			entry(ctx);
+		}
 	}
 
 	void Stop::exit(TransportContext& ctx){

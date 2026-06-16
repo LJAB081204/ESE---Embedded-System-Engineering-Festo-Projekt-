@@ -57,5 +57,9 @@ namespace M2{
 			new(this) Stop2;
 		}
 	}
+
+	void ForwardSlow2::eventItemLeftExitRemote(TransportContext2& ctx){
+		ctx.data.addItem();
+	}
 }
 
