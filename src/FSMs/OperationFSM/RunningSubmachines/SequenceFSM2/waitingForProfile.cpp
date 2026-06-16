@@ -15,7 +15,6 @@
 
 namespace M2{
 
-
 	waitingForProfile::waitingForProfile(){
 		this->item = UNDEFINED_PROFILE;
 	}
