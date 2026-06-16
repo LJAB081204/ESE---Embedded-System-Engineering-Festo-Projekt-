@@ -29,7 +29,11 @@ namespace M1{
 
 	void waitingForProfile::eventUpdate(SequenceContext& ctx){
 		if(ctx.data.section2.empty()) return;
+		std::cout << "ENTERED UPDATE FUNCTION" << std::endl;
+
 		ctx.resolveProfile();									//Profilierung
+		std::cout << "SECTION2 NOT EMPTY" << std::endl;
+
 		if(ctx.data.section2.front().item == IH_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 			exit(ctx);
 			raiseItemCorrect(ctx);

@@ -24,7 +24,7 @@ public:
 	dataClass& data;
 	DynamicTimer pusherTimer;
 	WeicheContext(HAL& hal,dataClass& data,TimerHandler& timerHandler)
-	: hal(hal), data(data),pusherTimer(1,timerHandler) {
+	: hal(hal), data(data),pusherTimer(100,timerHandler) {
 		new(currentState) Receive;
 		currentState->entry(*this);
 	}
