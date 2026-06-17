@@ -45,6 +45,9 @@ public:
     void eventError()			   { currentState->eventError(*this);}
     void eventTimerExpired()	   { currentState->eventTimerExpired(*this);}
 
+	SimpleTimer* timerPusherOpen = nullptr;
+
+
 
 
 };
