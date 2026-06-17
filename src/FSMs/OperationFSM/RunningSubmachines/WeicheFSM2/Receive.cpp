@@ -28,8 +28,15 @@ void Receive::exit(WeicheContext& ctx){
 }
 
 void Receive::eventItemAtPusher(WeicheContext& ctx){
-	ctx.pusherTimer.start(300);
+	if(ctx.hal.getActors()->isJunction()){
+		ctx.pusherTimer.start(300);
+	}
+	else {
+		ctx.pusherTimer.start(10);
+	}
+
 }
+
 void Receive::eventItemMetal(WeicheContext& ctx){
 	exit(ctx);
 	if(!ctx.data.section2.empty()){

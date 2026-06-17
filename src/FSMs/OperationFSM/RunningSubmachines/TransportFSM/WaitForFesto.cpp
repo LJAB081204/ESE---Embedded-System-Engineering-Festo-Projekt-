@@ -15,15 +15,16 @@ namespace M1{
 
 	void WaitForFesto::entry(TransportContext& ctx){
 		std::cout<<"WaitForFesto" << std::endl;
-		ctx.hal.getActors()->motorStop();
 	}
 
 	void WaitForFesto::exit(TransportContext& ctx){
 	}
 
+	void WaitForFesto::eventFestoNotReady(TransportContext& ctx){
+		ctx.hal.getActors()->motorStop();
+	}
 	void WaitForFesto::eventFestoReady(TransportContext& ctx){
 		exit(ctx);
-
 		new(this) Forward;
 		entry(ctx);
 	}
