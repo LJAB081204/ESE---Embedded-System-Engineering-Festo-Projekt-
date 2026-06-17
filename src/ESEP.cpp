@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
 		}
 
 
-		cout << "local: " << local << " remote: " << remote << endl;
+		//cout << "local: " << local << " remote: " << remote << endl;
 
 
         TSCADC tsc;

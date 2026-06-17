@@ -178,5 +178,23 @@ void Operation::eventSlideFullRemote(MainContext& ctx) {
 void Operation::eventSlideTimerExpired(MainContext& ctx) {
     operationFSM.eventSlideTimerExpired();
 }
+void Operation::eventGoBack(MainContext& ctx){
+	operationFSM.eventGoBack();
+}
 
+void Operation::eventGoBackWFP(MainContext& ctx){
+	operationFSM.eventGoBackWFP();
+}
+void Operation::eventGoBackIH(MainContext& ctx){
+	operationFSM.eventGoBackIH();
+}
+void Operation::eventGoBackIM(MainContext& ctx){
+	operationFSM.eventGoBackIM();
+}
+void Operation::eventGoBackIF(MainContext& ctx){
+	operationFSM.eventGoBackIF();
+}
+void Operation::eventGoBackIHM(MainContext& ctx){
+	operationFSM.eventGoBackIHM();
+}
 

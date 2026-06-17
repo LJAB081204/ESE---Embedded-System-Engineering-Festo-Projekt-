@@ -66,6 +66,7 @@ namespace M1{
 	}*/
 
 	void IM::eventGoBackWFP(SequenceContext& ctx){
+		std::cout << "EVENT REACHED IM" << std::endl;
 		exit(ctx);
 		new(this) waitingForProfile;
 		entry(ctx);
