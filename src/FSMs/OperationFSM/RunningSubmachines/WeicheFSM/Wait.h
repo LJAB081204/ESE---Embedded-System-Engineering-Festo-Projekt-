@@ -10,6 +10,8 @@
 
 
 #include "WeicheBase.h"
+#include "../../../../timer.h"
+
 namespace M1{
 
 class Wait : public WeicheBase{
@@ -19,6 +21,7 @@ public:
 	void exit(WeicheContext& ctx) override;
 
 	void eventTimerExpired(WeicheContext& ctx) override;
+	SimpleTimer* timerPusherOpen;
 };
 }
 
