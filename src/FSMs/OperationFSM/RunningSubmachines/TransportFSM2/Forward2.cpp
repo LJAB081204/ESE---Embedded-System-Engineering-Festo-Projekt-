@@ -18,15 +18,15 @@ namespace M2{
 	}
 
 	void Forward2::entry(TransportContext2& ctx){
-		if(ctx.data.itemCount == 0){
-			exit(ctx);
-			new(this) Stop2;
-			entry(ctx);
-		}
-		else{
+//		if(ctx.data.itemCount == 0){
+//			exit(ctx);
+//			new(this) Stop2;
+//			entry(ctx);
+//		}
+//		else{
 		std::cout<<"Forward2" << std::endl;
 		ctx.hal.getActors()->motorForwards();
-		}
+//		}
 	}
 
 	void Forward2::exit(TransportContext2& ctx){
@@ -36,34 +36,34 @@ namespace M2{
 		ctx.data.itemAtExit = true;
 		std::cout<< ctx.data.itemCount << std::endl;
 		exit(ctx);
-		if(ctx.data.section3.front().timer->getTime()>100){
-			ctx.data.err = ITEM_APPEARED;
-			ctx.data.errorLoc = 3;
-			raiseError(ctx);
-			new(this) Stop2;
-			entry(ctx);
-
-		}
-		else{
+//		if(ctx.data.section3.front().timer->getTime()>100){
+//			ctx.data.err = ITEM_APPEARED;
+//			ctx.data.errorLoc = 3;
+//			raiseError(ctx);
+//			new(this) Stop2;
+//			entry(ctx);
+//
+//		}
+//		else{
 		new(this) Stop2;
 		entry(ctx);
-		}
+//		}
 	}
 
 
 	void Forward2::eventItemArrived(TransportContext2& ctx){
 		exit(ctx);
-		if(ctx.data.section1.front().timer->getTime()>100){
-			ctx.data.err = ITEM_APPEARED;
-			ctx.data.errorLoc = 1;
-			raiseError(ctx);
+//		if(ctx.data.section1.front().timer->getTime()>100){
+//			ctx.data.err = ITEM_APPEARED;
+//			ctx.data.errorLoc = 1;
+//			raiseError(ctx);
+//			new(this) ForwardSlow2;
+//			entry(ctx);
+//		}
+//		else{
 			new(this) ForwardSlow2;
 			entry(ctx);
-		}
-		else{
-			new(this) ForwardSlow2;
-			entry(ctx);
-		}
+//		}
 	}
 
 
@@ -78,12 +78,12 @@ namespace M2{
 	}
 
 	void Forward2::eventItemAtPusher(TransportContext2& ctx){
-		exit(ctx);
-		if(ctx.data.section2.front().timer->getTime()>100){
-			ctx.data.err = ITEM_APPEARED;
-			ctx.data.errorLoc = 2;
-			raiseError(ctx);
-		}
+//		exit(ctx);
+//		if(ctx.data.section2.front().timer->getTime()>100){
+//			ctx.data.err = ITEM_APPEARED;
+//			ctx.data.errorLoc = 2;
+//			raiseError(ctx);
+//		}
 	}
 
 	void Forward2::eventItemTransfer(uint32_t itemCode, TransportContext2& ctx){

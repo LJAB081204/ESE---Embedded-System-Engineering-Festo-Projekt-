@@ -335,7 +335,7 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 								FSM.eventTimerExpired();
 								break;
 							default:
-								FSM.eventError();
+								//FSM.eventError();
 								break;
 						}
 							break;
