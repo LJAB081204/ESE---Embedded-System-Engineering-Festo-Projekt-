@@ -15,16 +15,32 @@
 EntryCalibration::EntryCalibration(){};
 
 void EntryCalibration::entry(OperationContext& ctx) {
-	ctx.hal.getActors()->motorForwards();
-	std::cout<< "EntryCalibration" << std::endl;
+	ctx.round++;
+	if(ctx.round == 2){
+		ctx.hal.getActors()->motorForwards();
+		ctx.hal.getActors()->motorSlow();
+		std::cout<< "EntryCalibrationSlow" << std::endl;
+	}
+	else{
+		ctx.hal.getActors()->motorForwards();
+		std::cout<< "EntryCalibration" << std::endl;
+	}
+
 }
 
 void EntryCalibration::exit(OperationContext& ctx) {
-	ctx.entryTime = ctx.calTimer->stop();
+	if(ctx.round == 1){
+		ctx.data.entryTime = ctx.calTimer->stop();
+	}
+	else if(ctx.round == 2){
+		ctx.data.entryTimeSlow = ctx.calTimer->stop();
+	}
 }
 
 void EntryCalibration::eventItemLeftEntry(OperationContext& ctx) {
-	ctx.calTimer->start(10000);
+	if(ctx.round == 1 || ctx.round == 2){
+		ctx.calTimer->start(10000);
+	}
 }
 
 void EntryCalibration::eventItemArrived(OperationContext& ctx){
