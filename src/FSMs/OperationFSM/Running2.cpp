@@ -183,4 +183,8 @@ Running2::Running2(HAL& hal,dataClass& data,SequenceContext& sequence,TimerHandl
 	void Running2::eventGoBack(OperationContext& ctx){
 			sequenceFSM -> eventGoBack();
 	}
+
+	void Running2::eventItemLeftEntry(OperationContext& ctx){
+			transportFSM->eventItemLeftEntry();
+		}
 }

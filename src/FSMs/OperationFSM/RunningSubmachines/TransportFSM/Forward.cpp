@@ -38,10 +38,10 @@ namespace M1{
 
 	void Forward::eventItemAtExit(TransportContext& ctx){
 		exit(ctx);
-		if(ctx.data.section1.front().timer->getTime()>100){
+		if(ctx.data.section1.front().timer->getTime()>1000){
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 3;
-			raiseError(ctx);
+			//raiseError(ctx);
 			new(this) WaitForFesto;
 			entry(ctx);
 
@@ -57,14 +57,17 @@ namespace M1{
 	void Forward::eventItemAtEntry(TransportContext& ctx){
 		exit(ctx);
 		std::cout<<"ITEM AT ENTRY"<< std::endl;
-		ctx.data.addItem();
 		std::cout<< ctx.data.itemCount << std::endl;
 		entry(ctx);
 	}
 
+	void Forward::eventItemLeftEntry(TransportContext& ctx){
+		ctx.data.addItem();
+	}
+
 	void Forward::eventItemArrived(TransportContext& ctx){
 		exit(ctx);
-		if(ctx.data.section1.front().timer->getTime()>100){
+		if(ctx.data.section1.front().timer->getTime()>1000){
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 1;
 			raiseError(ctx);
@@ -106,7 +109,7 @@ namespace M1{
 
 	void Forward::eventItemAtPusher(TransportContext& ctx){
 		exit(ctx);
-		if(ctx.data.section1.front().timer->getTime()>100){
+		if(ctx.data.section1.front().timer->getTime()>1000){
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 2;
 			raiseError(ctx);

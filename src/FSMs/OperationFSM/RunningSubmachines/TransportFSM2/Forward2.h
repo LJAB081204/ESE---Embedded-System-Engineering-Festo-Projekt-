@@ -22,6 +22,7 @@ public:
 	void eventItemArrived(TransportContext2& ctx)override;
 	void eventItemAtPusher(TransportContext2& ctx)override;
 	void eventItemTransfer(uint32_t itemCode, TransportContext2& ctx)override;
+	void eventItemLeftEntry(TransportContext2& ctx) override;
 	void raiseError(TransportContext2& ctx);
 };
 

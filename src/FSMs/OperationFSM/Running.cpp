@@ -194,6 +194,10 @@ namespace M1{
 			sequenceFSM->eventGoBackIHM();
 		}
 
+	void Running::eventItemLeftEntry(OperationContext& ctx){
+		transportFSM->eventItemLeftEntry();
+	}
+
 
 
 

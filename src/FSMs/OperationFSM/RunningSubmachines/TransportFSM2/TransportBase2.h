@@ -36,6 +36,7 @@ public:
 	virtual void exit(TransportContext2& fsm){}
 
 	virtual void eventItemAtSlide(TransportContext2& fsm){}
+	virtual void eventItemLeftEntry(TransportContext2& fsm){}
 	virtual void eventItemTransfer(uint32_t itemCode, TransportContext2& fsm) {}
 };
 }

@@ -48,6 +48,7 @@ public:
 	void eventItemMetal(OperationContext& ctx) override;
 	void eventItemGone(OperationContext& ctx) override;
 	void eventItemArrived(OperationContext& ctx) override;
+	void eventItemLeftEntry(OperationContext& ctx) override;
 
 	// Sensoren remote
 	void eventItemAtEntryRemote(OperationContext& ctx) override;
