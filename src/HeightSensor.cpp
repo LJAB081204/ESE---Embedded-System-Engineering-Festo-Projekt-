@@ -373,7 +373,7 @@ void HeightSensor::setCoId(int CoId){
 }
 
 // Wird vom Service Mode aufgerufen wenn der Kalibrier-Knopf gedrueckt wird
-void HeightSensor::setStartCalibration(){
+void HeightSensor::startCalibration(){
     this->doCalibrate = true;
 }
 
