@@ -20,17 +20,16 @@ namespace M1{
 	}
 
 	void Forward::entry(TransportContext& ctx){
-		if(ctx.data.itemCount == 0){
-			exit(ctx);
-			new(this) Stop;
-			entry(ctx);
-		}
-		else{
+//		if(ctx.data.itemCount == 0){
+//			exit(ctx);
+//			new(this) Stop;
+//			entry(ctx);
+//		}
+//		else{
 		std::cout<<"Forward" << std::endl;
 		ctx.hal.getActors()->motorStop();
 		ctx.hal.getActors()->motorForwards();
-		}
-
+//		}
 	}
 
 	void Forward::exit(TransportContext& ctx){
@@ -38,20 +37,20 @@ namespace M1{
 
 	void Forward::eventItemAtExit(TransportContext& ctx){
 		exit(ctx);
-		if(ctx.data.section3.front().timer->getTime()>100){
-			ctx.data.err = ITEM_APPEARED;
-			ctx.data.errorLoc = 3;
-			raiseError(ctx);
-			new(this) WaitForFesto;
-			entry(ctx);
-
-		}
-		else{
+//		if(ctx.data.section3.front().timer->getTime()>100){
+//			ctx.data.err = ITEM_APPEARED;
+//			ctx.data.errorLoc = 3;
+//			raiseError(ctx);
+//			new(this) WaitForFesto;
+//			entry(ctx);
+//
+//		}
+//		else{
 			raiseRequestTransfer(ctx);
 			new(this) WaitForFesto;
 			entry(ctx);
 		}
-	}
+//	}
 
 
 	void Forward::eventItemAtEntry(TransportContext& ctx){
@@ -64,17 +63,17 @@ namespace M1{
 
 	void Forward::eventItemArrived(TransportContext& ctx){
 		exit(ctx);
-		if(ctx.data.section1.front().timer->getTime()>100){
-			ctx.data.err = ITEM_APPEARED;
-			ctx.data.errorLoc = 1;
-			raiseError(ctx);
+//		if(ctx.data.section1.front().timer->getTime()>100){
+//			ctx.data.err = ITEM_APPEARED;
+//			ctx.data.errorLoc = 1;
+//			raiseError(ctx);
+//			new(this) ForwardSlow;
+//			entry(ctx);
+//		}
+//		else{
 			new(this) ForwardSlow;
 			entry(ctx);
-		}
-		else{
-			new(this) ForwardSlow;
-			entry(ctx);
-		}
+//		}
 	}
 
 
@@ -105,12 +104,12 @@ namespace M1{
 	}
 
 	void Forward::eventItemAtPusher(TransportContext& ctx){
-		exit(ctx);
-		if(ctx.data.section2.front().timer->getTime()>100){
-			ctx.data.err = ITEM_APPEARED;
-			ctx.data.errorLoc = 2;
-			raiseError(ctx);
-		}
+//		exit(ctx);
+//		if(ctx.data.section2.front().timer->getTime()>100){
+//			ctx.data.err = ITEM_APPEARED;
+//			ctx.data.errorLoc = 2;
+//			raiseError(ctx);
+//		}
 	}
 
 
