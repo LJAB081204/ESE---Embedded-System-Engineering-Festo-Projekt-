@@ -335,7 +335,7 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 								FSM.eventTimerExpired();
 								break;
 							default:
-								//Item Timer Expired
+								FSM.eventError();
 								break;
 						}
 							break;
@@ -371,21 +371,27 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 
 					case PULSE_EVENT_GO_BACK_LOCAL:
 						FSM.eventGoBack();
+						cout << "EVENT GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_WFP:
 						FSM.eventGoBackWFP();
+						cout << "EVENT WFP GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IH:
 						FSM.eventGoBackIH();
+						cout << "EVENT IH GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IM:
 						FSM.eventGoBackIM();
+						cout << "EVENT IM GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IF:
 						FSM.eventGoBackIF();
+						cout << "EVENT IF GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IHM:
 						FSM.eventGoBackIHM();
+						cout << "EVENT IHM GO BACK ARRIVED" << endl;
 						break;
 				}
 

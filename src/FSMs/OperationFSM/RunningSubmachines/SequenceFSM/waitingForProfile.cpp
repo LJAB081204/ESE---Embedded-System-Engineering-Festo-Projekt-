@@ -28,6 +28,8 @@ namespace M1{
 	}
 
 	void waitingForProfile::eventUpdate(SequenceContext& ctx){
+		std::cout << "SECTION 2 SIZE AT UPDATE :" << ctx.data.section2.size() << std::endl;
+
 		if(ctx.data.section2.empty()) return;
 		std::cout << "ENTERED UPDATE FUNCTION" << std::endl;
 

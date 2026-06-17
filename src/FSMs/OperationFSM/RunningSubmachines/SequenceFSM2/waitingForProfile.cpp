@@ -35,7 +35,9 @@ namespace M2{
 		item = ctx.data.nextItem.front().item;
 		ctx.data.nextItem.pop();
 		if(item != ctx.data.section2.front().item){
+			std::cout << "ITEM HAS CHANGED -> GO BACK" << std::endl;
 			raiseGoBackWFP(ctx);
+			raiseItemWrong(ctx);
 		}
 
 		else{
@@ -70,7 +72,7 @@ namespace M2{
 	}
 
 	void waitingForProfile::raiseGoBackWFP(SequenceContext& ctx){
-		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_WFP, 0);
+		MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_WFP, 0);
 	}
 }
 
