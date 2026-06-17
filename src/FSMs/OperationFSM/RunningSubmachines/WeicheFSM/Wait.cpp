@@ -21,12 +21,12 @@ void Wait::entry(WeicheContext& ctx){
     std::cout << "Wait::entry - timer start" << std::endl;
 	ctx.pusherTimer.start(750);
 	timerPusherOpen = new SimpleTimer(ctx.data.conId,PULSE_EVENT_ERROR);
-	timerPusherOpen->start(500);
+	timerPusherOpen->start(20000);
 }
 
 void Wait::exit(WeicheContext& ctx){
 	ctx.hal.getActors()->closePusher();
-//	timerPusherOpen->stop();
+	timerPusherOpen->stop();
 }
 void Wait::eventTimerExpired(WeicheContext& ctx){
     std::cout << "Wait::entry - timer end" << std::endl;
