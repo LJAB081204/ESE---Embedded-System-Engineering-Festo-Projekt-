@@ -38,7 +38,7 @@ namespace M1{
 
 	void Forward::eventItemAtExit(TransportContext& ctx){
 		exit(ctx);
-		if(ctx.data.section1.front().timer->getTime()>100){
+		if(ctx.data.section3.front().timer->getTime()>100){
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 3;
 			raiseError(ctx);
@@ -106,7 +106,7 @@ namespace M1{
 
 	void Forward::eventItemAtPusher(TransportContext& ctx){
 		exit(ctx);
-		if(ctx.data.section1.front().timer->getTime()>100){
+		if(ctx.data.section2.front().timer->getTime()>100){
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 2;
 			raiseError(ctx);
