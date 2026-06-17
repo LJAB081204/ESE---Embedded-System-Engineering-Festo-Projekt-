@@ -36,7 +36,7 @@ namespace M2{
 		ctx.data.itemAtExit = true;
 		std::cout<< ctx.data.itemCount << std::endl;
 		exit(ctx);
-		if(ctx.data.section1.front().timer->getTime()>100){
+		if(ctx.data.section3.front().timer->getTime()>100){
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 3;
 			raiseError(ctx);
@@ -79,7 +79,7 @@ namespace M2{
 
 	void Forward2::eventItemAtPusher(TransportContext2& ctx){
 		exit(ctx);
-		if(ctx.data.section1.front().timer->getTime()>100){
+		if(ctx.data.section2.front().timer->getTime()>100){
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 2;
 			raiseError(ctx);
