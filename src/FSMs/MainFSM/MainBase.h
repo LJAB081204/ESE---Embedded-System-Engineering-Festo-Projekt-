@@ -97,6 +97,9 @@ public:
 	virtual void eventGoBackIF(MainContext& fsm)					{}
 	virtual void eventGoBackIHM(MainContext& fsm)					{}
 
+	virtual void eventConnectionRestored(MainContext& ctx){}
+	virtual void errorPusherTimerExpired(MainContext& ctx){}
+
 };
 
 

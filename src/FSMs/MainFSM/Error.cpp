@@ -19,6 +19,35 @@ void Error::entry(MainContext& ctx) {
 void Error::exit(MainContext& ctx) {
 	ctx.hal.getActors()->redLampBlinkOff();
 }
+void Error::eventButtonResetPressed(MainContext& ctx) {
+	errorFSM.eventButtonResetPressed();
+}
+void Error::eventItemGone(MainContext& ctx) {
+	errorFSM.eventItemGone();
+}
+void Error::eventItemLeftSlide(MainContext& ctx) {
+	errorFSM.eventItemLeftSlide();
+}
+void Error::eventItemLeftSlideRemote(MainContext& ctx) {
+	errorFSM.eventItemLeftSlideRemote();
+}
+void Error::eventItemLeftPusher(MainContext& ctx) {
+	errorFSM.eventItemLeftPusher();
+}
+void Error::eventItemLeftExit(MainContext& ctx) {
+	errorFSM.eventItemLeftExit();
+}
+void Error::eventConnectionRestored(MainContext& ctx) {
+	errorFSM.eventConnectionRestored();
+}
+void Error::errorPusherTimerExpired(MainContext& ctx) {
+	errorFSM.errorPusherTimerExpired();
+}
+void Error::eventButtonStartPressed(MainContext& ctx) {
+	errorFSM.eventButtonStartPressed();
+}
+
+
 
 
 
