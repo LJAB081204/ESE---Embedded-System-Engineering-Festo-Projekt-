@@ -18,6 +18,7 @@
 #include <iostream>
 #include "../../HeightSensor.h"
 #include "RunningFactory.h"
+#include "../../PulseMessages.h"
 #include "../../timer.h"
 
 
@@ -36,11 +37,15 @@ public:
 	OperationBase* savedRunning = nullptr;
 	OperationBase* currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 	HistorySource historySource = HistorySource::NONE_HISTORY;
+	SimpleTimer* calTimer;
+	uint32_t entryTime;
 
 	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory,TimerHandler& timerHandler)
 	: hal(hal),data(data),hs(hs),factory(factory),timerHandler(timerHandler){
+		calTimer = new SimpleTimer(0,0);
 		new (currentState) Idle;
 		currentState->entry(*this);
+		entryTime = 0;
 	}
 	~OperationContext(){
 		delete savedRunning;
@@ -73,6 +78,14 @@ public:
 		currentState->onRestore(historySource, *this);
 		currentState->entry(*this);
 		historySource = HistorySource::NONE_HISTORY;
+	}
+
+	void saveCalibrationTime(const std::string& key, uint32_t value) {
+	    std::ofstream file(CALIBRATION_FILE, std::ios::app);
+	    if (file.is_open()) {
+	        file << key << "=" << value << "\n";
+	        file.close();
+	    }
 	}
 
     HistorySource getHistorySource() const { return historySource; }

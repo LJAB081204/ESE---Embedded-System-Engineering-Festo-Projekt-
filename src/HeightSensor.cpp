@@ -173,22 +173,11 @@ void HeightSensor::calibrate() {
         // Reihenfolge der Hoehen ist im Service Mode fest vorgegeben, daher kein Vergleich
         // notwendig - es wird einfach anhand des aktuellen States entschieden was geloggt wird
         switch(state){
-            case 1: // Hohes Werkstueck -> loggen
-                refHigh = measuredVal;
-                std::cout << "Kalibrierung: refHigh=" << refHigh << std::endl;
-                state = 2;
-                break;
-            case 3: // High nochmal -> bereits geloggt, ignorieren
-                state = 4;
-                break;
-            case 4: // Laufband nochmal -> bereits geloggt, ignorieren
-                state = 5;
-                break;
-            case 5: // Flaches Werkstueck -> loggen, Kalibrierung fertig
-                refFlat = measuredVal;
-                std::cout << "Kalibrierung: refFlat=" << refFlat << std::endl;
-                state = 6;
-                break;
+            case 1: refHigh = measuredVal; std::cout << "Kalibrierung: refHigh=" << refHigh << std::endl; state = 2; break;
+            case 3: state = 4; break;
+            case 4: state = 5; break;
+            case 5: refFlat = measuredVal; std::cout << "Kalibrierung: refFlat=" << refFlat << std::endl; state = 6; break;
+            case 6: state = 7; break;
         }
     }
 

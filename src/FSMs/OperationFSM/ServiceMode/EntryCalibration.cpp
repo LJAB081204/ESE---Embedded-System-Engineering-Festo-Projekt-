@@ -9,7 +9,7 @@
 #include "../OperationBase.h"
 #include "../OperationContext.h"
 #include "EntryCalibration.h"
-#include "HeightDetect.h"
+#include "HeightCalibration.h"
 #include "../Service.h"
 
 EntryCalibration::EntryCalibration(){};
@@ -20,12 +20,16 @@ void EntryCalibration::entry(OperationContext& ctx) {
 }
 
 void EntryCalibration::exit(OperationContext& ctx) {
-	//Timer setzten
+	ctx.entryTime = ctx.calTimer->stop();
+}
+
+void EntryCalibration::eventItemLeftEntry(OperationContext& ctx) {
+	ctx.calTimer->start(10000);
 }
 
 void EntryCalibration::eventItemArrived(OperationContext& ctx){
 	exit(ctx);
-	new(this) HeightDetect;
+	new(this) HeightCalibration;
 	entry(ctx);
 }
 

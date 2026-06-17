@@ -19,22 +19,30 @@
 PusherCalibration::PusherCalibration(){};
 
 void PusherCalibration::entry(OperationContext& ctx) {
-	ctx.hal.getActors()->letItemPass();
+	ctx.calTimer->start(5000);
+	ctx.hal.getActors()->motorForwards();
 	std::cout<< "PusherCalibration" << std::endl;
 }
 
 void PusherCalibration::exit(OperationContext& ctx) {
-	//timer setzten
+	uint32_t pusherTime = ctx.calTimer->stop();
+	ctx.saveCalibrationTime("timePusher", pusherTime);
 }
 
-void PusherCalibration::eventItemLeftPusher(OperationContext& ctx) {
+void PusherCalibration::eventItemAtPusher(OperationContext& ctx) {
 	exit(ctx);
-	//timer starten
-	new(this) waitForExit;
+	ctx.hal.getActors()->letItemPass();
+	new(this) ExitCalibration;
 	entry(ctx);
 }
 
 void PusherCalibration::eventButtonStartPressedLong(OperationContext& ctx){
+	exit(ctx);
+	new (this) Idle;
+	entry(ctx);
+}
+
+void PusherCalibration::eventButtonStartPressedLongRemote(OperationContext& ctx){
 	exit(ctx);
 	new (this) Idle;
 	entry(ctx);

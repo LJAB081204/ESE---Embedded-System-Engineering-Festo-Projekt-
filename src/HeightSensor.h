@@ -28,7 +28,7 @@ public:
     void start();
     void stop();
     void calibrate();    // jetzt public für Service Mode
-    void setStartCalibration();
+    void startCalibration();
     void stopCalibration();
     int getCoid();
     int getChid();
