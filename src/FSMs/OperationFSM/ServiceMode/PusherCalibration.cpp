@@ -11,9 +11,7 @@
 #include "../OperationContext.h"
 #include "PusherCalibration.h"
 #include "../Service.h"
-
 #include "waitForExit.h"
-
 #include "ExitCalibration.h"
 
 PusherCalibration::PusherCalibration(){};
@@ -27,11 +25,11 @@ void PusherCalibration::entry(OperationContext& ctx) {
 void PusherCalibration::exit(OperationContext& ctx) {
 	uint32_t pusherTime = ctx.calTimer->stop();
 	ctx.saveCalibrationTime("timePusher", pusherTime);
+	ctx.hal.getActors()->letItemPass();
 }
 
 void PusherCalibration::eventItemAtPusher(OperationContext& ctx) {
 	exit(ctx);
-	ctx.hal.getActors()->letItemPass();
 	new(this) ExitCalibration;
 	entry(ctx);
 }

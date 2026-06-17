@@ -15,7 +15,7 @@ Service::Service(){
 		ctx.hal.getActors()->ledButtonStart();
 		ctx.hal.getActors()->ledButtonReset();
 		ctx.hal.getActors()->motorStop();
-		ctx.hs.stopCalibration(); //testen!!!
+		ctx.hs.stopCalibration();
 		std::cout << "Service" << std::endl;
 	}
 
@@ -65,5 +65,6 @@ Service::Service(){
 
 	void Service::eventItemAtExit(OperationContext& ctx){
 			ctx.hal.getActors()->motorStop();
+			ctx.hal.getActors()->closePusher();
 	}
 

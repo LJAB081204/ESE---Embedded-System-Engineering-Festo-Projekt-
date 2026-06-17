@@ -81,10 +81,28 @@ public:
 	}
 
 	void saveCalibrationTime(const std::string& key, uint32_t value) {
-	    std::ofstream file(CALIBRATION_FILE, std::ios::app);
-	    if (file.is_open()) {
-	        file << key << "=" << value << "\n";
-	        file.close();
+	    std::vector<std::string> lines;
+	    std::ifstream in(CALIBRATION_FILE);
+	    std::string line;
+	    bool found = false;
+
+	    while (std::getline(in, line)) {
+	        if (line.find(key + "=") == 0) {
+	            lines.push_back(key + "=" + std::to_string(value));
+	            found = true;
+	        } else {
+	            lines.push_back(line);
+	        }
+	    }
+	    in.close();
+
+	    if (!found) {
+	        lines.push_back(key + "=" + std::to_string(value));
+	    }
+
+	    std::ofstream out(CALIBRATION_FILE);
+	    for (const auto& l : lines) {
+	        out << l << "\n";
 	    }
 	}
 

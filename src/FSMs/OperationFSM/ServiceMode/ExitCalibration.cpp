@@ -27,6 +27,7 @@ void ExitCalibration::eventItemAtExit(OperationContext& ctx) {
 	uint32_t exitTime = ctx.calTimer->stop();
 	ctx.saveCalibrationTime("timeExit", exitTime);
 	ctx.hal.getActors()->motorStop();
+	ctx.hal.getActors()->closePusher();
 }
 
 void ExitCalibration::eventItemLeftExit(OperationContext& ctx) {
