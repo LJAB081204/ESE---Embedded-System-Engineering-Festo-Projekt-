@@ -316,19 +316,23 @@ void HeightSensor::detectHeight(int value){
         heightCounter = 0;
     }
 
+
+    // Frueher Pulse: schon nach 3 stabilen Werten, basierend auf demselben Counter
+       if(heightCounter == 3){
+           if(previousHeight == HEIGHT_CONVEYOR && currentHeight != HEIGHT_CONVEYOR){
+               std::cout << "Item arrived" << std::endl;
+               MsgSendPulse(dispCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_ARRIVED, currentHeight);
+           }
+           if(previousHeight != HEIGHT_CONVEYOR && currentHeight == HEIGHT_CONVEYOR){
+               std::cout << "Item Gone" << std::endl;
+               MsgSendPulse(dispCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_GONE, 0);
+           }
+       }
+
     // Erst nach mehreren aufeinanderfolgenden gleichen Werten gilt die Hoehe als sicher erkannt,
     // damit kurzes Schwanken (z.B. an Kanten) keine falsche Hoehenaenderung meldet
     if(heightCounter > 10 && currentHeight != previousHeight){
         // Werkstueck ist aufgetaucht (Wechsel weg vom Laufband)
-        if(previousHeight == HEIGHT_CONVEYOR && currentHeight != HEIGHT_CONVEYOR){
-            std::cout << "Item arrived" << std::endl;
-            MsgSendPulse(dispCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_ARRIVED, currentHeight);
-        }
-        // Werkstueck ist weg (Wechsel zurueck zum Laufband)
-        if(previousHeight != HEIGHT_CONVEYOR && currentHeight == HEIGHT_CONVEYOR){
-            std::cout << "Item Gone" << std::endl;
-            MsgSendPulse(dispCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_GONE, 0);
-        }
 
         // Aktuelle Hoehe an den Dispatcher melden
         switch(currentHeight) {
