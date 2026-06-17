@@ -21,7 +21,7 @@ void Wait::entry(WeicheContext& ctx){
     std::cout << "Wait::entry - timer start" << std::endl;
 	ctx.pusherTimer.start(750);
 	timerPusherOpen = new SimpleTimer(ctx.data.conId,PULSE_EVENT_ERROR);
-	timerPusherOpen->start(20000);
+	timerPusherOpen->start(10000);
 }
 
 void Wait::exit(WeicheContext& ctx){
