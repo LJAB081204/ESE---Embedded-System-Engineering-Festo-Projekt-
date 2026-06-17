@@ -21,6 +21,7 @@ namespace M1{
 		ctx.hal.getActors()->motorStop();
 		if(ctx.hal.getSensors()->isItemAtEntry()){
 			exit(ctx);
+			ctx.data.addItem();
 			new (this) Forward;
 			entry(ctx);
 		}

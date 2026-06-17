@@ -53,9 +53,9 @@ namespace M2{
 //			ctx.data.removeItem(3);
 //		}
 		std::cout<< ctx.data.itemCount << std::endl;
-		if(ctx.data.itemCount == 0){
-			new(this) Stop2;
-		}
+		new(this) Stop2;
+		entry(ctx);
+
 	}
 
 	void ForwardSlow2::eventItemLeftExitRemote(TransportContext2& ctx){
