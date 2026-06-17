@@ -41,6 +41,7 @@ public:
 	void eventItemInSlideRemote()    { currentState->eventItemInSlideRemote(*this); }
 	void eventItemGone()             { currentState->eventItemGone(*this); }
 	void eventItemArrived()          { currentState->eventItemArrived(*this); }
+	void eventItemAtPusher()		{ currentState->eventItemAtPusher(*this); }
 
 	void eventFestoEmpty() 			 { currentState->eventItemArrived(*this); }
 

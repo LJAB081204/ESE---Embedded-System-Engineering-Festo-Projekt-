@@ -20,9 +20,16 @@ namespace M1{
 	}
 
 	void Forward::entry(TransportContext& ctx){
+		if(ctx.data.itemCount == 0){
+			exit(ctx);
+			new(this) Stop;
+			entry(ctx);
+		}
+		else{
 		std::cout<<"Forward" << std::endl;
 		ctx.hal.getActors()->motorStop();
 		ctx.hal.getActors()->motorForwards();
+		}
 
 	}
 
@@ -31,9 +38,19 @@ namespace M1{
 
 	void Forward::eventItemAtExit(TransportContext& ctx){
 		exit(ctx);
-		raiseRequestTransfer(ctx);
-		new(this) WaitForFesto;
-		entry(ctx);
+		if(ctx.data.section1.front().timer->getTime()>100){
+			ctx.data.err = ITEM_APPEARED;
+			ctx.data.errorLoc = 3;
+			raiseError(ctx);
+			new(this) WaitForFesto;
+			entry(ctx);
+
+		}
+		else{
+			raiseRequestTransfer(ctx);
+			new(this) WaitForFesto;
+			entry(ctx);
+		}
 	}
 
 
@@ -47,8 +64,17 @@ namespace M1{
 
 	void Forward::eventItemArrived(TransportContext& ctx){
 		exit(ctx);
-		new(this) ForwardSlow;
-		entry(ctx);
+		if(ctx.data.section1.front().timer->getTime()>100){
+			ctx.data.err = ITEM_APPEARED;
+			ctx.data.errorLoc = 1;
+			raiseError(ctx);
+			new(this) ForwardSlow;
+			entry(ctx);
+		}
+		else{
+			new(this) ForwardSlow;
+			entry(ctx);
+		}
 	}
 
 
@@ -77,9 +103,23 @@ namespace M1{
 		}
 		entry(ctx);
 	}
+
+	void Forward::eventItemAtPusher(TransportContext& ctx){
+		exit(ctx);
+		if(ctx.data.section1.front().timer->getTime()>100){
+			ctx.data.err = ITEM_APPEARED;
+			ctx.data.errorLoc = 2;
+			raiseError(ctx);
+		}
+	}
+
+
 	void Forward::raiseRequestTransfer(TransportContext& ctx){
 		MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_TRANSFER_REQUEST,0);
 
+	}
+	void Forward::raiseError(TransportContext& ctx){
+		MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
 	}
 }
 

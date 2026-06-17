@@ -17,6 +17,7 @@ IS::IS(){};
 
 void IS::entry(ProfileContext& ctx) {
 	std::cout << "//////////////////IS detected" << std::endl ;
+	raiseError(ctx);
 	//Datenklasse
 	//ErrorCode setzten
 }
