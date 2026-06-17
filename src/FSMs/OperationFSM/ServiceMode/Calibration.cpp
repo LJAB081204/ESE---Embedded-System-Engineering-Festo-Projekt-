@@ -19,8 +19,10 @@
 
 	void Calibration::entry(OperationContext& ctx){
 		ctx.hal.getActors()->greenLampBlink(500);
-		ctx.hal.getActors()->yellowLampOn();
+		ctx.hal.getActors()->lampQ1();
 		ctx.hal.getActors()->ledButtonStart();
+		ctx.hal.getActors()->ledButtonResetOff();
+		ctx.hal.getActors()->closePusher();
 		std::cout<<"Calibration started"<<std::endl;
 	}
 

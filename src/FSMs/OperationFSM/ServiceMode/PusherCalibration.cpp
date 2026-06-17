@@ -42,6 +42,12 @@ void PusherCalibration::eventButtonStartPressedLong(OperationContext& ctx){
 	entry(ctx);
 }
 
+void PusherCalibration::eventButtonStartPressedLongRemote(OperationContext& ctx){
+	exit(ctx);
+	new (this) Idle;
+	entry(ctx);
+}
+
 void PusherCalibration::eventButtonStopPressed(OperationContext& ctx){
 	exit(ctx);
 	new (this) Service;

@@ -27,6 +27,7 @@ void HeightCalibration::exit(OperationContext& ctx) {
 }
 
 void HeightCalibration::eventItemGone(OperationContext& ctx) {
+	ctx.saveCalibrationTime("timeEntry", ctx.entryTime);
 	exit(ctx);
 	new(this) PusherCalibration;
 	entry(ctx);

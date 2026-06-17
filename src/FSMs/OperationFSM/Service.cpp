@@ -11,9 +11,10 @@ Service::Service(){
 
 	void Service::entry(OperationContext& ctx){
 		ctx.hal.getActors()->greenLampBlink(1000);
-		ctx.hal.getActors()->yellowLampOff();
+		ctx.hal.getActors()->lampQ1Off();
 		ctx.hal.getActors()->ledButtonStart();
 		ctx.hal.getActors()->ledButtonReset();
+		ctx.hal.getActors()->motorStop();
 		ctx.hs.stopCalibration(); //testen!!!
 		std::cout << "Service" << std::endl;
 	}

@@ -20,12 +20,11 @@ void EntryCalibration::entry(OperationContext& ctx) {
 }
 
 void EntryCalibration::exit(OperationContext& ctx) {
-	uint32_t entryTime = ctx.calTimer->stop();
-	ctx.saveCalibrationTime("timeEntry", entryTime);
+	ctx.entryTime = ctx.calTimer->stop();
 }
 
 void EntryCalibration::eventItemLeftEntry(OperationContext& ctx) {
-	ctx.calTimer->start(5000);
+	ctx.calTimer->start(10000);
 }
 
 void EntryCalibration::eventItemArrived(OperationContext& ctx){
