@@ -174,6 +174,27 @@ namespace M1{
 		weicheFSM->eventTimerExpired();
 	}
 
+	void Running::eventGoBackWFP(OperationContext& ctx){
+		sequenceFSM->eventGoBackWFP();
+	}
+
+	void Running::eventGoBackIH(OperationContext& ctx){
+			sequenceFSM->eventGoBackIH();
+		}
+
+	void Running::eventGoBackIM(OperationContext& ctx){
+			sequenceFSM->eventGoBackIM();
+		}
+
+	void Running::eventGoBackIF(OperationContext& ctx){
+			sequenceFSM->eventGoBackIF();
+		}
+
+	void Running::eventGoBackIHM(OperationContext& ctx){
+			sequenceFSM->eventGoBackIHM();
+		}
+
+
 
 
 

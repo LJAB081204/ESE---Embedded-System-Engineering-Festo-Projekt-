@@ -81,6 +81,12 @@ public:
 	void eventError(OperationContext& ctx) override;
 	void eventTimerExpired(OperationContext& ctx) override;
 
+	void eventGoBackWFP(OperationContext& ctx) override;
+	void eventGoBackIH(OperationContext& ctx) override;
+	void eventGoBackIM(OperationContext& ctx) override;
+	void eventGoBackIF(OperationContext& ctx) override;
+	void eventGoBackIHM(OperationContext& ctx) override;
+
 
 
 };

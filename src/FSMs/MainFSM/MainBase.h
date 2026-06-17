@@ -88,6 +88,14 @@ public:
 
 	virtual void eventSlideTimerExpired(MainContext& fsm)      {}
 
+	virtual void eventGoBack(MainContext& fsm)					{}
+
+	virtual void eventGoBackWFP(MainContext& fsm)					{}
+	virtual void eventGoBackIH(MainContext& fsm)					{}
+	virtual void eventGoBackIM(MainContext& fsm)					{}
+	virtual void eventGoBackIF(MainContext& fsm)					{}
+	virtual void eventGoBackIHM(MainContext& fsm)					{}
+
 };
 
 
