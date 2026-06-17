@@ -367,6 +367,26 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 					case PULSE_EVENT_FESTO_READY:
 						FSM.eventFestoReady();
 						break;
+
+
+					case PULSE_EVENT_GO_BACK_LOCAL:
+						FSM.eventGoBack();
+						break;
+					case PULSE_EVENT_GO_BACK_WFP:
+						FSM.eventGoBackWFP();
+						break;
+					case PULSE_EVENT_GO_BACK_IH:
+						FSM.eventGoBackIH();
+						break;
+					case PULSE_EVENT_GO_BACK_IM:
+						FSM.eventGoBackIM();
+						break;
+					case PULSE_EVENT_GO_BACK_IF:
+						FSM.eventGoBackIF();
+						break;
+					case PULSE_EVENT_GO_BACK_IHM:
+						FSM.eventGoBackIHM();
+						break;
 				}
 
 

@@ -80,6 +80,7 @@ public:
 	void eventError(OperationContext& ctx) override;
 	void eventTimerExpired(OperationContext& ctx) override;
 	void eventItemTransfer(uint32_t itemCode, OperationContext& ctx) override;
+	void eventGoBack(OperationContext& ctx) override;
 
 
 };
