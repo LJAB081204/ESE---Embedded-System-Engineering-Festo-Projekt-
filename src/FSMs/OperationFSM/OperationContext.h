@@ -38,14 +38,15 @@ public:
 	OperationBase* currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 	HistorySource historySource = HistorySource::NONE_HISTORY;
 	SimpleTimer* calTimer;
-	uint32_t entryTime;
+	int round;
+
 
 	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory,TimerHandler& timerHandler)
 	: hal(hal),data(data),hs(hs),factory(factory),timerHandler(timerHandler){
 		calTimer = new SimpleTimer(0,0);
 		new (currentState) Idle;
 		currentState->entry(*this);
-		entryTime = 0;
+		round = 0;
 	}
 	~OperationContext(){
 		delete savedRunning;
@@ -105,6 +106,7 @@ public:
 	        out << l << "\n";
 	    }
 	}
+
 
     HistorySource getHistorySource() const { return historySource; }
 

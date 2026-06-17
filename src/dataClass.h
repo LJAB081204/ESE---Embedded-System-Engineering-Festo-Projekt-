@@ -8,6 +8,8 @@
 #ifndef DATACLASS_H_
 #define DATACLASS_H_
 
+#define CALIBRATION_FILE "/etc/heightsensor/calibration.cfg"
+
 #include <queue>
 #include "timer.h"
 //#include "Dispatcher.h"
@@ -75,6 +77,17 @@ class dataClass{
 
 	bool checkReady();
 	bool itemAtExit = false;
+
+	uint32_t entryTime;
+	uint32_t entryTimeSlow;
+	double slowFactor;
+	uint32_t heightTime;
+	uint32_t pusherTime;
+	uint32_t exitTime;
+
+	private:
+
+	void setTimes();
 };
 
 

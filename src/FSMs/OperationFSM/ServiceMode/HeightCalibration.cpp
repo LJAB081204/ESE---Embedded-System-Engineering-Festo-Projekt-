@@ -16,18 +16,26 @@
 HeightCalibration::HeightCalibration(){};
 
 void HeightCalibration::entry(OperationContext& ctx) {
-	ctx.calTimer->start(10000);
+	if(ctx.round == 2){
+		ctx.calTimer->start(10000);
+	}
 	ctx.hal.getActors()->motorSlow();
 	std::cout<< "HeightCalibration" << std::endl;
 }
 
 void HeightCalibration::exit(OperationContext& ctx) {
-	uint32_t HeightCalibration = ctx.calTimer->stop();
-	ctx.saveCalibrationTime("timeHeight", HeightCalibration);
+	if(ctx.round == 2){
+		ctx.data.heightTime = ctx.calTimer->stop();
+		ctx.saveCalibrationTime("timeHeight", ctx.data.heightTime);
+	}
 }
 
 void HeightCalibration::eventItemGone(OperationContext& ctx) {
-	ctx.saveCalibrationTime("timeEntry", ctx.entryTime);
+	if(ctx.round == 2){
+		ctx.saveCalibrationTime("timeEntry", ctx.data.entryTime);
+		ctx.saveCalibrationTime("timeEntrySlow", ctx.data.entryTimeSlow);
+		ctx.data.slowFactor= ctx.data.entryTime / (double)ctx.data.entryTimeSlow;
+	}
 	exit(ctx);
 	new(this) PusherCalibration;
 	entry(ctx);
