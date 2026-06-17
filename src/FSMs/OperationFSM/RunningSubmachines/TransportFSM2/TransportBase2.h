@@ -25,6 +25,7 @@ public:
 	virtual void eventItemInSlideRemote(TransportContext2& fsm)   {}
 	virtual void eventItemGone(TransportContext2& fsm)            {}
 	virtual void eventItemArrived(TransportContext2& fsm)         {}
+	virtual void eventItemAtPusher(TransportContext2& fsm)          {}
 
 	virtual void eventFestoEmpty(TransportContext2& fsm)         {}
 
