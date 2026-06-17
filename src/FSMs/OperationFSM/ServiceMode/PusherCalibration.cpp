@@ -17,14 +17,18 @@
 PusherCalibration::PusherCalibration(){};
 
 void PusherCalibration::entry(OperationContext& ctx) {
-	ctx.calTimer->start(5000);
+	if(ctx.round == 2){
+		ctx.calTimer->start(5000);
+	}
 	ctx.hal.getActors()->motorForwards();
 	std::cout<< "PusherCalibration" << std::endl;
 }
 
 void PusherCalibration::exit(OperationContext& ctx) {
-	uint32_t pusherTime = ctx.calTimer->stop();
-	ctx.saveCalibrationTime("timePusher", pusherTime);
+	if(ctx.round == 2){
+		ctx.data.pusherTime = ctx.calTimer->stop();
+		ctx.saveCalibrationTime("timePusher", ctx.data.pusherTime);
+	}
 	ctx.hal.getActors()->letItemPass();
 }
 

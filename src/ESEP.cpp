@@ -31,6 +31,7 @@ int main(int argc, char **argv) {
         TimerHandler timerHandler(-1);  // muss VOR dataClass stehen
         dataClass data(timerHandler);
 
+
 		if (argc < 2) {
 	        printf("Usage %s -s | -c \n", argv[0]);
 	        return 0;
