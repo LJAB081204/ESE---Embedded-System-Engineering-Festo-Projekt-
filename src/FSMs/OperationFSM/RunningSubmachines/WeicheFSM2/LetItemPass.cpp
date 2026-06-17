@@ -28,8 +28,13 @@ void LetItemPass::eventItemLeftPusher(WeicheContext& ctx){
 	if(!ctx.data.section2.empty()){
 		ctx.data.moveFrom2To3();
 	}
-	new (this) Wait;
-	entry(ctx);
+	if(ctx.hal.getActors()->isJunction()){
+		new (this) Wait;
+		entry(ctx);
+	}
+	else{
+		new (this) Receive;
+	}
 }
 }
 
