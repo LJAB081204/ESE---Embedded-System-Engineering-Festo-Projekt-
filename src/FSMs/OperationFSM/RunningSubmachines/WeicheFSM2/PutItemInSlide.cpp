@@ -19,6 +19,11 @@ void PutItemInSlide::entry(WeicheContext& ctx){
 }
 void PutItemInSlide::eventItemInSlide(WeicheContext& ctx){
 	exit(ctx);
+
+	if(!ctx.data.section2.empty()){
+		ctx.data.removeItem(2);
+	}
+
 	new (this) Receive;
 	entry(ctx);
 }

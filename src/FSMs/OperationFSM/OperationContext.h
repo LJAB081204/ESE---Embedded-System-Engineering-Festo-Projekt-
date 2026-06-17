@@ -167,6 +167,14 @@ public:
     void eventItemTransfer(uint32_t itemCode)				{ currentState->eventItemTransfer(itemCode,*this);}
     void eventSlideTimerExpired()              { currentState->eventSlideTimerExpired(*this); }
 
+    void eventGoBack()						{currentState->eventGoBack(*this);}
+
+    void eventGoBackWFP()						{currentState->eventGoBack(*this);}
+    void eventGoBackIH()						{currentState->eventGoBack(*this);}
+    void eventGoBackIM()						{currentState->eventGoBack(*this);}
+    void eventGoBackIF()						{currentState->eventGoBack(*this);}
+    void eventGoBackIHM()						{currentState->eventGoBack(*this);}
+
 };
 
 

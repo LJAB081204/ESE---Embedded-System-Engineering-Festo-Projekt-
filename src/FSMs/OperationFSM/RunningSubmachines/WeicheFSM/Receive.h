@@ -19,6 +19,8 @@ public:
 	void eventItemAtPusher(WeicheContext& ctx)override;
 	void eventItemMetal(WeicheContext& ctx)override;
 	void raiseUpdate(WeicheContext& ctx);
+	void eventTimerExpired(WeicheContext& ctx) override;
+
 };
 }
 

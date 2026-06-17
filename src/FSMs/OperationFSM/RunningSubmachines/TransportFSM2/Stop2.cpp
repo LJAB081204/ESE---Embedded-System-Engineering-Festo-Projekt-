@@ -27,13 +27,24 @@ namespace M2{
 
 	void Stop2::eventItemLeftExitRemote(TransportContext2& ctx){
 		exit(ctx);
-		ctx.data.itemCount = ctx.data.itemCount + 1;	//?
+		ctx.data.addItem();
 		new(this) Forward2;
 		entry(ctx);
 	}
 
 	void Stop2::eventItemLeftExit(TransportContext2& ctx){
+		ctx.data.itemAtExit = false;
+		std::cout<< "STATE OF TRANSFER" << std::endl;
+		std::cout<< ctx.data.itemAtExit << std::endl;
+		std::cout<< ctx.data.itemCount << std::endl;
+		std::cout<< ctx.data.section1.size() << std::endl;
+
+
+
 		exit(ctx);
+		//if(!ctx.data.section3.empty()){
+			ctx.data.removeItem(3);
+		//}
  		if(ctx.data.itemCount != 0){
  			new(this) Forward2;
 		}

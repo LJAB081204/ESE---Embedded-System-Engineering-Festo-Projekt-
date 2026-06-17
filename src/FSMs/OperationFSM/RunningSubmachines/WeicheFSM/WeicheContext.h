@@ -22,9 +22,9 @@ class WeicheContext{
 public:
 	HAL& hal;
 	dataClass& data;
-	TimerHandler& timerHandler;
+	DynamicTimer pusherTimer;
 	WeicheContext(HAL& hal,dataClass& data,TimerHandler& timerHandler)
-	: hal(hal), data(data),timerHandler(timerHandler) {
+	: hal(hal), data(data),pusherTimer(100,timerHandler) {
 		new(currentState) Receive;
 		currentState->entry(*this);
 	}
@@ -42,6 +42,8 @@ public:
     void eventItemCorrect()			   { currentState->eventItemCorrect(*this);}
     void eventUpdate()			   { currentState->eventUpdate(*this);}
     void eventError()			   { currentState->eventError(*this);}
+    void eventTimerExpired()	   { currentState->eventTimerExpired(*this);}
+
 
 
 };

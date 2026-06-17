@@ -36,12 +36,16 @@ void ProfileIF::eventHeightHole(ProfileContext& ctx) {
 
 void ProfileIF::eventItemGone(ProfileContext& ctx) {
 	exit(ctx);
+
 	std::cout << "ProfileIF" << std::endl;
-	//in die Datenklasse schreiben
+	if(!ctx.data.section1.empty()){
+		ctx.data.section1.front().flat = true;
+		ctx.data.moveFrom1To2();
+	}
+
 	new(this) Default;
 	entry(ctx);
 }
-
 void ProfileIF::eventHeightWrong(ProfileContext& ctx) {
 	exit(ctx);
 	new(this) IS;

@@ -171,12 +171,10 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    case PULSE_ITEM_AT_EXIT_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            //cout << "Item at exit!" << endl;
-				        	itemAtExit = true;
-				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_EXIT_REMOTE, 1);
+				        	MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_EXIT_REMOTE, 1);
 				            FSM.eventItemAtExit();
 				        } else {
 				            //cout << "Item left exit!" << endl;
-				        	itemAtExit = false;
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_EXIT_REMOTE, 0);
 				            FSM.eventItemLeftExit();
 				        }
@@ -286,14 +284,12 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    case PULSE_EVENT_TRANSFER_REQUEST:
 						std::cout<< "request arrived" << std::endl;
 
-				    	if(true){
+				    	if(data.checkReady()){
 				    		std::cout<< "Festo ready" << std::endl;
-
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_TRANSFER_REPLY, 1);
 				    	}
 				    	else{
 				    		std::cout<< "Festo not ready" << std::endl;
-
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_TRANSFER_REPLY, 0);
 				    	}
 				    	break;
@@ -334,8 +330,14 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    	break;
 
 					case PULSE_DYNAMIC_TIMER_EXPIRED:
-							//cout << "Timer " << msg.value.sival_int << " abgelaufen" << endl;
-							FSM.eventTimerExpired();
+						switch(msg.value.sival_int){
+							case 100:
+								FSM.eventTimerExpired();
+								break;
+							default:
+								//Item Timer Expired
+								break;
+						}
 							break;
 					case PULSE_EVENT_ERROR:
 							FSM.eventError();
@@ -344,19 +346,47 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 							FSM.eventUpdate();
 							break;
 					case PULSE_EVENT_ITEM_CORRECT:
+							cout << "ITEM CORRECT" << endl;
+
 							FSM.eventItemCorrect();
 							break;
 					case PULSE_EVENT_ITEM_WRONG:
+							cout << "ITEM WRONG" << endl;
+
 							FSM.eventItemWrong();
 							break;
 
 					case PULSE_ITEM_TRANSFER:
-						FSM.eventItemTransfer(msg.value.sival_int);
+						//FSM.eventItemTransfer(msg.value.sival_int);
+						cout << msg.value.sival_int << endl;
+						data.addTransferredItem(data.convertIntToItem(msg.value.sival_int));
 						break;
 					case PULSE_EVENT_SLIDE_TIMER:
 						FSM.eventSlideTimerExpired();
 						break;
+					case PULSE_EVENT_FESTO_READY:
+						FSM.eventFestoReady();
+						break;
 
+
+					case PULSE_EVENT_GO_BACK_LOCAL:
+						FSM.eventGoBack();
+						break;
+					case PULSE_EVENT_GO_BACK_WFP:
+						FSM.eventGoBackWFP();
+						break;
+					case PULSE_EVENT_GO_BACK_IH:
+						FSM.eventGoBackIH();
+						break;
+					case PULSE_EVENT_GO_BACK_IM:
+						FSM.eventGoBackIM();
+						break;
+					case PULSE_EVENT_GO_BACK_IF:
+						FSM.eventGoBackIF();
+						break;
+					case PULSE_EVENT_GO_BACK_IHM:
+						FSM.eventGoBackIHM();
+						break;
 				}
 
 

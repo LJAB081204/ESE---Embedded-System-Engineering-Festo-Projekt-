@@ -58,7 +58,9 @@ namespace M1{
 		itemData item = ctx.data.section3.front();
 		uint32_t itemCode = ctx.data.convertItemToInt(item);
 		MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_ITEM_TRANSFER,itemCode);
-		ctx.data.removeItem(3);
+		if(ctx.data.section3.empty()){
+			ctx.data.removeItem(3);
+		}
 		if(ctx.data.itemCount == 0){
 			new(this) Stop;
 		}
@@ -66,7 +68,9 @@ namespace M1{
 	}
 
 	void ForwardSlow::eventItemInSlide(TransportContext& ctx){
-		ctx.data.removeItem(2);
+		if(ctx.data.section2.empty()){
+			ctx.data.removeItem(2);
+		}
 		std::cout<< ctx.data.itemCount << std::endl;
 		if(ctx.data.itemCount == 0){
 			new(this) Stop;

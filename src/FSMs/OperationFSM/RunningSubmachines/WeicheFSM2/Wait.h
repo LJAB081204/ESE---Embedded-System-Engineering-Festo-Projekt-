@@ -15,6 +15,9 @@ namespace M2{
 class Wait : public WeicheBase{
 public:
 	Wait();
+	void entry(WeicheContext& ctx)override;
+	void exit(WeicheContext& ctx) override;
+
 	void eventTimerExpired(WeicheContext& ctx) override;
 };
 }
