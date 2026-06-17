@@ -46,6 +46,7 @@ private:
     Height previousHeight;
     Height currentHeight;
     Height lastCandidate;
+    int switchCounter;
     int heightCounter;
     int dispCoid;
     int chid;
