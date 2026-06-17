@@ -14,10 +14,11 @@
 #include "../../../../dataClass.h"
 #include "WeicheBase.h"
 #include "Receive.h"
+#include "Wait.h"
 namespace M2{
 
 class WeicheContext{
-	alignas(Receive) char stateBuffer[sizeof(Receive)];
+	alignas(Wait) char stateBuffer[sizeof(Wait)];
 	WeicheBase* currentState = reinterpret_cast<WeicheBase*>(stateBuffer);
 public:
 	HAL& hal;

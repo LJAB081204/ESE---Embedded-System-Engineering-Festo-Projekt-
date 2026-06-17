@@ -8,6 +8,7 @@
 #ifndef SRC_FSMS_MAINFSM_MAINBASE_H_
 #define SRC_FSMS_MAINFSM_MAINBASE_H_
 
+#include <stdint.h>
 class MainContext; // forward declaration
 
 class MainBase {
