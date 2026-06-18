@@ -41,7 +41,7 @@ namespace M1{
 	void Forward::eventItemAtExit(TransportContext& ctx){
 		exit(ctx);
 		if(!ctx.data.section3.empty()){
-			if(ctx.data.exitTime - ctx.data.section3.front().timer->getTime()>1500){
+			if(ctx.data.exitTime - ctx.data.section3.front().timer->getTime()>500){
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 3;
 				raiseError(ctx);
@@ -70,7 +70,8 @@ namespace M1{
 
 	void Forward::eventItemLeftEntry(TransportContext& ctx){
 		if(!ctx.data.section1.empty()){
-			ctx.data.section1.back().timer->start(ctx.data.entryTime);
+			ctx.data.section1.back().timer->start(ctx.data.entryTime+500);
+			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
 		}
 		else{
 			std::cout<<"Queue 1 leer Festo1" << std::endl;
@@ -79,7 +80,9 @@ namespace M1{
 	void Forward::eventItemArrived(TransportContext& ctx){
 		exit(ctx);
 		if(!ctx.data.section1.empty()){
-			if(ctx.data.entryTime - ctx.data.section1.front().timer->getTime()>1500){
+			std::cout<< "entry time: "<<ctx.data.entryTime << std::endl;
+			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
+			if(ctx.data.entryTime - ctx.data.section1.front().timer->getTime()>500){
 				std::cout<< "Error item arrived"<< std::endl;
 				delete ctx.data.section1.front().timer;
 				ctx.data.err = ITEM_APPEARED;
@@ -89,7 +92,7 @@ namespace M1{
 			else{
 				delete ctx.data.section1.front().timer;
 				ctx.data.section1.front().timer = new DynamicTimer(ctx.data.section1.front().id, *ctx.data.handler);
-				ctx.data.section1.front().timer->start(ctx.data.heightTime);
+				ctx.data.section1.front().timer->start(ctx.data.heightTime+500);
 				new(this) ForwardSlow;
 				entry(ctx);
 			}
@@ -132,7 +135,7 @@ namespace M1{
 	void Forward::eventItemAtPusher(TransportContext& ctx){
 		exit(ctx);
 		if(!ctx.data.section2.empty()){
-			if(ctx.data.pusherTime - ctx.data.section2.front().timer->getTime()>1500){
+			if(ctx.data.pusherTime - ctx.data.section2.front().timer->getTime()>500){
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 2;
 				raiseError(ctx);

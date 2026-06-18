@@ -80,6 +80,9 @@ namespace M1{
 	void Running::eventItemLeftPusher(OperationContext& ctx){
 	    weicheFSM->eventItemLeftPusher();
 	}
+	void Running::eventItemLeftEntry(OperationContext& ctx){
+		    transportFSM ->eventItemLeftEntry();
+		}
 	void Running::eventItemInSlide(OperationContext& ctx){
 		slideFSM->eventItemInSlide();
 	    transportFSM->eventItemInSlide();

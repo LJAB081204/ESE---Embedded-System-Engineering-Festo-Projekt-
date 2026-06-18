@@ -64,7 +64,9 @@ bool dataClass::moveFrom1To2(){
 	if (section1.empty()){
 		return false;
 	}
-	if(heightTime - section1.front().timer->getTime()>1500){
+	std::cout<< "getTime: "<<section1.front().timer->getTime() << std::endl;
+	if(heightTime - section1.front().timer->getTime()>500){
+		std::cout<< "height time: "<<heightTime << std::endl;
 		std::cout<< "Error in moving"<< std::endl;
 		delete section1.front().timer;
 		err = ITEM_APPEARED;
