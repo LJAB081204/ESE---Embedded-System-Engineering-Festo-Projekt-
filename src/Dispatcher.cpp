@@ -80,7 +80,7 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				            //cout << "Start released!" << endl;
 				            auto diff = chrono::steady_clock::now() - buttonPressStart;
 				            auto ms = chrono::duration_cast<chrono::milliseconds>(diff).count();
-				            if(ms > 2000){
+				            if(ms > 1000){
 				            	FSM.eventButtonStartPressedLong();
 				            }
 				            else{
