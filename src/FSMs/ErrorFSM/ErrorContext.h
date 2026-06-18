@@ -17,11 +17,13 @@
 class ErrorContext {
 	alignas(currentNAck) char stateBuffer[sizeof(currentNAck)];
 	ErrorBase* currentState = reinterpret_cast<ErrorBase*>(stateBuffer);
-	bool active = false;
+
 
 public:
 	HAL& hal;
 	dataClass& data;
+	bool active = true;
+	bool onlyPusher = false;
 	ErrorContext(HAL& hal,dataClass& data) : hal(hal),data(data){
 		new (currentState) currentNAck;
 		currentState->entry(*this);
@@ -37,6 +39,7 @@ public:
 	void eventConnectionRestored() { currentState->eventConnectionRestored(*this); }
 	void errorPusherTimerExpired() { currentState->errorPusherTimerExpired(*this); }
 	void eventButtonStartPressed() { currentState->eventButtonStartPressed(*this); }
+	bool isActive() const { return active; }
 };
 
 

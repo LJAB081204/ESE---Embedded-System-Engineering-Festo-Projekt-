@@ -20,7 +20,7 @@ LetItemPass::LetItemPass(){
 
 void LetItemPass::entry(WeicheContext& ctx){
 	ctx.hal.getActors()->letItemPass();
-	ctx.timerPusherOpen = new SimpleTimer(ctx.data.conId,PULSE_EVENT_ERROR);
+	ctx.timerPusherOpen = new SimpleTimer(ctx.data.conId,PULSE_EVENT_ERROR_PUSHER_TIMER);
 	ctx.timerPusherOpen->start(10000);
 
 }

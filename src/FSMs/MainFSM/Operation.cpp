@@ -200,3 +200,12 @@ void Operation::eventGoBackIHM(MainContext& ctx){
 	operationFSM.eventGoBackIHM();
 }
 
+void Operation::errorPusherTimerExpired(MainContext& ctx){
+	ctx.getOperationFSM().saveHistory(HistorySource::ERROR_HISTORY);
+    exit(ctx);
+    Error* error = new(this) Error (ctx.hal,ctx.data);
+    error->enterPusherTooLong();
+    entry(ctx);
+
+}
+

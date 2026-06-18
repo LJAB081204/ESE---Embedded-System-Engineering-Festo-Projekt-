@@ -29,7 +29,7 @@ void Receive::exit(WeicheContext& ctx){
 
 void Receive::eventItemAtPusher(WeicheContext& ctx){
 	if(ctx.hal.getActors()->isJunction()){
-		ctx.pusherTimer.start(300);
+		ctx.pusherTimer.start(150);
 	}
 	else {
 		ctx.pusherTimer.start(10);

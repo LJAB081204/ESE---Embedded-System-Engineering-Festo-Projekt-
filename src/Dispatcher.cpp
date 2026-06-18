@@ -399,6 +399,17 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 						FSM.eventGoBackIHM();
 						cout << "EVENT IHM GO BACK ARRIVED" << endl;
 						break;
+
+					case PULSE_EVENT_ERROR_PUSHER_TIMER:
+			            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_PUSHER_TIMER_REMOTE, 0);
+						FSM.errorPusherTimerExpired();
+						break;
+					case PULSE_EVENT_ERROR_PUSHER_TIMER_REMOTE:
+						FSM.errorPusherTimerExpired();
+						break;
+					case PULSE_EVENT_ERROR_RESOLVED:
+					    FSM.eventErrorResolved();
+					    break;
 				}
 
 
