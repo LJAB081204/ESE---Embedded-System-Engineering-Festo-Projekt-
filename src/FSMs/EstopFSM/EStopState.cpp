@@ -41,7 +41,23 @@ void EStopState::eventButtonEstopReleased(EStopContext& ctx){
 	entry(ctx);
 }
 
+void EStopState::eventGoToHandshakeEStopIsPressed(EStopContext& ctx){
+	exit(ctx);
+	new (this) HandShakeEStopIsPressed;
+	entry(ctx);
+}
 
+void EStopState::eventGoToHandshakeEStopWasPressed(EStopContext& ctx){
+	exit(ctx);
+	new (this) HandShakeEStopWasPressed;
+	entry(ctx);
+}
+
+void EStopState::eventGoToHandshakeEStopWasNotPressed(EStopContext& ctx){
+	exit(ctx);
+	new (this) HandShakeEStopWasNotPressed;
+	entry(ctx);
+}
 
 
 

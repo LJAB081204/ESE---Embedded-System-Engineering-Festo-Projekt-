@@ -45,8 +45,22 @@ void EStop::eventButtonResetPressedRemote(MainContext& ctx) {
 void EStop::eventButtonEstopPressedRemote(MainContext& ctx) {
     eStopFSM.eventButtonEstopPressedRemote();
 }
+
 void EStop::eventButtonEstopReleasedRemote(MainContext& ctx) {
     eStopFSM.eventButtonEstopReleasedRemote();
 }
+
+void EStop::enterHandshakeEStopIsPressed(MainContext& ctx) {
+	eStopFSM.eventGoToHandshakeEStopIsPressed();
+}
+
+void EStop::enterHandShakeEStopWasNotPressed(MainContext& ctx) {
+	eStopFSM.eventGoToHandshakeEStopWasNotPressed();
+}
+
+void EStop::enterHandShakeEStopWasPressed(MainContext& ctx) {
+	eStopFSM.eventGoToHandshakeEStopWasPressed();
+}
+
 
 
