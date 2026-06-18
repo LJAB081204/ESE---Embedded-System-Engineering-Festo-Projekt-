@@ -74,6 +74,7 @@ class dataClass{
 
 	uint32_t convertItemToInt(const itemData& item);
 	itemData convertIntToItem(uint32_t itemCode);
+	void raiseError();
 
 	bool checkReady();
 	bool itemAtExit = false;

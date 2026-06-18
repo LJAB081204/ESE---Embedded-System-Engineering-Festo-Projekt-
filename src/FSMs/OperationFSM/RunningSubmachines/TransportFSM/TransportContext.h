@@ -42,6 +42,7 @@ public:
 	void eventItemGone()             { currentState->eventItemGone(*this); }
 	void eventItemArrived()          { currentState->eventItemArrived(*this); }
 	void eventItemAtPusher()		{ currentState->eventItemAtPusher(*this); }
+	void eventItemLeftEntry()		{ currentState->eventItemLeftEntry(*this); }
 
 
 	void eventFestoReady() 			 { currentState->eventFestoReady(*this); }

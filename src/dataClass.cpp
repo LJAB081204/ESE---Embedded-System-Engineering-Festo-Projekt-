@@ -64,15 +64,24 @@ bool dataClass::moveFrom1To2(){
 	if (section1.empty()){
 		return false;
 	}
-	section1.front().timer = new DynamicTimer(section1.front().id, *handler);
-	section1.front().timer->start(1000); //1000 test wert
-	section2.push(section1.front());
-	section1.pop();
-	if(checkReady()){
-		MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
+	if(heightTime - section1.front().timer->getTime()>1500){
+		std::cout<< "Error in moving"<< std::endl;
+		delete section1.front().timer;
+		err = ITEM_APPEARED;
+		errorLoc = 1;
+		raiseError();
 	}
-	std::cout << "SIZE2:" << section2.size() << std::endl;
-
+	else{
+		delete section1.front().timer;
+		section1.front().timer = new DynamicTimer(section1.front().id, *handler);
+		section1.front().timer->start(pusherTime); //1000 test wert
+		section2.push(section1.front());
+		section1.pop();
+		if(checkReady()){
+			MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
+		}
+		std::cout << "SIZE2:" << section2.size() << std::endl;
+	}
 	return true;
 }
 
@@ -82,7 +91,7 @@ bool dataClass::moveFrom2To3(){
 		 return false;
 	 }
 	section2.front().timer = new DynamicTimer(section2.front().id, *handler);
-	section2.front().timer->start(1000); // Testwert
+	section2.front().timer->start(exitTime); // Testwert
 	section3.push(section2.front());
 	section2.pop();
 	return true;
@@ -93,14 +102,14 @@ bool dataClass::addItem(){
 	item.id = nextItemID++;
 	itemCount++;
 	item.timer = new DynamicTimer(item.id, *handler);
-	item.timer->start(1000); //1000 testwert
+	//item.timer->start(1000); //1000 testwert
 	section1.push(item);
 	return true;
 }
 
 bool dataClass::addTransferredItem(itemData item){
 	item.timer = new DynamicTimer(item.id, *handler);
-	item.timer->start(1000);
+	//item.timer->start(1000);
 	nextItem.push(item);
 	return true;
 }
@@ -199,5 +208,11 @@ void dataClass::setTimes(){
     if(!foundEntry || !foundEntrySlow || !foundHeight || !foundPusher || !foundExit){
         std::cout << "Zeiten noch nicht vollstaendig kalibriert" << std::endl;
     }
+
+
 }
+
+void dataClass::raiseError(){
+	MsgSendPulse(conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
+    }
 

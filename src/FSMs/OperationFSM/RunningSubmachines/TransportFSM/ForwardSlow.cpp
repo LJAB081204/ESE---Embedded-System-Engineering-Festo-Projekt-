@@ -13,6 +13,7 @@
 #include "sys/neutrino.h"
 #include "../../../../PulseMessages.h"
 #include <iostream>
+#include "../../../../timer.h"
 namespace M1{
 
 	ForwardSlow::ForwardSlow(){
@@ -21,6 +22,7 @@ namespace M1{
 	void ForwardSlow::entry(TransportContext& ctx){
 		std::cout<<"ForwardSlow" << std::endl;
 		ctx.hal.getActors()->motorSlow();
+		ctx.data.handler->setSlow(ctx.data.slowFactor);
 	}
 
 	void ForwardSlow::exit(TransportContext& ctx){
@@ -51,6 +53,15 @@ namespace M1{
 	void ForwardSlow::eventItemAtEntry(TransportContext& ctx){
 		ctx.data.addItem();
 		std::cout<< ctx.data.itemCount << std::endl;
+	}
+
+	void ForwardSlow::eventItemLeftEntry(TransportContext& ctx){
+		if(!ctx.data.section1.empty()){
+			ctx.data.section1.back().timer->start(ctx.data.entryTime);
+		}
+		else{
+			std::cout<<"Queue 1 leer Festo1" << std::endl;
+		}
 	}
 
 	void ForwardSlow::eventItemAtEntryRemote(TransportContext& ctx){

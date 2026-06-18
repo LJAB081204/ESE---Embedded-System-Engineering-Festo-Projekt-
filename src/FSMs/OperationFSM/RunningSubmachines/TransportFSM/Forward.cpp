@@ -13,6 +13,7 @@
 #include "../../../../PulseMessages.h"
 #include <iostream>
 #include <sys/neutrino.h>
+#include "../../../../timer.h"
 
 namespace M1{
 
@@ -20,16 +21,18 @@ namespace M1{
 	}
 
 	void Forward::entry(TransportContext& ctx){
-//		if(ctx.data.itemCount == 0){
-//			exit(ctx);
-//			new(this) Stop;
-//			entry(ctx);
-//		}
-//		else{
+		if(ctx.data.itemCount == 0){
+			exit(ctx);
+			new(this) Stop;
+			entry(ctx);
+		}
+		else{
 		std::cout<<"Forward" << std::endl;
 		ctx.hal.getActors()->motorStop();
 		ctx.hal.getActors()->motorForwards();
-//		}
+		}
+
+		ctx.data.handler->setNormal();
 	}
 
 	void Forward::exit(TransportContext& ctx){
@@ -37,20 +40,24 @@ namespace M1{
 
 	void Forward::eventItemAtExit(TransportContext& ctx){
 		exit(ctx);
-//		if(ctx.data.section3.front().timer->getTime()>100){
-//			ctx.data.err = ITEM_APPEARED;
-//			ctx.data.errorLoc = 3;
-//			raiseError(ctx);
-//			new(this) WaitForFesto;
-//			entry(ctx);
-//
-//		}
-//		else{
-			raiseRequestTransfer(ctx);
-			new(this) WaitForFesto;
-			entry(ctx);
+		if(!ctx.data.section3.empty()){
+			if(ctx.data.exitTime - ctx.data.section3.front().timer->getTime()>1500){
+				ctx.data.err = ITEM_APPEARED;
+				ctx.data.errorLoc = 3;
+				raiseError(ctx);
+				new(this) WaitForFesto;
+				entry(ctx);
+
+			}
+			else{
+				raiseRequestTransfer(ctx);
+				new(this) WaitForFesto;
+				entry(ctx);
+			}
 		}
-//	}
+
+
+	}
 
 
 	void Forward::eventItemAtEntry(TransportContext& ctx){
@@ -61,21 +68,40 @@ namespace M1{
 		entry(ctx);
 	}
 
+	void Forward::eventItemLeftEntry(TransportContext& ctx){
+		if(!ctx.data.section1.empty()){
+			ctx.data.section1.back().timer->start(ctx.data.entryTime);
+		}
+		else{
+			std::cout<<"Queue 1 leer Festo1" << std::endl;
+		}
+	}
 	void Forward::eventItemArrived(TransportContext& ctx){
 		exit(ctx);
-//		if(ctx.data.section1.front().timer->getTime()>100){
-//			ctx.data.err = ITEM_APPEARED;
-//			ctx.data.errorLoc = 1;
-//			raiseError(ctx);
-//			new(this) ForwardSlow;
-//			entry(ctx);
-//		}
-//		else{
-			new(this) ForwardSlow;
-			entry(ctx);
-//		}
+		if(!ctx.data.section1.empty()){
+			if(ctx.data.entryTime - ctx.data.section1.front().timer->getTime()>1500){
+				std::cout<< "Error item arrived"<< std::endl;
+				delete ctx.data.section1.front().timer;
+				ctx.data.err = ITEM_APPEARED;
+				ctx.data.errorLoc = 1;
+				raiseError(ctx);
+			}
+			else{
+				delete ctx.data.section1.front().timer;
+				ctx.data.section1.front().timer = new DynamicTimer(ctx.data.section1.front().id, *ctx.data.handler);
+				ctx.data.section1.front().timer->start(ctx.data.heightTime);
+				new(this) ForwardSlow;
+				entry(ctx);
+			}
+		}
+
 	}
 
+	void Forward::eventItemGone(TransportContext& ctx){
+		if(!ctx.data.section2.empty()){
+
+		}
+	}
 
 	void Forward::eventItemAtEntryRemote(TransportContext& ctx){
 		exit(ctx);
@@ -104,12 +130,15 @@ namespace M1{
 	}
 
 	void Forward::eventItemAtPusher(TransportContext& ctx){
-//		exit(ctx);
-//		if(ctx.data.section2.front().timer->getTime()>100){
-//			ctx.data.err = ITEM_APPEARED;
-//			ctx.data.errorLoc = 2;
-//			raiseError(ctx);
-//		}
+		exit(ctx);
+		if(!ctx.data.section2.empty()){
+			if(ctx.data.pusherTime - ctx.data.section2.front().timer->getTime()>1500){
+				ctx.data.err = ITEM_APPEARED;
+				ctx.data.errorLoc = 2;
+				raiseError(ctx);
+			}
+		}
+
 	}
 
 
