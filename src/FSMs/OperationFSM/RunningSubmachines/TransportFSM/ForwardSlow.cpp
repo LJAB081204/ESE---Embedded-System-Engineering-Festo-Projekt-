@@ -30,6 +30,26 @@ namespace M1{
 
 	void ForwardSlow::eventItemGone(TransportContext& ctx){
 		exit(ctx);
+		if(!ctx.data.section1.empty()){
+			std::cout<< "height time: "<<ctx.data.heightTime << std::endl;
+			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
+			int diff = ctx.data.heightTime - ctx.data.section1.front().timer->getTime();
+			std::cout<< diff << std::endl;
+			if(diff>1500){
+				std::cout<< "Error item gone"<< std::endl;
+				delete ctx.data.section1.front().timer;
+				ctx.data.err = ITEM_APPEARED;
+				ctx.data.errorLoc = 1;
+				ctx.data.raiseError();
+			}
+			else{
+				delete ctx.data.section1.front().timer;
+				ctx.data.section1.front().timer = new DynamicTimer(ctx.data.section1.front().id, *ctx.data.handler);
+				ctx.data.section1.front().timer->start(ctx.data.pusherTime+500);
+				new(this) Forward;
+				entry(ctx);
+			}
+		}
 		std::cout<< ctx.data.section1.size() << std::endl;
 		//ctx.data.moveFrom1To2();
 		std::cout<< ctx.data.section2.size() << std::endl;

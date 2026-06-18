@@ -64,24 +64,24 @@ bool dataClass::moveFrom1To2(){
 	if (section1.empty()){
 		return false;
 	}
-	std::cout<< "getTime: "<<section1.front().timer->getTime() << std::endl;
-	if(heightTime - section1.front().timer->getTime()>500){
-		std::cout<< "height time: "<<heightTime << std::endl;
-		std::cout<< "Error in moving"<< std::endl;
-		delete section1.front().timer;
-		err = ITEM_APPEARED;
-		errorLoc = 1;
-		raiseError();
-	}
-	else{
-		delete section1.front().timer;
-		section1.front().timer = new DynamicTimer(section1.front().id, *handler);
-		section1.front().timer->start(pusherTime); //1000 test wert
+//	std::cout<< "getTime: "<<section1.front().timer->getTime() << std::endl;
+//	if(heightTime - section1.front().timer->getTime()>500){
+//		std::cout<< "height time: "<<heightTime << std::endl;
+//		std::cout<< "Error in moving"<< std::endl;
+//		delete section1.front().timer;
+//		err = ITEM_APPEARED;
+//		ctx.data.errorLoc = 1;
+//		raiseError();
+//	}
+//	else{
+//		delete section1.front().timer;
+//		section1.front().timer = new DynamicTimer(section1.front().id, *handler);
+//		section1.front().timer->start(pusherTime); //1000 test wert
 		section2.push(section1.front());
 		section1.pop();
 		if(checkReady()){
 			MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
-		}
+//		}
 		std::cout << "SIZE2:" << section2.size() << std::endl;
 	}
 	return true;
