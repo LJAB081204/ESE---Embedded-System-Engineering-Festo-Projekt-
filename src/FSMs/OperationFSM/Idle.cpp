@@ -23,8 +23,8 @@
 		ctx.hal.getActors()->redLampOff();
 		ctx.hal.getActors()->redLampBlinkOff();
 		ctx.hal.getActors()->ledButtonResetOff();
-
 		ctx.hal.getActors()->ledButtonStart();
+//		ctx.blockStartUntilRelease = false;
 	}
 	void Idle::exit(OperationContext& ctx){
 		ctx.hal.getActors()->ledButtonStartOff();
@@ -32,10 +32,9 @@
 	}
 
 	void Idle::eventButtonStartPressed(OperationContext& ctx){
-	    if(ctx.longPressTransition){
-	        ctx.longPressTransition = false;
-	        return;
-	    }
+//	    if(ctx.blockStartUntilRelease){
+//	        return;
+//	    }
 		exit(ctx);
 	    if (ctx.savedRunning){
 	        ctx.currentState = ctx.savedRunning;
@@ -58,6 +57,9 @@
 	        ctx.longPressTransition = false;
 	        return;
 	    }
+//	    if(ctx.blockStartUntilRelease){
+//	        return;
+//	    }
 	    exit(ctx);
 	    if (ctx.savedRunning){
 	        ctx.currentState = ctx.savedRunning;
@@ -77,11 +79,13 @@
 	}
 	void Idle::eventButtonStartPressedLong(OperationContext& ctx){
 		exit(ctx);
+		//ctx.blockStartUntilRelease = true;
 		new (this) Service;
 		entry(ctx);
 	}
 	void Idle::eventButtonStartPressedLongRemote(OperationContext& ctx){
 		exit(ctx);
+		//ctx.blockStartUntilRelease = true;
 		new (this) Service;
 		entry(ctx);
 	}
