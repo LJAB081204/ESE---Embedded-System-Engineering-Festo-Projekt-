@@ -22,7 +22,7 @@ namespace M1{
 		}
 
 		void Blocked::entry(SlideContext& ctx){
-			ctx.slideTimer->start(1500);
+			ctx.slideTimer->start(2000);
 			std::cout << "Slide Blocked"<<std::endl;
 		}
 		void Blocked::exit(SlideContext& ctx){

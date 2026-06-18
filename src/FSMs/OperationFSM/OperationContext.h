@@ -39,6 +39,7 @@ public:
 	HistorySource historySource = HistorySource::NONE_HISTORY;
 	SimpleTimer* calTimer;
 	int round;
+	bool longPressTransition;
 
 
 	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory,TimerHandler& timerHandler)
@@ -47,6 +48,7 @@ public:
 		new (currentState) Idle;
 		currentState->entry(*this);
 		round = 0;
+		longPressTransition = false;
 	}
 	~OperationContext(){
 		delete savedRunning;

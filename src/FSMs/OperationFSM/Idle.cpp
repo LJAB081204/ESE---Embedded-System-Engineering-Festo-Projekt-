@@ -32,30 +32,48 @@
 	}
 
 	void Idle::eventButtonStartPressed(OperationContext& ctx){
+	    if(ctx.longPressTransition){
+	        ctx.longPressTransition = false;
+	        return;
+	    }
 		exit(ctx);
-		if (ctx.savedRunning){
-			ctx.currentState = ctx.savedRunning;
-			ctx.savedRunning = nullptr;
-			ctx.currentState->onRestore(ctx.historySource, ctx);
-			ctx.historySource = HistorySource::NONE_HISTORY;
-			ctx.currentState->entry(ctx);
-		} else {
-	        ctx.currentState = ctx.factory.createRunning(ctx.hal, ctx.data,ctx.timerHandler);
+	    if (ctx.savedRunning){
+	        ctx.currentState = ctx.savedRunning;
+	        ctx.savedRunning = nullptr;
+	        ctx.currentState->onRestore(ctx.historySource, ctx);
+	        ctx.historySource = HistorySource::NONE_HISTORY;
 	        ctx.currentState->entry(ctx);
-		}
+	    } else {
+	        ctx.currentState =
+	            ctx.factory.createRunning(
+	                ctx.hal,
+	                ctx.data,
+	                ctx.timerHandler);
+
+	        ctx.currentState->entry(ctx);
+	    }
 	}
 	void Idle::eventButtonStartPressedRemote(OperationContext& ctx){
-		exit(ctx);
-		if (ctx.savedRunning){
-			ctx.currentState = ctx.savedRunning;
-			ctx.savedRunning = nullptr;
-			ctx.currentState->onRestore(ctx.historySource, ctx);
-			ctx.historySource = HistorySource::NONE_HISTORY;
-			ctx.currentState->entry(ctx);
-		} else {
-	        ctx.currentState = ctx.factory.createRunning(ctx.hal, ctx.data,ctx.timerHandler);
+	    if(ctx.longPressTransition){
+	        ctx.longPressTransition = false;
+	        return;
+	    }
+	    exit(ctx);
+	    if (ctx.savedRunning){
+	        ctx.currentState = ctx.savedRunning;
+	        ctx.savedRunning = nullptr;
+	        ctx.currentState->onRestore(ctx.historySource, ctx);
+	        ctx.historySource = HistorySource::NONE_HISTORY;
 	        ctx.currentState->entry(ctx);
-		}
+	    } else {
+	        ctx.currentState =
+	            ctx.factory.createRunning(
+	                ctx.hal,
+	                ctx.data,
+	                ctx.timerHandler);
+
+	        ctx.currentState->entry(ctx);
+	    }
 	}
 	void Idle::eventButtonStartPressedLong(OperationContext& ctx){
 		exit(ctx);

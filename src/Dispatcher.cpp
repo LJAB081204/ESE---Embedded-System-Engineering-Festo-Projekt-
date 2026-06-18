@@ -98,7 +98,7 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				        } else {
 				            auto diff = chrono::steady_clock::now() - buttonPressStart;
 				            auto ms = chrono::duration_cast<chrono::milliseconds>(diff).count();
-				            if(ms > 1000){
+				            if(ms > 2000){
 				            	FSM.eventButtonStartPressedLongRemote();
 				            }
 				            //cout << "Start released on remote!" << endl;
