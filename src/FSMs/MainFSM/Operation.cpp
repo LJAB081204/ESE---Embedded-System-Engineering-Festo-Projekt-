@@ -50,13 +50,13 @@ void Operation::eventButtonResetPressedRemote(MainContext& ctx) {
 void Operation::eventButtonEstopPressed(MainContext& ctx) {
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
-    new(this) EStop(ctx.hal, ctx.hs, EStopSource::LOCAL);
+    new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::LOCAL);
     entry(ctx);
 }
 void Operation::eventButtonEstopPressedRemote(MainContext& ctx) {
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
-    new(this) EStop(ctx.hal, ctx.hs, EStopSource::REMOTE);
+    new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::REMOTE);
     entry(ctx);
 }
 void Operation::eventItemAtEntry(MainContext& ctx) {

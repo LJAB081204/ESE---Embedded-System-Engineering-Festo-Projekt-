@@ -33,7 +33,7 @@ void ConnectionLost::eventConnectionLost(MainContext& ctx) {
 void ConnectionLost::eventConnectionRestored(MainContext& ctx) {
     exit(ctx);
     EStopButtonState estopState = conLostFSM.estopState;
-	EStop* estop = new(this) EStop(ctx.hal, ctx.hs, EStopSource::LOCAL);
+	EStop* estop = new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::LOCAL);
 	switch(estopState){
 	case EStopButtonState::ISPRESSED:
 		estop->enterHandshakeEStopIsPressed(ctx);
@@ -46,6 +46,4 @@ void ConnectionLost::eventConnectionRestored(MainContext& ctx) {
 		break;
 	}
     entry(ctx);
-
-	//conLostFSM.eventConnectionRestored();
 }

@@ -29,6 +29,7 @@ void EStop::eventButtonResetPressed(MainContext& ctx) {
     eStopFSM.eventButtonResetPressed();
     if(!eStopFSM.isActive()) {
         exit(ctx);
+        ctx.data.EStopWasPressed = false;
         new(this) Operation(ctx.getOperationFSM());
         ctx.getOperationFSM().restoreHistory();
     }
@@ -37,6 +38,7 @@ void EStop::eventButtonResetPressedRemote(MainContext& ctx) {
     eStopFSM.eventButtonResetPressedRemote();
     if(!eStopFSM.isActive()) {
         exit(ctx);
+        ctx.data.EStopWasPressed = false;
         new(this) Operation(ctx.getOperationFSM());
         ctx.getOperationFSM().restoreHistory();
     }
