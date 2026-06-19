@@ -11,6 +11,8 @@
 #include "Error.h"
 #include "../EstopFSM/EstopBase.h"
 #include "../EstopFSM/EstopContext.h"
+#include "../ErrorFSM/ErrorContext.h"
+#include "../ErrorFSM/ErrorBase.h"
 
 
 
@@ -123,7 +125,7 @@ void Operation::eventItemMetalRemote(MainContext& ctx) {
 void Operation::eventError(MainContext& ctx) {
 	ctx.getOperationFSM().saveHistory(HistorySource::ERROR_HISTORY);
     exit(ctx);
-    //new(this) Error;
+    new(this) Error (ctx.hal,ctx.data);
     entry(ctx);
 }
 void Operation::eventItemGone(MainContext& ctx){
@@ -196,5 +198,14 @@ void Operation::eventGoBackIF(MainContext& ctx){
 }
 void Operation::eventGoBackIHM(MainContext& ctx){
 	operationFSM.eventGoBackIHM();
+}
+
+void Operation::errorPusherTimerExpired(MainContext& ctx){
+	ctx.getOperationFSM().saveHistory(HistorySource::ERROR_HISTORY);
+    exit(ctx);
+    Error* error = new(this) Error (ctx.hal,ctx.data);
+    error->enterPusherTooLong();
+    entry(ctx);
+
 }
 

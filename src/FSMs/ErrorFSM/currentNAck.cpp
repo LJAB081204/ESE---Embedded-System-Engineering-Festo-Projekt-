@@ -24,7 +24,7 @@
 
 	void currentNAck::entry(ErrorContext& ctx){
 		ctx.hal.getActors()->yellowLampBlinkOff();
-		ctx.hal.getActors()->redLampBlink(1000);
+		ctx.hal.getActors()->redLampBlink(100);
 		ctx.hal.getActors()->motorStop();
 	}
 
@@ -33,7 +33,9 @@
 	}
 
 	void currentNAck::eventItemLeftSlide(ErrorContext& ctx){
-
+		exit(ctx);
+		new (this) goneNAck;
+		entry(ctx);
 	}
 
 	void currentNAck::eventButtonStartPressed(ErrorContext& ctx){
@@ -57,6 +59,7 @@
 	}
 
 	void currentNAck::errorPusherTimerExpired(ErrorContext& ctx){
+		ctx.onlyPusher = true;
 		exit(ctx);
 		new (this) errorPusherTooLong;
 		entry(ctx);

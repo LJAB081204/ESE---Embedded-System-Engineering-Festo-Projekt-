@@ -10,6 +10,7 @@
 
 
 #include "WeicheBase.h"
+
 namespace M1{
 
 class Wait : public WeicheBase{

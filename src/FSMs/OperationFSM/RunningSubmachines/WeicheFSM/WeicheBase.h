@@ -34,6 +34,9 @@ public:
 
 	virtual void eventError(WeicheContext& fsm) {}
 
+	virtual void reactivate(WeicheContext& fsm) {}
+
+
 
 };
 

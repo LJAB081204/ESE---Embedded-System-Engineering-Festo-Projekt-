@@ -17,16 +17,21 @@
 ExitCalibration::ExitCalibration(){};
 
 void ExitCalibration::entry(OperationContext& ctx) {
-	ctx.calTimer->start(5000);
+	if(ctx.round == 2){
+		ctx.calTimer->start(5000);
+	}
 	std::cout<< "ExitCalibration" << std::endl;
 }
 
 void ExitCalibration::exit(OperationContext& ctx) {}
 
 void ExitCalibration::eventItemAtExit(OperationContext& ctx) {
-	uint32_t exitTime = ctx.calTimer->stop();
-	ctx.saveCalibrationTime("timeExit", exitTime);
+	if(ctx.round == 2){
+		ctx.data.exitTime = ctx.calTimer->stop();
+		ctx.saveCalibrationTime("timeExit", ctx.data.exitTime);
+	}
 	ctx.hal.getActors()->motorStop();
+	ctx.hal.getActors()->closePusher();
 }
 
 void ExitCalibration::eventItemLeftExit(OperationContext& ctx) {

@@ -38,14 +38,19 @@ public:
 	OperationBase* currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 	HistorySource historySource = HistorySource::NONE_HISTORY;
 	SimpleTimer* calTimer;
-	uint32_t entryTime;
+	int round;
+	bool longPressTransition;
+	bool blockStartUntilRelease;
+
 
 	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory,TimerHandler& timerHandler)
 	: hal(hal),data(data),hs(hs),factory(factory),timerHandler(timerHandler){
 		calTimer = new SimpleTimer(0,0);
 		new (currentState) Idle;
 		currentState->entry(*this);
-		entryTime = 0;
+		round = 0;
+		longPressTransition = false;
+		blockStartUntilRelease = false;
 	}
 	~OperationContext(){
 		delete savedRunning;
@@ -81,12 +86,31 @@ public:
 	}
 
 	void saveCalibrationTime(const std::string& key, uint32_t value) {
-	    std::ofstream file(CALIBRATION_FILE, std::ios::app);
-	    if (file.is_open()) {
-	        file << key << "=" << value << "\n";
-	        file.close();
+	    std::vector<std::string> lines;
+	    std::ifstream in(CALIBRATION_FILE);
+	    std::string line;
+	    bool found = false;
+
+	    while (std::getline(in, line)) {
+	        if (line.find(key + "=") == 0) {
+	            lines.push_back(key + "=" + std::to_string(value));
+	            found = true;
+	        } else {
+	            lines.push_back(line);
+	        }
+	    }
+	    in.close();
+
+	    if (!found) {
+	        lines.push_back(key + "=" + std::to_string(value));
+	    }
+
+	    std::ofstream out(CALIBRATION_FILE);
+	    for (const auto& l : lines) {
+	        out << l << "\n";
 	    }
 	}
+
 
     HistorySource getHistorySource() const { return historySource; }
 

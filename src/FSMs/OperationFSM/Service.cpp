@@ -15,7 +15,7 @@ Service::Service(){
 		ctx.hal.getActors()->ledButtonStart();
 		ctx.hal.getActors()->ledButtonReset();
 		ctx.hal.getActors()->motorStop();
-		ctx.hs.stopCalibration(); //testen!!!
+		ctx.hs.stopCalibration();
 		std::cout << "Service" << std::endl;
 	}
 
@@ -23,12 +23,14 @@ Service::Service(){
 
 	void Service::eventButtonStartPressedLong(OperationContext& ctx){
 		exit(ctx);
+		ctx.longPressTransition = true;
 		new (this) Idle;
 		entry(ctx);
 	}
 
 	void Service::eventButtonStartPressedLongRemote(OperationContext& ctx){
 		exit(ctx);
+		ctx.longPressTransition = true;
 		new (this) Idle;
 		entry(ctx);
 	}
@@ -36,6 +38,7 @@ Service::Service(){
 	void Service::eventButtonResetPressed(OperationContext& ctx){
 		exit(ctx);
 		ctx.hs.startCalibration();
+		ctx.round = 0;
 		new (this) Calibration;
 		entry(ctx);
 	}
@@ -43,6 +46,7 @@ Service::Service(){
 	void Service::eventButtonResetPressedRemote(OperationContext& ctx){
 		exit(ctx);
 		ctx.hs.startCalibration();
+		ctx.round = 0;
 		new (this) Calibration;
 		entry(ctx);
 	}
@@ -65,5 +69,6 @@ Service::Service(){
 
 	void Service::eventItemAtExit(OperationContext& ctx){
 			ctx.hal.getActors()->motorStop();
+			ctx.hal.getActors()->closePusher();
 	}
 
