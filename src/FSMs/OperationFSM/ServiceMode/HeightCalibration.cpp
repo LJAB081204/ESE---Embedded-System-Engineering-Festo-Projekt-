@@ -1,79 +1,60 @@
 /*
- * HeighCalibration.cpp
+ * HeightCalibration.cpp
  *
- *  Created on: 11.06.2026
+ *  Created on: 08.06.2026
  *      Author: olive
  */
 
 #include <new>
+#include <iostream>
 #include "../OperationBase.h"
 #include "../OperationContext.h"
-#include "HeightCalibration.h"
-#include "EntryCalibration.h"
-#include "../Idle.h"
 #include "../Service.h"
-#include <iostream>
+#include "HeightCalibration.h"
+#include "PusherCalibration.h"
 
-	HeightCalibration::HeightCalibration(){
+HeightCalibration::HeightCalibration(){};
+
+void HeightCalibration::entry(OperationContext& ctx) {
+	if(ctx.round == 2){
+		ctx.calTimer->start(10000);
 	}
+	ctx.hal.getActors()->motorSlow();
+	std::cout<< "HeightCalibration" << std::endl;
+}
 
-	void HeightCalibration::entry(OperationContext& ctx){
-		ctx.hal.getActors()->greenLampBlink(500);
-		ctx.hal.getActors()->ledButtonStart();
-		ctx.hal.getActors()->ledButtonResetOff();
-		ctx.hs.setStartCalibration();
-		std::cout << "HeightCalibration" << std::endl;
+void HeightCalibration::exit(OperationContext& ctx) {
+	if(ctx.round == 2){
+		ctx.data.heightTime = ctx.calTimer->stop();
+		ctx.saveCalibrationTime("timeHeight", ctx.data.heightTime);
 	}
+}
 
-	void HeightCalibration::exit(OperationContext& ctx){
-		ctx.hs.stopCalibration();
-		std::cout << "exit calibration" << std::endl;
+void HeightCalibration::eventItemGone(OperationContext& ctx) {
+	if(ctx.round == 2){
+		ctx.saveCalibrationTime("timeEntry", ctx.data.entryTime);
+		ctx.saveCalibrationTime("timeEntrySlow", ctx.data.entryTimeSlow);
+		ctx.data.slowFactor= ctx.data.entryTime / (double)ctx.data.entryTimeSlow;
 	}
+	exit(ctx);
+	new(this) PusherCalibration;
+	entry(ctx);
+}
 
-	void HeightCalibration::eventButtonStartPressedLong(OperationContext& ctx){
-		exit(ctx);
-		new (this) Idle;
-		entry(ctx);
-	}
+void HeightCalibration::eventButtonStartPressedLong(OperationContext& ctx){
+	exit(ctx);
+	new (this) Idle;
+	entry(ctx);
+}
 
-	void HeightCalibration::eventButtonStartPressed(OperationContext& ctx){
-		exit(ctx);
-		new (this) Service;
-		entry(ctx);
-	}
+void HeightCalibration::eventButtonStopPressed(OperationContext& ctx){
+	exit(ctx);
+	new (this) Service;
+	entry(ctx);
+}
 
-	void HeightCalibration::eventButtonStartPressedLongRemote(OperationContext& ctx){
-		exit(ctx);
-		new (this) Idle;
-		entry(ctx);
-	}
-
-	void HeightCalibration::eventButtonStartPressedRemote(OperationContext& ctx){
-		exit(ctx);
-		new (this) Service;
-		entry(ctx);
-	}
-
-	void HeightCalibration::eventItemAtEntry(OperationContext& ctx){
-		ctx.hal.getActors()->motorForwards();
-	}
-
-	void HeightCalibration::eventItemArrived(OperationContext& ctx){
-		ctx.hal.getActors()->motorSlow();
-	}
-
-	void HeightCalibration::eventItemGone(OperationContext& ctx){
-		ctx.hal.getActors()->motorForwards();
-	}
-
-	void HeightCalibration::eventItemAtPusher(OperationContext& ctx){
-			ctx.hal.getActors()->letItemPass();
-	}
-
-	void HeightCalibration::eventItemAtExit(OperationContext& ctx){
-			ctx.hal.getActors()->motorStop();
-			ctx.hal.getActors()->closePusher();
-	}
-
-
-
+void HeightCalibration::eventButtonStopPressedRemote(OperationContext& ctx){
+	exit(ctx);
+	new (this) Service;
+	entry(ctx);
+}

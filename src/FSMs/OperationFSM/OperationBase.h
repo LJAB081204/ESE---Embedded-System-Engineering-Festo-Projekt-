@@ -96,6 +96,14 @@ public:
 	virtual void eventItemTransfer(uint32_t itemCode, OperationContext& fsm)              {}
 	virtual void eventSlideTimerExpired(OperationContext& fsm)              {}
 
+	virtual void eventGoBack(OperationContext& fsm)								{}
+
+	virtual void eventGoBackWFP(OperationContext& fsm)								{}
+	virtual void eventGoBackIH(OperationContext& fsm)								{}
+	virtual void eventGoBackIM(OperationContext& fsm)								{}
+	virtual void eventGoBackIF(OperationContext& fsm)								{}
+	virtual void eventGoBackIHM(OperationContext& fsm)								{}
+
 };
 
 

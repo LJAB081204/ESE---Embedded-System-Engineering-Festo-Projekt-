@@ -33,6 +33,7 @@ void Ready::eventItemWrong(WeicheContext& ctx){
 	}
 	else if(ctx.data.slideFull == true){
 		exit(ctx);
+		raiseError(ctx);
 		new(this) Receive;
 	  	entry(ctx);
 	}

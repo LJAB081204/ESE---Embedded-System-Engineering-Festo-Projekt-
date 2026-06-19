@@ -18,6 +18,7 @@
 #include <iostream>
 #include "../../HeightSensor.h"
 #include "RunningFactory.h"
+#include "../../PulseMessages.h"
 #include "../../timer.h"
 
 
@@ -36,11 +37,20 @@ public:
 	OperationBase* savedRunning = nullptr;
 	OperationBase* currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 	HistorySource historySource = HistorySource::NONE_HISTORY;
+	SimpleTimer* calTimer;
+	int round;
+	bool longPressTransition;
+	bool blockStartUntilRelease;
+
 
 	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory,TimerHandler& timerHandler)
 	: hal(hal),data(data),hs(hs),factory(factory),timerHandler(timerHandler){
+		calTimer = new SimpleTimer(0,0);
 		new (currentState) Idle;
 		currentState->entry(*this);
+		round = 0;
+		longPressTransition = false;
+		blockStartUntilRelease = false;
 	}
 	~OperationContext(){
 		delete savedRunning;
@@ -74,6 +84,33 @@ public:
 		currentState->entry(*this);
 		historySource = HistorySource::NONE_HISTORY;
 	}
+
+	void saveCalibrationTime(const std::string& key, uint32_t value) {
+	    std::vector<std::string> lines;
+	    std::ifstream in(CALIBRATION_FILE);
+	    std::string line;
+	    bool found = false;
+
+	    while (std::getline(in, line)) {
+	        if (line.find(key + "=") == 0) {
+	            lines.push_back(key + "=" + std::to_string(value));
+	            found = true;
+	        } else {
+	            lines.push_back(line);
+	        }
+	    }
+	    in.close();
+
+	    if (!found) {
+	        lines.push_back(key + "=" + std::to_string(value));
+	    }
+
+	    std::ofstream out(CALIBRATION_FILE);
+	    for (const auto& l : lines) {
+	        out << l << "\n";
+	    }
+	}
+
 
     HistorySource getHistorySource() const { return historySource; }
 
@@ -153,6 +190,14 @@ public:
     void eventSlideFullRemote()              { currentState->eventSlideFullRemote(*this); }
     void eventItemTransfer(uint32_t itemCode)				{ currentState->eventItemTransfer(itemCode,*this);}
     void eventSlideTimerExpired()              { currentState->eventSlideTimerExpired(*this); }
+
+    void eventGoBack()						{currentState->eventGoBack(*this);}
+
+    void eventGoBackWFP()						{currentState->eventGoBackWFP(*this);}
+    void eventGoBackIH()						{currentState->eventGoBackIH(*this);}
+    void eventGoBackIM()						{currentState->eventGoBackIM(*this);}
+    void eventGoBackIF()						{currentState->eventGoBackIF(*this);}
+    void eventGoBackIHM()						{currentState->eventGoBackIHM(*this);}
 
 };
 

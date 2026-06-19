@@ -8,6 +8,7 @@
 #ifndef SRC_FSMS_MAINFSM_MAINBASE_H_
 #define SRC_FSMS_MAINFSM_MAINBASE_H_
 
+#include <stdint.h>
 class MainContext; // forward declaration
 
 class MainBase {
@@ -87,6 +88,17 @@ public:
 	virtual void eventItemTransfer(uint32_t itemCode, MainContext& fsm)      {}
 
 	virtual void eventSlideTimerExpired(MainContext& fsm)      {}
+
+	virtual void eventGoBack(MainContext& fsm)					{}
+
+	virtual void eventGoBackWFP(MainContext& fsm)					{}
+	virtual void eventGoBackIH(MainContext& fsm)					{}
+	virtual void eventGoBackIM(MainContext& fsm)					{}
+	virtual void eventGoBackIF(MainContext& fsm)					{}
+	virtual void eventGoBackIHM(MainContext& fsm)					{}
+
+	virtual void eventConnectionRestored(MainContext& ctx){}
+	virtual void errorPusherTimerExpired(MainContext& ctx){}
 
 };
 

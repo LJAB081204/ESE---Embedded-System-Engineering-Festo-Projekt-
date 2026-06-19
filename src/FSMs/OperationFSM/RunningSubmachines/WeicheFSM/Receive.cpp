@@ -21,6 +21,8 @@ Receive::Receive(){
 
 void Receive::entry(WeicheContext& ctx){
 	ctx.hal.getActors()->closePusher();
+	std::cout << "READY TO RECEIVE ITEM" << std::endl;
+
 
 }
 void Receive::exit(WeicheContext& ctx){
@@ -28,21 +30,20 @@ void Receive::exit(WeicheContext& ctx){
 }
 
 void Receive::eventItemAtPusher(WeicheContext& ctx){
-	ctx.pusherTimer.start(300);
+	ctx.pusherTimer.start(25);
 
 }
 void Receive::eventItemMetal(WeicheContext& ctx){
-	exit(ctx);
 	std::cout << "section2 size: " << ctx.data.section2.size() << std::endl;
 	if(!ctx.data.section2.empty()){
 			ctx.data.section2.front().metal = true;
 	}
-	new (this) Receive;
-	entry(ctx);
+
 }
 
 void Receive::eventTimerExpired(WeicheContext& ctx){
 	exit(ctx);
+	std::cout << "TIMER EXPIRED" << std::endl;
 	raiseUpdate(ctx);
 	new (this) Ready;
 	entry(ctx);

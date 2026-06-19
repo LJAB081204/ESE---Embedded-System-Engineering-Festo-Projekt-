@@ -9,10 +9,18 @@
 #include "PulseMessages.h"
 #include "sys/neutrino.h"
 #include <iostream>
+#include <fstream>
+#include <string>
 
-dataClass::dataClass(TimerHandler& handler)
-    : handler(&handler)
-{}
+dataClass::dataClass(TimerHandler& handler): handler(&handler){
+	entryTime = 0;
+	entryTimeSlow = 0;
+	slowFactor = 0;
+	heightTime = 0;
+	pusherTime = 0;
+	exitTime = 0;
+	setTimes();
+	}
 
 void dataClass::reset(){
  // Connection
@@ -163,5 +171,33 @@ bool dataClass::checkReady(){
 	else{
 		return false;
 	}
+}
+
+void dataClass::setTimes(){
+    std::ifstream file(CALIBRATION_FILE);
+    if(!file.is_open()){
+        std::cout << "Keine Kalibrierungsdatei gefunden, Zeiten nicht verfuegbar" << std::endl;
+        return;
+    }
+
+    bool foundEntry = false, foundEntrySlow = false, foundHeight = false, foundPusher = false, foundExit = false;
+    std::string line;
+    while(std::getline(file, line)){
+        if(!line.empty() && line.back() == '\r') line.pop_back();
+        try {
+            if(line.find("timeEntry=")  == 0){ entryTime  = static_cast<uint32_t>(std::stoul(line.substr(10))); foundEntry = true; }
+            if(line.find("timeEntrySlow=")  == 0){ entryTimeSlow  = static_cast<uint32_t>(std::stoul(line.substr(14))); foundEntrySlow = true; }
+            if(line.find("timeHeight=") == 0){ heightTime = static_cast<uint32_t>(std::stoul(line.substr(11))); foundHeight = true; }
+            if(line.find("timePusher=") == 0){ pusherTime = static_cast<uint32_t>(std::stoul(line.substr(11))); foundPusher = true; }
+            if(line.find("timeExit=")   == 0){ exitTime   = static_cast<uint32_t>(std::stoul(line.substr(9)));  foundExit = true; }
+        } catch(std::exception& e){
+            std::cerr << "Fehler beim Parsen: '" << line << "' -> " << e.what() << std::endl;
+        }
+    }
+    file.close();
+
+    if(!foundEntry || !foundEntrySlow || !foundHeight || !foundPusher || !foundExit){
+        std::cout << "Zeiten noch nicht vollstaendig kalibriert" << std::endl;
+    }
 }
 

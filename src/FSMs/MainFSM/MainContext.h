@@ -115,6 +115,13 @@ public:
         void eventSlideFullRemote()              { currentState->eventSlideFullRemote(*this); }
         void eventItemTransfer(uint32_t itemCode) 			{currentState->eventItemTransfer(itemCode,*this);}
         void eventSlideTimerExpired()              { currentState->eventSlideTimerExpired(*this); }
+        void eventGoBack()						{currentState->eventGoBack(*this);}
+
+        void eventGoBackWFP()						{currentState->eventGoBackWFP(*this);}
+        void eventGoBackIH()						{currentState->eventGoBackIH(*this);}
+        void eventGoBackIM()						{currentState->eventGoBackIM(*this);}
+        void eventGoBackIF()						{currentState->eventGoBackIF(*this);}
+        void eventGoBackIHM()						{currentState->eventGoBackIHM(*this);}
 
     };
 

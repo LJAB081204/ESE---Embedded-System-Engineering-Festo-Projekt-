@@ -11,30 +11,40 @@
 #include "../OperationContext.h"
 #include "PusherCalibration.h"
 #include "../Service.h"
-
 #include "waitForExit.h"
-
 #include "ExitCalibration.h"
 
 PusherCalibration::PusherCalibration(){};
 
 void PusherCalibration::entry(OperationContext& ctx) {
-	ctx.hal.getActors()->letItemPass();
+	if(ctx.round == 2){
+		ctx.calTimer->start(5000);
+	}
+	ctx.hal.getActors()->motorForwards();
 	std::cout<< "PusherCalibration" << std::endl;
 }
 
 void PusherCalibration::exit(OperationContext& ctx) {
-	//timer setzten
+	if(ctx.round == 2){
+		ctx.data.pusherTime = ctx.calTimer->stop();
+		ctx.saveCalibrationTime("timePusher", ctx.data.pusherTime);
+	}
+	ctx.hal.getActors()->letItemPass();
 }
 
-void PusherCalibration::eventItemLeftPusher(OperationContext& ctx) {
+void PusherCalibration::eventItemAtPusher(OperationContext& ctx) {
 	exit(ctx);
-	//timer starten
-	new(this) waitForExit;
+	new(this) ExitCalibration;
 	entry(ctx);
 }
 
 void PusherCalibration::eventButtonStartPressedLong(OperationContext& ctx){
+	exit(ctx);
+	new (this) Idle;
+	entry(ctx);
+}
+
+void PusherCalibration::eventButtonStartPressedLongRemote(OperationContext& ctx){
 	exit(ctx);
 	new (this) Idle;
 	entry(ctx);

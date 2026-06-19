@@ -11,6 +11,8 @@
 #include "Error.h"
 #include "../EstopFSM/EstopBase.h"
 #include "../EstopFSM/EstopContext.h"
+#include "../ErrorFSM/ErrorContext.h"
+#include "../ErrorFSM/ErrorBase.h"
 
 
 
@@ -123,7 +125,7 @@ void Operation::eventItemMetalRemote(MainContext& ctx) {
 void Operation::eventError(MainContext& ctx) {
 	ctx.getOperationFSM().saveHistory(HistorySource::ERROR_HISTORY);
     exit(ctx);
-    //new(this) Error;
+    new(this) Error (ctx.hal,ctx.data);
     entry(ctx);
 }
 void Operation::eventItemGone(MainContext& ctx){
@@ -178,5 +180,23 @@ void Operation::eventSlideFullRemote(MainContext& ctx) {
 void Operation::eventSlideTimerExpired(MainContext& ctx) {
     operationFSM.eventSlideTimerExpired();
 }
+void Operation::eventGoBack(MainContext& ctx){
+	operationFSM.eventGoBack();
+}
 
+void Operation::eventGoBackWFP(MainContext& ctx){
+	operationFSM.eventGoBackWFP();
+}
+void Operation::eventGoBackIH(MainContext& ctx){
+	operationFSM.eventGoBackIH();
+}
+void Operation::eventGoBackIM(MainContext& ctx){
+	operationFSM.eventGoBackIM();
+}
+void Operation::eventGoBackIF(MainContext& ctx){
+	operationFSM.eventGoBackIF();
+}
+void Operation::eventGoBackIHM(MainContext& ctx){
+	operationFSM.eventGoBackIHM();
+}
 

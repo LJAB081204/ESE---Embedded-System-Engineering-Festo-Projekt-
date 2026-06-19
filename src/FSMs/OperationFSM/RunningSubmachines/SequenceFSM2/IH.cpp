@@ -35,7 +35,10 @@ namespace M2{
 		item = ctx.data.nextItem.front().item;
 		ctx.data.nextItem.pop();
 		if(item != ctx.data.section2.front().item){
+			std::cout << "ITEM HAS CHANGED -> GO BACK" << std::endl;
 			raiseGoBackIH(ctx);
+			raiseItemWrong(ctx);
+
 		}
 		else{
 			if(ctx.data.section2.front().item == IM_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
@@ -77,7 +80,7 @@ namespace M2{
 	}
 
 	void IH::raiseGoBackIH(SequenceContext& ctx){
-		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IH	, 0);
+		MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IH	, 0);
 	}
 
 
