@@ -75,6 +75,9 @@ Running2::Running2(HAL& hal,dataClass& data,SequenceContext& sequence,TimerHandl
 	void Running2::eventItemLeftExit(OperationContext& ctx){
 	    transportFSM->eventItemLeftExit();
 	}
+	void Running2::eventItemLeftEntry(OperationContext& ctx){
+		    transportFSM->eventItemLeftEntry();
+		}
 	void Running2::eventItemAtPusher(OperationContext& ctx){
 	    weicheFSM->eventItemAtPusher();
 	}
