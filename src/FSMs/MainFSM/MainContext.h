@@ -125,6 +125,9 @@ public:
         void eventConnectionLost()						{currentState->eventConnectionLost(*this);}
         void eventConnectionRestored()						{currentState->eventConnectionRestored(*this);}
 
+        void errorPusherTimerExpired() 				{currentState->errorPusherTimerExpired(*this);}
+        void eventErrorResolved()					{currentState->eventErrorResolved(*this);}
+
     };
 
 

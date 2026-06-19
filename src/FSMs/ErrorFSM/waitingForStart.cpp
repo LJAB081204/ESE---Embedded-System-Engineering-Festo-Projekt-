@@ -25,7 +25,8 @@
 	}
 
 	void waitingForStart::eventButtonStartPressed(ErrorContext& ctx){
-		//exit -> später implementieren
+		exit(ctx);
+		ctx.active = false;
 	}
 
 	void waitingForStart::errorPusherTimerExpired(ErrorContext& ctx){

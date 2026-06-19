@@ -27,6 +27,7 @@ HeightSensor::HeightSensor(TSCADC& tscadc, int dispCoid)
     coid = ConnectAttach(0, 0, chid, _NTO_SIDE_CHANNEL, 0);
     this->running = false;
     this->calibrateRunning = false;
+    this->switchCounter = 0;
     start();
 }
 
@@ -301,6 +302,10 @@ void HeightSensor::detectHeight(int value){
     if(currentHeight == lastCandidate){
         heightCounter++;
     } else {
+        // Hoehenwechsel erkannt -> zaehlt nur Wechsel zwischen Werkstueck-Hoehen (nicht initiales Ankommen vom Conveyor)
+        if(lastCandidate == HEIGHT_WORKPIECE_HIGH || lastCandidate == HEIGHT_WORKPIECE_FLAT){
+            switchCounter++;
+        }
         lastCandidate = currentHeight;
         heightCounter = 0;
     }

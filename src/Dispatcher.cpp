@@ -80,7 +80,7 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				            //cout << "Start released!" << endl;
 				            auto diff = chrono::steady_clock::now() - buttonPressStart;
 				            auto ms = chrono::duration_cast<chrono::milliseconds>(diff).count();
-				            if(ms > 2000){
+				            if(ms > 1000){
 				            	FSM.eventButtonStartPressedLong();
 				            }
 				            else{
@@ -335,13 +335,19 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 								FSM.eventTimerExpired();
 								break;
 							default:
-								//Item Timer Expired
+								//FSM.eventError();
 								break;
 						}
 							break;
 					case PULSE_EVENT_ERROR:
+							cout << "ERROR!!" << endl;
+//				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_REMOTE, 0);
+//							FSM.eventError();
+							break;
+					case PULSE_EVENT_ERROR_REMOTE:
 							FSM.eventError();
 							break;
+
 					case PULSE_EVENT_UPDATE:
 							FSM.eventUpdate();
 							break;
@@ -393,6 +399,17 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 						FSM.eventGoBackIHM();
 						cout << "EVENT IHM GO BACK ARRIVED" << endl;
 						break;
+
+					case PULSE_EVENT_ERROR_PUSHER_TIMER:
+			            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_PUSHER_TIMER_REMOTE, 0);
+						FSM.errorPusherTimerExpired();
+						break;
+					case PULSE_EVENT_ERROR_PUSHER_TIMER_REMOTE:
+						FSM.errorPusherTimerExpired();
+						break;
+					case PULSE_EVENT_ERROR_RESOLVED:
+					    FSM.eventErrorResolved();
+					    break;
 				}
 
 
