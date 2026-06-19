@@ -99,6 +99,7 @@ public:
 
 	virtual void eventConnectionRestored(MainContext& ctx){}
 	virtual void errorPusherTimerExpired(MainContext& ctx){}
+	virtual void eventErrorResolved(MainContext& ctx){}
 
 };
 

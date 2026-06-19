@@ -57,6 +57,9 @@ void dataClass::reset(){
 // Error
 	err = ERROR_CLEARED;
 	errorLoc = 0;
+
+// State Weiche
+	weiche = LET_ITEM_PASS_STATE;
 }
 
 bool dataClass::moveFrom1To2(){

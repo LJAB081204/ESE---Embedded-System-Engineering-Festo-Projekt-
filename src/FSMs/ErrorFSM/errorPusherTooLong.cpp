@@ -16,10 +16,14 @@
 	}
 
 	void errorPusherTooLong::entry(ErrorContext& ctx){
-		std::cout << "Pusher seit 20 Sekunden offen. Drücke Reset um Pusher zu schließen." << std::endl;
+	    ctx.hal.getActors()->closePusher();
+	    ctx.hal.getActors()->ledButtonReset();
+
+		std::cout << "Pusher seit 20 Sekunden offen. Quittiere den Fehler mit Reset." << std::endl;
 	}
 
 	void errorPusherTooLong::exit(ErrorContext& ctx){
+    	ctx.hal.getActors()->ledButtonResetOff();
 
 	}
 

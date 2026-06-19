@@ -59,6 +59,7 @@
 	}
 
 	void currentNAck::errorPusherTimerExpired(ErrorContext& ctx){
+		ctx.onlyPusher = true;
 		exit(ctx);
 		new (this) errorPusherTooLong;
 		entry(ctx);

@@ -28,6 +28,9 @@ public:
 	void eventConnectionRestored(MainContext& ctx) override;
 	void errorPusherTimerExpired(MainContext& ctx) override;
 	void eventButtonStartPressed(MainContext& ctx) override;
+	void eventErrorResolved(MainContext& ctx)override;
+	void enterPusherTooLong() { errorFSM.errorPusherTimerExpired(); }
+
 };
 
 

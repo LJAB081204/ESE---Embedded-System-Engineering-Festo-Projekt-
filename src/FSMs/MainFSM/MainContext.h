@@ -123,6 +123,9 @@ public:
         void eventGoBackIF()						{currentState->eventGoBackIF(*this);}
         void eventGoBackIHM()						{currentState->eventGoBackIHM(*this);}
 
+        void errorPusherTimerExpired() 				{currentState->errorPusherTimerExpired(*this);}
+        void eventErrorResolved()					{currentState->eventErrorResolved(*this);}
+
     };
 
 

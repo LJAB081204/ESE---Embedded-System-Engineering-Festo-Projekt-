@@ -17,6 +17,7 @@ Wait::Wait(){
 
 }
 void Wait::entry(WeicheContext& ctx){
+	ctx.data.weiche = WAIT_STATE;
     std::cout << "Wait::entry - timer start" << std::endl;
 	ctx.pusherTimer.start(750);
 
