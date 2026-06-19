@@ -30,7 +30,7 @@ void Receive::exit(WeicheContext& ctx){
 }
 
 void Receive::eventItemAtPusher(WeicheContext& ctx){
-	ctx.pusherTimer.start(150);
+	ctx.pusherTimer.start(25);
 
 }
 void Receive::eventItemMetal(WeicheContext& ctx){

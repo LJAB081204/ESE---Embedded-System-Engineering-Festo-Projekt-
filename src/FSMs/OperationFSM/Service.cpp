@@ -23,12 +23,14 @@ Service::Service(){
 
 	void Service::eventButtonStartPressedLong(OperationContext& ctx){
 		exit(ctx);
+		ctx.longPressTransition = true;
 		new (this) Idle;
 		entry(ctx);
 	}
 
 	void Service::eventButtonStartPressedLongRemote(OperationContext& ctx){
 		exit(ctx);
+		ctx.longPressTransition = true;
 		new (this) Idle;
 		entry(ctx);
 	}
