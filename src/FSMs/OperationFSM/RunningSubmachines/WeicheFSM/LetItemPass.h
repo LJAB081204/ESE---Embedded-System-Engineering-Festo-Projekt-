@@ -19,6 +19,8 @@ public:
 	void exit(WeicheContext& ctx) override;
 
 	void eventItemLeftPusher(WeicheContext& ctx)override;
+	void reactivate(WeicheContext& ctx) override;
+
 
 
 };

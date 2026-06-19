@@ -26,7 +26,12 @@
 
 	void waitingForStart2::exit(ErrorContext& ctx){
 	    ctx.hal.getActors()->ledButtonStartOff();
-	    ctx.data.removeItem(2);
+	    if(ctx.data.weiche == LET_ITEM_PASS_STATE){
+	    	ctx.data.removeItem(2);
+	    }
+	    else if (ctx.data.weiche == WAIT_STATE){
+	    	ctx.data.removeItem(3);
+	    }
 
 	}
 
