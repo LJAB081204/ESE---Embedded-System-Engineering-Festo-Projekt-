@@ -24,6 +24,10 @@ public:
 	    void eventButtonEstopReleasedRemote(MainContext& ctx) override;
 	    void eventButtonResetPressed(MainContext& ctx) override;
 	    void eventButtonResetPressedRemote(MainContext& ctx) override;
+
+	    void enterHandshakeEStopIsPressed(MainContext& ctx);
+	    void enterHandShakeEStopWasNotPressed(MainContext& ctx);
+	    void enterHandShakeEStopWasPressed(MainContext& ctx);
 };
 
 #endif

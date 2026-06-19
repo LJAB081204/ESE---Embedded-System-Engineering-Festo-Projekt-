@@ -122,6 +122,8 @@ public:
         void eventGoBackIM()						{currentState->eventGoBackIM(*this);}
         void eventGoBackIF()						{currentState->eventGoBackIF(*this);}
         void eventGoBackIHM()						{currentState->eventGoBackIHM(*this);}
+        void eventConnectionLost()						{currentState->eventConnectionLost(*this);}
+        void eventConnectionRestored()						{currentState->eventConnectionRestored(*this);}
 
         void errorPusherTimerExpired() 				{currentState->errorPusherTimerExpired(*this);}
         void eventErrorResolved()					{currentState->eventErrorResolved(*this);}
