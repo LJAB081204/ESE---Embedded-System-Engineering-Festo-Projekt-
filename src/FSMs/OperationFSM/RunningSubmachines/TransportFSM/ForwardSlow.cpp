@@ -43,23 +43,17 @@ namespace M1{
 				ctx.data.raiseError();
 			}
 			else{
-				delete ctx.data.section1.front().timer;
-				ctx.data.section1.front().timer = new DynamicTimer(ctx.data.section1.front().id, *ctx.data.handler);
-				ctx.data.section1.front().timer->start(ctx.data.pusherTime+500);
 				new(this) Forward;
 				entry(ctx);
 			}
 		}
-		std::cout<< ctx.data.section1.size() << std::endl;
-		//ctx.data.moveFrom1To2();
-		std::cout<< ctx.data.section2.size() << std::endl;
+		else{
+			std::cout<< "Error item arrived (empty)"<< std::endl;
+			ctx.data.err = ITEM_APPEARED;
+			ctx.data.errorLoc = 1;
+			ctx.data.raiseError();
+		}
 		new (this) Forward;
-//		if(ctx.data.itemCount != 0){
-//			new(this) Forward;
-//		}
-//		else{
-//			new(this) Stop;
-//		}
 		entry(ctx);
 	}
 
@@ -89,7 +83,7 @@ namespace M1{
 		itemData item = ctx.data.section3.front();
 		uint32_t itemCode = ctx.data.convertItemToInt(item);
 		MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_ITEM_TRANSFER,itemCode);
-		if(ctx.data.section3.empty()){
+		if(!ctx.data.section3.empty()){
 			ctx.data.removeItem(3);
 		}
 		if(ctx.data.itemCount == 0){
@@ -99,7 +93,7 @@ namespace M1{
 	}
 
 	void ForwardSlow::eventItemInSlide(TransportContext& ctx){
-		if(ctx.data.section2.empty()){
+		if(!ctx.data.section2.empty()){
 			ctx.data.removeItem(2);
 		}
 		std::cout<< ctx.data.itemCount << std::endl;
@@ -110,5 +104,5 @@ namespace M1{
 	void ForwardSlow::raiseRequestTransfer(TransportContext& ctx){
 			MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_TRANSFER_REQUEST,0);
 
-		}
+	}
 }
