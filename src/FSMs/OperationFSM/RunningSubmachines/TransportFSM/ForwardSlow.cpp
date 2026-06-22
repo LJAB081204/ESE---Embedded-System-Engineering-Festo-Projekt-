@@ -27,6 +27,7 @@ namespace M1{
 	}
 
 	void ForwardSlow::exit(TransportContext& ctx){
+		ctx.data.handler->resumeAll();
 	}
 
 	void ForwardSlow::eventItemGone(TransportContext& ctx){
@@ -35,6 +36,7 @@ namespace M1{
 			std::cout<< "height time: "<<ctx.data.heightTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
 			int diff = ctx.data.heightTime - ctx.data.section1.front().timer->getTime();
+			ctx.data.section1.front().timer->stop();
 			std::cout<< diff << std::endl;
 			if(diff>1500){
 				std::cout<< "Error item gone"<< std::endl;
@@ -44,6 +46,9 @@ namespace M1{
 				ctx.data.raiseError();
 			}
 			else{
+//				delete ctx.data.section1.front().timer;
+//				ctx.data.section1.front().timer = new DynamicTimer(ctx.data.section1.front().id, *ctx.data.handler);
+//				ctx.data.section1.front().timer->start(ctx.data.pusherTime+1000);
 				new(this) Forward;
 				entry(ctx);
 			}

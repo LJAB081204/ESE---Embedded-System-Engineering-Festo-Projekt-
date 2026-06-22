@@ -42,6 +42,7 @@ namespace M1{
 			std::cout<< "exit time: "<<ctx.data.exitTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
 			int diff = ctx.data.exitTime - ctx.data.section3.front().timer->getTime();
+			ctx.data.section3.front().timer->stop();
 			std::cout<< diff << std::endl;
 			if(diff>800){
 				std::cout<< "Error item at exit"<< std::endl;
@@ -84,6 +85,7 @@ namespace M1{
 			std::cout<< "entry time: "<<ctx.data.entryTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
 			int diff = ctx.data.entryTime - ctx.data.section1.front().timer->getTime();
+			ctx.data.section1.front().timer->stop();
 			std::cout<< diff << std::endl;
 			if(diff>500){
 				std::cout<< "Error item arrived"<< std::endl;
@@ -94,7 +96,8 @@ namespace M1{
 			else{
 				delete ctx.data.section1.front().timer;
 				ctx.data.section1.front().timer = new DynamicTimer(ctx.data.section1.front().id, *ctx.data.handler);
-				ctx.data.section1.front().timer->start(ctx.data.heightTime+500);
+				ctx.data.section1.front().timer->start(ctx.data.heightTime+1000);
+				std::cout<<ctx.data.section1.front().timer->getTime()<<std::endl;
 				new(this) ForwardSlow;
 				entry(ctx);
 			}
@@ -142,10 +145,10 @@ namespace M1{
 			std::cout<< "pusher time: "<<ctx.data.pusherTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
 			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
+			ctx.data.section2.front().timer->stop();
 			std::cout<< diff << std::endl;
-			if(diff>100){
+			if(diff>1000){
 				std::cout<< "Error item at Pusher"<< std::endl;
-				//delete ctx.data.section2.front().timer;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 2;
 				raiseError(ctx);

@@ -82,8 +82,8 @@ bool dataClass::moveFrom1To2(){
 //		section1.front().timer->start(pusherTime); //1000 test wert
 		delete section1.front().timer;
 		section2.push(section1.front());
-		section2.front().timer = new DynamicTimer(section2.front().id, *handler);
-		section2.front().timer->start(pusherTime);
+		section2.back().timer = new DynamicTimer(section2.back().id, *handler);
+		section2.back().timer->start(pusherTime+1000);
 		section1.pop();
 		if(checkReady()){
 			MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
@@ -100,7 +100,7 @@ bool dataClass::moveFrom2To3(){
 	 }
 	section3.push(section2.front());
 	section3.front().timer = new DynamicTimer(section3.front().id, *handler);
-	section3.front().timer->start(exitTime+250); // Testwert
+	section3.front().timer->start(exitTime+1000); // Testwert
 	section2.pop();
 	return true;
 }
