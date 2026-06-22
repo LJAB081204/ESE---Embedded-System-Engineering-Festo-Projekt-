@@ -38,6 +38,7 @@ public:
 	void eventItemAtEntryRemote()    { currentState->eventItemAtEntryRemote(*this); }
 	void eventItemAtExit()           { currentState->eventItemAtExit(*this); }
 	void eventItemLeftExit()   		 { currentState->eventItemLeftExit(*this); }
+	void eventItemLeftEntry()   	{ currentState->eventItemLeftEntry(*this); }
 	void eventItemLeftExitRemote()   { currentState->eventItemLeftExitRemote(*this); }
 	void eventItemInSlideRemote()    { currentState->eventItemInSlideRemote(*this); }
 	void eventItemGone()             { currentState->eventItemGone(*this); }

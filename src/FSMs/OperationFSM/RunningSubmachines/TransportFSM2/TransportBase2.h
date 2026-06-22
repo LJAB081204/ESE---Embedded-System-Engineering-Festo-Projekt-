@@ -22,6 +22,7 @@ public:
 	virtual void eventItemAtEntryRemote(TransportContext2& fsm)   {}
 	virtual void eventItemAtExit(TransportContext2& fsm)          {}
 	virtual void eventItemLeftExit(TransportContext2& fsm)  {}
+	virtual void eventItemLeftEntry(TransportContext2& fsm)  {}
 	virtual void eventItemLeftExitRemote(TransportContext2& fsm)  {}
 	virtual void eventItemInSlideRemote(TransportContext2& fsm)   {}
 	virtual void eventItemGone(TransportContext2& fsm)            {}
