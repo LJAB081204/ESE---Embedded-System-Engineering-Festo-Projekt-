@@ -134,6 +134,7 @@ TimerHandler::TimerHandler(int dispatcherCoid)
     // Receiver-Thread starten, der Tick-Pulses auf dem internen Channel empfängt
     pthread_create(&thread_, nullptr, receiverThread, this);
 
+
     // Systemtimer konfigurieren: Jeder Ablauf sendet einen TIMER_TICK-Pulse
     // an den internen Channel
     struct sigevent event;

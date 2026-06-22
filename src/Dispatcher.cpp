@@ -356,6 +356,8 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 									data.errorLoc = 3;
 									FSM.eventError();
 									break;
+								default:
+									cout << "Item not found: " << msg.value.sival_int <<  endl;
 							}
 							break;
 					}
