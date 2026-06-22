@@ -12,6 +12,7 @@
 #include "EStopRemote.h"
 #include "BothReleased.h"
 #include "../../PulseMessages.h"
+#include "ResetConLost.h"
 
 using namespace std;
 
@@ -39,5 +40,6 @@ void HandShakeEStopWasNotPressed::eventResponseEStopIsPressed(EStopContext& ctx)
 
 void HandShakeEStopWasNotPressed::eventResponseEStopWasNotPressed(EStopContext& ctx){
 	exit(ctx);
-	ctx.setActive(false); //KI
+	new (this) ResetConLost;
+	entry(ctx);
 }
