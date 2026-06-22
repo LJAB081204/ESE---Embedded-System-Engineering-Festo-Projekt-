@@ -21,6 +21,7 @@ namespace M1{
 
 	void ForwardSlow::entry(TransportContext& ctx){
 		std::cout<<"ForwardSlow" << std::endl;
+		ctx.hal.getActors()->motorForwards();
 		ctx.hal.getActors()->motorSlow();
 		ctx.data.handler->setSlow(ctx.data.slowFactor);
 	}
@@ -66,7 +67,6 @@ namespace M1{
 
 	void ForwardSlow::eventItemAtEntry(TransportContext& ctx){
 		ctx.data.addItem();
-		std::cout<< ctx.data.itemCount << std::endl;
 	}
 
 	void ForwardSlow::eventItemLeftEntry(TransportContext& ctx){
@@ -79,26 +79,31 @@ namespace M1{
 	}
 
 	void ForwardSlow::eventItemAtEntryRemote(TransportContext& ctx){
-		exit(ctx);
-		itemData item = ctx.data.section3.front();
+		itemData item;
+		if(!ctx.data.section3.empty()){
+			item = ctx.data.section3.front();
+		}
 		uint32_t itemCode = ctx.data.convertItemToInt(item);
 		MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_ITEM_TRANSFER,itemCode);
 		if(!ctx.data.section3.empty()){
 			ctx.data.removeItem(3);
 		}
 		if(ctx.data.itemCount == 0){
+			exit(ctx);
 			new(this) Stop;
+			entry(ctx);
 		}
-		entry(ctx);
+
 	}
 
 	void ForwardSlow::eventItemInSlide(TransportContext& ctx){
 		if(!ctx.data.section2.empty()){
 			ctx.data.removeItem(2);
 		}
-		std::cout<< ctx.data.itemCount << std::endl;
 		if(ctx.data.itemCount == 0){
+			exit(ctx);
 			new(this) Stop;
+			entry(ctx);
 		}
 	}
 	void ForwardSlow::raiseRequestTransfer(TransportContext& ctx){

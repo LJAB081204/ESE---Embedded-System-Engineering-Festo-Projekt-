@@ -18,7 +18,7 @@ public:
 	void exit(TransportContext2& ctx)override;
 
 	void eventItemGone(TransportContext2& ctx)override;
-	void eventItemTransfer(uint32_t itemCode, TransportContext2& ctx)override;
+//	void eventItemTransfer(uint32_t itemCode, TransportContext2& ctx)override;
 	void eventItemAtExit(TransportContext2& ctx)override;
 	void eventItemInSlide(TransportContext2& ctx)override;
 	void eventItemLeftExitRemote(TransportContext2& ctx)override;

@@ -36,5 +36,13 @@ namespace M1{
 		std::cout<< ctx.data.itemCount << std::endl;
 	}
 
+	void WaitForFesto::eventItemInSlide(TransportContext& ctx){
+		if(!ctx.data.section2.empty()){
+			delete ctx.data.section2.front().timer;
+			ctx.data.section2.pop();
+			ctx.data.itemCount--;
+		}
+	}
+
 }
 

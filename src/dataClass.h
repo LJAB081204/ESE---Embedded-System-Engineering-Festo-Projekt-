@@ -64,6 +64,11 @@ class dataClass{
 	//Error
 	errors err = ERROR_CLEARED;
 	int errorLoc = 0;
+	bool pusherErrorActive = false;
+
+	// Estop Status
+	bool eStopIsPressed = false;
+	bool eStopWasPressed = false;
 
 	WeicheState weiche = LET_ITEM_PASS_STATE;
 

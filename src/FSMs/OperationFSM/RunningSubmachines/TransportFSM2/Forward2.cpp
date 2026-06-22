@@ -26,7 +26,6 @@ namespace M2{
 		else{
 		std::cout<<"Forward2" << std::endl;
 		ctx.hal.getActors()->motorForwards();
-		ctx.data.handler->resumeAll();
 		ctx.data.handler->setNormal();
 		}
 	}
@@ -45,7 +44,6 @@ namespace M2{
 			std::cout<< diff << std::endl;
 			if(diff>800){
 				std::cout<< "Error item at exit"<< std::endl;
-				delete ctx.data.section3.front().timer;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 3;
 				raiseError(ctx);
@@ -95,13 +93,14 @@ namespace M2{
 
 
 	void Forward2::eventItemInSlide(TransportContext2& ctx){
-		exit(ctx);
 		if(!ctx.data.section2.empty()){
 			ctx.data.removeItem(2);
-		}		if(ctx.data.itemCount == 0){
-			new(this) Stop2;
 		}
-		entry(ctx);
+		if(ctx.data.itemCount == 0){
+			exit(ctx);
+			new(this) Stop2;
+			entry(ctx);
+		}
 	}
 
 	void Forward2::eventItemLeftEntry(TransportContext2& ctx){
@@ -122,7 +121,6 @@ namespace M2{
 			std::cout<< diff << std::endl;
 			if(diff>100){
 				std::cout<< "Error item at Pusher"<< std::endl;
-				delete ctx.data.section2.front().timer;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 2;
 				raiseError(ctx);

@@ -27,10 +27,8 @@ namespace M1{
 			entry(ctx);
 		}
 		else{
-		std::cout<<"Forward" << std::endl;
 		ctx.hal.getActors()->motorStop();
 		ctx.hal.getActors()->motorForwards();
-		ctx.data.handler->resumeAll();
 		ctx.data.handler->setNormal();
 		}
 	}
@@ -47,7 +45,7 @@ namespace M1{
 			std::cout<< diff << std::endl;
 			if(diff>800){
 				std::cout<< "Error item at exit"<< std::endl;
-				delete ctx.data.section3.front().timer;
+				//delete ctx.data.section3.front().timer;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 3;
 				raiseError(ctx);
@@ -68,9 +66,7 @@ namespace M1{
 
 	void Forward::eventItemAtEntry(TransportContext& ctx){
 		exit(ctx);
-		std::cout<<"ITEM AT ENTRY"<< std::endl;
 		ctx.data.addItem();
-		std::cout<< ctx.data.itemCount << std::endl;
 		entry(ctx);
 	}
 
@@ -114,10 +110,12 @@ namespace M1{
 
 	void Forward::eventItemAtEntryRemote(TransportContext& ctx){
 		exit(ctx);
-		itemData item = ctx.data.section3.front();
+		itemData item;
+		if(!ctx.data.section3.empty()){
+			item = ctx.data.section3.front();
+		}
 
 		uint32_t itemCode = ctx.data.convertItemToInt(item);
-		std::cout<< itemCode<< std::endl;
 
 		MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_ITEM_TRANSFER,itemCode);
 		if(!ctx.data.section3.empty()){
@@ -147,7 +145,7 @@ namespace M1{
 			std::cout<< diff << std::endl;
 			if(diff>100){
 				std::cout<< "Error item at Pusher"<< std::endl;
-				delete ctx.data.section2.front().timer;
+				//delete ctx.data.section2.front().timer;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 2;
 				raiseError(ctx);
