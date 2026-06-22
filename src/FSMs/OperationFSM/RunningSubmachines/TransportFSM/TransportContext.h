@@ -33,6 +33,7 @@ public:
 	}
 
 	void eventItemAtEntry()			 {currentState->eventItemAtEntry(*this); }
+	void eventItemLeftEntry()			 {currentState->eventItemAtEntry(*this); }
 	void eventItemInSlide()          { currentState->eventItemInSlide(*this); }
 	void eventItemAtEntryRemote()    { currentState->eventItemAtEntryRemote(*this); }
 	void eventItemAtExit()           { currentState->eventItemAtExit(*this); }

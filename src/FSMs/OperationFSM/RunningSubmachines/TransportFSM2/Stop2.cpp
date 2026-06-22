@@ -20,9 +20,11 @@ namespace M2{
 	void Stop2::entry(TransportContext2& ctx){
 		std::cout<<"Stop2" << std::endl;
 		ctx.hal.getActors()->motorStop();
+		ctx.data.handler->pauseAll();
 	}
 
 	void Stop2::exit(TransportContext2& ctx){
+		ctx.data.handler->resumeAll();
 	}
 
 	void Stop2::eventItemLeftExitRemote(TransportContext2& ctx){

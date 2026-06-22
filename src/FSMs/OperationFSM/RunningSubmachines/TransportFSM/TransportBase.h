@@ -16,6 +16,7 @@ public:
 	virtual ~TransportBase() = default;
 
 	virtual void eventItemAtEntry(TransportContext& fsm) 		 {}
+	virtual void eventItemLeftEntry(TransportContext& fsm) 		 {}
 	virtual void eventItemInSlide(TransportContext& fsm)         {}
 	virtual void eventItemAtEntryRemote(TransportContext& fsm)   {}
 	virtual void eventItemAtExit(TransportContext& fsm)          {}
