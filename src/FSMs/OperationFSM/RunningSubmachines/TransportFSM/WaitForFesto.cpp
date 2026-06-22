@@ -15,9 +15,11 @@ namespace M1{
 
 	void WaitForFesto::entry(TransportContext& ctx){
 		std::cout<<"WaitForFesto" << std::endl;
+		ctx.data.handler->pauseAll();
 	}
 
 	void WaitForFesto::exit(TransportContext& ctx){
+		ctx.data.handler->resumeAll();
 	}
 
 	void WaitForFesto::eventFestoNotReady(TransportContext& ctx){
@@ -32,6 +34,14 @@ namespace M1{
 	void WaitForFesto::eventItemAtEntry(TransportContext& ctx){
 		ctx.data.addItem();
 		std::cout<< ctx.data.itemCount << std::endl;
+	}
+
+	void WaitForFesto::eventItemInSlide(TransportContext& ctx){
+		if(!ctx.data.section2.empty()){
+			delete ctx.data.section2.front().timer;
+			ctx.data.section2.pop();
+			ctx.data.itemCount--;
+		}
 	}
 
 }

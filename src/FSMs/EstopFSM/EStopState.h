@@ -19,7 +19,9 @@ public:
 	void exit(EStopContext& ctx)override;
 	void eventButtonEstopReleased(EStopContext& ctx)override;
 	void eventButtonEstopPressedRemote(EStopContext& ctx)override;
-
+	void eventGoToHandshakeEStopIsPressed(EStopContext& ctx)override;
+	void eventGoToHandshakeEStopWasPressed(EStopContext& ctx)override;
+	void eventGoToHandshakeEStopWasNotPressed(EStopContext& ctx)override;
 };
 
 

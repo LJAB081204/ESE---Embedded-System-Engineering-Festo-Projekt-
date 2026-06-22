@@ -9,10 +9,11 @@
 #include "EStopState.h"
 #include "Reset.h"
 #include "ResetRemote.h"
-#include "HandShakeEStopLocalNotPressed.h"
-#include "HandShakeEStopLocalPressed.h"
+#include "HandShakeEStopWasNotPressed.h"
+#include "HandShakeEStopWasPressed.h"
+#include "HandShakeEStopIsPressed.h"
 #include "../../HeightSensor.h"
-
+#include "../../dataClass.h"
 
 enum class EStopSource {LOCAL,REMOTE};
 
@@ -23,10 +24,11 @@ class EStopContext {
 public:
     HAL& hal;
     HeightSensor& hs;
+    dataClass& data;
     bool isActive() { return active; }
     void setActive(bool a) { active = a; }
 
-    EStopContext(HAL& hal,HeightSensor& hs,EStopSource source) : hal(hal), hs(hs) {
+    EStopContext(HAL& hal, HeightSensor& hs, dataClass& data, EStopSource source) : hal(hal), hs(hs), data(data) {
     	if(source == EStopSource::LOCAL)
     		new(currentState) EStopState;
     	else{
@@ -35,24 +37,23 @@ public:
         currentState->entry(*this);
     }
 
+
+
     void eventButtonEstopPressed()        { currentState->eventButtonEstopPressed(*this); }
     void eventButtonEstopReleased()       { currentState->eventButtonEstopReleased(*this); }
     void eventButtonEstopPressedRemote()  { currentState->eventButtonEstopPressedRemote(*this); }
     void eventButtonEstopReleasedRemote() { currentState->eventButtonEstopReleasedRemote(*this); }
     void eventButtonResetPressed()        { currentState->eventButtonResetPressed(*this); }
     void eventButtonResetPressedRemote()  { currentState->eventButtonResetPressedRemote(*this); }
-    void handshakeEStopRemoteIsPressed()    { currentState->handshakeEStopRemoteIsPressed(*this); }
-    void handshakeEStopRemoteIsNotPressed() { currentState->handshakeEStopRemoteIsNotPressed(*this); }
 
-    void enterHandshakeLocalPressed() {
-        new(currentState) HandShakeEStopLocalPressed;
-        currentState->entry(*this);
-    }
+    void eventGoToHandshakeEStopIsPressed()    { currentState->eventGoToHandshakeEStopIsPressed(*this); }
+    void eventGoToHandshakeEStopWasPressed() { currentState->eventGoToHandshakeEStopWasPressed(*this); }
+    void eventGoToHandshakeEStopWasNotPressed()    { currentState->eventGoToHandshakeEStopWasNotPressed(*this); }
 
-    void enterHandshakeLocalNotPressed() {
-        new(currentState) HandShakeEStopLocalNotPressed;
-        currentState->entry(*this);
-    }
+    void eventResponseEStopIsPressed()    { currentState->eventResponseEStopIsPressed(*this); }
+    void eventResponseEStopIsNotPressed() { currentState->eventResponseEStopIsNotPressed(*this); }
+    void eventResponseEStopWasPressed()   { currentState->eventResponseEStopWasPressed(*this); }
+    void eventResponseEStopWasNotPressed(){ currentState->eventResponseEStopWasNotPressed(*this); }
 
 };
 

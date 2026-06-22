@@ -39,6 +39,7 @@ public:
 
 	// Sensoren lokal
 	void eventItemAtEntry(OperationContext& ctx) override;
+	void eventItemLeftEntry(OperationContext& ctx) override;
 	void eventItemAtExit(OperationContext& ctx) override;
 	void eventItemLeftExit(OperationContext& ctx) override;
 	void eventItemAtPusher(OperationContext& ctx) override;

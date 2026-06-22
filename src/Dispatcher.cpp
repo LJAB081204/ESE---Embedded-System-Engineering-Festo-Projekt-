@@ -55,9 +55,12 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				        //cout << "ESTOP Pulse reached dispatcher" << endl;
 				        if(msg.value.sival_int == 0){
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_ESTOP_REMOTE, 0);
+				            data.eStopIsPressed = false;
 				            FSM.eventButtonEstopReleased();
 				        } else {
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_ESTOP_REMOTE, 1);
+				            data.eStopIsPressed = true;
+				            data.eStopWasPressed = true;
 				            FSM.eventButtonEstopPressed();
 				        }
 				        break;
@@ -335,14 +338,14 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 								FSM.eventTimerExpired();
 								break;
 							default:
-								//FSM.eventError();
+								FSM.eventError();
 								break;
 						}
 							break;
 					case PULSE_EVENT_ERROR:
 							cout << "ERROR!!" << endl;
-//				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_REMOTE, 0);
-//							FSM.eventError();
+				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_REMOTE, 0);
+							FSM.eventError();
 							break;
 					case PULSE_EVENT_ERROR_REMOTE:
 							FSM.eventError();
@@ -410,6 +413,41 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 					case PULSE_EVENT_ERROR_RESOLVED:
 					    FSM.eventErrorResolved();
 					    break;
+
+					case PULSE_CONNECTION_LOST:
+						FSM.eventConnectionLost();
+						break;
+					case PULSE_CONNECTION_RESTORED:
+						FSM.eventConnectionRestored();
+						break;
+
+					case PULSE_HANDSHAKE_ESTOP_STATUS:
+						if (data.eStopIsPressed){
+							MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_RESPONSE_ESTOP_STATUS, 0);
+							break;
+						} else if (!data.eStopIsPressed && data.eStopWasPressed){
+							MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_RESPONSE_ESTOP_STATUS, 1);
+							break;
+						} else {
+							MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_RESPONSE_ESTOP_STATUS, 2);
+							break;
+						}
+
+					case PULSE_RESPONSE_ESTOP_STATUS:
+						switch (msg.value.sival_int){
+							case 0:
+								FSM.eventResponseEStopIsPressed();
+								cout << "Response: E-Stop is Pressed" << endl;
+								break;
+							case 1:
+								FSM.eventResponseEStopWasPressed();
+								cout << "Response: E-Stop was Pressed" << endl;
+								break;
+							case 2:
+								FSM.eventResponseEStopWasNotPressed();
+								cout << "Response: E-Stop was not Pressed" << endl;
+								break;
+						}
 				}
 
 

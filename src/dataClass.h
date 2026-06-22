@@ -64,6 +64,11 @@ class dataClass{
 	//Error
 	errors err = ERROR_CLEARED;
 	int errorLoc = 0;
+	bool pusherErrorActive = false;
+
+	// Estop Status
+	bool eStopIsPressed = false;
+	bool eStopWasPressed = false;
 
 	WeicheState weiche = LET_ITEM_PASS_STATE;
 	bool pusherErrorActive = false;
@@ -78,6 +83,7 @@ class dataClass{
 
 	uint32_t convertItemToInt(const itemData& item);
 	itemData convertIntToItem(uint32_t itemCode);
+	void raiseError();
 
 	bool checkReady();
 	bool itemAtExit = false;

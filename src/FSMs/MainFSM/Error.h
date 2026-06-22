@@ -37,6 +37,7 @@ public:
 
 
 	void enterPusherTooLong() { errorFSM.errorPusherTimerExpired(); }
+	void eventConnectionLost(MainContext& ctx)override;
 
 };
 
