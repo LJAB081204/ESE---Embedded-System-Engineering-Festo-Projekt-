@@ -16,7 +16,7 @@
 #include "../../HeightSensor.h"
 
 
-enum class PreviousFsmState {ACTIVE_E_STOP, PASSIVE_E_STOP, GONE_E_STOP, OPERATION, ERROR};
+enum class PreviousFsmState {ACTIVE_E_STOP, PASSIVE_E_STOP, OPERATION, ERROR};
 enum class EStopButtonState {ISPRESSED, WASPRESSED, WASNOTPRESSED};
 
 class ConnectionLostContext {

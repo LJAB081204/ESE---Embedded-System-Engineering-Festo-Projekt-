@@ -7,6 +7,7 @@
 #include "MainContext.h"
 #include "EStop.h"
 #include "Operation.h"
+#include "ConnectionLost.h"
 
 
 void EStop::entry(MainContext& ctx) {
@@ -29,7 +30,7 @@ void EStop::eventButtonResetPressed(MainContext& ctx) {
     eStopFSM.eventButtonResetPressed();
     if(!eStopFSM.isActive()) {
         exit(ctx);
-        ctx.data.EStopWasPressed = false;
+        ctx.data.eStopWasPressed = false;
         new(this) Operation(ctx.getOperationFSM());
         ctx.getOperationFSM().restoreHistory();
     }
@@ -38,7 +39,7 @@ void EStop::eventButtonResetPressedRemote(MainContext& ctx) {
     eStopFSM.eventButtonResetPressedRemote();
     if(!eStopFSM.isActive()) {
         exit(ctx);
-        ctx.data.EStopWasPressed = false;
+        ctx.data.eStopWasPressed = false;
         new(this) Operation(ctx.getOperationFSM());
         ctx.getOperationFSM().restoreHistory();
     }
@@ -64,5 +65,35 @@ void EStop::enterHandShakeEStopWasPressed(MainContext& ctx) {
 	eStopFSM.eventGoToHandshakeEStopWasPressed();
 }
 
+void EStop::eventResponseEStopIsPressed(MainContext& ctx) {
+	eStopFSM.eventResponseEStopIsPressed();
+}
 
+void EStop::eventResponseEStopIsNotPressed(MainContext& ctx) {
+	eStopFSM.eventResponseEStopIsNotPressed();
+}
+
+void EStop::eventResponseEStopWasPressed(MainContext& ctx) {
+	eStopFSM.eventResponseEStopWasPressed();
+}
+
+void EStop::eventResponseEStopWasNotPressed(MainContext& ctx) {
+	eStopFSM.eventResponseEStopWasNotPressed();
+	if(!eStopFSM.isActive()) { // KI
+	        exit(ctx);
+	        ctx.data.eStopWasPressed = false;
+	        new(this) Operation(ctx.getOperationFSM());
+	        ctx.getOperationFSM().restoreHistory();
+	    }
+}
+
+void EStop::eventConnectionLost(MainContext& ctx) {
+	exit(ctx);
+	if(ctx.data.eStopIsPressed){
+		new(this) ConnectionLost(ctx.hal, ctx.hs, PreviousFsmState::ACTIVE_E_STOP);
+	} else {
+		new(this) ConnectionLost(ctx.hal, ctx.hs, PreviousFsmState::PASSIVE_E_STOP);
+	}
+	entry(ctx);
+}
 

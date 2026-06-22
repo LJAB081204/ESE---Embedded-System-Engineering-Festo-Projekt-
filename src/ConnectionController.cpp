@@ -8,6 +8,9 @@
 #include "ConnectionController.h"
 #include "PulseMessages.h"
 
+#define PULSE_HEARTBEAT_PING _PULSE_CODE_MINAVAIL + 90
+#define PULSE_HEARTBEAT_TIMER_EXPIRED _PULSE_CODE_MINAVAIL + 91
+
 using namespace std;
 
 // ------------------------------------------------------------
@@ -143,7 +146,7 @@ void ConnectionController::runReceiveFromRemote()
 
 void ConnectionController::runReceiveFromHeartbeat()
 {
-    SimpleTimer heartbeatTimer(0, wakeHeartbeatCoid);
+    SimpleTimer heartbeatTimer(wakeHeartbeatCoid, PULSE_HEARTBEAT_TIMER_EXPIRED);
     heartbeatTimer.start(100000);
 
     _pulse msg;
@@ -169,7 +172,7 @@ void ConnectionController::runReceiveFromHeartbeat()
                 heartbeatTimer.stop();
                 heartbeatTimer.start(heartbeatTimeoutMs);
             }
-            else if (msg.code == PULSE_TIMER_EXPIRED)
+            else if (msg.code == PULSE_HEARTBEAT_TIMER_EXPIRED)
             {
                 if (connected)
                 {

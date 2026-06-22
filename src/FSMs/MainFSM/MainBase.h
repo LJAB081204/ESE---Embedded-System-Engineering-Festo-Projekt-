@@ -97,9 +97,15 @@ public:
 	virtual void eventGoBackIF(MainContext& fsm)					{}
 	virtual void eventGoBackIHM(MainContext& fsm)					{}
 
+	virtual void eventConnectionLost(MainContext& ctx){}
 	virtual void eventConnectionRestored(MainContext& ctx){}
 	virtual void errorPusherTimerExpired(MainContext& ctx){}
 	virtual void eventErrorResolved(MainContext& ctx){}
+
+	virtual void eventResponseEStopIsPressed(MainContext& ctx) {}
+	virtual void eventResponseEStopIsNotPressed(MainContext& ctx) {}
+	virtual void eventResponseEStopWasPressed(MainContext& ctx) {}
+	virtual void eventResponseEStopWasNotPressed(MainContext& ctx) {}
 
 };
 

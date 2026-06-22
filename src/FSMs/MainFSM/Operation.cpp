@@ -9,6 +9,7 @@
 #include "Operation.h"
 #include "EStop.h"
 #include "Error.h"
+#include "ConnectionLost.h"
 #include "../EstopFSM/EstopBase.h"
 #include "../EstopFSM/EstopContext.h"
 #include "../ErrorFSM/ErrorContext.h"
@@ -206,6 +207,12 @@ void Operation::errorPusherTimerExpired(MainContext& ctx){
     Error* error = new(this) Error (ctx.hal,ctx.data);
     error->enterPusherTooLong();
     entry(ctx);
+}
 
+void Operation::eventConnectionLost(MainContext& ctx){
+	ctx.getOperationFSM().saveHistory(HistorySource::ERROR_HISTORY); // Error History?
+	exit(ctx);
+	new(this) ConnectionLost(ctx.hal, ctx.hs, PreviousFsmState::OPERATION);
+	entry(ctx);
 }
 

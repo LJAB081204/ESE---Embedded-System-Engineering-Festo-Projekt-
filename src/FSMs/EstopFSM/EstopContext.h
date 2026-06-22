@@ -37,6 +37,8 @@ public:
         currentState->entry(*this);
     }
 
+
+
     void eventButtonEstopPressed()        { currentState->eventButtonEstopPressed(*this); }
     void eventButtonEstopReleased()       { currentState->eventButtonEstopReleased(*this); }
     void eventButtonEstopPressedRemote()  { currentState->eventButtonEstopPressedRemote(*this); }
@@ -48,10 +50,10 @@ public:
     void eventGoToHandshakeEStopWasPressed() { currentState->eventGoToHandshakeEStopWasPressed(*this); }
     void eventGoToHandshakeEStopWasNotPressed()    { currentState->eventGoToHandshakeEStopWasNotPressed(*this); }
 
-    void eventResponseEStopIsPressed()    { currentState->eventGoToHandshakeEStopWasNotPressed(*this); }
-    void eventResponseEStopIsNotPressed()    { currentState->eventGoToHandshakeEStopWasNotPressed(*this); }
-    void eventResponseEStopWasPressed()    { currentState->eventGoToHandshakeEStopWasNotPressed(*this); }
-    void eventResponseEStopWasNotPressed()    { currentState->eventGoToHandshakeEStopWasNotPressed(*this); }
+    void eventResponseEStopIsPressed()    { currentState->eventResponseEStopIsPressed(*this); }
+    void eventResponseEStopIsNotPressed() { currentState->eventResponseEStopIsNotPressed(*this); }
+    void eventResponseEStopWasPressed()   { currentState->eventResponseEStopWasPressed(*this); }
+    void eventResponseEStopWasNotPressed(){ currentState->eventResponseEStopWasNotPressed(*this); }
 
 };
 

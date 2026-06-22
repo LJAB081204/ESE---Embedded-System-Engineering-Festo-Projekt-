@@ -16,7 +16,8 @@ public:
 	void entry(EStopContext& ctx)override;
 	void exit(EStopContext& ctx)override;
 	void eventResponseEStopIsPressed(EStopContext& ctx)override;
-	void eventResponseEStopIsNotPressed(EStopContext& ctx)override;
+	void eventResponseEStopWasPressed(EStopContext& ctx)override;
+	void eventResponseEStopWasNotPressed(EStopContext& ctx)override;
 
 };
 

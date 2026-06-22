@@ -30,6 +30,7 @@ public:
 	void eventButtonStartPressed(MainContext& ctx) override;
 	void eventErrorResolved(MainContext& ctx)override;
 	void enterPusherTooLong() { errorFSM.errorPusherTimerExpired(); }
+	void eventConnectionLost(MainContext& ctx)override;
 
 };
 
