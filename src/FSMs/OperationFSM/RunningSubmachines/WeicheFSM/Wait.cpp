@@ -18,7 +18,6 @@ Wait::Wait(){
 }
 void Wait::entry(WeicheContext& ctx){
 	ctx.data.weiche = WAIT_STATE;
-    std::cout << "Wait::entry - timer start" << std::endl;
 	ctx.pusherTimer.start(750);
 
 }
@@ -27,10 +26,10 @@ void Wait::exit(WeicheContext& ctx){
 	ctx.hal.getActors()->closePusher();
 }
 void Wait::eventTimerExpired(WeicheContext& ctx){
-    std::cout << "Wait::entry - timer end" << std::endl;
 	exit(ctx);
 	new (this) Receive;
 	entry(ctx);
 }
+
 }
 

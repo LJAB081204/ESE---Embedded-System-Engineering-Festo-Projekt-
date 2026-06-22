@@ -10,12 +10,14 @@
 #include "waitingForStart2.h"
 #include <iostream>
 #include "errorPusherTooLong.h"
+#include "../../PulseMessages.h"
 
 	errorPusherTooLong::errorPusherTooLong(){
 
 	}
 
 	void errorPusherTooLong::entry(ErrorContext& ctx){
+		ctx.data.pusherErrorActive = true;
 	    ctx.hal.getActors()->closePusher();
 	    ctx.hal.getActors()->ledButtonReset();
 
@@ -24,6 +26,50 @@
 
 	void errorPusherTooLong::exit(ErrorContext& ctx){
     	ctx.hal.getActors()->ledButtonResetOff();
+	    if(ctx.data.weiche == LET_ITEM_PASS_STATE){
+	    	if(!ctx.data.section2.empty()){
+//	    		std::cout << "[DEBUG] REMOVED ITEM:" << ctx.data.section2.front().item << std::endl;
+				switch(ctx.data.section2.front().item){
+				case IH_PROFILE:
+					MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IHM, 0);
+					break;
+				case IM_PROFILE:
+					MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IH,0);
+					break;
+				case IF_PROFILE:
+					MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IM, 0);
+					break;
+				case IHM_PROFILE:
+					MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IF, 0);
+					break;
+				default:
+					break;
+				}
+				ctx.data.removeItem(2);
+	    	}
+	    }
+	    else if (ctx.data.weiche == WAIT_STATE){
+	    	if(!ctx.data.section3.empty()){
+//	    		std::cout << "[DEBUG] REMOVED ITEM:" << ctx.data.section3.front().item << std::endl;
+				switch(ctx.data.section3.front().item){
+				case IH_PROFILE:
+					MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IHM, 0);
+					break;
+				case IM_PROFILE:
+					MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IH,0);
+					break;
+				case IF_PROFILE:
+					MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IM, 0);
+					break;
+				case IHM_PROFILE:
+					MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IF, 0);
+					break;
+				default:
+					break;
+				}
+				ctx.data.removeItem(3);
+	    	}
+	    }
 
 	}
 

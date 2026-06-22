@@ -51,10 +51,10 @@ using namespace std;
 
 				case PULSE_BTN_ESTOP_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & ESTOP) {
-				        cout << "E-Stop released!" << endl;
+//				        cout << "E-Stop released!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_BTN_ESTOP_LOCAL,0);
 				    } else {
-				        cout << "E-Stop pressed!" << endl;
+//				        cout << "E-Stop pressed!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_BTN_ESTOP_LOCAL,1);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),ESTOP);
@@ -63,10 +63,10 @@ using namespace std;
 
 				case PULSE_BTN_RESET_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & BUTTON_RESET) {
-				        cout << "Reset pressed!" << endl;
+//				        cout << "Reset pressed!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_BTN_RESET_LOCAL,1);
 				    } else {
-				        cout << "Reset released!" << endl;
+//				        cout << "Reset released!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_BTN_RESET_LOCAL,0);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),BUTTON_RESET);
@@ -75,10 +75,10 @@ using namespace std;
 
 				case PULSE_BTN_STOP_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & BUTTON_STOP) {
-				        cout << "Stop released!" << endl;
+//				        cout << "Stop released!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_BTN_STOP_LOCAL,0);
 				    } else {
-				        cout << "Stop pressed!" << endl;
+//				        cout << "Stop pressed!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_BTN_STOP_LOCAL,1);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),BUTTON_STOP);
@@ -86,10 +86,10 @@ using namespace std;
 				    break;
 				case PULSE_BTN_START_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & BUTTON_START) {
-				        cout << "Start pressed!" << endl;
+//				        cout << "Start pressed!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_BTN_START_LOCAL,1);
 				    } else {
-				        cout << "Start released!" << endl;
+//				        cout << "Start released!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_BTN_START_LOCAL,0);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),BUTTON_START);
@@ -97,10 +97,10 @@ using namespace std;
 				    break;
 				case PULSE_ITEM_AT_ENTRY_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & ITEM_AT_ENTRY) {
-				        cout << "Item at entry cleared!" << endl;
+//				        cout << "Item at entry cleared!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_AT_ENTRY_LOCAL,0);
 				    } else {
-				        cout << "Item at entry!" << endl;
+//				        cout << "Item at entry!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_AT_ENTRY_LOCAL,1);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),ITEM_AT_ENTRY);
@@ -108,10 +108,10 @@ using namespace std;
 				    break;
 				case PULSE_ITEM_AT_EXIT_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & ITEM_AT_EXIT) {
-				        cout << "Item at exit cleared!" << endl;
+//				        cout << "Item at exit cleared!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_AT_EXIT_LOCAL,0);
 				    } else {
-				        cout << "Item at exit!" << endl;
+//				        cout << "Item at exit!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_AT_EXIT_LOCAL,1);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),ITEM_AT_EXIT);
@@ -120,10 +120,10 @@ using namespace std;
 
 				case PULSE_ITEM_AT_PUSHER_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & ITEM_IN_PUSHER) {
-				        cout << "Item left pusher!" << endl;
+//				        cout << "Item left pusher!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_AT_PUSHER_LOCAL,0);
 				    } else {
-				        cout << "Item in pusher!" << endl;
+//				        cout << "Item in pusher!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_AT_PUSHER_LOCAL,1);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0), ITEM_IN_PUSHER);
@@ -134,7 +134,7 @@ using namespace std;
 				        cout << "Item is metal!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_METAL_LOCAL,1);
 				    } else {
-				        cout << "Item is not metal!" << endl;
+//				        cout << "Item is not metal!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_METAL_LOCAL,0);
 
 				    }
@@ -143,10 +143,10 @@ using namespace std;
 				    break;
 				case PULSE_PUSHER_OPEN_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & PUSHER_OPEN) {
-				        cout << "Pusher is open!" << endl;
+//				        cout << "Pusher is open!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_PUSHER_OPEN_LOCAL,1);
 				    } else {
-				        cout << "Pusher is closed!" << endl;
+//				        cout << "Pusher is closed!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_PUSHER_OPEN_LOCAL,0);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0), PUSHER_OPEN);

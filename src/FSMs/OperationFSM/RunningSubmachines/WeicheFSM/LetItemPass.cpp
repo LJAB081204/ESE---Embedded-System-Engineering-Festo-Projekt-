@@ -39,5 +39,11 @@ void LetItemPass::eventItemLeftPusher(WeicheContext& ctx){
 	new (this) Wait;
 	entry(ctx);
 }
+
+void LetItemPass::reactivate(WeicheContext& ctx){
+	exit(ctx);
+	new (this) Receive;
+	entry(ctx);
+}
 }
 
