@@ -30,6 +30,8 @@ public:
 		currentState->entry(*this);
 	}
 
+	~WeicheContext(){ delete timerPusherOpen; }
+
     void eventItemAtPusher()			   { currentState->eventItemAtPusher(*this); }
     void eventItemLeftPusher() 		   { currentState->eventItemLeftPusher(*this);}
 
@@ -37,7 +39,12 @@ public:
     void eventItemLeftSlide()			   { currentState->eventItemLeftSlide(*this);}
 
 
-    void eventItemMetal()			   { currentState->eventItemMetal(*this); }
+    void eventItemMetal()			   {
+    	currentState->eventItemMetal(*this);
+//    	if(!data.section2.empty()){
+//        data.section2.back().metal = true;   // back() = Item am Metallsensor, nicht front()
+//    	}
+    }
 
     void eventItemWrong() 		   { currentState->eventItemWrong(*this);}
     void eventItemCorrect()			   { currentState->eventItemCorrect(*this);}

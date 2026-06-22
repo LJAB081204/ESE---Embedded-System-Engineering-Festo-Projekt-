@@ -56,6 +56,18 @@ void Error::eventErrorResolved(MainContext& ctx) {
     new(this) Operation(ctx.getOperationFSM());
     ctx.getOperationFSM().restoreHistory();
 }
+void Error::eventGoBackIH(MainContext& ctx){
+	ctx.getOperationFSM().eventGoBackIH();
+}
+void Error::eventGoBackIM(MainContext& ctx){
+	ctx.getOperationFSM().eventGoBackIM();
+}
+void Error::eventGoBackIF(MainContext& ctx){
+	ctx.getOperationFSM().eventGoBackIF();
+}
+void Error::eventGoBackIHM(MainContext& ctx){
+	ctx.getOperationFSM().eventGoBackIHM();
+}
 
 
 

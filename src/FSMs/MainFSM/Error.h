@@ -29,6 +29,12 @@ public:
 	void errorPusherTimerExpired(MainContext& ctx) override;
 	void eventButtonStartPressed(MainContext& ctx) override;
 	void eventErrorResolved(MainContext& ctx)override;
+	void eventGoBackIH(MainContext& ctx)override;
+	void eventGoBackIM(MainContext& ctx)override;
+	void eventGoBackIF(MainContext& ctx)override;
+	void eventGoBackIHM(MainContext& ctx)override;
+
+
 	void enterPusherTooLong() { errorFSM.errorPusherTimerExpired(); }
 
 };
