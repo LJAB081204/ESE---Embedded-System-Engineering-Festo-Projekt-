@@ -12,10 +12,10 @@
 #include "../EstopFSM/EstopContext.h"
 
 
-class EStop : public MainBase {
+class EStop : public MainBase  {
 	EStopContext eStopFSM;
 public:
-		EStop(HAL& hal,HeightSensor& hs, EStopSource source) : eStopFSM(hal, hs, source) {}
+		EStop(HAL& hal,HeightSensor& hs, dataClass& data, EStopSource source) : eStopFSM(hal, hs, data, source) {}
 		void entry(MainContext& ctx) override;
 	    void exit(MainContext& ctx) override;
 	    void eventButtonEstopPressed(MainContext& ctx) override;
@@ -25,9 +25,18 @@ public:
 	    void eventButtonResetPressed(MainContext& ctx) override;
 	    void eventButtonResetPressedRemote(MainContext& ctx) override;
 
+        void eventResponseEStopIsPressed(MainContext& ctx) override;
+        void eventResponseEStopIsNotPressed(MainContext& ctx) override;
+        void eventResponseEStopWasPressed(MainContext& ctx) override;
+        void eventResponseEStopWasNotPressed(MainContext& ctx) override;
+
 	    void enterHandshakeEStopIsPressed(MainContext& ctx);
 	    void enterHandShakeEStopWasNotPressed(MainContext& ctx);
 	    void enterHandShakeEStopWasPressed(MainContext& ctx);
+
+	    void eventConnectionLost(MainContext& ctx);
+
+
 };
 
 #endif

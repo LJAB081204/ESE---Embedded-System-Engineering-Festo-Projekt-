@@ -6,6 +6,7 @@
  */
 #include "Error.h"
 #include "MainContext.h"
+#include "ConnectionLost.h"
 
 Error::Error(HAL& hal, dataClass& data) : errorFSM(hal, data) {}
 
@@ -69,6 +70,10 @@ void Error::eventGoBackIHM(MainContext& ctx){
 	ctx.getOperationFSM().eventGoBackIHM();
 }
 
-
+void Error::eventConnectionLost(MainContext& ctx) {
+	exit(ctx);
+	new(this) ConnectionLost(ctx.hal, ctx.hs, PreviousFsmState::ERROR);
+	entry(ctx);
+}
 
 

@@ -10,11 +10,14 @@
 
 #include "ConnectionLostEStopIsPressed.h"
 
+using namespace std;
+
 ConnectionLostNormal::ConnectionLostNormal(){
 }
 
 void ConnectionLostNormal::entry(ConnectionLostContext& ctx){
 	ctx.estopState = EStopButtonState::WASNOTPRESSED;
+	cout << "Connection Lost" << endl;
 }
 
 void ConnectionLostNormal::exit(ConnectionLostContext& ctx){

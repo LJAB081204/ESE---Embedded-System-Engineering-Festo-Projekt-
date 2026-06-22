@@ -9,6 +9,7 @@
 #include "Operation.h"
 #include "EStop.h"
 #include "Error.h"
+#include "ConnectionLost.h"
 #include "../EstopFSM/EstopBase.h"
 #include "../EstopFSM/EstopContext.h"
 #include "../ErrorFSM/ErrorContext.h"
@@ -52,13 +53,13 @@ void Operation::eventButtonResetPressedRemote(MainContext& ctx) {
 void Operation::eventButtonEstopPressed(MainContext& ctx) {
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
-    new(this) EStop(ctx.hal, ctx.hs, EStopSource::LOCAL);
+    new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::LOCAL);
     entry(ctx);
 }
 void Operation::eventButtonEstopPressedRemote(MainContext& ctx) {
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
-    new(this) EStop(ctx.hal, ctx.hs, EStopSource::REMOTE);
+    new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::REMOTE);
     entry(ctx);
 }
 void Operation::eventItemAtEntry(MainContext& ctx) {
@@ -206,6 +207,12 @@ void Operation::errorPusherTimerExpired(MainContext& ctx){
     Error* error = new(this) Error (ctx.hal,ctx.data);
     error->enterPusherTooLong();
     entry(ctx);
+}
 
+void Operation::eventConnectionLost(MainContext& ctx){
+	ctx.getOperationFSM().saveHistory(HistorySource::ERROR_HISTORY); // Error History?
+	exit(ctx);
+	new(this) ConnectionLost(ctx.hal, ctx.hs, PreviousFsmState::OPERATION);
+	entry(ctx);
 }
 

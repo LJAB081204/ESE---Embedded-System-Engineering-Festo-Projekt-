@@ -11,13 +11,16 @@
 #include "EstopContext.h"
 #include "EStopRemote.h"
 #include "BothReleased.h"
+#include "../../PulseMessages.h"
 
+using namespace std;
 
 HandShakeEStopWasNotPressed::HandShakeEStopWasNotPressed(){
 }
 
 void HandShakeEStopWasNotPressed::entry(EStopContext& ctx){
-	//Handshake Pulse senden
+	MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_HANDSHAKE_ESTOP_STATUS, 0);
+	cout << "Handshake EStop Was Not Pressed" << endl;
 }
 
 void HandShakeEStopWasNotPressed::exit(EStopContext& ctx){
@@ -35,5 +38,6 @@ void HandShakeEStopWasNotPressed::eventResponseEStopIsPressed(EStopContext& ctx)
 }
 
 void HandShakeEStopWasNotPressed::eventResponseEStopWasNotPressed(EStopContext& ctx){
-	// History von Operation oder Error (?)
+	exit(ctx);
+	ctx.setActive(false); //KI
 }

@@ -13,7 +13,7 @@
 #include "HandShakeEStopWasPressed.h"
 #include "HandShakeEStopIsPressed.h"
 #include "../../HeightSensor.h"
-
+#include "../../dataClass.h"
 
 enum class EStopSource {LOCAL,REMOTE};
 
@@ -24,10 +24,11 @@ class EStopContext {
 public:
     HAL& hal;
     HeightSensor& hs;
+    dataClass& data;
     bool isActive() { return active; }
     void setActive(bool a) { active = a; }
 
-    EStopContext(HAL& hal,HeightSensor& hs,EStopSource source) : hal(hal), hs(hs) {
+    EStopContext(HAL& hal, HeightSensor& hs, dataClass& data, EStopSource source) : hal(hal), hs(hs), data(data) {
     	if(source == EStopSource::LOCAL)
     		new(currentState) EStopState;
     	else{
@@ -35,6 +36,8 @@ public:
     	}
         currentState->entry(*this);
     }
+
+
 
     void eventButtonEstopPressed()        { currentState->eventButtonEstopPressed(*this); }
     void eventButtonEstopReleased()       { currentState->eventButtonEstopReleased(*this); }
@@ -47,10 +50,10 @@ public:
     void eventGoToHandshakeEStopWasPressed() { currentState->eventGoToHandshakeEStopWasPressed(*this); }
     void eventGoToHandshakeEStopWasNotPressed()    { currentState->eventGoToHandshakeEStopWasNotPressed(*this); }
 
-    void eventResponseEStopIsPressed()    { currentState->eventGoToHandshakeEStopWasNotPressed(*this); }
-    void eventResponseEStopIsNotPressed()    { currentState->eventGoToHandshakeEStopWasNotPressed(*this); }
-    void eventResponseEStopWasPressed()    { currentState->eventGoToHandshakeEStopWasNotPressed(*this); }
-    void eventResponseEStopWasNotPressed()    { currentState->eventGoToHandshakeEStopWasNotPressed(*this); }
+    void eventResponseEStopIsPressed()    { currentState->eventResponseEStopIsPressed(*this); }
+    void eventResponseEStopIsNotPressed() { currentState->eventResponseEStopIsNotPressed(*this); }
+    void eventResponseEStopWasPressed()   { currentState->eventResponseEStopWasPressed(*this); }
+    void eventResponseEStopWasNotPressed(){ currentState->eventResponseEStopWasNotPressed(*this); }
 
 };
 

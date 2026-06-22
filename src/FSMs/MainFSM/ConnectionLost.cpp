@@ -8,14 +8,18 @@
 #include "MainContext.h"
 #include "ConnectionLost.h"
 
+using namespace std;
+
 void ConnectionLost::entry(MainContext& ctx) {
 	ctx.hal.getActors()->motorStop();
 	ctx.hal.getActors()->greenLampOff();
 	ctx.hal.getActors()->redLampOn();
 	ctx.hal.getActors()->ledButtonStartOff();
+	cout << "Connection Lost" << endl;
 }
 void ConnectionLost::exit(MainContext& ctx) {
 	ctx.hal.getActors()->redLampOff();
+	cout << "Connection Restored" << endl;
 }
 
 void ConnectionLost::eventButtonEstopPressed(MainContext& ctx) {
@@ -33,7 +37,8 @@ void ConnectionLost::eventConnectionLost(MainContext& ctx) {
 void ConnectionLost::eventConnectionRestored(MainContext& ctx) {
     exit(ctx);
     EStopButtonState estopState = conLostFSM.estopState;
-	EStop* estop = new(this) EStop(ctx.hal, ctx.hs, EStopSource::LOCAL);
+	EStop* estop = new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::LOCAL);
+    estop->entry(ctx);
 	switch(estopState){
 	case EStopButtonState::ISPRESSED:
 		estop->enterHandshakeEStopIsPressed(ctx);
@@ -45,7 +50,5 @@ void ConnectionLost::eventConnectionRestored(MainContext& ctx) {
 		estop->enterHandShakeEStopWasNotPressed(ctx);
 		break;
 	}
-    entry(ctx);
 
-	//conLostFSM.eventConnectionRestored();
 }

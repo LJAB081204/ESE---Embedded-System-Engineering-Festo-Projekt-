@@ -128,6 +128,11 @@ public:
         void errorPusherTimerExpired() 				{currentState->errorPusherTimerExpired(*this);}
         void eventErrorResolved()					{currentState->eventErrorResolved(*this);}
 
+        void eventResponseEStopIsPressed()					{currentState->eventResponseEStopIsPressed(*this);}
+        void eventResponseEStopIsNotPressed()					{currentState->eventResponseEStopIsNotPressed(*this);}
+        void eventResponseEStopWasPressed()					{currentState->eventResponseEStopWasPressed(*this);}
+        void eventResponseEStopWasNotPressed()					{currentState->eventResponseEStopWasNotPressed(*this);}
+
     };
 
 

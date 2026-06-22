@@ -104,6 +104,8 @@ public:
 
     void errorPusherTimerExpired(MainContext& ctx) override;
 
+    void eventConnectionLost(MainContext& ctx) override;
+
 };
 
 
