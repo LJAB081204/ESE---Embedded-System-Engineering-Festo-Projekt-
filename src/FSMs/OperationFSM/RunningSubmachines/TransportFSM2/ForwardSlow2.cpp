@@ -41,23 +41,17 @@ namespace M2{
 				ctx.data.raiseError();
 			}
 			else{
-				delete ctx.data.section1.front().timer;
-				ctx.data.section1.front().timer = new DynamicTimer(ctx.data.section1.front().id, *ctx.data.handler);
-				ctx.data.section1.front().timer->start(ctx.data.pusherTime+500);
 				new(this) Forward2;
 				entry(ctx);
 			}
 		}
-		std::cout<< ctx.data.section1.size() << std::endl;
-		//ctx.data.moveFrom1To2();
-		std::cout<< ctx.data.section2.size() << std::endl;
-		new (this) Forward2;
-//		if(ctx.data.itemCount != 0){
-//			new(this) Forward;
-//		}
-//		else{
-//			new(this) Stop2;
-//		}
+		else{
+			std::cout<< "Error item arrived (empty)"<< std::endl;
+			ctx.data.err = ITEM_APPEARED;
+			ctx.data.errorLoc = 1;
+			ctx.data.raiseError();
+		}
+		new(this) Forward2;
 		entry(ctx);
 	}
 	void ForwardSlow2::eventItemTransfer(uint32_t itemCode, TransportContext2& ctx){
@@ -82,15 +76,6 @@ namespace M2{
 		new(this) Stop2;
 		entry(ctx);
 
-	}
-
-	void ForwardSlow2::eventItemLeftEntry(TransportContext2& ctx){
-		if(!ctx.data.section1.empty()){
-			ctx.data.section1.back().timer->start(ctx.data.entryTime);
-		}
-		else{
-			std::cout<<"Queue 1 leer Festo1" << std::endl;
-		}
 	}
 
 	void ForwardSlow2::eventItemLeftExitRemote(TransportContext2& ctx){

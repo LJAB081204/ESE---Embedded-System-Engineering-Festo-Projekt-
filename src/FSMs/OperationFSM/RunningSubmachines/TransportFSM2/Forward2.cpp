@@ -120,7 +120,7 @@ namespace M2{
 			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
 			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
 			std::cout<< diff << std::endl;
-			if(diff>500){
+			if(diff>100){
 				std::cout<< "Error item at Pusher"<< std::endl;
 				delete ctx.data.section2.front().timer;
 				ctx.data.err = ITEM_APPEARED;
@@ -134,12 +134,11 @@ namespace M2{
 			ctx.data.errorLoc = 2;
 			raiseError(ctx);
 		}
-
 	}
 
 	void Forward2::eventItemTransfer(uint32_t itemCode, TransportContext2& ctx){
-		//itemData item = ctx.data.convertIntToItem(itemCode);
-		//ctx.data.addTransferredItem(item);
+		itemData item = ctx.data.convertIntToItem(itemCode);
+		ctx.data.addTransferredItem(item);
 	}
 
 	void Forward2::eventItemLeftExitRemote(TransportContext2& ctx){
