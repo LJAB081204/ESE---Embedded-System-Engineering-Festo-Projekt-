@@ -71,7 +71,6 @@ class dataClass{
 	bool eStopWasPressed = false;
 
 	WeicheState weiche = LET_ITEM_PASS_STATE;
-	bool pusherErrorActive = false;
 
 	dataClass(TimerHandler& handler);
 	void reset();
