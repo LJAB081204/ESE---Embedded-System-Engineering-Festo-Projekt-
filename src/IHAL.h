@@ -74,6 +74,8 @@ public:
     virtual void lampQ1Off() = 0;
     virtual void lampQ2() = 0;
     virtual void lampQ2Off() = 0;
+
+    virtual bool isJunction() = 0;
 };
 
 

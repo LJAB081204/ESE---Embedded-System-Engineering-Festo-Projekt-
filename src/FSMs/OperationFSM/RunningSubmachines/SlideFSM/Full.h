@@ -10,6 +10,8 @@
 
 
 #include "SlideBase.h"
+namespace M1{
+
 class Full : public SlideBase{
 public:
 	Full();
@@ -19,6 +21,6 @@ public:
 	void eventItemLeftSlide(SlideContext& ctx)override;
 
 };
-
+}
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_SLIDEFSM_FULL_H_ */

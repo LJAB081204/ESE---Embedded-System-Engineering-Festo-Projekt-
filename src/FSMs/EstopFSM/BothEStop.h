@@ -10,6 +10,7 @@
 
 #include "EstopBase.h"
 
+
 class BothEStop : public EStopBase{
 public:
 	BothEStop();
@@ -19,7 +20,6 @@ public:
 	void eventButtonEstopReleasedRemote(EStopContext& ctx)override;
 
 };
-
 
 
 #endif /* SRC_FSMS_ESTOPFSM_BOTHESTOP_H_ */

@@ -15,6 +15,9 @@
 #include "EStop.h"
 #include "Error.h"
 #include "../../dataClass.h"
+#include "../../HeightSensor.h"
+#include "../OperationFSM/RunningFactory.h"
+#include "../../timer.h"
 
 
 class MainContext {
@@ -24,8 +27,12 @@ class MainContext {
 public:
     HAL& hal;
     dataClass& data;
-    MainContext(HAL& hal,dataClass& data) : hal(hal),data(data) {
-    	operationFSM = new OperationContext(hal,data);
+    HeightSensor& hs;
+    RunningFactory& factory;
+    TimerHandler& timerHandler;
+    MainContext(HAL& hal,dataClass& data,HeightSensor& hs,RunningFactory& factory,TimerHandler& timerHandler)
+    : hal(hal),data(data), hs(hs), factory(factory),timerHandler(timerHandler) {
+    	operationFSM = new OperationContext(hal,data,hs,factory,timerHandler);
         new(currentState) Operation(*operationFSM);
         currentState->entry(*this);
     }
@@ -106,6 +113,21 @@ public:
 
         void eventSlideFull()                    { currentState->eventSlideFull(*this); }
         void eventSlideFullRemote()              { currentState->eventSlideFullRemote(*this); }
+        void eventItemTransfer(uint32_t itemCode) 			{currentState->eventItemTransfer(itemCode,*this);}
+        void eventSlideTimerExpired()              { currentState->eventSlideTimerExpired(*this); }
+        void eventGoBack()						{currentState->eventGoBack(*this);}
+
+        void eventGoBackWFP()						{currentState->eventGoBackWFP(*this);}
+        void eventGoBackIH()						{currentState->eventGoBackIH(*this);}
+        void eventGoBackIM()						{currentState->eventGoBackIM(*this);}
+        void eventGoBackIF()						{currentState->eventGoBackIF(*this);}
+        void eventGoBackIHM()						{currentState->eventGoBackIHM(*this);}
+        void eventConnectionLost()						{currentState->eventConnectionLost(*this);}
+        void eventConnectionRestored()						{currentState->eventConnectionRestored(*this);}
+
+        void errorPusherTimerExpired() 				{currentState->errorPusherTimerExpired(*this);}
+        void eventErrorResolved()					{currentState->eventErrorResolved(*this);}
+
     };
 
 

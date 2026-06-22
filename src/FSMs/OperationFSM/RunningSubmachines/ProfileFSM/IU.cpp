@@ -11,6 +11,7 @@
 #include "IU.h"
 #include "Default.h"
 #include "IS.h"
+namespace M1{
 
 IU::IU(){};
 
@@ -22,7 +23,10 @@ void IU::exit(ProfileContext& ctx) {}
 
 void IU::eventItemGone(ProfileContext& ctx) {
 	exit(ctx);
-	//in die Datenklasse schreiben
+	if(!ctx.data.section1.empty()){
+		ctx.data.section1.front().unknown = true;
+		ctx.data.moveFrom1To2();
+	}
 	new(this) Default;
 	entry(ctx);
 }
@@ -34,5 +38,5 @@ void IU::eventHeightWrong(ProfileContext& ctx) {
 	entry(ctx);
 }
 
-
+}
 

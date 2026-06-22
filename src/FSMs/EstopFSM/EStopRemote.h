@@ -10,6 +10,7 @@
 
 #include "EstopBase.h"
 
+
 class EStopRemote : public EStopBase{
 public:
 	EStopRemote();

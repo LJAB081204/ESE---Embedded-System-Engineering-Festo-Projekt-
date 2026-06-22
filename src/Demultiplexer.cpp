@@ -42,11 +42,11 @@ using namespace std;
 		ThreadCtl(_NTO_TCTL_IO, 0); // Request IO privileges for this thread.
 		_pulse msg;
 		while(waitForMessages){
-			std::cout << "Waiting for pulse..." << std::endl;
+			//std::cout << "Waiting for pulse..." << std::endl;
 
 		    int recvid = MsgReceivePulse(channelID, &msg, sizeof(_pulse), nullptr);
 
-		    	std::cout << "Pulse received: " << msg.code << std::endl;
+		    	//std::cout << "Pulse received: " << msg.code << std::endl;
 				switch(msg.code){
 
 				case PULSE_BTN_ESTOP_LOCAL:
@@ -155,10 +155,10 @@ using namespace std;
 
 				case PULSE_SLIDE_FULL_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & SLIDE_FULL) {
-				        cout << "Slide cleared!" << endl;
+				        //cout << "Slide cleared!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_SLIDE_FULL_LOCAL,0);
 				    } else {
-				        cout << "Slide is full!" << endl;
+				        //cout << "Slide is full!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_SLIDE_FULL_LOCAL,1);
 				    }
 				    out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0), SLIDE_FULL);

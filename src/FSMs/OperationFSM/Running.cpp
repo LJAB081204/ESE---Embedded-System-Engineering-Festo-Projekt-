@@ -12,17 +12,18 @@
 #include "RunningSubmachines/WeicheFSM/WeicheContext.h"
 #include "RunningSubmachines/SequenceFSM/SequenceContext.h"
 #include "RunningSubmachines/ProfileFSM/ProfileContext.h"
+#include "RunningSubmachines/SlideFSM/SlideContext.h"
 #include "Idle.h"
 #include "Running.h"
-
 #include <iostream>
 
-
-	Running::Running(HAL& hal,dataClass& data){
+namespace M1{
+	Running::Running(HAL& hal,dataClass& data,SequenceContext& sequence,TimerHandler& timerHandler){
 		transportFSM = new TransportContext(hal,data);
-		weicheFSM = new WeicheContext(hal,data);
-		sequenceFSM = new SequenceContext(data);
+		weicheFSM = new WeicheContext(hal,data,timerHandler);
+		sequenceFSM = &sequence;
 		profileFSM = new ProfileContext(data);
+		slideFSM = new SlideContext(hal,data);
 	}
 
 
@@ -31,10 +32,11 @@
 	}
 
 	void Running::exit(OperationContext& ctx){
+		ctx.hal.getActors()->greenLampOff();
 		delete transportFSM;
 		delete weicheFSM;
-		delete sequenceFSM;
 		delete profileFSM;
+		delete slideFSM;
 	}
 
 	void Running::onRestore(HistorySource source, OperationContext& ctx){
@@ -42,12 +44,15 @@
 			delete transportFSM;
 			transportFSM = new TransportContext(ctx.hal,ctx.data);
 			delete weicheFSM;
-			weicheFSM = new WeicheContext(ctx.hal,ctx.data);
+			weicheFSM = new WeicheContext(ctx.hal,ctx.data,ctx.timerHandler);
 			delete profileFSM;
 			profileFSM = new ProfileContext(ctx.data);
+			delete slideFSM;
+			slideFSM = new SlideContext(ctx.hal,ctx.data);
 		}
 		else{
 			transportFSM->reactivate();
+			slideFSM->reactivate();
 		}
 	}
 
@@ -76,9 +81,12 @@
 	    weicheFSM->eventItemLeftPusher();
 	}
 	void Running::eventItemInSlide(OperationContext& ctx){
+		slideFSM->eventItemInSlide();
 	    transportFSM->eventItemInSlide();
+	    weicheFSM->eventItemInSlide();
 	}
 	void Running::eventItemLeftSlide(OperationContext& ctx){
+		slideFSM->eventItemLeftSlide();
 	    weicheFSM->eventItemLeftSlide();
 	}
 	void Running::eventItemMetal(OperationContext& ctx){
@@ -124,6 +132,10 @@
 	    // kein Sub-FSM braucht das aktuell
 	}
 
+	void Running::eventSlideTimerExpired(OperationContext& ctx){
+		slideFSM->eventSlideTimerExpired();
+	}
+
 	// Höhensensor / Profil
 	void Running::eventHeightHigh(OperationContext& ctx){
 	    profileFSM->eventHeightHigh();
@@ -158,4 +170,35 @@
 	    sequenceFSM->eventUpdate();
 	}
 	void Running::eventError(OperationContext& ctx){}
-	void Running::eventTimerExpired(OperationContext& ctx){}
+	void Running::eventTimerExpired(OperationContext& ctx){
+		weicheFSM->eventTimerExpired();
+	}
+
+	void Running::eventGoBackWFP(OperationContext& ctx){
+		sequenceFSM->eventGoBackWFP();
+	}
+
+	void Running::eventGoBackIH(OperationContext& ctx){
+			sequenceFSM->eventGoBackIH();
+		}
+
+	void Running::eventGoBackIM(OperationContext& ctx){
+			sequenceFSM->eventGoBackIM();
+		}
+
+	void Running::eventGoBackIF(OperationContext& ctx){
+			sequenceFSM->eventGoBackIF();
+		}
+
+	void Running::eventGoBackIHM(OperationContext& ctx){
+			sequenceFSM->eventGoBackIHM();
+		}
+
+
+
+
+
+
+
+
+}

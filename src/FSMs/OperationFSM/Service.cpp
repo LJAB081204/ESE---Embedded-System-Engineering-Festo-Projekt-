@@ -1,38 +1,74 @@
-/*
- * Service.cpp
- *
- *  Created on: 31.05.2026
- *      Author: tayla
- */
-
 #include <new>
 #include "OperationBase.h"
 #include "OperationContext.h"
-#include "Idle.h"
 #include "Service.h"
+#include "Idle.h"
+#include "ServiceMode/Calibration.h"
+#include <iostream>
 
-#include "SErviceMode/EntryCalibration.h"
-
-	Service::Service(){
+Service::Service(){
 	}
 
 	void Service::entry(OperationContext& ctx){
 		ctx.hal.getActors()->greenLampBlink(1000);
+		ctx.hal.getActors()->lampQ1Off();
+		ctx.hal.getActors()->ledButtonStart();
+		ctx.hal.getActors()->ledButtonReset();
+		ctx.hal.getActors()->motorStop();
+		ctx.hs.stopCalibration();
+		std::cout << "Service" << std::endl;
 	}
 
-	void Service::exit(OperationContext& ctx){
-	}
+	void Service::exit(OperationContext& ctx){}
 
 	void Service::eventButtonStartPressedLong(OperationContext& ctx){
 		exit(ctx);
+		ctx.longPressTransition = true;
 		new (this) Idle;
 		entry(ctx);
 	}
 
-	void Service::eventItemAtEntry(OperationContext& ctx){
+	void Service::eventButtonStartPressedLongRemote(OperationContext& ctx){
 		exit(ctx);
-		new (this) EntryCalibration;
+		ctx.longPressTransition = true;
+		new (this) Idle;
 		entry(ctx);
 	}
 
+	void Service::eventButtonResetPressed(OperationContext& ctx){
+		exit(ctx);
+		ctx.hs.startCalibration();
+		ctx.round = 0;
+		new (this) Calibration;
+		entry(ctx);
+	}
+
+	void Service::eventButtonResetPressedRemote(OperationContext& ctx){
+		exit(ctx);
+		ctx.hs.startCalibration();
+		ctx.round = 0;
+		new (this) Calibration;
+		entry(ctx);
+	}
+
+	void Service::eventItemAtEntry(OperationContext& ctx){
+		ctx.hal.getActors()->motorForwards();
+	}
+
+	void Service::eventItemArrived(OperationContext& ctx){
+		ctx.hal.getActors()->motorSlow();
+	}
+
+	void Service::eventItemGone(OperationContext& ctx){
+		ctx.hal.getActors()->motorForwards();
+	}
+
+	void Service::eventItemAtPusher(OperationContext& ctx){
+			ctx.hal.getActors()->letItemPass();
+	}
+
+	void Service::eventItemAtExit(OperationContext& ctx){
+			ctx.hal.getActors()->motorStop();
+			ctx.hal.getActors()->closePusher();
+	}
 

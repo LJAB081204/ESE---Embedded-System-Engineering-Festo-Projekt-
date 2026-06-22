@@ -11,6 +11,8 @@
 #include "IH.h"
 #include "../../../../PulseMessages.h"
 #include <sys/neutrino.h>
+#include <iostream>
+namespace M1{
 
 
 	waitingForProfile::waitingForProfile(){
@@ -18,6 +20,7 @@
 
 	void waitingForProfile::entry(SequenceContext& ctx){
 		ctx.oneRound = false;
+		std::cout << "Next expected -> IH" << std::endl;
 	}
 
 	void waitingForProfile::exit(SequenceContext& ctx){
@@ -25,8 +28,14 @@
 	}
 
 	void waitingForProfile::eventUpdate(SequenceContext& ctx){
+		std::cout << "SECTION 2 SIZE AT UPDATE :" << ctx.data.section2.size() << std::endl;
+
 		if(ctx.data.section2.empty()) return;
+		std::cout << "ENTERED UPDATE FUNCTION" << std::endl;
+
 		ctx.resolveProfile();									//Profilierung
+		std::cout << "SECTION2 NOT EMPTY" << std::endl;
+
 		if(ctx.data.section2.front().item == IH_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 			exit(ctx);
 			raiseItemCorrect(ctx);
@@ -46,4 +55,4 @@
 	void waitingForProfile::raiseItemWrong(SequenceContext& ctx){
 		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ITEM_WRONG, 0);
 	}
-
+}

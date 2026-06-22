@@ -7,6 +7,7 @@
 
 #ifndef SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_WEICHEFSM_WEICHEBASE_H_
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_WEICHEFSM_WEICHEBASE_H_
+namespace M1{
 
 class WeicheContext;
 
@@ -33,12 +34,12 @@ public:
 
 	virtual void eventError(WeicheContext& fsm) {}
 
-
+	virtual void reactivate(WeicheContext& fsm) {}
 
 
 
 };
 
-
+}
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_WEICHEFSM_WEICHEBASE_H_ */

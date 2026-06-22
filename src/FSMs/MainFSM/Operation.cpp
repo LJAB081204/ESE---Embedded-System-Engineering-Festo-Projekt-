@@ -11,10 +11,15 @@
 #include "Error.h"
 #include "../EstopFSM/EstopBase.h"
 #include "../EstopFSM/EstopContext.h"
+#include "../ErrorFSM/ErrorContext.h"
+#include "../ErrorFSM/ErrorBase.h"
+
 
 
 void Operation::entry(MainContext& ctx) {}
-void Operation::exit(MainContext& ctx)  {}
+void Operation::exit(MainContext& ctx)  {
+	ctx.hal.getActors()->greenLampOff();
+}
 
 void Operation::eventButtonStartPressed(MainContext& ctx) {
     operationFSM.eventButtonStartPressed();
@@ -47,13 +52,13 @@ void Operation::eventButtonResetPressedRemote(MainContext& ctx) {
 void Operation::eventButtonEstopPressed(MainContext& ctx) {
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
-    new(this) EStop(ctx.hal, EStopSource::LOCAL);
+    new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::LOCAL);
     entry(ctx);
 }
 void Operation::eventButtonEstopPressedRemote(MainContext& ctx) {
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
-    new(this) EStop(ctx.hal, EStopSource::REMOTE);
+    new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::REMOTE);
     entry(ctx);
 }
 void Operation::eventItemAtEntry(MainContext& ctx) {
@@ -120,7 +125,7 @@ void Operation::eventItemMetalRemote(MainContext& ctx) {
 void Operation::eventError(MainContext& ctx) {
 	ctx.getOperationFSM().saveHistory(HistorySource::ERROR_HISTORY);
     exit(ctx);
-    //new(this) Error;
+    new(this) Error (ctx.hal,ctx.data);
     entry(ctx);
 }
 void Operation::eventItemGone(MainContext& ctx){
@@ -172,5 +177,35 @@ void Operation::eventSlideFull(MainContext& ctx) {
 void Operation::eventSlideFullRemote(MainContext& ctx) {
     operationFSM.eventSlideFullRemote();
 }
+void Operation::eventSlideTimerExpired(MainContext& ctx) {
+    operationFSM.eventSlideTimerExpired();
+}
+void Operation::eventGoBack(MainContext& ctx){
+	operationFSM.eventGoBack();
+}
 
+void Operation::eventGoBackWFP(MainContext& ctx){
+	operationFSM.eventGoBackWFP();
+}
+void Operation::eventGoBackIH(MainContext& ctx){
+	operationFSM.eventGoBackIH();
+}
+void Operation::eventGoBackIM(MainContext& ctx){
+	operationFSM.eventGoBackIM();
+}
+void Operation::eventGoBackIF(MainContext& ctx){
+	operationFSM.eventGoBackIF();
+}
+void Operation::eventGoBackIHM(MainContext& ctx){
+	operationFSM.eventGoBackIHM();
+}
+
+void Operation::errorPusherTimerExpired(MainContext& ctx){
+	ctx.getOperationFSM().saveHistory(HistorySource::ERROR_HISTORY);
+    exit(ctx);
+    Error* error = new(this) Error (ctx.hal,ctx.data);
+    error->enterPusherTooLong();
+    entry(ctx);
+
+}
 

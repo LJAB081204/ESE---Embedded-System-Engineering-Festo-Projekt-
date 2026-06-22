@@ -9,6 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_STOP_H_
 
 #include "TransportBase.h"
+namespace M1{
 
 class Stop : public TransportBase{
 public:
@@ -18,7 +19,7 @@ public:
 
 	void eventItemAtEntry(TransportContext& ctx)override;
 };
-
+}
 
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_TRANSPORTFSM_STOP_H_ */

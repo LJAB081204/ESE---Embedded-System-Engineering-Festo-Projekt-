@@ -30,6 +30,7 @@ ConnectionController::ConnectionController(
     dispatcherInChid = ChannelCreate(0);
     wakeDispatcherCoid = dispatcherInCoid;
     dispatcherInCoid = ConnectAttach(0, 0, dispatcherInChid, _NTO_SIDE_CHANNEL, 0);
+    wakeDispatcherCoid = dispatcherInCoid;
     wakeRemoteCoid   = ConnectAttach(0, 0, remoteIn->chid,   _NTO_SIDE_CHANNEL, 0);
 
     tRemote = thread(&ConnectionController::runReceiveFromRemote, this);

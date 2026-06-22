@@ -14,25 +14,43 @@
 #include "OperationBase.h"
 #include "Idle.h"
 #include "Running.h"
-
+#include "RunningSubmachines/SequenceFSM/SequenceContext.h"
 #include <iostream>
+#include "../../HeightSensor.h"
+#include "RunningFactory.h"
+#include "../../PulseMessages.h"
+#include "../../timer.h"
+
 
 class OperationContext{
 	//Kontext
-	alignas(Running) char stateBuffer[sizeof(Running)];
+	alignas(Idle) char stateBuffer[sizeof(Idle)];
 
 
 public:
 	HAL& hal;
 	int connectionID = -1;
 	dataClass& data;
-	Running* savedRunning = nullptr;
+	HeightSensor& hs;
+	RunningFactory& factory;
+	TimerHandler& timerHandler;
+	OperationBase* savedRunning = nullptr;
 	OperationBase* currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 	HistorySource historySource = HistorySource::NONE_HISTORY;
+	SimpleTimer* calTimer;
+	int round;
+	bool longPressTransition;
+	bool blockStartUntilRelease;
 
-	OperationContext(HAL& hal,dataClass& data) : hal(hal),data(data){
+
+	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory,TimerHandler& timerHandler)
+	: hal(hal),data(data),hs(hs),factory(factory),timerHandler(timerHandler){
+		calTimer = new SimpleTimer(0,0);
 		new (currentState) Idle;
 		currentState->entry(*this);
+		round = 0;
+		longPressTransition = false;
+		blockStartUntilRelease = false;
 	}
 	~OperationContext(){
 		delete savedRunning;
@@ -40,17 +58,59 @@ public:
 	void saveHistory(HistorySource source){
 		historySource = source;
 		if (source == HistorySource::STOP_HISTORY){
-			savedRunning = static_cast<Running*>(currentState);
+			savedRunning = currentState;
 			new (stateBuffer) Idle;
 			currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 			currentState->entry(*this);
 		}
+		else if (source == HistorySource::ESTOP_HISTORY){
+			if (currentState != reinterpret_cast<OperationBase*>(stateBuffer)){
+				currentState->exit(*this);
+				delete currentState;
+			}
+			if (savedRunning != nullptr){
+				savedRunning->exit(*this);
+				delete savedRunning;
+				savedRunning = nullptr;
+			}
+			new (stateBuffer) Idle;
+			currentState = reinterpret_cast<OperationBase*>(stateBuffer);
+		}
+
+
 	}
 	void restoreHistory(){
 		currentState->onRestore(historySource, *this);
 		currentState->entry(*this);
 		historySource = HistorySource::NONE_HISTORY;
 	}
+
+	void saveCalibrationTime(const std::string& key, uint32_t value) {
+	    std::vector<std::string> lines;
+	    std::ifstream in(CALIBRATION_FILE);
+	    std::string line;
+	    bool found = false;
+
+	    while (std::getline(in, line)) {
+	        if (line.find(key + "=") == 0) {
+	            lines.push_back(key + "=" + std::to_string(value));
+	            found = true;
+	        } else {
+	            lines.push_back(line);
+	        }
+	    }
+	    in.close();
+
+	    if (!found) {
+	        lines.push_back(key + "=" + std::to_string(value));
+	    }
+
+	    std::ofstream out(CALIBRATION_FILE);
+	    for (const auto& l : lines) {
+	        out << l << "\n";
+	    }
+	}
+
 
     HistorySource getHistorySource() const { return historySource; }
 
@@ -105,11 +165,11 @@ public:
     void eventItemMetal()			   { currentState->eventItemMetal(*this); }
     void eventItemMetalRemote()              { currentState->eventItemMetalRemote(*this); }
 
-    void eventItemArrived()			   { std::cout<<"WWWWWWWW" << std::endl; currentState->eventItemArrived(*this);}
+    void eventItemArrived()			   { currentState->eventItemArrived(*this);}
     void eventItemGone()			   { currentState->eventItemGone(*this);}
 
-    void eventFestoReady()			   { currentState->eventItemGone(*this);}
-    void eventFestoNotReady()		   { currentState->eventItemGone(*this);}
+    void eventFestoReady()			   { currentState->eventFestoReady(*this);}
+    void eventFestoNotReady()		   { currentState->eventFestoNotReady(*this);}
 
     void eventHeightHigh()			   {currentState->eventHeightHigh(*this); }
     void eventHeightFlat()			   { currentState->eventHeightFlat(*this); }
@@ -128,7 +188,19 @@ public:
 
     void eventSlideFull()                    { currentState->eventSlideFull(*this); }
     void eventSlideFullRemote()              { currentState->eventSlideFullRemote(*this); }
+    void eventItemTransfer(uint32_t itemCode)				{ currentState->eventItemTransfer(itemCode,*this);}
+    void eventSlideTimerExpired()              { currentState->eventSlideTimerExpired(*this); }
+
+    void eventGoBack()						{currentState->eventGoBack(*this);}
+
+    void eventGoBackWFP()						{currentState->eventGoBackWFP(*this);}
+    void eventGoBackIH()						{currentState->eventGoBackIH(*this);}
+    void eventGoBackIM()						{currentState->eventGoBackIM(*this);}
+    void eventGoBackIF()						{currentState->eventGoBackIF(*this);}
+    void eventGoBackIHM()						{currentState->eventGoBackIHM(*this);}
+
 };
+
 
 
 #endif /* SRC_FSMS_OPERATIONFSM_OPERATIONCONTEXT_H_ */

@@ -10,6 +10,8 @@
 
 #include "WeicheBase.h"
 
+namespace M1{
+
 class LetItemPass : public WeicheBase{
 public:
 	LetItemPass();
@@ -17,9 +19,12 @@ public:
 	void exit(WeicheContext& ctx) override;
 
 	void eventItemLeftPusher(WeicheContext& ctx)override;
+	void reactivate(WeicheContext& ctx) override;
+
+
 
 };
-
+}
 
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_WEICHEFSM_LETITEMPASS_H_ */

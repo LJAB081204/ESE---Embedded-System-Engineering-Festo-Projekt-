@@ -8,6 +8,7 @@
 #include "EStop.h"
 #include "Operation.h"
 
+
 void EStop::entry(MainContext& ctx) {
     ctx.hal.getActors()->motorStop();
     ctx.hal.getActors()->greenLampOff();
@@ -28,6 +29,7 @@ void EStop::eventButtonResetPressed(MainContext& ctx) {
     eStopFSM.eventButtonResetPressed();
     if(!eStopFSM.isActive()) {
         exit(ctx);
+        ctx.data.EStopWasPressed = false;
         new(this) Operation(ctx.getOperationFSM());
         ctx.getOperationFSM().restoreHistory();
     }
@@ -36,6 +38,7 @@ void EStop::eventButtonResetPressedRemote(MainContext& ctx) {
     eStopFSM.eventButtonResetPressedRemote();
     if(!eStopFSM.isActive()) {
         exit(ctx);
+        ctx.data.EStopWasPressed = false;
         new(this) Operation(ctx.getOperationFSM());
         ctx.getOperationFSM().restoreHistory();
     }
@@ -44,8 +47,22 @@ void EStop::eventButtonResetPressedRemote(MainContext& ctx) {
 void EStop::eventButtonEstopPressedRemote(MainContext& ctx) {
     eStopFSM.eventButtonEstopPressedRemote();
 }
+
 void EStop::eventButtonEstopReleasedRemote(MainContext& ctx) {
     eStopFSM.eventButtonEstopReleasedRemote();
 }
+
+void EStop::enterHandshakeEStopIsPressed(MainContext& ctx) {
+	eStopFSM.eventGoToHandshakeEStopIsPressed();
+}
+
+void EStop::enterHandShakeEStopWasNotPressed(MainContext& ctx) {
+	eStopFSM.eventGoToHandshakeEStopWasNotPressed();
+}
+
+void EStop::enterHandShakeEStopWasPressed(MainContext& ctx) {
+	eStopFSM.eventGoToHandshakeEStopWasPressed();
+}
+
 
 

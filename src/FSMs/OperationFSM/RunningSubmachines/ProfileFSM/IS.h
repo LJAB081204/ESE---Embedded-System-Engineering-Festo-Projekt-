@@ -9,16 +9,18 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_PROFILEFSM_IS_H_
 
 #include "ProfileBase.h"
+namespace M1{
 
 class IS : public ProfileBase{
 public:
 	IS();
 	void entry(ProfileContext& ctx) override;
 	void exit(ProfileContext& ctx) override;
+	void raiseError(ProfileContext& ctx);
 
 	virtual void eventItemGone(ProfileContext& ctx)override;
 
 };
 
-
+}
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_PROFILEFSM_IS_H_ */

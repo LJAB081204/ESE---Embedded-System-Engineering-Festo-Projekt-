@@ -13,6 +13,7 @@
 #include "WeicheContext.h"
 #include "../../../../PulseMessages.h"
 
+namespace M1{
 
 Receive::Receive(){
 
@@ -20,6 +21,8 @@ Receive::Receive(){
 
 void Receive::entry(WeicheContext& ctx){
 	ctx.hal.getActors()->closePusher();
+	std::cout << "READY TO RECEIVE ITEM" << std::endl;
+
 
 }
 void Receive::exit(WeicheContext& ctx){
@@ -27,25 +30,28 @@ void Receive::exit(WeicheContext& ctx){
 }
 
 void Receive::eventItemAtPusher(WeicheContext& ctx){
-	exit(ctx);
-	raiseUpdate(ctx);
-	new (this) Ready;
-	entry(ctx);
+	ctx.pusherTimer.start(25);
+
 }
 void Receive::eventItemMetal(WeicheContext& ctx){
+	std::cout << "section2 size: " << ctx.data.section2.size() << std::endl;
 	if(!ctx.data.section2.empty()){
 			ctx.data.section2.front().metal = true;
 	}
-	std::cout << "ITEM DURCHLASSEN";
-	ctx.hal.getActors()->openPusher();
-	sleep(1);
+
+}
+
+void Receive::eventTimerExpired(WeicheContext& ctx){
 	exit(ctx);
-	new (this) Receive;
+	std::cout << "TIMER EXPIRED" << std::endl;
+	raiseUpdate(ctx);
+	new (this) Ready;
 	entry(ctx);
+
 }
 void Receive::raiseUpdate(WeicheContext& ctx){
 	MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_UPDATE,0);
 }
 
-
+}
 

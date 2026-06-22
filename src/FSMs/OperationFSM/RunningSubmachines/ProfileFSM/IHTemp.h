@@ -9,6 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_PROFILEFSM_IHTEMP_H_
 
 #include "ProfileBase.h"
+namespace M1{
 
 class IHTemp : public ProfileBase{
 public:
@@ -22,6 +23,7 @@ public:
 	virtual void eventHeightHole(ProfileContext& fsm)override;
 	virtual void eventHeightWrong(ProfileContext& fsm)override;
 };
+}
 
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_PROFILEFSM_IHTEMP_H_ */

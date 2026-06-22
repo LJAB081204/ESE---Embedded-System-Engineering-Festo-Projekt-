@@ -9,6 +9,7 @@
 #define SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_PROFILEFSM_PROFILEIH_H_
 
 #include "ProfileBase.h"
+namespace M1{
 
 class ProfileIH : public ProfileBase{
 public:
@@ -22,6 +23,6 @@ public:
 	virtual void eventHeightFlat(ProfileContext& ctx)override;
 	virtual void eventHeightWrong(ProfileContext& ctx)override;
 };
-
+}
 
 #endif /* SRC_FSMS_OPERATIONFSM_RUNNINGSUBMACHINES_PROFILEFSM_PROFILEIH_H_ */

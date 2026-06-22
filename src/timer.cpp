@@ -12,42 +12,57 @@ static const int TIMER_TICK = _PULSE_CODE_MINAVAIL;
 // SimpleTimer
 // ===========================================================================
 
-SimpleTimer::SimpleTimer(int id, int dispatcherCoid)
-    : id_(id), coid_(dispatcherCoid)
+SimpleTimer::SimpleTimer(int dispatcherCoid, int pulseMessage)
+
+    : coid_(dispatcherCoid)
+
 {
-    // sigevent konfigurieren: Bei Timer-Ablauf wird ein Pulse mit Code
-    // PULSE_TIMER_EXPIRED und Value id_ an den Dispatcher-Channel gesendet.
+
+    // sigevent konfigurieren: Bei Timer-Ablauf wird ein Pulse an den Dispatcher-Channel gesendet.
+
     struct sigevent event;
-    SIGEV_PULSE_INIT(&event, coid_, SIGEV_PULSE_PRIO_INHERIT, PULSE_TIMER_EXPIRED, id_);
+
+    SIGEV_PULSE_INIT(&event, coid_, SIGEV_PULSE_PRIO_INHERIT, pulseMessage, 0);
 
     // Monotonischen POSIX-Timer anlegen (nicht durch Systemzeit-Änderungen beeinflussbar)
+
     timer_create(CLOCK_MONOTONIC, &event, &timerId_);
+
 }
 
 SimpleTimer::~SimpleTimer()
+
 {
+
     timer_delete(timerId_);   // Systemtimer-Ressource freigeben
+
 }
 
 void SimpleTimer::start(uint32_t millisec)
+
 {
+    startMs_ = millisec;   // merken für stop()
     struct itimerspec its;
-    // Ablaufzeit einstellen: Millisekunden in Sekunden + Nanosekunden aufteilen
     its.it_value.tv_sec     = millisec / 1000;
     its.it_value.tv_nsec    = (millisec % 1000) * 1000000L;
-    // Kein periodisches Wiederholen – Einmaliger Ablauf
     its.it_interval.tv_sec  = 0;
     its.it_interval.tv_nsec = 0;
     timer_settime(timerId_, 0, &its, nullptr);
+
 }
 
-void SimpleTimer::stop()
+uint32_t SimpleTimer::stop()
+
 {
-    // Alle Felder auf 0 setzen deaktiviert den Timer sofort
-    struct itimerspec its;
+    struct itimerspec its, remaining;
     memset(&its, 0, sizeof(its));
-    timer_settime(timerId_, 0, &its, nullptr);
+    timer_settime(timerId_, 0, &its, &remaining);   // Timer stoppen + Rest holen
+    uint32_t remainingMs = remaining.it_value.tv_sec * 1000
+                         + remaining.it_value.tv_nsec / 1000000L;
+    return startMs_ - remainingMs;   // abgelaufene Zeit
+
 }
+
 
 
 // ===========================================================================
@@ -212,7 +227,7 @@ void TimerHandler::processTick()
             t->virtualTime_ = t->targetTime_;  // Zähler auf exakte Zielzeit kappen
 
             // Expired-Pulse mit der Timer-ID als Value an den Dispatcher senden
-            MsgSendPulse(coidDispatcher_, SIGEV_PULSE_PRIO_INHERIT, PULSE_TIMER_EXPIRED, t->id_);
+            MsgSendPulse(coidDispatcher_, SIGEV_PULSE_PRIO_INHERIT, PULSE_DYNAMIC_TIMER_EXPIRED, t->id_);
         }
     }
 }
@@ -232,4 +247,9 @@ void* TimerHandler::receiverThread(void* arg)
         pthread_mutex_unlock(&self->mutex_);
     }
     return nullptr;
+}
+
+void TimerHandler::setCoid(int dispCoid){
+	this->coidDispatcher_ = dispCoid;
+
 }

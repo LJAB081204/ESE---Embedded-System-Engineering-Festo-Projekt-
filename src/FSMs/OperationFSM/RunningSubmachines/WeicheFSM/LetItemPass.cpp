@@ -11,22 +11,33 @@
 #include "Receive.h"
 #include "Wait.h"
 #include "LetItemPass.h"
+#include "../../../../PulseMessages.h"
+
+namespace M1{
 
 LetItemPass::LetItemPass(){
 }
 
 void LetItemPass::entry(WeicheContext& ctx){
+	ctx.data.weiche = LET_ITEM_PASS_STATE;
 	ctx.hal.getActors()->letItemPass();
-	// start Timer Pusher
+	ctx.timerPusherOpen = new SimpleTimer(ctx.data.conId,PULSE_EVENT_ERROR_PUSHER_TIMER);
+	ctx.timerPusherOpen->start(10000);
+
 }
 
 void LetItemPass::exit(WeicheContext& ctx){
-	// Start Timer 3s
+	delete ctx.timerPusherOpen;
+	ctx.timerPusherOpen = nullptr;
+
 }
 void LetItemPass::eventItemLeftPusher(WeicheContext& ctx){
 	exit(ctx);
+	if(!ctx.data.section2.empty()){
+		ctx.data.moveFrom2To3();
+	}
 	new (this) Wait;
 	entry(ctx);
 }
-
+}
 

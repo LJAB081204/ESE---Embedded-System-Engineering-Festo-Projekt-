@@ -20,42 +20,17 @@ class TimerHandler;
  *       Der im Konstruktor übergebene coid wird im Destruktor per
  *       ConnectDetach freigegeben.
  */
-class SimpleTimer
-{
+class SimpleTimer {
 public:
-    /**
-     * Erstellt den Timer und verknüpft ihn mit dem Dispatcher-Channel.
-     * @param id            Frei wählbare Timer-ID; wird als Pulse-Value
-     *                      (sival_int) an den Dispatcher gesendet.
-     * @param dispatcherCoid Connection-ID des Dispatcher-Channels, auf dem
-     *                      der Expired-Pulse empfangen werden soll.
-     */
-    SimpleTimer(int id, int dispatcherCoid);
-
-    /**
-     * @brief Stoppt den Timer, löscht den Systemtimer und trennt die
-     *        Connection (ConnectDetach).
-     */
+    SimpleTimer(int dispatcherCoid, int pulseMessage);
     ~SimpleTimer();
-
-    /**
-     * Startet den Timer als Einmal-Ablauf.
-     * @param millisec Ablaufzeit in Millisekunden. Nach Ablauf wird genau
-     *                 einmal ein PULSE_TIMER_EXPIRED-Pulse gesendet.
-     *                 Ein laufender Timer wird damit neu gestartet.
-     */
-    void start(uint32_t millisec);
-
-    /**
-     * Bricht einen laufenden Timer ab (setzt it_value auf 0).
-     *        Kein Pulse wird gesendet.
-     */
-    void stop();
+    void     start(uint32_t millisec);
+    uint32_t stop();   // gibt abgelaufene Zeit in ms zurück
 
 private:
-    int     id_;       ///< Timer-ID, die im Pulse-Value übertragen wird
-    int     coid_;     ///< Connection-ID zum Dispatcher-Channel
-    timer_t timerId_;  ///< Handle des POSIX-Systemtimers
+    int        coid_;
+    timer_t    timerId_;
+    uint32_t   startMs_ = 0;   // gesetzte Laufzeit beim letzten start()
 };
 
 
@@ -190,6 +165,7 @@ public:
      * @param t Zeiger auf den abzumeldenden Timer.
      */
     void unregisterTimer(DynamicTimer* t);
+    void setCoid(int dispCoid);
 
     mutable pthread_mutex_t mutex_; ///< Schützt timers_, paused_, slowFactor_
                                     ///< sowie die Felder aller DynamicTimer.

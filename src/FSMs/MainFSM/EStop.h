@@ -11,10 +11,11 @@
 #include "MainBase.h"
 #include "../EstopFSM/EstopContext.h"
 
+
 class EStop : public MainBase {
 	EStopContext eStopFSM;
 public:
-		EStop(HAL& hal, EStopSource source) : eStopFSM(hal, source) {}
+		EStop(HAL& hal,HeightSensor& hs, dataClass& data, EStopSource source) : eStopFSM(hal, hs, data, source) {}
 		void entry(MainContext& ctx) override;
 	    void exit(MainContext& ctx) override;
 	    void eventButtonEstopPressed(MainContext& ctx) override;
@@ -23,6 +24,10 @@ public:
 	    void eventButtonEstopReleasedRemote(MainContext& ctx) override;
 	    void eventButtonResetPressed(MainContext& ctx) override;
 	    void eventButtonResetPressedRemote(MainContext& ctx) override;
+
+	    void enterHandshakeEStopIsPressed(MainContext& ctx);
+	    void enterHandShakeEStopWasNotPressed(MainContext& ctx);
+	    void enterHandShakeEStopWasPressed(MainContext& ctx);
 };
 
 #endif
