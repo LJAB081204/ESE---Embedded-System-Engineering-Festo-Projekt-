@@ -69,6 +69,8 @@ void Error::eventGoBackIHM(MainContext& ctx){
 	ctx.getOperationFSM().eventGoBackIHM();
 }
 
-
+void Error::eventGoBack(MainContext& ctx){
+	ctx.getOperationFSM().eventGoBack();
+}
 
 

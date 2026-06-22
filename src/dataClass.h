@@ -66,6 +66,7 @@ class dataClass{
 	int errorLoc = 0;
 
 	WeicheState weiche = LET_ITEM_PASS_STATE;
+	bool pusherErrorActive = false;
 
 	dataClass(TimerHandler& handler);
 	void reset();
@@ -88,7 +89,7 @@ class dataClass{
 	uint32_t pusherTime;
 	uint32_t exitTime;
 
-
+	bool isMachine1 = false;
 	private:
 
 	void setTimes();

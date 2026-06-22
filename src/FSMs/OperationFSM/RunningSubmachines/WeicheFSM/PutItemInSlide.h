@@ -16,7 +16,8 @@ class PutItemInSlide : public WeicheBase{
 public:
 	PutItemInSlide();
 	void entry(WeicheContext& ctx)override;
-	void eventItemInSlide(WeicheContext& ctx)override;
+	//void eventItemInSlide(WeicheContext& ctx)override;
+	void eventItemLeftPusher(WeicheContext& ctx)override;
 };
 }
 

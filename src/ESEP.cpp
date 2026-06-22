@@ -38,6 +38,7 @@ int main(int argc, char **argv) {
 	    }
 
 		if (strcmp(argv[1],"-c") == 0){
+			data.isMachine1 = true;
 			local = SYSTEM1;
 			remote = SYSTEM2;
 			factory = new M1::Factory(data);

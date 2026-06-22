@@ -17,9 +17,8 @@ Wait::Wait(){
 
 }
 void Wait::entry(WeicheContext& ctx){
-	ctx.pusherTimer.start(750);
-	timerPusherOpen = new SimpleTimer(ctx.data.conId,PULSE_EVENT_ERROR);
-	timerPusherOpen->start(20000);
+	ctx.data.weiche = WAIT_STATE;
+	ctx.pusherTimer.start((ctx.data.exitTime / 5));
 }
 
 void Wait::exit(WeicheContext& ctx){
