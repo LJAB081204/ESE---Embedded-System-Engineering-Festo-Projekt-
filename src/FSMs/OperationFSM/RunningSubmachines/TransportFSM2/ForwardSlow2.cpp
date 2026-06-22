@@ -20,6 +20,7 @@ namespace M2{
 	void ForwardSlow2::entry(TransportContext2& ctx){
 		std::cout<<"ForwardSlow2" << std::endl;
 		ctx.hal.getActors()->motorSlow();
+		ctx.data.handler->setSlow(ctx.data.slowFactor);
 	}
 
 	void ForwardSlow2::exit(TransportContext2& ctx){
@@ -27,11 +28,30 @@ namespace M2{
 
 	void ForwardSlow2::eventItemGone(TransportContext2& ctx){
 		exit(ctx);
-		//if(ctx.data.itemCount != 0){
-
-		new(this) Forward2;		//Datenklasse fehlt noch
-		//}
-
+		if(!ctx.data.section1.empty()){
+			std::cout<< "height time: "<<ctx.data.heightTime << std::endl;
+			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
+			int diff = ctx.data.heightTime - ctx.data.section1.front().timer->getTime();
+			std::cout<< diff << std::endl;
+			if(diff>1500){
+				std::cout<< "Error item gone"<< std::endl;
+				delete ctx.data.section1.front().timer;
+				ctx.data.err = ITEM_APPEARED;
+				ctx.data.errorLoc = 1;
+				ctx.data.raiseError();
+			}
+			else{
+				new(this) Forward2;
+				entry(ctx);
+			}
+		}
+		else{
+			std::cout<< "Error item arrived (empty)"<< std::endl;
+			ctx.data.err = ITEM_APPEARED;
+			ctx.data.errorLoc = 1;
+			ctx.data.raiseError();
+		}
+		new(this) Forward2;
 		entry(ctx);
 	}
 	void ForwardSlow2::eventItemTransfer(uint32_t itemCode, TransportContext2& ctx){

@@ -18,10 +18,12 @@ namespace M1{
 
 	void SlowWaitForFesto::entry(TransportContext& ctx){
 		std::cout<<"SlowWaitForFesto" << std::endl;
+		ctx.data.handler->pauseAll();
 		ctx.hal.getActors()->motorStop();
 	}
 
 	void SlowWaitForFesto::exit(TransportContext& ctx){
+		ctx.data.handler->resumeAll();
 	}
 
 

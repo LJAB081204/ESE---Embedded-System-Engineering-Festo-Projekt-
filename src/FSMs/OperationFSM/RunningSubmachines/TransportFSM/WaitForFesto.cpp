@@ -15,9 +15,11 @@ namespace M1{
 
 	void WaitForFesto::entry(TransportContext& ctx){
 		std::cout<<"WaitForFesto" << std::endl;
+		ctx.data.handler->pauseAll();
 	}
 
 	void WaitForFesto::exit(TransportContext& ctx){
+		ctx.data.handler->resumeAll();
 	}
 
 	void WaitForFesto::eventFestoNotReady(TransportContext& ctx){

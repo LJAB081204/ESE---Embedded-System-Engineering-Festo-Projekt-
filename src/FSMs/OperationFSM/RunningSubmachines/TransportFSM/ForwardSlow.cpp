@@ -13,6 +13,7 @@
 #include "sys/neutrino.h"
 #include "../../../../PulseMessages.h"
 #include <iostream>
+#include "../../../../timer.h"
 namespace M1{
 
 	ForwardSlow::ForwardSlow(){
@@ -21,6 +22,7 @@ namespace M1{
 	void ForwardSlow::entry(TransportContext& ctx){
 		std::cout<<"ForwardSlow" << std::endl;
 		ctx.hal.getActors()->motorSlow();
+		ctx.data.handler->setSlow(ctx.data.slowFactor);
 	}
 
 	void ForwardSlow::exit(TransportContext& ctx){
@@ -28,16 +30,30 @@ namespace M1{
 
 	void ForwardSlow::eventItemGone(TransportContext& ctx){
 		exit(ctx);
-		std::cout<< ctx.data.section1.size() << std::endl;
-		//ctx.data.moveFrom1To2();
-		std::cout<< ctx.data.section2.size() << std::endl;
+		if(!ctx.data.section1.empty()){
+			std::cout<< "height time: "<<ctx.data.heightTime << std::endl;
+			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
+			int diff = ctx.data.heightTime - ctx.data.section1.front().timer->getTime();
+			std::cout<< diff << std::endl;
+			if(diff>1500){
+				std::cout<< "Error item gone"<< std::endl;
+				delete ctx.data.section1.front().timer;
+				ctx.data.err = ITEM_APPEARED;
+				ctx.data.errorLoc = 1;
+				ctx.data.raiseError();
+			}
+			else{
+				new(this) Forward;
+				entry(ctx);
+			}
+		}
+		else{
+			std::cout<< "Error item arrived (empty)"<< std::endl;
+			ctx.data.err = ITEM_APPEARED;
+			ctx.data.errorLoc = 1;
+			ctx.data.raiseError();
+		}
 		new (this) Forward;
-//		if(ctx.data.itemCount != 0){
-//			new(this) Forward;
-//		}
-//		else{
-//			new(this) Stop;
-//		}
 		entry(ctx);
 	}
 
@@ -53,12 +69,21 @@ namespace M1{
 		std::cout<< ctx.data.itemCount << std::endl;
 	}
 
+	void ForwardSlow::eventItemLeftEntry(TransportContext& ctx){
+		if(!ctx.data.section1.empty()){
+			ctx.data.section1.back().timer->start(ctx.data.entryTime);
+		}
+		else{
+			std::cout<<"Queue 1 leer Festo1" << std::endl;
+		}
+	}
+
 	void ForwardSlow::eventItemAtEntryRemote(TransportContext& ctx){
 		exit(ctx);
 		itemData item = ctx.data.section3.front();
 		uint32_t itemCode = ctx.data.convertItemToInt(item);
 		MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_ITEM_TRANSFER,itemCode);
-		if(ctx.data.section3.empty()){
+		if(!ctx.data.section3.empty()){
 			ctx.data.removeItem(3);
 		}
 		if(ctx.data.itemCount == 0){
@@ -68,7 +93,7 @@ namespace M1{
 	}
 
 	void ForwardSlow::eventItemInSlide(TransportContext& ctx){
-		if(ctx.data.section2.empty()){
+		if(!ctx.data.section2.empty()){
 			ctx.data.removeItem(2);
 		}
 		std::cout<< ctx.data.itemCount << std::endl;
@@ -79,5 +104,5 @@ namespace M1{
 	void ForwardSlow::raiseRequestTransfer(TransportContext& ctx){
 			MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_TRANSFER_REQUEST,0);
 
-		}
+	}
 }
