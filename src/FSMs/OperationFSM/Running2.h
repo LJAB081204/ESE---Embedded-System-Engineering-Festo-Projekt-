@@ -42,7 +42,6 @@ public:
 	void eventItemLeftEntry(OperationContext& ctx) override;
 	void eventItemAtExit(OperationContext& ctx) override;
 	void eventItemLeftExit(OperationContext& ctx) override;
-	void eventItemLeftEntry(OperationContext& ctx) override;
 	void eventItemAtPusher(OperationContext& ctx) override;
 	void eventItemLeftPusher(OperationContext& ctx) override;
 	void eventItemInSlide(OperationContext& ctx) override;
