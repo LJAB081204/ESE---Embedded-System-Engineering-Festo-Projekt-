@@ -333,15 +333,33 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    	break;
 
 					case PULSE_DYNAMIC_TIMER_EXPIRED:
+						cout << "Timer expired: " << msg.value.sival_int <<  endl;
 						switch(msg.value.sival_int){
-							case 100:
-								FSM.eventTimerExpired();
-								break;
-							default:
-								FSM.eventError();
-								break;
-						}
+						case 100:
+							FSM.eventTimerExpired();
 							break;
+						default:
+							int itemLoc = data.findItem(msg.value.sival_int);
+							switch(itemLoc){
+								case 1:
+									data.err = ITEM_GONE;
+									data.errorLoc = 1;
+									FSM.eventError();
+									break;
+								case 2:
+									data.err = ITEM_GONE;
+									data.errorLoc = 2;
+									FSM.eventError();
+									break;
+								case 3:
+									data.err = ITEM_GONE;
+									data.errorLoc = 3;
+									FSM.eventError();
+									break;
+							}
+							break;
+					}
+						break;
 					case PULSE_EVENT_ERROR:
 							cout << "ERROR!!" << endl;
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_REMOTE, 0);

@@ -167,6 +167,23 @@ bool dataClass::removeItem(int queue){
 	}
 }
 
+int dataClass::findItem(int id){
+	if(!section1.empty()){
+		if(section1.front().id == id){
+			return 1;
+		}
+		else if(section2.front().id == id){
+			return 2;
+		}
+		if(section3.front().id == id){
+			return 3;
+		}
+	}
+	else{
+		return -1;
+	}
+}
+
 uint32_t dataClass::convertItemToInt(const itemData& item)
 {
     return (static_cast<uint32_t>(item.id) << 4) |

@@ -80,6 +80,8 @@ class dataClass{
 	bool removeItem(int queue);
 	bool addTransferredItem(itemData item);
 
+	int findItem(int id);
+
 	uint32_t convertItemToInt(const itemData& item);
 	itemData convertIntToItem(uint32_t itemCode);
 	void raiseError();
