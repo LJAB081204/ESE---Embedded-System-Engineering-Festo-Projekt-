@@ -335,9 +335,16 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 					case PULSE_DYNAMIC_TIMER_EXPIRED:
 						cout << "Timer expired: " << msg.value.sival_int <<  endl;
 						switch(msg.value.sival_int){
-						case 100:
-							FSM.eventTimerExpired();
-							break;
+
+							case 100:
+								FSM.eventTimerExpired();
+								break;
+//							default:
+//								cout << "Dynamic Timer!!"<< msg.value.sival_int << endl;
+//								FSM.eventError();
+//								break;
+//						}
+//							break;
 						default:
 							int itemLoc = data.findItem(msg.value.sival_int);
 							switch(itemLoc){

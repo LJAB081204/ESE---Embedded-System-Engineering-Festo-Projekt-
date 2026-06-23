@@ -13,6 +13,7 @@
 #include "currentAck.h"
 #include "errorPusherTooLong.h"
 #include <sys/neutrino.h>
+#include <iostream>
 
 
 	currentAck::currentAck(){
@@ -22,6 +23,16 @@
 	void currentAck::entry(ErrorContext& ctx){
 		ctx.hal.getActors()->redLampBlinkOff();
 		ctx.hal.getActors()->redLampOn();
+		switch (ctx.data.err){
+		case ITEM_SPECIAL: std::cout << "Spezialitem beim Höhensensor entfernen."<< std::endl;
+			break;
+		case BOTH_SLIDES_FULL: std::cout << "Rutsche auf Band zwei leeren." << std::endl;
+			break;
+		case ITEM_APPEARED: std::cout << "Werkstück entfernen. Location :"  << ctx.data.errorLoc << std::endl;
+			break;
+		default:
+			break;
+		}
 	}
 
 	void currentAck::exit(ErrorContext& ctx){
@@ -45,13 +56,14 @@
 
 	void currentAck::eventItemGone(ErrorContext& ctx){
 		if(ctx.data.err == ITEM_SPECIAL){
-			ctx.data.itemCount--;
+			ctx.data.removeItem(1);
 			raiseItemGone(ctx);
 			exit(ctx);
 			new(this) waitingForStart;
 			entry(ctx);
 		}
-		else if(ctx.data.err == ITEM_APPEARED && ctx.data.errorLoc == 2){
+		else if(ctx.data.err == ITEM_APPEARED && ctx.data.errorLoc == 1){
+			ctx.data.removeItem(1);
 			exit(ctx);
 			new(this) waitingForStart;
 			entry(ctx);

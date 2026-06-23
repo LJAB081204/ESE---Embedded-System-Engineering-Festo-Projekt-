@@ -20,11 +20,11 @@ void ResetConLost::exit(EStopContext& ctx){
 }
 void ResetConLost::eventButtonResetPressedRemote(EStopContext& ctx){
 	exit(ctx);
-	ctx.setActive(false); //KI
+	ctx.setActive(false);
 }
 void ResetConLost::eventButtonResetPressed(EStopContext& ctx){
 	exit(ctx);
-	ctx.setActive(false); //KI
+	ctx.setActive(false);
 }
 
 

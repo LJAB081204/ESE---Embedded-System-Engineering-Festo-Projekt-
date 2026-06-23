@@ -16,20 +16,50 @@
 #include <sys/neutrino.h>
 #include "waitingForStart.h"
 #include "errorPusherTooLong.h"
-
+#include <iostream>
+#include <string>
 
 	currentNAck::currentNAck(){
 
 	}
 
 	void currentNAck::entry(ErrorContext& ctx){
+		ctx.hal.getActors()->ledButtonReset();
 		ctx.hal.getActors()->yellowLampBlinkOff();
 		ctx.hal.getActors()->redLampBlink(100);
 		ctx.hal.getActors()->motorStop();
+		std::string location;
+		switch (ctx.data.errorLoc){
+		case 1:
+			location = "Höhensensor";
+			break;
+		case 2:
+			location = "Pusher";
+			break;
+		case 3:
+			location = "Ausgang";
+			break;
+		default: break;
+
+		}
+		switch (ctx.data.err){
+		case ITEM_SPECIAL: std::cout << "Fehler: Spezialitem erkannt."<< std::endl;
+			break;
+		case ITEM_GONE: std::cout << "Fehler: Werkstück verschwunden. Ort: " << location << std::endl;
+			break;
+		case BOTH_SLIDES_FULL: std::cout << "Fehler: Versuchte Aussortierung bei voller Rutsche." << std::endl;
+			break;
+		case ITEM_APPEARED: std::cout << "Fehler: Werkstück aufgetaucht. Ort: "  << location << std::endl;
+			break;
+		default:
+			std::cout << "Unbekannter Fehler"<< ctx.data.err << std::endl;
+			break;
+		}
+		std::cout << "Bitte Fehler mit Resettaste quittieren." << std::endl;
 	}
 
 	void currentNAck::exit(ErrorContext& ctx){
-
+		ctx.hal.getActors()->ledButtonResetOff();
 	}
 
 	void currentNAck::eventItemLeftSlide(ErrorContext& ctx){

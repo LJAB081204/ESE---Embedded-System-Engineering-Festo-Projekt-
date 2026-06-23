@@ -12,6 +12,7 @@
 #include "../../PulseMessages.h"
 #include "errorPusherTooLong.h"
 #include "waitingForStart.h"
+#include <iostream>
 
 
 	goneNAck::goneNAck(){
@@ -22,6 +23,7 @@
 		ctx.hal.getActors()->redLampBlinkOff();
 		ctx.hal.getActors()->redLampBlink(500);
 		ctx.data.err = ERROR_CLEARED;
+		std::cout << "Fehler ist unquittiert gegangen. Bitte mit Resettaste quittieren." << std::endl;
 	}
 
 	void goneNAck::exit(ErrorContext& ctx){
