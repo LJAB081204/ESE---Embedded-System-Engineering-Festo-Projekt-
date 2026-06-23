@@ -56,6 +56,9 @@ public:
 		delete savedRunning;
 	}
 	void saveHistory(HistorySource source){
+//		if (source == HistorySource::ERROR_HISTORY){
+//			return;
+//		}
 		historySource = source;
 		if (source == HistorySource::STOP_HISTORY){
 			savedRunning = currentState;
