@@ -13,6 +13,7 @@
 #include "ErrorBase.h"
 #include "../../dataClass.h"
 #include "currentNAck.h"
+#include "waitingForResolve.h"
 
 class ErrorContext {
 	alignas(currentNAck) char stateBuffer[sizeof(currentNAck)];
@@ -25,7 +26,12 @@ public:
 	bool active = true;
 	bool onlyPusher = false;
 	ErrorContext(HAL& hal,dataClass& data) : hal(hal),data(data){
-		new (currentState) currentNAck;
+		if(data.isErrorLocal){
+			new (currentState) currentNAck;
+		}
+		else{
+			new (currentState) waitingForResolve;
+		}
 		currentState->entry(*this);
 
 	}

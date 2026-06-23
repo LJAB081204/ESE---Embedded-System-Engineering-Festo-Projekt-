@@ -345,10 +345,12 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 							break;
 					case PULSE_EVENT_ERROR:
 							cout << "ERROR!!" << endl;
+							data.isErrorLocal = true;
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_REMOTE, 0);
 							FSM.eventError();
 							break;
 					case PULSE_EVENT_ERROR_REMOTE:
+							data.isErrorLocal = false;
 							FSM.eventError();
 							break;
 
@@ -405,10 +407,12 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 						break;
 
 					case PULSE_EVENT_ERROR_PUSHER_TIMER:
+						data.isErrorLocal = true;
 			            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_PUSHER_TIMER_REMOTE, 0);
 						FSM.errorPusherTimerExpired();
 						break;
 					case PULSE_EVENT_ERROR_PUSHER_TIMER_REMOTE:
+						data.isErrorLocal = false;
 						FSM.errorPusherTimerExpired();
 						break;
 					case PULSE_EVENT_ERROR_RESOLVED:
