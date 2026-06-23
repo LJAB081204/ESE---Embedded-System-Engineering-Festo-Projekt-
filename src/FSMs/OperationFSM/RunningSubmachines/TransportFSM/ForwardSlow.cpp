@@ -31,10 +31,10 @@ namespace M1{
 	}
 
 	void ForwardSlow::eventItemGone(TransportContext& ctx){
-		exit(ctx);
 		if(!ctx.data.section1.empty()){
-				new(this) Forward;
-				entry(ctx);
+			exit(ctx);
+			new(this) Forward;
+			entry(ctx);
 		}
 		else{
 			ctx.data.handler->pauseAll();
@@ -43,12 +43,11 @@ namespace M1{
 			ctx.data.errorLoc = 1;
 			ctx.data.raiseError();
 		}
-		new (this) Forward;
-		entry(ctx);
 	}
 
 	void ForwardSlow::eventItemAtExit(TransportContext& ctx){
 		exit(ctx);
+		ctx.data.section3.front().timer->stop();
 		raiseRequestTransfer(ctx);
 		new(this) SlowWaitForFesto;
 		entry(ctx);

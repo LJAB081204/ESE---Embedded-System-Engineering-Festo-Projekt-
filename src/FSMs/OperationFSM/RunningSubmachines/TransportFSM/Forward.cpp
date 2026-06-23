@@ -130,6 +130,7 @@ namespace M1{
 				raiseError(ctx);
 			}
 			else{
+				exit(ctx);
 				ctx.data.section3.front().timer->stop();
 				raiseRequestTransfer(ctx);
 				new(this) WaitForFesto;
