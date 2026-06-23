@@ -20,10 +20,17 @@ namespace M1{
 	}
 
 	void ForwardSlow::entry(TransportContext& ctx){
-		std::cout<<"ForwardSlow" << std::endl;
-		ctx.hal.getActors()->motorForwards();
-		ctx.hal.getActors()->motorSlow();
-		ctx.data.handler->setSlow(ctx.data.slowFactor);
+		if(ctx.data.itemCount == 0){
+			exit(ctx);
+			new(this) Stop;
+			entry(ctx);
+		}
+		else{
+			std::cout<<"ForwardSlow" << std::endl;
+			ctx.hal.getActors()->motorForwards();
+			ctx.hal.getActors()->motorSlow();
+			ctx.data.handler->setSlow(ctx.data.slowFactor);
+		}
 	}
 
 	void ForwardSlow::exit(TransportContext& ctx){
