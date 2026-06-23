@@ -18,6 +18,7 @@ void Error::entry(MainContext& ctx) {
 }
 void Error::exit(MainContext& ctx) {
 	ctx.hal.getActors()->redLampBlinkOff();
+	ctx.hal.getActors()->redLampOff();
 }
 void Error::eventButtonResetPressed(MainContext& ctx) {
 	errorFSM.eventButtonResetPressed();

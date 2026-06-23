@@ -65,6 +65,7 @@ class dataClass{
 	errors err = ERROR_CLEARED;
 	int errorLoc = 0;
 	bool pusherErrorActive = false;
+	bool isErrorLocal = false;
 
 	// Estop Status
 	bool eStopIsPressed = false;
