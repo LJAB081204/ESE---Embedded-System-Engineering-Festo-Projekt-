@@ -14,6 +14,7 @@
 #include "../EstopFSM/EstopContext.h"
 #include "../ErrorFSM/ErrorContext.h"
 #include "../ErrorFSM/ErrorBase.h"
+#include <iostream>
 
 
 

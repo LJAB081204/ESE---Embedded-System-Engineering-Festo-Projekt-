@@ -150,6 +150,23 @@ bool dataClass::removeItem(int queue){
 	}
 }
 
+int dataClass::findItem(int id){
+	std::cout << "findItem called with id: " << id << std::endl;
+	std::cout << "s1 front: " << (section1.empty() ? -1 : section1.front().id) << std::endl;
+	std::cout << "s2 front: " << (section2.empty() ? -1 : section2.front().id) << std::endl;
+	std::cout << "s3 front: " << (section3.empty() ? -1 : section3.front().id) << std::endl;
+    if(!section1.empty() && section1.front().id == id){
+        return 1;
+    }
+    if(!section2.empty() && section2.front().id == id){
+        return 2;
+    }
+    if(!section3.empty() && section3.front().id == id){
+        return 3;
+    }
+    return -1;
+}
+
 uint32_t dataClass::convertItemToInt(const itemData& item)
 {
     return (static_cast<uint32_t>(item.id) << 4) |
