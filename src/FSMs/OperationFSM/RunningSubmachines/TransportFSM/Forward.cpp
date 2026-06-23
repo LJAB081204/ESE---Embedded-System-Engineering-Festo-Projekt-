@@ -122,7 +122,7 @@ namespace M1{
 			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
 			int diff = ctx.data.exitTime - ctx.data.section3.front().timer->getTime();
 			std::cout<< diff << std::endl;
-			if(diff>800){
+			if(diff>1000){
 				ctx.data.handler->pauseAll();
 				std::cout<< "Error item at exit"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;

@@ -63,7 +63,7 @@
 			entry(ctx);
 		}
 		else if(ctx.data.err == ITEM_APPEARED && ctx.data.errorLoc == 1){
-			ctx.data.removeItem(1);
+//			ctx.data.removeItem(1);
 			exit(ctx);
 			new(this) waitingForStart;
 			entry(ctx);
