@@ -91,6 +91,21 @@
 		new (this) Service;
 		entry(ctx);
 	}
+	void Idle::eventGoBack(OperationContext& ctx){
+		if (ctx.savedRunning) ctx.savedRunning->eventGoBack(ctx);
+	}
+	void Idle::eventGoBackIH(OperationContext& ctx){
+		if (ctx.savedRunning) ctx.savedRunning->eventGoBackIH(ctx);
+	}
+	void Idle::eventGoBackIM(OperationContext& ctx){
+		if (ctx.savedRunning) ctx.savedRunning->eventGoBackIM(ctx);
+	}
+	void Idle::eventGoBackIF(OperationContext& ctx){
+		if (ctx.savedRunning) ctx.savedRunning->eventGoBackIF(ctx);
+	}
+	void Idle::eventGoBackIHM(OperationContext& ctx){
+		if (ctx.savedRunning) ctx.savedRunning->eventGoBackIHM(ctx);
+	}
 
 
 
