@@ -29,23 +29,23 @@ namespace M2{
 
 	void ForwardSlow2::eventItemGone(TransportContext2& ctx){
 		if(!ctx.data.section1.empty()){
-			std::cout<< "height time: "<<ctx.data.heightTime << std::endl;
-			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
-			int diff = ctx.data.heightTime - ctx.data.section1.front().timer->getTime();
-			ctx.data.section1.front().timer->stop();
-			std::cout<< diff << std::endl;
-			if(diff>1500){
-				std::cout<< "Error item gone"<< std::endl;
-				delete ctx.data.section1.front().timer;
-				ctx.data.err = ITEM_APPEARED;
-				ctx.data.errorLoc = 1;
-				ctx.data.raiseError();
-			}
-			else{
+//			std::cout<< "height time: "<<ctx.data.heightTime << std::endl;
+//			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
+//			int diff = ctx.data.heightTime - ctx.data.section1.front().timer->getTime();
+//			ctx.data.section1.front().timer->stop();
+//			std::cout<< diff << std::endl;
+//			if(diff>1500){
+//				std::cout<< "Error item gone"<< std::endl;
+//				delete ctx.data.section1.front().timer;
+//				ctx.data.err = ITEM_APPEARED;
+//				ctx.data.errorLoc = 1;
+//				ctx.data.raiseError();
+//			}
+//			else{
 				exit(ctx);
 				new(this) Forward2;
 				entry(ctx);
-			}
+//			}
 		}
 		else{
 			std::cout<< "Error item arrived (empty)"<< std::endl;

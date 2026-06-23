@@ -67,29 +67,14 @@ bool dataClass::moveFrom1To2(){
 	if (section1.empty()){
 		return false;
 	}
-//	std::cout<< "getTime: "<<section1.front().timer->getTime() << std::endl;
-//	if(heightTime - section1.front().timer->getTime()>500){
-//		std::cout<< "height time: "<<heightTime << std::endl;
-//		std::cout<< "Error in moving"<< std::endl;
-//		delete section1.front().timer;
-//		err = ITEM_APPEARED;
-//		ctx.data.errorLoc = 1;
-//		raiseError();
-//	}
-//	else{
-//		delete section1.front().timer;
-//		section1.front().timer = new DynamicTimer(section1.front().id, *handler);
-//		section1.front().timer->start(pusherTime); //1000 test wert
-		delete section1.front().timer;
-		section2.push(section1.front());
-		section2.back().timer = new DynamicTimer(section2.back().id, *handler);
-		section2.back().timer->start(pusherTime+1000);
-		section1.pop();
-		if(checkReady()){
-			MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
-//		}
-		std::cout << "SIZE2:" << section2.size() << std::endl;
+	section2.push(section1.front());
+	section2.back().timer = new DynamicTimer(section2.back().id, *handler);
+	section2.back().timer->start(pusherTime+1000);
+	section1.pop();
+	if(checkReady()){
+		MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
 	}
+		std::cout << "SIZE2:" << section2.size() << std::endl;
 	return true;
 }
 
@@ -99,8 +84,8 @@ bool dataClass::moveFrom2To3(){
 		 return false;
 	 }
 	section3.push(section2.front());
-	section3.front().timer = new DynamicTimer(section3.front().id, *handler);
-	section3.front().timer->start(exitTime+1000); // Testwert
+	section3.back().timer = new DynamicTimer(section3.back().id, *handler);
+	section3.back().timer->start(exitTime+1000);
 	section2.pop();
 	return true;
 }
@@ -110,14 +95,12 @@ bool dataClass::addItem(){
 	item.id = nextItemID++;
 	itemCount++;
 	item.timer = new DynamicTimer(item.id, *handler);
-	//item.timer->start(1000); //1000 testwert
 	section1.push(item);
 	return true;
 }
 
 bool dataClass::addTransferredItem(itemData item){
 	item.timer = new DynamicTimer(item.id, *handler);
-	//item.timer->start(1000);
 	nextItem.push(item);
 	return true;
 }
