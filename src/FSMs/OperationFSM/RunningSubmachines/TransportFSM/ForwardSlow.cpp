@@ -33,24 +33,11 @@ namespace M1{
 	void ForwardSlow::eventItemGone(TransportContext& ctx){
 		exit(ctx);
 		if(!ctx.data.section1.empty()){
-//			std::cout<< "height time: "<<ctx.data.heightTime << std::endl;
-//			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
-//			int diff = ctx.data.heightTime - ctx.data.section1.front().timer->getTime();
-//			ctx.data.section1.front().timer->stop();
-//			std::cout<< diff << std::endl;
-//			if(diff>1500){
-//				std::cout<< "Error item gone"<< std::endl;
-//				delete ctx.data.section1.front().timer;
-//				ctx.data.err = ITEM_APPEARED;
-//				ctx.data.errorLoc = 1;
-//				ctx.data.raiseError();
-//			}
-//			else{
 				new(this) Forward;
 				entry(ctx);
-//			}
 		}
 		else{
+			ctx.data.handler->pauseAll();
 			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 1;
@@ -73,7 +60,7 @@ namespace M1{
 
 	void ForwardSlow::eventItemLeftEntry(TransportContext& ctx){
 		if(!ctx.data.section1.empty()){
-			ctx.data.section1.back().timer->start(ctx.data.entryTime);
+			ctx.data.section1.back().timer->start(ctx.data.entryTime+1000);
 		}
 		else{
 			std::cout<<"Queue 1 leer Festo1" << std::endl;
@@ -96,6 +83,33 @@ namespace M1{
 			entry(ctx);
 		}
 
+	}
+
+	void ForwardSlow::eventItemAtPusher(TransportContext& ctx){
+		exit(ctx);
+		if(!ctx.data.section2.empty()){
+			std::cout<< "pusher time: "<<ctx.data.pusherTime << std::endl;
+			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
+			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
+			std::cout<< diff << std::endl;
+			if(diff>1000){
+				ctx.data.handler->pauseAll();
+				std::cout<< "Error item at Pusher"<< std::endl;
+				ctx.data.err = ITEM_APPEARED;
+				ctx.data.errorLoc = 2;
+				ctx.data.raiseError();
+			}
+			else{
+				ctx.data.section2.front().timer->stop();
+			}
+		}
+		else{
+			ctx.data.handler->pauseAll();
+			std::cout<< "Error item arrived (empty)"<< std::endl;
+			ctx.data.err = ITEM_APPEARED;
+			ctx.data.errorLoc = 2;
+			ctx.data.raiseError();
+		}
 	}
 
 	void ForwardSlow::eventItemInSlide(TransportContext& ctx){
