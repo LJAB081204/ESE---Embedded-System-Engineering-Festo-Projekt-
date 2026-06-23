@@ -22,6 +22,7 @@ public:
 	void eventItemAtExit(TransportContext2& ctx)override;
 	void eventItemInSlide(TransportContext2& ctx)override;
 	void eventItemLeftExitRemote(TransportContext2& ctx)override;
+	void eventItemAtPusher(TransportContext2& ctx)override;
 
 
 
