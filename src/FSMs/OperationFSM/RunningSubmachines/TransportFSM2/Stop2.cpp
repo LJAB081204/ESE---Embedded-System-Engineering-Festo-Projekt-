@@ -18,14 +18,11 @@ namespace M2{
 	}
 
 	void Stop2::entry(TransportContext2& ctx){
-		std::cout<<"Stop2" << std::endl;
 		ctx.hal.getActors()->motorStop();
 		ctx.data.handler->pauseAll();
 	}
 
-	void Stop2::exit(TransportContext2& ctx){
-		ctx.data.handler->resumeAll();
-	}
+	void Stop2::exit(TransportContext2& ctx){}
 
 	void Stop2::eventItemLeftExitRemote(TransportContext2& ctx){
 		exit(ctx);
@@ -36,10 +33,10 @@ namespace M2{
 
 	void Stop2::eventItemLeftExit(TransportContext2& ctx){
 		ctx.data.itemAtExit = false;
-		std::cout<< "STATE OF TRANSFER" << std::endl;
-		std::cout<< ctx.data.itemAtExit << std::endl;
-		std::cout<< ctx.data.itemCount << std::endl;
-		std::cout<< ctx.data.section1.size() << std::endl;
+//		std::cout<< "STATE OF TRANSFER" << std::endl;
+//		std::cout<< ctx.data.itemAtExit << std::endl;
+//		std::cout<< ctx.data.itemCount << std::endl;
+//		std::cout<< ctx.data.section1.size() << std::endl;
 		ctx.data.removeItem(3);
  		if(ctx.data.itemCount != 0){
  			exit(ctx);
