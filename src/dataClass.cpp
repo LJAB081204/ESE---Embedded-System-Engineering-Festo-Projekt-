@@ -24,21 +24,40 @@ dataClass::dataClass(TimerHandler& handler): handler(&handler){
 
 void dataClass::reset(){
  // Connection
-	conId = -1;
+//	conId = -1;
 
 // Laufband
 	nextItemID = 1;
 
 	while (!section1.empty()){
+		if (section1.front().timer != nullptr){
+			section1.front().timer->stop();
+			delete section1.front().timer;
+		}
 		section1.pop();
 	}
 
 	while (!section2.empty()){
+		if (section2.front().timer != nullptr){
+			section2.front().timer->stop();
+			delete section2.front().timer;
+		}
 		section2.pop();
 	}
 
 	while (!section3.empty()){
+		if (section3.front().timer != nullptr){
+			section3.front().timer->stop();
+			delete section3.front().timer;
+		}
 		section3.pop();
+	}
+	while (!nextItem.empty()){
+		if (nextItem.front().timer != nullptr){
+			nextItem.front().timer->stop();
+			delete nextItem.front().timer;
+		}
+		nextItem.pop();
 	}
 
 
@@ -57,6 +76,10 @@ void dataClass::reset(){
 // Error
 	err = ERROR_CLEARED;
 	errorLoc = 0;
+	pusherErrorActive = false;
+	isErrorLocal = false;
+	oneRound = false;
+	returnToError = false;
 
 // State Weiche
 	weiche = LET_ITEM_PASS_STATE;
@@ -223,4 +246,6 @@ void dataClass::setTimes(){
 void dataClass::raiseError(){
 	MsgSendPulse(conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
     }
+void dataClass::resetEstop(){
 
+}

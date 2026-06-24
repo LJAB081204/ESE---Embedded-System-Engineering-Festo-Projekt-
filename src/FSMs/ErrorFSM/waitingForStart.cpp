@@ -19,12 +19,16 @@
 	}
 
 void waitingForStart::entry(ErrorContext& ctx){
-    if(ctx.data.err == ITEM_GONE){
+	ctx.data.errorState = WAITING_FOR_START_STATE;
+    if(false){
+		if(!ctx.data.nextItem.empty()){
+				return;
+		}
     	itemProfile item;
         switch(ctx.data.errorLoc){
 			case 1:
 					ctx.data.removeItem(1);
-					  std::cout << "ITEM:" << item << std::endl;
+//					  std::cout << "ITEM:" << item << std::endl;
 
 					ctx.data.nextItem.pop();
 					if(!ctx.data.isMachine1){
