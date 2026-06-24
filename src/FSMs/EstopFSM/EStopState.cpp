@@ -11,7 +11,8 @@
 #include "BothEStop.h"
 #include "BothReleased.h"
 #include "Reset.h"
-
+#include <iostream>
+#include <string>
 
 EStopState::EStopState(){
 }
@@ -25,6 +26,15 @@ void EStopState::entry(EStopContext& ctx){
 	ctx.hal.getActors()->ledButtonResetOff();
 	ctx.hs.stopCalibration();
 	ctx.setActive(true);
+	std::string machine;
+	if(ctx.data.isMachine1){
+		machine = "Anlage 1";
+	}
+	else{
+		machine = "Anlage 2";
+	}
+	std::cout << "E-Stop auf " << machine " betätigt!" << std::endl;
+	std::cout << "E-Stop auf " << machine "rausziehen." << std::endl;
 }
 
 void EStopState::exit(EStopContext& ctx){
@@ -37,6 +47,7 @@ void EStopState::eventButtonEstopPressedRemote(EStopContext& ctx){
 }
 void EStopState::eventButtonEstopReleased(EStopContext& ctx){
 	exit(ctx);
+	std::cout << "E-Stop auf " << machine "rausgezogen." << std::endl;
 	new (this) BothReleased;
 	entry(ctx);
 }
