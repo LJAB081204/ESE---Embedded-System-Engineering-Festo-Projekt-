@@ -85,7 +85,7 @@ public:
 
 	virtual void eventSlideFull(MainContext& fsm)      {}
 	virtual void eventSlideFullRemote(MainContext& fsm)      {}
-	virtual void eventItemTransfer(uint32_t itemCode, MainContext& fsm)      {}
+	virtual void eventItemTransfer(int itemCode, MainContext& fsm)      {}
 
 	virtual void eventSlideTimerExpired(MainContext& fsm)      {}
 
@@ -97,8 +97,15 @@ public:
 	virtual void eventGoBackIF(MainContext& fsm)					{}
 	virtual void eventGoBackIHM(MainContext& fsm)					{}
 
+	virtual void eventConnectionLost(MainContext& ctx){}
 	virtual void eventConnectionRestored(MainContext& ctx){}
 	virtual void errorPusherTimerExpired(MainContext& ctx){}
+	virtual void eventErrorResolved(MainContext& ctx){}
+
+	virtual void eventResponseEStopIsPressed(MainContext& ctx) {}
+	virtual void eventResponseEStopIsNotPressed(MainContext& ctx) {}
+	virtual void eventResponseEStopWasPressed(MainContext& ctx) {}
+	virtual void eventResponseEStopWasNotPressed(MainContext& ctx) {}
 
 };
 

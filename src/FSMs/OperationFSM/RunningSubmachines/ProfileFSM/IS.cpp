@@ -11,6 +11,7 @@
 #include "IS.h"
 #include <sys/neutrino.h>
 #include "../../../../PulseMessages.h"
+#include "Default.h"
 namespace M1{
 
 IS::IS(){};
@@ -18,8 +19,7 @@ IS::IS(){};
 void IS::entry(ProfileContext& ctx) {
 	std::cout << "//////////////////IS detected" << std::endl ;
 	raiseError(ctx);
-	//Datenklasse
-	//ErrorCode setzten
+	new (this) Default;
 }
 
 void IS::exit(ProfileContext& ctx) {}

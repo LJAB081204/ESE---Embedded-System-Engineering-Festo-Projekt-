@@ -15,10 +15,11 @@
 #include "WeicheBase.h"
 #include "Receive.h"
 #include "Wait.h"
+#include "LetItemPass.h"
 namespace M1{
 
 class WeicheContext{
-	alignas(Wait) char stateBuffer[sizeof(Wait)];
+	alignas(LetItemPass) char stateBuffer[sizeof(LetItemPass)];
 	WeicheBase* currentState = reinterpret_cast<WeicheBase*>(stateBuffer);
 public:
 	HAL& hal;
@@ -30,6 +31,8 @@ public:
 		currentState->entry(*this);
 	}
 
+	~WeicheContext(){ delete timerPusherOpen; }
+
     void eventItemAtPusher()			   { currentState->eventItemAtPusher(*this); }
     void eventItemLeftPusher() 		   { currentState->eventItemLeftPusher(*this);}
 
@@ -37,7 +40,12 @@ public:
     void eventItemLeftSlide()			   { currentState->eventItemLeftSlide(*this);}
 
 
-    void eventItemMetal()			   { currentState->eventItemMetal(*this); }
+    void eventItemMetal()			   {
+    	currentState->eventItemMetal(*this);
+//    	if(!data.section2.empty()){
+//        data.section2.back().metal = true;   // back() = Item am Metallsensor, nicht front()
+//    	}
+    }
 
     void eventItemWrong() 		   { currentState->eventItemWrong(*this);}
     void eventItemCorrect()			   { currentState->eventItemCorrect(*this);}

@@ -101,6 +101,11 @@ public:
     void eventGoBackIM(MainContext& ctx) override;
     void eventGoBackIF(MainContext& ctx) override;
     void eventGoBackIHM(MainContext& ctx) override;
+
+    void errorPusherTimerExpired(MainContext& ctx) override;
+
+    void eventConnectionLost(MainContext& ctx) override;
+
 };
 
 

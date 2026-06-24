@@ -22,6 +22,9 @@ public:
 	void eventItemAtEntry(TransportContext& ctx)override;
 	void eventItemAtEntryRemote(TransportContext& ctx)override;
 	void eventItemInSlide(TransportContext& ctx)override;
+	void eventItemLeftEntry(TransportContext& ctx)override;
+	void eventItemAtPusher(TransportContext& ctx)override;
+
 
 	void raiseRequestTransfer(TransportContext& ctx);
 };

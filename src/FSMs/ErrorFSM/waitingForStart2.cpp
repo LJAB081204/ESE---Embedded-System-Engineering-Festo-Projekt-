@@ -6,6 +6,7 @@
  */
 
 #include <new>
+#include <iostream>
 #include "ErrorBase.h"
 #include "ErrorContext.h"
 #include "waitingForStart2.h"
@@ -16,15 +17,25 @@
 	}
 
 	void waitingForStart2::entry(ErrorContext& ctx){
+		std::cout << "Entferne das Werkstück aus dem Pusher und drücke danach Start." << std::endl;
 		ctx.hal.getActors()->closePusher();
+	    ctx.hal.getActors()->redLampBlink(1500);
+	    ctx.hal.getActors()->ledButtonStart();
+
 	}
 
 	void waitingForStart2::exit(ErrorContext& ctx){
+		 ctx.hal.getActors()->ledButtonStartOff();
 
 	}
 
 	void waitingForStart2::eventButtonStartPressed(ErrorContext& ctx){
 		exit(ctx);
-		new (this) currentNAck;
-		entry(ctx);
+		if (ctx.onlyPusher == true){
+			ctx.active = false;
+		}
+		else{
+			new (this) currentNAck;
+			entry(ctx);
+		}
 	}

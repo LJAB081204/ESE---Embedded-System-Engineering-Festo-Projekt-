@@ -15,10 +15,11 @@
 #include "WeicheBase.h"
 #include "Receive.h"
 #include "Wait.h"
+#include "LetItemPass.h"
 namespace M2{
 
 class WeicheContext{
-	alignas(Wait) char stateBuffer[sizeof(Wait)];
+	alignas(LetItemPass) char stateBuffer[sizeof(LetItemPass)];
 	WeicheBase* currentState = reinterpret_cast<WeicheBase*>(stateBuffer);
 public:
 	HAL& hal;
@@ -29,6 +30,9 @@ public:
 		new(currentState) Receive;
 		currentState->entry(*this);
 	}
+
+	~WeicheContext(){ delete timerPusherOpen; }
+
 
     void eventItemAtPusher()			   { currentState->eventItemAtPusher(*this); }
     void eventItemLeftPusher() 		   { currentState->eventItemLeftPusher(*this);}
@@ -45,6 +49,7 @@ public:
     void eventError()			   { currentState->eventError(*this);}
     void eventTimerExpired()	   { currentState->eventTimerExpired(*this);}
 
+	SimpleTimer* timerPusherOpen = nullptr;
 
 };
 }

@@ -54,6 +54,11 @@ Running2::Running2(HAL& hal,dataClass& data,SequenceContext& sequence,TimerHandl
 		else{
 			transportFSM->reactivate();
 			slideFSM->reactivate();
+			if (ctx.data.pusherErrorActive){
+				delete weicheFSM;
+				weicheFSM = new WeicheContext(ctx.hal,ctx.data,ctx.timerHandler);
+				ctx.data.pusherErrorActive = false;
+			}
 		}
 	}
 
@@ -69,6 +74,10 @@ Running2::Running2(HAL& hal,dataClass& data,SequenceContext& sequence,TimerHandl
 	void Running2::eventItemAtEntry(OperationContext& ctx){
 	    transportFSM->eventItemAtEntry();
 	}
+
+	void Running2::eventItemLeftEntry(OperationContext& ctx){
+	    transportFSM->eventItemLeftEntry();
+	}
 	void Running2::eventItemAtExit(OperationContext& ctx){
 	    transportFSM->eventItemAtExit();
 	}
@@ -77,6 +86,7 @@ Running2::Running2(HAL& hal,dataClass& data,SequenceContext& sequence,TimerHandl
 	}
 	void Running2::eventItemAtPusher(OperationContext& ctx){
 	    weicheFSM->eventItemAtPusher();
+	    transportFSM->eventItemAtPusher();
 	}
 	void Running2::eventItemLeftPusher(OperationContext& ctx){
 	    weicheFSM->eventItemLeftPusher();

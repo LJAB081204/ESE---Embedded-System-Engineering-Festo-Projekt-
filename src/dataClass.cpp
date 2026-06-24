@@ -57,6 +57,9 @@ void dataClass::reset(){
 // Error
 	err = ERROR_CLEARED;
 	errorLoc = 0;
+
+// State Weiche
+	weiche = LET_ITEM_PASS_STATE;
 }
 
 bool dataClass::moveFrom1To2(){
@@ -64,15 +67,14 @@ bool dataClass::moveFrom1To2(){
 	if (section1.empty()){
 		return false;
 	}
-	section1.front().timer = new DynamicTimer(section1.front().id, *handler);
-	section1.front().timer->start(1000); //1000 test wert
 	section2.push(section1.front());
+	section2.back().timer = new DynamicTimer(section2.back().id, *handler);
+	section2.back().timer->start(pusherTime+1000);
 	section1.pop();
 	if(checkReady()){
 		MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
 	}
-	std::cout << "SIZE2:" << section2.size() << std::endl;
-
+		std::cout << "SIZE2:" << section2.size() << std::endl;
 	return true;
 }
 
@@ -81,9 +83,9 @@ bool dataClass::moveFrom2To3(){
 	 if (section2.empty()){
 		 return false;
 	 }
-	section2.front().timer = new DynamicTimer(section2.front().id, *handler);
-	section2.front().timer->start(1000); // Testwert
 	section3.push(section2.front());
+	section3.back().timer = new DynamicTimer(section3.back().id, *handler);
+	section3.back().timer->start(exitTime+1000);
 	section2.pop();
 	return true;
 }
@@ -93,14 +95,12 @@ bool dataClass::addItem(){
 	item.id = nextItemID++;
 	itemCount++;
 	item.timer = new DynamicTimer(item.id, *handler);
-	item.timer->start(1000); //1000 testwert
 	section1.push(item);
 	return true;
 }
 
 bool dataClass::addTransferredItem(itemData item){
 	item.timer = new DynamicTimer(item.id, *handler);
-	item.timer->start(1000);
 	nextItem.push(item);
 	return true;
 }
@@ -199,5 +199,11 @@ void dataClass::setTimes(){
     if(!foundEntry || !foundEntrySlow || !foundHeight || !foundPusher || !foundExit){
         std::cout << "Zeiten noch nicht vollstaendig kalibriert" << std::endl;
     }
+
+
 }
+
+void dataClass::raiseError(){
+	MsgSendPulse(conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
+    }
 

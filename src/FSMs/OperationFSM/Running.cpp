@@ -53,6 +53,11 @@ namespace M1{
 		else{
 			transportFSM->reactivate();
 			slideFSM->reactivate();
+			if (ctx.data.pusherErrorActive){
+				delete weicheFSM;
+				weicheFSM = new WeicheContext(ctx.hal,ctx.data,ctx.timerHandler);
+				ctx.data.pusherErrorActive = false;
+			}
 		}
 	}
 
@@ -76,10 +81,14 @@ namespace M1{
 	}
 	void Running::eventItemAtPusher(OperationContext& ctx){
 	    weicheFSM->eventItemAtPusher();
+	    transportFSM->eventItemAtPusher();
 	}
 	void Running::eventItemLeftPusher(OperationContext& ctx){
 	    weicheFSM->eventItemLeftPusher();
 	}
+	void Running::eventItemLeftEntry(OperationContext& ctx){
+		    transportFSM ->eventItemLeftEntry();
+		}
 	void Running::eventItemInSlide(OperationContext& ctx){
 		slideFSM->eventItemInSlide();
 	    transportFSM->eventItemInSlide();

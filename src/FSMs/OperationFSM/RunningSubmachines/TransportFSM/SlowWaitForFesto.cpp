@@ -19,9 +19,11 @@ namespace M1{
 	void SlowWaitForFesto::entry(TransportContext& ctx){
 		std::cout<<"SlowWaitForFesto" << std::endl;
 		ctx.hal.getActors()->motorStop();
+		ctx.data.handler->pauseAll();
 	}
 
 	void SlowWaitForFesto::exit(TransportContext& ctx){
+		ctx.data.handler->resumeAll();
 	}
 
 
@@ -34,6 +36,14 @@ namespace M1{
 	void SlowWaitForFesto::eventItemAtEntry(TransportContext& ctx){
 		ctx.data.addItem();
 		std::cout<< ctx.data.itemCount << std::endl;
+	}
+
+	void SlowWaitForFesto::eventItemInSlide(TransportContext& ctx){
+		if(!ctx.data.section2.empty()){
+			delete ctx.data.section2.front().timer;
+			ctx.data.section2.pop();
+			ctx.data.itemCount--;
+		}
 	}
 
 }

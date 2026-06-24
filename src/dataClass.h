@@ -18,6 +18,7 @@ enum systemState { IDLE_STATE,RUNNING_STATE,ERROR_STATE,ESTOP_STATE };
 enum itemProfile { IH_PROFILE, IM_PROFILE, IF_PROFILE, IHM_PROFILE, IU_PROFILE, IS_PROFILE, I_PROFILE, UNDEFINED_PROFILE};
 enum errors { ERROR_CLEARED, ITEM_SPECIAL, ITEM_GONE, BOTH_SLIDES_FULL, ITEM_APPEARED,CONNECTION_LOST};
 				//0				1				2			3					4			5
+enum WeicheState { LET_ITEM_PASS_STATE,WAIT_STATE};
 struct itemData{
 		int id = 0;
 		bool flat = false;
@@ -63,6 +64,14 @@ class dataClass{
 	//Error
 	errors err = ERROR_CLEARED;
 	int errorLoc = 0;
+	bool pusherErrorActive = false;
+	bool isErrorLocal = false;
+
+	// Estop Status
+	bool eStopIsPressed = false;
+	bool eStopWasPressed = false;
+
+	WeicheState weiche = LET_ITEM_PASS_STATE;
 
 	dataClass(TimerHandler& handler);
 	void reset();
@@ -74,6 +83,7 @@ class dataClass{
 
 	uint32_t convertItemToInt(const itemData& item);
 	itemData convertIntToItem(uint32_t itemCode);
+	void raiseError();
 
 	bool checkReady();
 	bool itemAtExit = false;
@@ -85,6 +95,7 @@ class dataClass{
 	uint32_t pusherTime;
 	uint32_t exitTime;
 
+	bool isMachine1 = false;
 	private:
 
 	void setTimes();

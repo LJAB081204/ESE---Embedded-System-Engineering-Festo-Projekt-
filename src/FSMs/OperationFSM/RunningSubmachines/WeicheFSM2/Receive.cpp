@@ -38,12 +38,10 @@ void Receive::eventItemAtPusher(WeicheContext& ctx){
 }
 
 void Receive::eventItemMetal(WeicheContext& ctx){
-	exit(ctx);
 	if(!ctx.data.section2.empty()){
 			ctx.data.section2.front().metal = true;
 	}
-	new (this) Receive;
-	entry(ctx);
+
 }
 void Receive::eventTimerExpired(WeicheContext& ctx){
 	exit(ctx);

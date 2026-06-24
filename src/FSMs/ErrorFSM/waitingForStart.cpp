@@ -11,6 +11,7 @@
 #include "waitingForStart.h"
 #include "../../PulseMessages.h"
 #include "errorPusherTooLong.h"
+#include <iostream>
 
 	waitingForStart::waitingForStart(){
 
@@ -18,14 +19,17 @@
 
 	void waitingForStart::entry(ErrorContext& ctx){
 		ctx.data.err = ERROR_CLEARED;
+		ctx.hal.getActors()->ledButtonStart();
+		std::cout << "Starttaste betätigen um Betrieb wiederaufzunehmen." << std::endl;
 	}
 
 	void waitingForStart::exit(ErrorContext& ctx){
-
+		ctx.hal.getActors()->ledButtonStartOff();
 	}
 
 	void waitingForStart::eventButtonStartPressed(ErrorContext& ctx){
-		//exit -> später implementieren
+		exit(ctx);
+		ctx.active = false;
 	}
 
 	void waitingForStart::errorPusherTimerExpired(ErrorContext& ctx){

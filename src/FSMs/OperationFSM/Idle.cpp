@@ -24,10 +24,12 @@
 		ctx.hal.getActors()->redLampBlinkOff();
 		ctx.hal.getActors()->ledButtonResetOff();
 		ctx.hal.getActors()->ledButtonStart();
+		ctx.data.handler->pauseAll();
 //		ctx.blockStartUntilRelease = false;
 	}
 	void Idle::exit(OperationContext& ctx){
 		ctx.hal.getActors()->ledButtonStartOff();
+		ctx.data.handler->resumeAll();
 
 	}
 

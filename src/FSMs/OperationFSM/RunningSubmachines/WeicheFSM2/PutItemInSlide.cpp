@@ -17,12 +17,8 @@ PutItemInSlide::PutItemInSlide(){
 void PutItemInSlide::entry(WeicheContext& ctx){
 	ctx.hal.getActors()->sortItemOut();
 }
-void PutItemInSlide::eventItemInSlide(WeicheContext& ctx){
+void PutItemInSlide::eventItemLeftPusher(WeicheContext& ctx){
 	exit(ctx);
-//	if(!ctx.data.section2.empty()){
-//		ctx.data.removeItem(2);
-//	}
-
 	new (this) Receive;
 	entry(ctx);
 }
