@@ -83,11 +83,11 @@ DynamicTimer::~DynamicTimer()
     handler_.unregisterTimer(this);
 }
 
-void DynamicTimer::start(uint32_t millisec)
+void DynamicTimer::start(uint32_t millisec, uint32_t runnedTime)
 {
     pthread_mutex_lock(&handler_.mutex_);
     targetTime_  = millisec; // Zielzeit setzen
-    virtualTime_ = 0;        // Zähler zurücksetzen
+    virtualTime_ = runnedTime; // Zähler zurücksetzen
     running_     = true;     // Timer aktivieren
     pthread_mutex_unlock(&handler_.mutex_);
 }

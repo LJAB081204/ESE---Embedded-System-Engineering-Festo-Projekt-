@@ -17,6 +17,7 @@ namespace M2{
 
 	void Default::entry(ProfileContext& ctx) {
 		std::cout<< "//////////////////Default detected" << std::endl;
+		ctx.data.heightDefault = false;
 	}
 
 	void Default::exit(ProfileContext& ctx) {}

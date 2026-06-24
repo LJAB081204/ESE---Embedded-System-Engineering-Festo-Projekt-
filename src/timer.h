@@ -69,7 +69,7 @@ public:
      *                 Zähler beginnt bei 0 und wird je TICK_MS-Takt um
      *                 (TICK_MS * slowFactor) erhöht.
      */
-    void start(uint32_t millisec);
+    void start(uint32_t millisec, uint32_t runnedTime);
 
     /**
      * Bricht den Countdown ab und setzt den internen Zähler zurück.

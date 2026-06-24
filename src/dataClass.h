@@ -66,6 +66,7 @@ class dataClass{
 	int errorLoc = 0;
 	bool pusherErrorActive = false;
 	bool isErrorLocal = false;
+	bool heightDefault = false;
 
 	// Estop Status
 	bool eStopIsPressed = false;

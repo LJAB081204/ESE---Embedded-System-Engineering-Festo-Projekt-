@@ -18,7 +18,7 @@ Wait::Wait(){
 }
 void Wait::entry(WeicheContext& ctx){
 	ctx.data.weiche = WAIT_STATE;
-	ctx.pusherTimer.start((ctx.data.exitTime / 5));
+	ctx.pusherTimer.start((ctx.data.exitTime / 5),0);
 
 }
 

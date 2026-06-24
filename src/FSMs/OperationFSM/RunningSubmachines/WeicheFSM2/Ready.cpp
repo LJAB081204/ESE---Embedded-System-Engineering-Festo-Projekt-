@@ -12,6 +12,7 @@
 #include "PutItemInSlide.h"
 #include <sys/neutrino.h>
 #include "../../../../PulseMessages.h"
+#include <iostream>
 namespace M2{
 
 Ready::Ready(){
@@ -32,8 +33,9 @@ void Ready::eventItemWrong(WeicheContext& ctx){
 	  	entry(ctx);
 	}
 	else if(ctx.data.slideFull == true){
-		exit(ctx);
 		raiseError(ctx);
+		ctx.hal.getActors()->motorStop();
+		exit(ctx);
 		new(this) Receive;
 	  	entry(ctx);
 	}
