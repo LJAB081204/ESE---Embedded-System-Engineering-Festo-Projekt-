@@ -160,6 +160,7 @@ namespace M2{
 		ctx.data.addItem();
 	}
 	void Forward2::raiseError(TransportContext2& ctx){
+		ctx.hal.getActors()->motorStop();
 		MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
 	}
 }

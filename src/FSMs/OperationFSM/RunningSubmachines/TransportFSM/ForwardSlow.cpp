@@ -111,7 +111,7 @@ namespace M1{
 		if(ctx.data.minTimeEntryTimer == nullptr){
 			ctx.data.minTimeEntryTimer = new DynamicTimer(101,*ctx.data.handler);
 		}
-		ctx.data.minTimeEntryTimer->start(ctx.data.minTimeEntry);
+		ctx.data.minTimeEntryTimer->start(ctx.data.minTimeEntry,0);
 	}
 
 	void ForwardSlow::eventItemAtEntryRemote(TransportContext& ctx){
@@ -142,6 +142,7 @@ namespace M1{
 			std::cout<< diff << std::endl;
 			if(diff>300){
 				ctx.data.handler->pauseAll();
+				ctx.hal.getActors()->motorStop();
 				std::cout<< "Error item at Pusher"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 2;
@@ -153,6 +154,7 @@ namespace M1{
 		}
 		else{
 			ctx.data.handler->pauseAll();
+			ctx.hal.getActors()->motorStop();
 			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 2;
