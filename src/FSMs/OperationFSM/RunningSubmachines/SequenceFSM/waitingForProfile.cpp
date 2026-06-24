@@ -19,7 +19,7 @@ namespace M1{
 	}
 
 	void waitingForProfile::entry(SequenceContext& ctx){
-		ctx.oneRound = false;
+		ctx.data.oneRound = false;
 		std::cout << "Next expected -> IH" << std::endl;
 	}
 
@@ -44,6 +44,7 @@ namespace M1{
 		}
 		else{
 			exit(ctx);
+			ctx.data.section2.front().sortOut = true;
 			raiseItemWrong(ctx);
 			entry(ctx);
 		}

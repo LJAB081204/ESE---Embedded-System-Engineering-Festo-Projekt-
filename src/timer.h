@@ -51,6 +51,8 @@ private:
 class DynamicTimer
 {
 public:
+
+	//bool expired_ = false;
     /**
      * Erstellt den virtuellen Timer und registriert ihn im Handler.
      * @param id      Frei wählbare Timer-ID; wird als Pulse-Value übertragen.
@@ -114,6 +116,7 @@ private:
 class TimerHandler
 {
 public:
+
     /**
      * Initialisiert den internen Channel, den Receiver-Thread und
      *        den periodischen Systemtimer.

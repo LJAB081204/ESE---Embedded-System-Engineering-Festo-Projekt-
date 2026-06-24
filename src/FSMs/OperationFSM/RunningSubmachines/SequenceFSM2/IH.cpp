@@ -56,7 +56,7 @@ namespace M2{
 	}
 
 	void IH::eventGoBack(SequenceContext& ctx){
-		if(ctx.oneRound == true){
+		if(ctx.data.oneRound == true){
 			exit(ctx);
 			new (this) IHM;
 			entry(ctx);

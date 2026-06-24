@@ -23,7 +23,7 @@ namespace M2{
 
 	void IHM::entry(SequenceContext& ctx){
 		std::cout << "IHM --- next expected -> IH" << std::endl;
-		ctx.oneRound = true;
+		ctx.data.oneRound = true;
 	}
 
 	void IHM::exit(SequenceContext& ctx){

@@ -27,6 +27,7 @@ struct itemData{
 		bool metal = false;
 		bool unknown = false;
 		bool special = false;
+		bool sortOut = false;
 
 		itemProfile item = UNDEFINED_PROFILE;
 		DynamicTimer* timer = nullptr;
@@ -52,6 +53,8 @@ class dataClass{
 	//item
 	int itemCount = 0;
 	int itemCountRemote = 0;
+
+	bool oneRound = false;
 
 	//Festo
 	bool readyForItem = true;
@@ -80,6 +83,8 @@ class dataClass{
 	bool addItem();
 	bool removeItem(int queue);
 	bool addTransferredItem(itemData item);
+
+	int findItem(int id);
 
 	uint32_t convertItemToInt(const itemData& item);
 	itemData convertIntToItem(uint32_t itemCode);
