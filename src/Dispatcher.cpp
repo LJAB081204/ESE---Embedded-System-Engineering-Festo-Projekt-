@@ -96,7 +96,6 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    case PULSE_BTN_START_REMOTE:
 				        if(msg.value.sival_int == 1){
 				            buttonPressStart = chrono::steady_clock::now();
-
 				            //cout << "Start pressed on remote!" << endl;
 				        } else {
 				            auto diff = chrono::steady_clock::now() - buttonPressStart;
@@ -104,8 +103,9 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				            if(ms > 1000){
 				            	FSM.eventButtonStartPressedLongRemote();
 				            }
-				            //cout << "Start released on remote!" << endl;
+				            else{
 				            FSM.eventButtonStartPressedRemote();
+				            }
 				        }
 				        break;
 

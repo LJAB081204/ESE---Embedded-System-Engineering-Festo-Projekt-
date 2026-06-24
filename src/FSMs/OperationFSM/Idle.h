@@ -21,7 +21,11 @@ public:
 
 	void eventButtonStartPressedLong(OperationContext& ctx)override;
 	void eventButtonStartPressedLongRemote(OperationContext& ctx)override;
-
+	void eventGoBack(OperationContext& ctx)override;
+	void eventGoBackIH(OperationContext& ctx)override;
+	void eventGoBackIM(OperationContext& ctx)override;
+	void eventGoBackIF(OperationContext& ctx)override;
+	void eventGoBackIHM(OperationContext& ctx)override;
 
 
 };

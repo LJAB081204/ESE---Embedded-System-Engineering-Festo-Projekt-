@@ -28,6 +28,7 @@
 		ctx.hal.getActors()->yellowLampBlinkOff();
 		ctx.hal.getActors()->redLampBlink(100);
 		ctx.hal.getActors()->motorStop();
+		ctx.data.errorState = CURRENT_NACK_STATE;
 		std::string location;
 		switch (ctx.data.errorLoc){
 		case 1:

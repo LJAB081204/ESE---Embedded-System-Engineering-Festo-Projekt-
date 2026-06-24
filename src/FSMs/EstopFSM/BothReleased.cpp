@@ -12,6 +12,7 @@
 #include "BothEStop.h"
 #include "BothReleased.h"
 #include "Reset.h"
+#include <iostream>
 
 
 BothReleased::BothReleased(){
@@ -23,6 +24,7 @@ void BothReleased::entry(EStopContext& ctx){
 	ctx.hal.getActors()->redLampOn();
 	ctx.hal.getActors()->ledButtonReset();
 	ctx.setActive(true);
+	std::cout << "Kein E-Stop mehr gedrückt. Beide Anlagen leeren mit Reset zurücksetzen." << std::endl;
 }
 
 void BothReleased::exit(EStopContext& ctx){
