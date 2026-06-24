@@ -86,7 +86,9 @@ namespace M1{
 		}
 		else{
 			ctx.data.handler->pauseAll();
-			ctx.data.section1.front().timer->stop();
+			if(!ctx.data.section1.empty()){
+				ctx.data.section1.front().timer->stop();
+			}
 			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 1;
