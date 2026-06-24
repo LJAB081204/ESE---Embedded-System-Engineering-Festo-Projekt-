@@ -19,6 +19,7 @@ enum itemProfile { IH_PROFILE, IM_PROFILE, IF_PROFILE, IHM_PROFILE, IU_PROFILE, 
 enum errors { ERROR_CLEARED, ITEM_SPECIAL, ITEM_GONE, BOTH_SLIDES_FULL, ITEM_APPEARED,CONNECTION_LOST};
 				//0				1				2			3					4			5
 enum WeicheState { LET_ITEM_PASS_STATE,WAIT_STATE};
+enum ErrorState  { CURRENT_NACK_STATE,CURRENT_ACK_STATE,PUSHER_TOO_LONG_STATE,GONE_NACK_STATE,WAITING_FOR_START_STATE,WAITING_FOR_START_STATE2};
 struct itemData{
 		int id = 0;
 		bool flat = false;
@@ -27,6 +28,7 @@ struct itemData{
 		bool metal = false;
 		bool unknown = false;
 		bool special = false;
+		bool sortOut = false;
 
 		itemProfile item = UNDEFINED_PROFILE;
 		DynamicTimer* timer = nullptr;
@@ -53,6 +55,8 @@ class dataClass{
 	int itemCount = 0;
 	int itemCountRemote = 0;
 
+	bool oneRound = false;
+
 	//Festo
 	bool readyForItem = true;
 	bool readyForItemRemote = true;
@@ -66,12 +70,15 @@ class dataClass{
 	int errorLoc = 0;
 	bool pusherErrorActive = false;
 	bool isErrorLocal = false;
+	bool returnToError = false;
+	bool heightDefault = false;
 
 	// Estop Status
 	bool eStopIsPressed = false;
 	bool eStopWasPressed = false;
 
 	WeicheState weiche = LET_ITEM_PASS_STATE;
+	ErrorState errorState = CURRENT_NACK_STATE;
 
 	dataClass(TimerHandler& handler);
 	void reset();
@@ -80,6 +87,8 @@ class dataClass{
 	bool addItem();
 	bool removeItem(int queue);
 	bool addTransferredItem(itemData item);
+
+	int findItem(int id);
 
 	uint32_t convertItemToInt(const itemData& item);
 	itemData convertIntToItem(uint32_t itemCode);
@@ -99,6 +108,7 @@ class dataClass{
 	private:
 
 	void setTimes();
+	void resetEstop();
 };
 
 

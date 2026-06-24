@@ -21,6 +21,7 @@ namespace M1{
 
 	void IHM::entry(SequenceContext& ctx){
 		std::cout << "IHM --- next expected -> IH" << std::endl;
+		ctx.data.oneRound = true;
 	}
 
 	void IHM::exit(SequenceContext& ctx){
@@ -38,6 +39,7 @@ namespace M1{
 		}
 		else{
 			exit(ctx);
+			ctx.data.section2.front().sortOut = true;
 			raiseItemWrong(ctx);
 			entry(ctx);
 		}

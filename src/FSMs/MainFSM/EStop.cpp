@@ -31,8 +31,15 @@ void EStop::eventButtonResetPressed(MainContext& ctx) {
     if(!eStopFSM.isActive()) {
         exit(ctx);
         ctx.data.eStopWasPressed = false;
-        new(this) Operation(ctx.getOperationFSM());
-        ctx.getOperationFSM().restoreHistory();
+        if(ctx.data.returnToError){
+        	ctx.data.returnToError = false;
+        	new (this) Error(ctx.hal,ctx.data);
+        	entry(ctx);
+        }
+        else{
+			new(this) Operation(ctx.getOperationFSM());
+			ctx.getOperationFSM().restoreHistory();
+        }
     }
 }
 void EStop::eventButtonResetPressedRemote(MainContext& ctx) {
@@ -40,8 +47,15 @@ void EStop::eventButtonResetPressedRemote(MainContext& ctx) {
     if(!eStopFSM.isActive()) {
         exit(ctx);
         ctx.data.eStopWasPressed = false;
-        new(this) Operation(ctx.getOperationFSM());
-        ctx.getOperationFSM().restoreHistory();
+        if(ctx.data.returnToError){
+			ctx.data.returnToError = false;
+			new (this) Error(ctx.hal,ctx.data);
+			entry(ctx);
+		}
+        else{
+			new(this) Operation(ctx.getOperationFSM());
+			ctx.getOperationFSM().restoreHistory();
+        }
     }
 }
 

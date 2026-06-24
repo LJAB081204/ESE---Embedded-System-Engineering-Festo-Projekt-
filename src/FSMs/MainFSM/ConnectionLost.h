@@ -14,7 +14,8 @@
 class ConnectionLost : public MainBase {
 	ConnectionLostContext conLostFSM;
 public:
-	ConnectionLost(HAL& hal, HeightSensor& hs, PreviousFsmState prevState) : conLostFSM(hal, hs, prevState) {}
+	ConnectionLost(HAL& hal, HeightSensor& hs, PreviousFsmState prevState)
+: conLostFSM(hal, hs, prevState) {}
 	void entry(MainContext& ctx)override;
 	void exit(MainContext& ctx)override;
 	void eventButtonEstopPressed(MainContext& ctx)override;

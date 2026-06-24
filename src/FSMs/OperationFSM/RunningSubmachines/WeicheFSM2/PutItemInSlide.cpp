@@ -10,11 +10,13 @@
 #include "WeicheContext.h"
 #include "PutItemInSlide.h"
 #include "Receive.h"
+#include <iostream>
 namespace M2{
 
 PutItemInSlide::PutItemInSlide(){
 }
 void PutItemInSlide::entry(WeicheContext& ctx){
+	std::cout<<"Put Item in Slide"<<std::endl;
 	ctx.hal.getActors()->sortItemOut();
 }
 void PutItemInSlide::eventItemLeftPusher(WeicheContext& ctx){

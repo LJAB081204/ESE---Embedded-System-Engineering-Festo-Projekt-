@@ -83,9 +83,19 @@ public:
 
 	}
 	void restoreHistory(){
-		currentState->onRestore(historySource, *this);
-		currentState->entry(*this);
-		historySource = HistorySource::NONE_HISTORY;
+		if(currentState == reinterpret_cast<OperationBase*>(stateBuffer) && savedRunning != nullptr
+				&& historySource== HistorySource::ERROR_HISTORY){
+			currentState = savedRunning;
+			savedRunning = nullptr;
+			currentState->onRestore(HistorySource::ERROR_HISTORY, *this);
+			historySource = HistorySource::NONE_HISTORY;
+			currentState->entry(*this);
+		}
+		else{
+			currentState->onRestore(historySource, *this);
+			currentState->entry(*this);
+			historySource = HistorySource::NONE_HISTORY;
+		}
 	}
 
 	void saveCalibrationTime(const std::string& key, uint32_t value) {

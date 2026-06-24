@@ -96,7 +96,6 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    case PULSE_BTN_START_REMOTE:
 				        if(msg.value.sival_int == 1){
 				            buttonPressStart = chrono::steady_clock::now();
-
 				            //cout << "Start pressed on remote!" << endl;
 				        } else {
 				            auto diff = chrono::steady_clock::now() - buttonPressStart;
@@ -104,8 +103,9 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				            if(ms > 1000){
 				            	FSM.eventButtonStartPressedLongRemote();
 				            }
-				            //cout << "Start released on remote!" << endl;
+				            else{
 				            FSM.eventButtonStartPressedRemote();
+				            }
 				        }
 				        break;
 
@@ -332,18 +332,76 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    	}
 				    	break;
 
-					case PULSE_DYNAMIC_TIMER_EXPIRED:
+				    	case PULSE_DYNAMIC_TIMER_EXPIRED:
+						cout << "Timer expired: " << msg.value.sival_int <<  endl;
 						switch(msg.value.sival_int){
 							case 100:
 								FSM.eventTimerExpired();
 								break;
+						default:
+							 std::cout << "item count: " << data.itemCount << std::endl;
+							data.isErrorLocal = true;
+							int itemLoc = data.findItem(msg.value.sival_int);
+							data.handler->pauseAll();
+							switch(itemLoc){
+								case 1:
+									//if(!data.section1.front().timer->expired_) break;
+									//data.section1.front().timer->stop();
+									//data.section1.pop();
+									data.err = ITEM_GONE;
+									data.errorLoc = 1;
+									FSM.eventError();
+									MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_REMOTE, 0);
+									break;
+								case 2:
+									//if(!data.section2.front().timer->expired_) break;
+									//data.section2.front().timer->stop();
+									//data.section2.pop();
+									data.err = ITEM_GONE;
+									data.errorLoc = 2;
+									FSM.eventError();
+									MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_REMOTE, 0);
+									break;
+								case 3:
+								{
+								    //itemProfile item = data.section3.front().item;
+								    //data.section3.pop();
+								    data.err = ITEM_GONE;
+								    data.errorLoc = 3;
+								    FSM.eventError();  // ← erst Error
+								    MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_REMOTE, 0);
+								    // dann GoBack je nach Profil
+//								    switch(item){
+//								        case IH_PROFILE:
+//								            FSM.eventGoBackIH();
+//								            break;
+//								        case IM_PROFILE:
+//								            FSM.eventGoBackIM();
+//								            break;
+//								        case IF_PROFILE:
+//								            FSM.eventGoBackIF();
+//								            break;
+//								        case IHM_PROFILE:
+//								            FSM.eventGoBackIHM();
+//								            break;
+//								        default:
+//								            break;
+//								    }
+								    break;
+								}
+								default:
+								    cout << "Item not found: " << msg.value.sival_int << endl;
+								}
+								break;
+								}
+						break;
+
 							default:
 								data.isErrorLocal = true;
 								cout << "Dynamic Timer!!"<< msg.value.sival_int << endl;
 								FSM.eventError();
+
 								break;
-						}
-							break;
 					case PULSE_EVENT_ERROR:
 							cout << "ERROR!!" << endl;
 							data.isErrorLocal = true;
@@ -371,7 +429,8 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 
 					case PULSE_ITEM_TRANSFER:
 						//FSM.eventItemTransfer(msg.value.sival_int);
-						cout << msg.value.sival_int << endl;
+
+						std::cout << "TRANSFER RECEIVED: " << msg.value.sival_int << std::endl;
 						data.addTransferredItem(data.convertIntToItem(msg.value.sival_int));
 						break;
 					case PULSE_EVENT_SLIDE_TIMER:

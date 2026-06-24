@@ -51,6 +51,8 @@ private:
 class DynamicTimer
 {
 public:
+
+	//bool expired_ = false;
     /**
      * Erstellt den virtuellen Timer und registriert ihn im Handler.
      * @param id      Frei wählbare Timer-ID; wird als Pulse-Value übertragen.
@@ -69,7 +71,7 @@ public:
      *                 Zähler beginnt bei 0 und wird je TICK_MS-Takt um
      *                 (TICK_MS * slowFactor) erhöht.
      */
-    void start(uint32_t millisec);
+    void start(uint32_t millisec, uint32_t runnedTime);
 
     /**
      * Bricht den Countdown ab und setzt den internen Zähler zurück.
@@ -114,6 +116,7 @@ private:
 class TimerHandler
 {
 public:
+
     /**
      * Initialisiert den internen Channel, den Receiver-Thread und
      *        den periodischen Systemtimer.

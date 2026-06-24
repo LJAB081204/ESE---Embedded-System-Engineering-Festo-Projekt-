@@ -30,7 +30,7 @@ public:
 		currentState->entry(*this);
 	}
 
-	bool oneRound = false;
+
 
 	itemProfile resolveProfile() {
 	    if (data.section2.empty()) return UNDEFINED_PROFILE;

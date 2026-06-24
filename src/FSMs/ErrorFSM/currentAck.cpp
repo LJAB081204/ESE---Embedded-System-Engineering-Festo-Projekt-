@@ -23,6 +23,7 @@
 	void currentAck::entry(ErrorContext& ctx){
 		ctx.hal.getActors()->redLampBlinkOff();
 		ctx.hal.getActors()->redLampOn();
+		ctx.data.errorState = CURRENT_ACK_STATE;
 		switch (ctx.data.err){
 		case ITEM_SPECIAL: std::cout << "Spezialitem beim Höhensensor entfernen."<< std::endl;
 			break;
@@ -63,7 +64,17 @@
 			entry(ctx);
 		}
 		else if(ctx.data.err == ITEM_APPEARED && ctx.data.errorLoc == 1){
-//			ctx.data.removeItem(1);
+			ctx.data.heightDefault = true;
+			if(!ctx.data.section1.empty()){
+				uint32_t runnedTime = ctx.data.section1.front().timer->getTime();
+				ctx.data.section1.front().timer->stop();
+				std::cout<<"runnedTime:"<<runnedTime<<std::endl;
+				delete ctx.data.section1.front().timer;
+				ctx.data.section1.front().timer = new DynamicTimer(ctx.data.section1.front().id, *ctx.data.handler);
+				ctx.data.section1.front().timer->start(ctx.data.entryTime+1000,runnedTime);
+			}
+			std::cout << ctx.data.heightDefault<< std::endl;
+//			raiseItemGone(ctx);
 			exit(ctx);
 			new(this) waitingForStart;
 			entry(ctx);
@@ -85,6 +96,14 @@
 
 	void currentAck::eventItemLeftPusher(ErrorContext& ctx){
 		if(ctx.data.err == ITEM_APPEARED && ctx.data.errorLoc == 2){
+			if(!ctx.data.section2.empty()){
+				uint32_t runnedTime = ctx.data.section2.front().timer->getTime();
+				ctx.data.section2.front().timer->stop();
+				std::cout<<"runnedTime:"<<runnedTime<<std::endl;
+				delete ctx.data.section2.front().timer;
+				ctx.data.section2.front().timer = new DynamicTimer(ctx.data.section2.front().id, *ctx.data.handler);
+				ctx.data.section2.front().timer->start(ctx.data.pusherTime+1000,runnedTime);
+			}
 			exit(ctx);
 			new(this) waitingForStart;
 			entry(ctx);
@@ -92,6 +111,14 @@
 	}
 	void currentAck::eventItemLeftExit(ErrorContext& ctx){
 		if(ctx.data.err == ITEM_APPEARED && ctx.data.errorLoc == 3){
+			if(!ctx.data.section3.empty()){
+				uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
+				ctx.data.section3.front().timer->stop();
+				std::cout<<"runnedTime:"<<runnedTime<<std::endl;
+				delete ctx.data.section3.front().timer;
+				ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
+				ctx.data.section3.front().timer->start(ctx.data.exitTime+1000,runnedTime);
+			}
 			exit(ctx);
 			new(this) waitingForStart;
 			entry(ctx);

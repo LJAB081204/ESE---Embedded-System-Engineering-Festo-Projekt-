@@ -18,6 +18,12 @@ IHTemp::IHTemp(){};
 
 void IHTemp::entry(ProfileContext& ctx) {
 	std::cout << "///////////////IHTemp detected" << std::endl;
+	if(ctx.data.heightDefault == true){
+		ctx.data.heightDefault = false;
+		exit(ctx);
+		new(this) Default;
+		entry(ctx);
+	}
 }
 
 void IHTemp::exit(ProfileContext& ctx) {}

@@ -14,6 +14,7 @@
 #include "../EstopFSM/EstopContext.h"
 #include "../ErrorFSM/ErrorContext.h"
 #include "../ErrorFSM/ErrorBase.h"
+#include <iostream>
 
 
 
@@ -51,12 +52,14 @@ void Operation::eventButtonResetPressedRemote(MainContext& ctx) {
 	operationFSM.eventButtonResetPressedRemote();
 }
 void Operation::eventButtonEstopPressed(MainContext& ctx) {
+	ctx.data.reset();
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
     new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::LOCAL);
     entry(ctx);
 }
 void Operation::eventButtonEstopPressedRemote(MainContext& ctx) {
+	ctx.data.reset();
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
     new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::REMOTE);
