@@ -9,18 +9,26 @@
 
 #include "ProfileContext.h"
 #include "IS.h"
+#include <sys/neutrino.h>
+#include "../../../../PulseMessages.h"
+#include "Default.h"
 namespace M2{
 
 IS::IS(){};
 
 void IS::entry(ProfileContext& ctx) {
 	std::cout << "//////////////////IS detected" << std::endl ;
-	//Datenklasse
-	//ErrorCode setzten
+	raiseError(ctx);
+	new (this) Default;
 }
 
 void IS::exit(ProfileContext& ctx) {}
 
+void IS::raiseError(ProfileContext& ctx){
+	ctx.data.err = ITEM_SPECIAL;
+	ctx.data.errorLoc = 1;
+	MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
+}
 
 void IS::eventItemGone(ProfileContext& ctx){
 	exit(ctx);

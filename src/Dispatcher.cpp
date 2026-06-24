@@ -338,12 +338,6 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 							case 100:
 								FSM.eventTimerExpired();
 								break;
-//							default:
-//								cout << "Dynamic Timer!!"<< msg.value.sival_int << endl;
-//								FSM.eventError();
-//								break;
-//						}
-//							break;
 						default:
 							 std::cout << "item count: " << data.itemCount << std::endl;
 							data.isErrorLocal = true;
@@ -400,6 +394,13 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 								}
 								break;
 								}
+						break;
+
+							default:
+								data.isErrorLocal = true;
+								cout << "Dynamic Timer!!"<< msg.value.sival_int << endl;
+								FSM.eventError();
+
 								break;
 					case PULSE_EVENT_ERROR:
 							cout << "ERROR!!" << endl;

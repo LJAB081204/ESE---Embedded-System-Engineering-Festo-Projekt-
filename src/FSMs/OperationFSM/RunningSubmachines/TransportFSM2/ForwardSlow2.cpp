@@ -25,41 +25,24 @@ namespace M2{
 	}
 
 	void ForwardSlow2::exit(TransportContext2& ctx){
+		ctx.data.handler->resumeAll();
 	}
 
 	void ForwardSlow2::eventItemGone(TransportContext2& ctx){
 		if(!ctx.data.section1.empty()){
-//			std::cout<< "height time: "<<ctx.data.heightTime << std::endl;
-//			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
-//			int diff = ctx.data.heightTime - ctx.data.section1.front().timer->getTime();
-//			ctx.data.section1.front().timer->stop();
-//			std::cout<< diff << std::endl;
-//			if(diff>1500){
-//				std::cout<< "Error item gone"<< std::endl;
-//				delete ctx.data.section1.front().timer;
-//				ctx.data.err = ITEM_APPEARED;
-//				ctx.data.errorLoc = 1;
-//				ctx.data.raiseError();
-//			}
-//			else{
-				exit(ctx);
-				new(this) Forward2;
-				entry(ctx);
-//			}
+			exit(ctx);
+			new(this) Forward2;
+			entry(ctx);
 		}
 		else{
+			ctx.data.handler->pauseAll();
 			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 1;
 			ctx.data.raiseError();
 		}
-//		new(this) Forward2;
-//		entry(ctx);
 	}
-//	void ForwardSlow2::eventItemTransfer(uint32_t itemCode, TransportContext2& ctx){
-//		itemData item = ctx.data.convertIntToItem(itemCode);
-//		ctx.data.addTransferredItem(item);
-//	}
+
 	void ForwardSlow2::eventItemInSlide(TransportContext2& ctx){
 		if(!ctx.data.section2.empty()){
 			ctx.data.removeItem(2);
@@ -71,6 +54,34 @@ namespace M2{
 			entry(ctx);
 		}
 	}
+
+	void ForwardSlow2::eventItemAtPusher(TransportContext2& ctx){
+		exit(ctx);
+		if(!ctx.data.section2.empty()){
+			std::cout<< "pusher time: "<<ctx.data.pusherTime << std::endl;
+			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
+			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
+			std::cout<< diff << std::endl;
+			if(diff>1000){
+				ctx.data.handler->pauseAll();
+				std::cout<< "Error item at Pusher"<< std::endl;
+				ctx.data.err = ITEM_APPEARED;
+				ctx.data.errorLoc = 2;
+				ctx.data.raiseError();
+			}
+			else{
+				ctx.data.section2.front().timer->stop();
+			}
+		}
+		else{
+			ctx.data.handler->pauseAll();
+			std::cout<< "Error item arrived (empty)"<< std::endl;
+			ctx.data.err = ITEM_APPEARED;
+			ctx.data.errorLoc = 2;
+			ctx.data.raiseError();
+		}
+	}
+
 	void ForwardSlow2::eventItemAtExit(TransportContext2& ctx){
 		ctx.data.itemAtExit = true;
 		std::cout<< ctx.data.itemCount << std::endl;
