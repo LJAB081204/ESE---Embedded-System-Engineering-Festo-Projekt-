@@ -23,8 +23,8 @@ namespace M1{
 	}
 	void Full::entry(SlideContext& ctx){
 		if(ctx.hal.getSensors()->isSlideFull()){
-			ctx.hal.getActors()->yellowLampBlink(1000);
 			ctx.data.slideFull = true;
+			ctx.hal.getActors()->yellowLampBlink(1000);
 			std::cout << "Slide Full"<<std::endl;
 		}
 		else{

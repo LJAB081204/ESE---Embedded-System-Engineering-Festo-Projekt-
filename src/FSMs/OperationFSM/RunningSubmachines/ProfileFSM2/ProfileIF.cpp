@@ -18,6 +18,12 @@ ProfileIF::ProfileIF(){};
 
 void ProfileIF::entry(ProfileContext& ctx) {
 	std::cout << "//////////////////////ProfileIF detected" << std::endl;
+	if(ctx.data.heightDefault == true){
+		ctx.data.heightDefault = false;
+		exit(ctx);
+		new(this) Default;
+		entry(ctx);
+	}
 }
 
 void ProfileIF::exit(ProfileContext& ctx) {}

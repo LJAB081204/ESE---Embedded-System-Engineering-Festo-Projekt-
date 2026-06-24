@@ -22,22 +22,16 @@ Receive::Receive(){
 void Receive::entry(WeicheContext& ctx){
 	ctx.hal.getActors()->closePusher();
 	std::cout << "READY TO RECEIVE ITEM" << std::endl;
-
-
+	if(!ctx.data.section2.empty()){
+			ctx.data.section2.front().metal = false;
+	}
 }
 void Receive::exit(WeicheContext& ctx){
 
 }
 
 void Receive::eventItemAtPusher(WeicheContext& ctx){
-	if(ctx.hal.getActors()->isJunction()){
-		ctx.pusherTimer.start(25);
-	}
-	else {
-		ctx.pusherTimer.start(10);
-	}
-
-
+	ctx.pusherTimer.start(25,0);
 }
 void Receive::eventItemMetal(WeicheContext& ctx){
 	std::cout << "section2 size: " << ctx.data.section2.size() << std::endl;
@@ -49,7 +43,7 @@ void Receive::eventItemMetal(WeicheContext& ctx){
 
 void Receive::eventTimerExpired(WeicheContext& ctx){
 	exit(ctx);
-	std::cout << "TIMER EXPIRED" << std::endl;
+	std::cout<<"Weiche Ready"<<std::endl;
 	raiseUpdate(ctx);
 	new (this) Ready;
 	entry(ctx);

@@ -22,7 +22,7 @@ Blocked::Blocked(){
 	}
 
 	void Blocked::entry(SlideContext& ctx){
-		ctx.slideTimer->start(1500);
+		ctx.slideTimer->start(300);
 		std::cout << "Slide Blocked"<<std::endl;
 	}
 	void Blocked::exit(SlideContext& ctx){

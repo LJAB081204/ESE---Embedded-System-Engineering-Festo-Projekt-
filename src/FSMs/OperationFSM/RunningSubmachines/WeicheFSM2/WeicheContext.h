@@ -48,6 +48,9 @@ public:
     void eventUpdate()			   { currentState->eventUpdate(*this);}
     void eventError()			   { currentState->eventError(*this);}
     void eventTimerExpired()	   { currentState->eventTimerExpired(*this);}
+    void reactivate()	   			{
+    	new(currentState)Receive;
+    	currentState->entry(*this);}
 
 	SimpleTimer* timerPusherOpen = nullptr;
 

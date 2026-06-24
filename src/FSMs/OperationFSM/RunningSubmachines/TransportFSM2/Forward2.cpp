@@ -35,7 +35,7 @@ namespace M2{
 
 	void Forward2::eventItemLeftEntry(TransportContext2& ctx){
 		if(!ctx.data.section1.empty()){
-			ctx.data.section1.back().timer->start(ctx.data.entryTime+1000);
+			ctx.data.section1.back().timer->start(ctx.data.entryTime+1000,0);
 		}
 		else{
 			std::cout<<"Queue 1 leer Festo1" << std::endl;
@@ -49,7 +49,7 @@ namespace M2{
 			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
 			int diff = ctx.data.entryTime - ctx.data.section1.front().timer->getTime();
 			std::cout<< diff << std::endl;
-			if(diff>500){
+			if(diff>400){
 				ctx.data.handler->pauseAll();
 				std::cout<< "Error item arrived"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
@@ -79,7 +79,7 @@ namespace M2{
 			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
 			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
 			std::cout<< diff << std::endl;
-			if(diff>1000){
+			if(diff>300){
 				ctx.data.handler->pauseAll();
 				std::cout<< "Error item at Pusher"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
@@ -120,7 +120,7 @@ namespace M2{
 			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
 			int diff = ctx.data.exitTime - ctx.data.section3.front().timer->getTime();
 			std::cout<< diff << std::endl;
-			if(diff>1000){
+			if(diff>1200){
 				ctx.data.handler->pauseAll();
 				std::cout<< "Error item at exit"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
@@ -128,7 +128,15 @@ namespace M2{
 				raiseError(ctx);
 			}
 			else{
-				ctx.data.section3.front().timer->stop();
+				if(!ctx.data.section3.empty()){
+					ctx.data.section3.front().timer->stop();
+					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
+					ctx.data.section3.front().timer->stop();
+					std::cout<<"runnedTime:"<<runnedTime<<std::endl;
+					delete ctx.data.section3.front().timer;
+					ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
+					ctx.data.section3.front().timer->start(ctx.data.pusherTime+1000,runnedTime);
+				}
 				exit(ctx);
 				new(this) Stop2;
 				entry(ctx);

@@ -34,6 +34,7 @@ public:
         void eventHeightWrong()			   { currentState->eventHeightWrong(*this); }
 
         void eventError()                  { currentState->eventError(*this); }
+        void reactivate() 			 { currentState->entry(*this); }
     };
 }
 
