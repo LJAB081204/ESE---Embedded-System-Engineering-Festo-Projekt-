@@ -40,7 +40,7 @@ namespace M1{
 	void Forward::eventItemAtEntry(TransportContext& ctx){
 		if(!ctx.data.readyForEntry){
 			ctx.data.isErrorLocal = true;
-			ctx.data.err = ITEM_APPEARED;
+			ctx.data.err = ENTRY_TOO_FAST;
 			ctx.data.errorLoc = 1;
 			ctx.data.handler->pauseAll();
 			raiseErrorEntry(ctx);
