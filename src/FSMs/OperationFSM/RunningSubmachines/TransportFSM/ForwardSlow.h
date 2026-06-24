@@ -27,6 +27,8 @@ public:
 
 
 	void raiseRequestTransfer(TransportContext& ctx);
+	void raiseError(TransportContext& ctx);
+	void raiseErrorEntry(TransportContext& ctx);
 };
 
 

@@ -84,6 +84,7 @@ void Error::eventGoBack(MainContext& ctx){
 
 void Error::eventButtonEstopPressed(MainContext& ctx) {
 	errorFSM.setActive(false);
+	ctx.data.errorState = CURRENT_NACK_STATE;
 	ctx.data.reset();
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
@@ -92,6 +93,7 @@ void Error::eventButtonEstopPressed(MainContext& ctx) {
 }
 void Error::eventButtonEstopPressedRemote(MainContext& ctx) {
 	errorFSM.setActive(false);
+	ctx.data.errorState = CURRENT_NACK_STATE;
 	ctx.data.reset();
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
@@ -103,6 +105,9 @@ void Error::eventConnectionLost(MainContext& ctx) {
 	exit(ctx);
 	new(this) ConnectionLost(ctx.hal, ctx.hs, PreviousFsmState::ERROR);
 	entry(ctx);
+}
+void Error::eventItemLeftEntry(MainContext& ctx){
+	errorFSM.eventItemLeftEntry();
 }
 
 

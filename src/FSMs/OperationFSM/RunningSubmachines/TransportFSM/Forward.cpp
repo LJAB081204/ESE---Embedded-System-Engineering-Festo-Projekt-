@@ -43,10 +43,11 @@ namespace M1{
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 1;
 			ctx.data.handler->pauseAll();
-			raiseError(ctx);
-			return;
+			raiseErrorEntry(ctx);
 		}
+		else{
 		ctx.data.addItem();
+		}
 	}
 
 	void Forward::eventItemLeftEntry(TransportContext& ctx){
@@ -187,6 +188,9 @@ namespace M1{
 	}
 	void Forward::raiseError(TransportContext& ctx){
 		MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
+	}
+	void Forward::raiseErrorEntry(TransportContext& ctx){
+		MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR_ENTRY,0);
 	}
 }
 

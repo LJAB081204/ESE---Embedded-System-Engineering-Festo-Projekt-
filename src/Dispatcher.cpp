@@ -488,7 +488,12 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 					case PULSE_EVENT_ERROR_RESOLVED:
 					    FSM.eventErrorResolved();
 					    break;
-
+					case PULSE_EVENT_ERROR_ENTRY:
+						data.isErrorLocal = true;
+						data.err = ENTRY_TOO_FAST;
+			            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_REMOTE, 0);
+			            FSM.eventError();
+			            break;
 					case PULSE_CONNECTION_LOST:
 						FSM.eventConnectionLost();
 						break;

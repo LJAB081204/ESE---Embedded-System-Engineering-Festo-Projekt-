@@ -20,7 +20,7 @@ dataClass::dataClass(TimerHandler& handler): handler(&handler){
 	pusherTime = 0;
 	exitTime = 0;
 	setTimes();
-	minTimeEntry = entryTime / 3;
+	minTimeEntry = entryTime / 2;
 	}
 
 void dataClass::reset(){

@@ -32,6 +32,8 @@
 			break;
 		case ITEM_APPEARED: std::cout << "Werkstück entfernen. Location :"  << ctx.data.errorLoc << std::endl;
 			break;
+		case ENTRY_TOO_FAST: std::cout << "Werkstück aus Einlauf entfernen." << std::endl;
+			break;
 		default:
 			break;
 		}
@@ -109,6 +111,14 @@
 		if(ctx.data.err == CONNECTION_LOST){
 			exit(ctx);
 			new(this) waitingForStart;
+			entry(ctx);
+		}
+	}
+
+	void currentAck::eventItemLeftEntry(ErrorContext& ctx){
+		if(ctx.data.err == ENTRY_TOO_FAST){
+			exit(ctx);
+			new (this) waitingForStart;
 			entry(ctx);
 		}
 	}

@@ -24,6 +24,8 @@ public:
 	void eventItemLeftExit(ErrorContext& ctx)override;
 	void eventConnectionRestored(ErrorContext& ctx)override;
 
+	void eventItemLeftEntry(ErrorContext& ctx)override;
+
 
 	void raiseItemAtPusher(ErrorContext& ctx);
 	void raiseItemGone(ErrorContext& ctx);

@@ -26,6 +26,7 @@ public:
 	virtual void eventConnectionRestored(ErrorContext& ctx) {}
 	virtual void errorPusherTimerExpired(ErrorContext& ctx) {}
 	virtual void eventButtonStartPressed(ErrorContext& ctx) {}
+	virtual void eventItemLeftEntry(ErrorContext& ctx){}
 
 };
 
