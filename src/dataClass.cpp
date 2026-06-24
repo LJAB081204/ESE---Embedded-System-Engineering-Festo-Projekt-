@@ -126,8 +126,10 @@ bool dataClass::addItem(){
 }
 
 bool dataClass::addTransferredItem(itemData item){
+	std::cout << "addTransferredItem: id=" << item.id << " nextItem size before=" << nextItem.size() << std::endl;
 	item.timer = new DynamicTimer(item.id, *handler);
 	nextItem.push(item);
+	std::cout << "addTransferredItem: nextItem size after=" << nextItem.size() << std::endl;
 	return true;
 }
 

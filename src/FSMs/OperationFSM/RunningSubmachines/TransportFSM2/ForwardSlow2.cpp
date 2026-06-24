@@ -53,6 +53,15 @@ namespace M2{
 		}
 	}
 
+	void ForwardSlow2::eventItemLeftEntry(TransportContext2& ctx){
+		if(!ctx.data.section1.empty()){
+			ctx.data.section1.back().timer->start(ctx.data.entryTime+1000);
+		}
+		else{
+			std::cout<<"Queue 1 leer Festo1" << std::endl;
+		}
+	}
+
 	void ForwardSlow2::eventItemAtPusher(TransportContext2& ctx){
 		exit(ctx);
 		if(!ctx.data.section2.empty()){
@@ -89,14 +98,7 @@ namespace M2{
 
 	}
 
-	void ForwardSlow2::eventItemLeftEntry(TransportContext2& ctx){
-		if(!ctx.data.section1.empty()){
-			ctx.data.section1.back().timer->start(ctx.data.entryTime+1000);
-		}
-		else{
-			std::cout<<"Queue 1 leer Festo1" << std::endl;
-		}
-	}
+
 
 	void ForwardSlow2::eventItemLeftExitRemote(TransportContext2& ctx){
 		ctx.data.addItem();
