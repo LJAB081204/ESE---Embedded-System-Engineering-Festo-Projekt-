@@ -21,6 +21,7 @@
 	}
 
 	void currentAck::entry(ErrorContext& ctx){
+		ctx.active = true;
 		ctx.hal.getActors()->redLampBlinkOff();
 		ctx.hal.getActors()->redLampOn();
 		ctx.data.errorState = CURRENT_ACK_STATE;
@@ -30,6 +31,8 @@
 		case BOTH_SLIDES_FULL: std::cout << "Rutsche auf Band zwei leeren." << std::endl;
 			break;
 		case ITEM_APPEARED: std::cout << "Werkstück entfernen. Location :"  << ctx.data.errorLoc << std::endl;
+			break;
+		case ENTRY_TOO_FAST: std::cout << "Werkstück aus Einlauf entfernen." << std::endl;
 			break;
 		default:
 			break;
@@ -128,6 +131,14 @@
 		if(ctx.data.err == CONNECTION_LOST){
 			exit(ctx);
 			new(this) waitingForStart;
+			entry(ctx);
+		}
+	}
+
+	void currentAck::eventItemLeftEntry(ErrorContext& ctx){
+		if(ctx.data.err == ENTRY_TOO_FAST){
+			exit(ctx);
+			new (this) waitingForStart;
 			entry(ctx);
 		}
 	}

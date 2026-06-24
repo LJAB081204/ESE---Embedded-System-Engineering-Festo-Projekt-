@@ -41,6 +41,9 @@ public:
 	void enterPusherTooLong() { errorFSM.errorPusherTimerExpired(); }
 	void eventConnectionLost(MainContext& ctx)override;
 
+	void eventItemLeftEntry(MainContext& ctx) override;
+
+
 };
 
 

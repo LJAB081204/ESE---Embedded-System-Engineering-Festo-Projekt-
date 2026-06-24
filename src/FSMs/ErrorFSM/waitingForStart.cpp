@@ -164,6 +164,7 @@ void waitingForStart::entry(ErrorContext& ctx){
 
 	void waitingForStart::eventButtonStartPressed(ErrorContext& ctx){
 		exit(ctx);
+		ctx.data.errorState = CURRENT_NACK_STATE;
 		ctx.active = false;
 	}
 

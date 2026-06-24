@@ -57,7 +57,9 @@ public:
 	void eventConnectionRestored() { currentState->eventConnectionRestored(*this); }
 	void errorPusherTimerExpired() { currentState->errorPusherTimerExpired(*this); }
 	void eventButtonStartPressed() { currentState->eventButtonStartPressed(*this); }
+	void eventItemLeftEntry() 	   {currentState->eventItemLeftEntry(*this);}
 	bool isActive() const { return active; }
+	void setActive(bool b) {active = b;}
 };
 
 

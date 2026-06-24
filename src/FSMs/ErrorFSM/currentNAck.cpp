@@ -24,6 +24,7 @@
 	}
 
 	void currentNAck::entry(ErrorContext& ctx){
+		ctx.active = true;
 		ctx.hal.getActors()->ledButtonReset();
 		ctx.hal.getActors()->yellowLampBlinkOff();
 		ctx.hal.getActors()->redLampBlink(100);
@@ -52,6 +53,8 @@
 			break;
 		case ITEM_APPEARED: std::cout << "Fehler: Werkstück aufgetaucht. Ort: "  << location << std::endl;
 			break;
+		case ENTRY_TOO_FAST: std::cout << "Fehler: Wartezeit beim Einlegen nicht eingehalten." << std::endl;
+			break;
 		default:
 			std::cout << "Unbekannter Fehler"<< ctx.data.err << std::endl;
 			break;
@@ -64,15 +67,17 @@
 	}
 
 	void currentNAck::eventItemLeftSlide(ErrorContext& ctx){
-		exit(ctx);
-		new (this) goneNAck;
-		entry(ctx);
+		if(ctx.data.err == BOTH_SLIDES_FULL){
+			exit(ctx);
+			new (this) goneNAck;
+			entry(ctx);
+		}
 	}
 
 	void currentNAck::eventButtonStartPressed(ErrorContext& ctx){
-		exit(ctx);
-		//exit -> später implementieren
-		entry(ctx);
+//		exit(ctx);
+//		//exit -> später implementieren
+//		entry(ctx);
 	}
 
 	void currentNAck::eventButtonResetPressed(ErrorContext& ctx){

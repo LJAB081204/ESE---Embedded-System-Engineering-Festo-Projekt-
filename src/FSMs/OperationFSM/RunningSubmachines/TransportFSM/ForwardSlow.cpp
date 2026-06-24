@@ -89,8 +89,15 @@ namespace M1{
 	}
 
 	void ForwardSlow::eventItemAtEntry(TransportContext& ctx){
-		ctx.data.addItem();
-	}
+		if(!ctx.data.readyForEntry){
+			ctx.data.isErrorLocal = true;
+			ctx.data.err = ENTRY_TOO_FAST;
+			ctx.data.errorLoc = 1;
+			ctx.data.handler->pauseAll();
+			raiseErrorEntry(ctx);
+			return;
+		}
+		ctx.data.addItem();	}
 
 	void ForwardSlow::eventItemLeftEntry(TransportContext& ctx){
 		if(!ctx.data.section1.empty()){
@@ -99,6 +106,12 @@ namespace M1{
 		else{
 			std::cout<<"Queue 1 leer Festo1" << std::endl;
 		}
+		ctx.data.readyForEntry = false;
+		ctx.hal.getActors()->lampQ1();
+		if(ctx.data.minTimeEntryTimer == nullptr){
+			ctx.data.minTimeEntryTimer = new DynamicTimer(101,*ctx.data.handler);
+		}
+		ctx.data.minTimeEntryTimer->start(ctx.data.minTimeEntry);
 	}
 
 	void ForwardSlow::eventItemAtEntryRemote(TransportContext& ctx){
@@ -159,6 +172,11 @@ namespace M1{
 	}
 	void ForwardSlow::raiseRequestTransfer(TransportContext& ctx){
 			MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_TRANSFER_REQUEST,0);
-
+	}
+	void ForwardSlow::raiseError(TransportContext& ctx){
+		MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
+	}
+	void ForwardSlow::raiseErrorEntry(TransportContext& ctx){
+		MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR_ENTRY,0);
 	}
 }
