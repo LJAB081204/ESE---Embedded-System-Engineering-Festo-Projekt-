@@ -13,6 +13,11 @@
 #include "ErrorBase.h"
 #include "../../dataClass.h"
 #include "currentNAck.h"
+#include "currentAck.h"
+#include "goneNAck.h"
+#include "waitingForStart.h"
+#include "waitingForStart2.h"
+#include "errorPusherTooLong.h"
 #include "waitingForResolve.h"
 
 class ErrorContext {
@@ -26,11 +31,18 @@ public:
 	bool active = true;
 	bool onlyPusher = false;
 	ErrorContext(HAL& hal,dataClass& data) : hal(hal),data(data){
-		if(data.isErrorLocal){
-			new (currentState) currentNAck;
+		if(!data.isErrorLocal){
+			new (currentState) waitingForResolve;
 		}
 		else{
-			new (currentState) waitingForResolve;
+			switch(data.errorState){
+			case CURRENT_NACK_STATE 	  : new (currentState) currentNAck; break;
+			case CURRENT_ACK_STATE   	  : new (currentState) currentAck; break;
+			case GONE_NACK_STATE    	  : new (currentState) goneNAck; break;
+			case WAITING_FOR_START_STATE  : new (currentState) waitingForStart; break;
+			case WAITING_FOR_START_STATE2 : new (currentState) waitingForStart2; break;
+			case PUSHER_TOO_LONG_STATE 	  : new (currentState) errorPusherTooLong; break;
+			}
 		}
 		currentState->entry(*this);
 

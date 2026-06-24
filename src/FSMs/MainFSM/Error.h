@@ -33,9 +33,11 @@ public:
 	void eventGoBackIM(MainContext& ctx)override;
 	void eventGoBackIF(MainContext& ctx)override;
 	void eventGoBackIHM(MainContext& ctx)override;
+	void eventGoBackWFP(MainContext& ctx)override;
 	void eventGoBack(MainContext& ctx)override;
 
-
+	void eventButtonEstopPressed(MainContext& ctx)override;
+	void eventButtonEstopPressedRemote(MainContext& ctx)override;
 	void enterPusherTooLong() { errorFSM.errorPusherTimerExpired(); }
 	void eventConnectionLost(MainContext& ctx)override;
 

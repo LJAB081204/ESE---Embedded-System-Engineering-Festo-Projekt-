@@ -24,21 +24,40 @@ dataClass::dataClass(TimerHandler& handler): handler(&handler){
 
 void dataClass::reset(){
  // Connection
-	conId = -1;
+//	conId = -1;
 
 // Laufband
 	nextItemID = 1;
 
 	while (!section1.empty()){
+		if (section1.front().timer != nullptr){
+			section1.front().timer->stop();
+			delete section1.front().timer;
+		}
 		section1.pop();
 	}
 
 	while (!section2.empty()){
+		if (section2.front().timer != nullptr){
+			section2.front().timer->stop();
+			delete section2.front().timer;
+		}
 		section2.pop();
 	}
 
 	while (!section3.empty()){
+		if (section3.front().timer != nullptr){
+			section3.front().timer->stop();
+			delete section3.front().timer;
+		}
 		section3.pop();
+	}
+	while (!nextItem.empty()){
+		if (nextItem.front().timer != nullptr){
+			nextItem.front().timer->stop();
+			delete nextItem.front().timer;
+		}
+		nextItem.pop();
 	}
 
 
@@ -57,6 +76,10 @@ void dataClass::reset(){
 // Error
 	err = ERROR_CLEARED;
 	errorLoc = 0;
+	pusherErrorActive = false;
+	isErrorLocal = false;
+	oneRound = false;
+	returnToError = false;
 
 // State Weiche
 	weiche = LET_ITEM_PASS_STATE;
@@ -104,8 +127,10 @@ bool dataClass::addItem(){
 }
 
 bool dataClass::addTransferredItem(itemData item){
+	std::cout << "addTransferredItem: id=" << item.id << " nextItem size before=" << nextItem.size() << std::endl;
 	item.timer = new DynamicTimer(item.id, *handler);
 	nextItem.push(item);
+	std::cout << "addTransferredItem: nextItem size after=" << nextItem.size() << std::endl;
 	return true;
 }
 
@@ -155,6 +180,23 @@ bool dataClass::removeItem(int queue){
 			default:
 				return false;
 	}
+}
+
+int dataClass::findItem(int id){
+	std::cout << "findItem called with id: " << id << std::endl;
+	std::cout << "s1 front: " << (section1.empty() ? -1 : section1.front().id) << std::endl;
+	std::cout << "s2 front: " << (section2.empty() ? -1 : section2.front().id) << std::endl;
+	std::cout << "s3 front: " << (section3.empty() ? -1 : section3.front().id) << std::endl;
+    if(!section1.empty() && section1.front().id == id){
+        return 1;
+    }
+    if(!section2.empty() && section2.front().id == id){
+        return 2;
+    }
+    if(!section3.empty() && section3.front().id == id){
+        return 3;
+    }
+    return -1;
 }
 
 uint32_t dataClass::convertItemToInt(const itemData& item)
@@ -213,4 +255,6 @@ void dataClass::setTimes(){
 void dataClass::raiseError(){
 	MsgSendPulse(conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
     }
+void dataClass::resetEstop(){
 
+}

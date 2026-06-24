@@ -23,6 +23,7 @@
 	void currentAck::entry(ErrorContext& ctx){
 		ctx.hal.getActors()->redLampBlinkOff();
 		ctx.hal.getActors()->redLampOn();
+		ctx.data.errorState = CURRENT_ACK_STATE;
 		switch (ctx.data.err){
 		case ITEM_SPECIAL: std::cout << "Spezialitem beim Höhensensor entfernen."<< std::endl;
 			break;

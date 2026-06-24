@@ -9,6 +9,7 @@
 #include "TransportContext.h"
 #include "ForwardSlow.h"
 #include "SlowWaitForFesto.h"
+#include "../../../../PulseMessages.h"
 
 #include <iostream>
 namespace M1{
@@ -20,6 +21,7 @@ namespace M1{
 		std::cout<<"SlowWaitForFesto" << std::endl;
 		ctx.hal.getActors()->motorStop();
 		ctx.data.handler->pauseAll();
+		MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_TRANSFER_REQUEST, 0);
 	}
 
 	void SlowWaitForFesto::exit(TransportContext& ctx){}
