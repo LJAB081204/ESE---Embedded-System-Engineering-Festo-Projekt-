@@ -439,7 +439,8 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 
 					case PULSE_ITEM_TRANSFER:
 						//FSM.eventItemTransfer(msg.value.sival_int);
-						cout << msg.value.sival_int << endl;
+
+						std::cout << "TRANSFER RECEIVED: " << msg.value.sival_int << std::endl;
 						data.addTransferredItem(data.convertIntToItem(msg.value.sival_int));
 						break;
 					case PULSE_EVENT_SLIDE_TIMER:

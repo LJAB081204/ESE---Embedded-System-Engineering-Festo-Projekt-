@@ -98,7 +98,9 @@ bool dataClass::moveFrom1To2(){
 	if (section1.empty()){
 		return false;
 	}
+
 	section2.push(section1.front());
+	delete section1.front().timer;
 	section2.back().timer = new DynamicTimer(section2.back().id, *handler);
 	section2.back().timer->start(pusherTime+1000);
 	section1.pop();
@@ -115,6 +117,7 @@ bool dataClass::moveFrom2To3(){
 		 return false;
 	 }
 	section3.push(section2.front());
+	delete section2.front().timer;
 	section3.back().timer = new DynamicTimer(section3.back().id, *handler);
 	section3.back().timer->start(exitTime+1000);
 	section2.pop();
@@ -131,8 +134,10 @@ bool dataClass::addItem(){
 }
 
 bool dataClass::addTransferredItem(itemData item){
+	std::cout << "addTransferredItem: id=" << item.id << " nextItem size before=" << nextItem.size() << std::endl;
 	item.timer = new DynamicTimer(item.id, *handler);
 	nextItem.push(item);
+	std::cout << "addTransferredItem: nextItem size after=" << nextItem.size() << std::endl;
 	return true;
 }
 

@@ -23,7 +23,7 @@ public:
 	void eventItemInSlide(TransportContext2& ctx)override;
 	void eventItemLeftExitRemote(TransportContext2& ctx)override;
 	void eventItemAtPusher(TransportContext2& ctx)override;
-
+	void eventItemLeftEntry(TransportContext2& ctx)override;
 
 
 };

@@ -70,7 +70,7 @@ namespace M1{
 			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
 			int diff = ctx.data.entryTime - ctx.data.section1.front().timer->getTime();
 			std::cout<< diff << std::endl;
-			if(diff>500){
+			if(diff>300){
 				ctx.data.handler->pauseAll();
 				std::cout<< "Error item arrived"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
@@ -85,6 +85,7 @@ namespace M1{
 		}
 		else{
 			ctx.data.handler->pauseAll();
+			ctx.data.section1.front().timer->stop();
 			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 1;

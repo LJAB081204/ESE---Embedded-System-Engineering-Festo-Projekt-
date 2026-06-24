@@ -17,13 +17,13 @@ namespace M2{
 	}
 
 	void Forward2::entry(TransportContext2& ctx){
-		if(ctx.data.itemCount == 0){
+		if(ctx.data.itemCount == 0 || ctx.hal.getSensors()->isItemAtExit()){
 			exit(ctx);
 			new(this) Stop2;
 			entry(ctx);
 		}
 		else{
-		std::cout<<"Forward2" << std::endl;
+			ctx.hal.getActors()->motorStop();
 		ctx.hal.getActors()->motorForwards();
 		ctx.data.handler->resumeAll();
 		ctx.data.handler->setNormal();
