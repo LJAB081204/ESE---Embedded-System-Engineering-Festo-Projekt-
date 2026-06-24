@@ -19,6 +19,7 @@ enum itemProfile { IH_PROFILE, IM_PROFILE, IF_PROFILE, IHM_PROFILE, IU_PROFILE, 
 enum errors { ERROR_CLEARED, ITEM_SPECIAL, ITEM_GONE, BOTH_SLIDES_FULL, ITEM_APPEARED,CONNECTION_LOST};
 				//0				1				2			3					4			5
 enum WeicheState { LET_ITEM_PASS_STATE,WAIT_STATE};
+enum ErrorState  { CURRENT_NACK_STATE,CURRENT_ACK_STATE,PUSHER_TOO_LONG_STATE,GONE_NACK_STATE,WAITING_FOR_START_STATE,WAITING_FOR_START_STATE2};
 struct itemData{
 		int id = 0;
 		bool flat = false;
@@ -69,12 +70,14 @@ class dataClass{
 	int errorLoc = 0;
 	bool pusherErrorActive = false;
 	bool isErrorLocal = false;
+	bool returnToError = false;
 
 	// Estop Status
 	bool eStopIsPressed = false;
 	bool eStopWasPressed = false;
 
 	WeicheState weiche = LET_ITEM_PASS_STATE;
+	ErrorState errorState = CURRENT_NACK_STATE;
 
 	dataClass(TimerHandler& handler);
 	void reset();
@@ -104,6 +107,7 @@ class dataClass{
 	private:
 
 	void setTimes();
+	void resetEstop();
 };
 
 

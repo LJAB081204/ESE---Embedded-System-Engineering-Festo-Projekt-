@@ -26,16 +26,14 @@ namespace M1{
 			entry(ctx);
 		}
 		else{
-			std::cout<<"ForwardSlow" << std::endl;
 			ctx.hal.getActors()->motorForwards();
 			ctx.hal.getActors()->motorSlow();
+			ctx.data.handler->resumeAll();
 			ctx.data.handler->setSlow(ctx.data.slowFactor);
 		}
 	}
 
-	void ForwardSlow::exit(TransportContext& ctx){
-		ctx.data.handler->resumeAll();
-	}
+	void ForwardSlow::exit(TransportContext& ctx){}
 
 	void ForwardSlow::eventItemGone(TransportContext& ctx){
 		if(!ctx.data.section1.empty()){

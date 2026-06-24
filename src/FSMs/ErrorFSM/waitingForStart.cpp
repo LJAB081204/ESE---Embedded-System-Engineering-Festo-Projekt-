@@ -22,7 +22,6 @@ void waitingForStart::entry(ErrorContext& ctx){
     if(ctx.data.err == ITEM_GONE){
         itemProfile item;
         switch(ctx.data.errorLoc){
-
             case 1:
                 ctx.data.removeItem(1);
                 if(!ctx.data.nextItem.empty()){

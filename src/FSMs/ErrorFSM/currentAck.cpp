@@ -23,6 +23,7 @@
 	void currentAck::entry(ErrorContext& ctx){
 		ctx.hal.getActors()->redLampBlinkOff();
 		ctx.hal.getActors()->redLampOn();
+		ctx.data.errorState = CURRENT_ACK_STATE;
 		switch (ctx.data.err){
 		case ITEM_SPECIAL: std::cout << "Spezialitem beim Höhensensor entfernen."<< std::endl;
 			break;
@@ -64,6 +65,12 @@
 		}
 		else if(ctx.data.err == ITEM_APPEARED && ctx.data.errorLoc == 1){
 //			ctx.data.removeItem(1);
+//			uint runnedTime = ctx.data.section1.front().timer->getTime();
+//			ctx.data.section1.front().timer->stop();
+//			std::cout<<"runnedTime:"<<runnedTime<<std::endl;
+//			delete ctx.data.section1.front().timer;
+//			ctx.data.section1.front().timer = new DynamicTimer(ctx.data.section1.front().id, *ctx.data.handler);
+//			ctx.data.section1.front().timer->start(ctx.data.entryTime);
 			exit(ctx);
 			new(this) waitingForStart;
 			entry(ctx);

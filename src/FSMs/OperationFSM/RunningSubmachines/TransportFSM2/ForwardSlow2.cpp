@@ -18,15 +18,13 @@ namespace M2{
 	}
 
 	void ForwardSlow2::entry(TransportContext2& ctx){
-		std::cout<<"ForwardSlow2" << std::endl;
 		ctx.hal.getActors()->motorForwards();
 		ctx.hal.getActors()->motorSlow();
+		ctx.data.handler->resumeAll();
 		ctx.data.handler->setSlow(ctx.data.slowFactor);
 	}
 
-	void ForwardSlow2::exit(TransportContext2& ctx){
-		ctx.data.handler->resumeAll();
-	}
+	void ForwardSlow2::exit(TransportContext2& ctx){}
 
 	void ForwardSlow2::eventItemGone(TransportContext2& ctx){
 		if(!ctx.data.section1.empty()){
@@ -99,6 +97,8 @@ namespace M2{
 		entry(ctx);
 
 	}
+
+
 
 	void ForwardSlow2::eventItemLeftExitRemote(TransportContext2& ctx){
 		ctx.data.addItem();

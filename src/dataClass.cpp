@@ -24,21 +24,40 @@ dataClass::dataClass(TimerHandler& handler): handler(&handler){
 
 void dataClass::reset(){
  // Connection
-	conId = -1;
+//	conId = -1;
 
 // Laufband
 	nextItemID = 1;
 
 	while (!section1.empty()){
+		if (section1.front().timer != nullptr){
+			section1.front().timer->stop();
+			delete section1.front().timer;
+		}
 		section1.pop();
 	}
 
 	while (!section2.empty()){
+		if (section2.front().timer != nullptr){
+			section2.front().timer->stop();
+			delete section2.front().timer;
+		}
 		section2.pop();
 	}
 
 	while (!section3.empty()){
+		if (section3.front().timer != nullptr){
+			section3.front().timer->stop();
+			delete section3.front().timer;
+		}
 		section3.pop();
+	}
+	while (!nextItem.empty()){
+		if (nextItem.front().timer != nullptr){
+			nextItem.front().timer->stop();
+			delete nextItem.front().timer;
+		}
+		nextItem.pop();
 	}
 
 
@@ -57,6 +76,10 @@ void dataClass::reset(){
 // Error
 	err = ERROR_CLEARED;
 	errorLoc = 0;
+	pusherErrorActive = false;
+	isErrorLocal = false;
+	oneRound = false;
+	returnToError = false;
 
 // State Weiche
 	weiche = LET_ITEM_PASS_STATE;
@@ -67,7 +90,9 @@ bool dataClass::moveFrom1To2(){
 	if (section1.empty()){
 		return false;
 	}
+
 	section2.push(section1.front());
+	delete section1.front().timer;
 	section2.back().timer = new DynamicTimer(section2.back().id, *handler);
 	section2.back().timer->start(pusherTime+1000);
 	section1.pop();
@@ -84,6 +109,7 @@ bool dataClass::moveFrom2To3(){
 		 return false;
 	 }
 	section3.push(section2.front());
+	delete section2.front().timer;
 	section3.back().timer = new DynamicTimer(section3.back().id, *handler);
 	section3.back().timer->start(exitTime+1000);
 	section2.pop();
@@ -225,4 +251,6 @@ void dataClass::setTimes(){
 void dataClass::raiseError(){
 	MsgSendPulse(conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
     }
+void dataClass::resetEstop(){
 
+}

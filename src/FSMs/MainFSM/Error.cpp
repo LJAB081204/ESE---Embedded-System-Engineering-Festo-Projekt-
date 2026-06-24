@@ -79,8 +79,22 @@ void Error::eventGoBack(MainContext& ctx){
 	ctx.getOperationFSM().eventGoBack();
 }
 
-
+void Error::eventButtonEstopPressed(MainContext& ctx) {
+	ctx.data.reset();
+	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
+    exit(ctx);
+    new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::LOCAL);
+    entry(ctx);
+}
+void Error::eventButtonEstopPressedRemote(MainContext& ctx) {
+	ctx.data.reset();
+	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
+    exit(ctx);
+    new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::REMOTE);
+    entry(ctx);
+}
 void Error::eventConnectionLost(MainContext& ctx) {
+	ctx.data.returnToError = true;
 	exit(ctx);
 	new(this) ConnectionLost(ctx.hal, ctx.hs, PreviousFsmState::ERROR);
 	entry(ctx);

@@ -20,9 +20,7 @@ namespace M1{
 		MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_TRANSFER_REQUEST, 0);
 	}
 
-	void WaitForFesto::exit(TransportContext& ctx){
-		ctx.data.handler->resumeAll();
-	}
+	void WaitForFesto::exit(TransportContext& ctx){}
 
 	void WaitForFesto::eventFestoNotReady(TransportContext& ctx){
 		ctx.hal.getActors()->motorStop();
@@ -35,7 +33,15 @@ namespace M1{
 
 	void WaitForFesto::eventItemAtEntry(TransportContext& ctx){
 		ctx.data.addItem();
-		std::cout<< ctx.data.itemCount << std::endl;
+	}
+
+	void WaitForFesto::eventItemLeftEntry(TransportContext& ctx){
+		if(!ctx.data.section1.empty()){
+			ctx.data.section1.back().timer->start(ctx.data.entryTime+1000);
+		}
+		else{
+			std::cout<<"Queue 1 leer Festo1" << std::endl;
+		}
 	}
 
 	void WaitForFesto::eventItemInSlide(TransportContext& ctx){
