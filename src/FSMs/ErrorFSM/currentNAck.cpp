@@ -81,7 +81,7 @@
 			entry(ctx);
 		}
 		else if(ctx.data.err == ITEM_GONE){
-			ctx.data.itemCount--;
+//			ctx.data.itemCount--;
 			exit(ctx);
 			new (this) waitingForStart;
 			entry(ctx);

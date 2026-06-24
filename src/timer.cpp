@@ -98,6 +98,7 @@ void DynamicTimer::stop()
     running_     = false; // Timer deaktivieren – kein Pulse wird gesendet
     virtualTime_ = 0;     // Zähler zurücksetzen
     targetTime_  = 0;
+    //expired_ = false;
     pthread_mutex_unlock(&handler_.mutex_);
 }
 
@@ -224,6 +225,7 @@ void TimerHandler::processTick()
         // Prüfen, ob Zielzeit erreicht oder überschritten wurde
         if (t->virtualTime_ >= t->targetTime_) {
             t->running_     = false;           // Timer deaktivieren
+           // t->expired_ = true;
             t->virtualTime_ = t->targetTime_;  // Zähler auf exakte Zielzeit kappen
 
             // Expired-Pulse mit der Timer-ID als Value an den Dispatcher senden

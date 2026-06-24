@@ -38,6 +38,7 @@ namespace M1{
 		}
 		else{
 			exit(ctx);
+			ctx.data.section2.front().sortOut = true;
 			raiseItemWrong(ctx);
 			entry(ctx);
 		}

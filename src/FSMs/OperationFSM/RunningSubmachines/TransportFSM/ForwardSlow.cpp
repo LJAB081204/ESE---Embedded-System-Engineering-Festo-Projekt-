@@ -20,10 +20,17 @@ namespace M1{
 	}
 
 	void ForwardSlow::entry(TransportContext& ctx){
-		std::cout<<"ForwardSlow" << std::endl;
-		ctx.hal.getActors()->motorForwards();
-		ctx.hal.getActors()->motorSlow();
-		ctx.data.handler->setSlow(ctx.data.slowFactor);
+		if(ctx.data.itemCount == 0){
+			exit(ctx);
+			new(this) Stop;
+			entry(ctx);
+		}
+		else{
+			std::cout<<"ForwardSlow" << std::endl;
+			ctx.hal.getActors()->motorForwards();
+			ctx.hal.getActors()->motorSlow();
+			ctx.data.handler->setSlow(ctx.data.slowFactor);
+		}
 	}
 
 	void ForwardSlow::exit(TransportContext& ctx){
@@ -31,10 +38,10 @@ namespace M1{
 	}
 
 	void ForwardSlow::eventItemGone(TransportContext& ctx){
-		exit(ctx);
 		if(!ctx.data.section1.empty()){
-				new(this) Forward;
-				entry(ctx);
+			exit(ctx);
+			new(this) Forward;
+			entry(ctx);
 		}
 		else{
 			ctx.data.handler->pauseAll();
@@ -43,12 +50,11 @@ namespace M1{
 			ctx.data.errorLoc = 1;
 			ctx.data.raiseError();
 		}
-		new (this) Forward;
-		entry(ctx);
 	}
 
 	void ForwardSlow::eventItemAtExit(TransportContext& ctx){
 		exit(ctx);
+		ctx.data.section3.front().timer->stop();
 		raiseRequestTransfer(ctx);
 		new(this) SlowWaitForFesto;
 		entry(ctx);
