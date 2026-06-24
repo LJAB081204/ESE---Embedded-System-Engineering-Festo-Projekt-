@@ -21,6 +21,7 @@
 	}
 
 	void currentAck::entry(ErrorContext& ctx){
+		ctx.active = true;
 		ctx.hal.getActors()->redLampBlinkOff();
 		ctx.hal.getActors()->redLampOn();
 		ctx.data.errorState = CURRENT_ACK_STATE;

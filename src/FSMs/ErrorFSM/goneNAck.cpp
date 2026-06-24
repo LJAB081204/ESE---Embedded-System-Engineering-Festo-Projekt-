@@ -20,6 +20,7 @@
 	}
 
 	void goneNAck::entry(ErrorContext& ctx){
+		ctx.active = true;
 		ctx.data.errorState = GONE_NACK_STATE;
 		ctx.hal.getActors()->redLampBlinkOff();
 		ctx.hal.getActors()->redLampBlink(500);

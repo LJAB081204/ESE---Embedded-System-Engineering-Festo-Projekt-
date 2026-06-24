@@ -17,6 +17,7 @@
 	}
 
 	void waitingForStart2::entry(ErrorContext& ctx){
+		ctx.active = true;
 		ctx.data.errorState = WAITING_FOR_START_STATE2;
 		std::cout << "Entferne das Werkstück aus dem Pusher und drücke danach Start." << std::endl;
 		ctx.hal.getActors()->closePusher();
@@ -36,6 +37,7 @@
 			ctx.active = false;
 		}
 		else{
+			ctx.data.errorState = CURRENT_NACK_STATE;
 			new (this) currentNAck;
 			entry(ctx);
 		}

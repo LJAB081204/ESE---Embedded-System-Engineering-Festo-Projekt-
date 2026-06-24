@@ -30,7 +30,13 @@ void Receive::exit(WeicheContext& ctx){
 }
 
 void Receive::eventItemAtPusher(WeicheContext& ctx){
-	ctx.pusherTimer.start(150);
+	if(ctx.hal.getActors()->isJunction()){
+		ctx.pusherTimer.start(25);
+	}
+	else {
+		ctx.pusherTimer.start(10);
+	}
+
 
 }
 void Receive::eventItemMetal(WeicheContext& ctx){

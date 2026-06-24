@@ -23,6 +23,8 @@ void ConnectionLost::exit(MainContext& ctx) {
 }
 
 void ConnectionLost::eventButtonEstopPressed(MainContext& ctx) {
+	ctx.data.reset();
+    ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
 	conLostFSM.eventButtonEstopPressed();
 }
 

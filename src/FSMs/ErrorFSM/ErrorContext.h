@@ -58,6 +58,7 @@ public:
 	void errorPusherTimerExpired() { currentState->errorPusherTimerExpired(*this); }
 	void eventButtonStartPressed() { currentState->eventButtonStartPressed(*this); }
 	bool isActive() const { return active; }
+	void setActive(bool b) {active = b;}
 };
 
 

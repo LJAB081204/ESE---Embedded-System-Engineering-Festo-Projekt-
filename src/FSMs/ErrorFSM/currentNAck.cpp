@@ -24,6 +24,7 @@
 	}
 
 	void currentNAck::entry(ErrorContext& ctx){
+		ctx.active = true;
 		ctx.hal.getActors()->ledButtonReset();
 		ctx.hal.getActors()->yellowLampBlinkOff();
 		ctx.hal.getActors()->redLampBlink(100);
@@ -70,9 +71,9 @@
 	}
 
 	void currentNAck::eventButtonStartPressed(ErrorContext& ctx){
-		exit(ctx);
-		//exit -> später implementieren
-		entry(ctx);
+//		exit(ctx);
+//		//exit -> später implementieren
+//		entry(ctx);
 	}
 
 	void currentNAck::eventButtonResetPressed(ErrorContext& ctx){

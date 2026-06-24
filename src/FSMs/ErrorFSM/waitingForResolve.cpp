@@ -15,6 +15,7 @@
 waitingForResolve::waitingForResolve(){}
 
 void waitingForResolve::entry(ErrorContext& ctx){
+	ctx.active = true;
 	std::string machine;
 	if(ctx.data.isMachine1){
 		machine = "Anlage 2";
@@ -29,5 +30,8 @@ void waitingForResolve::entry(ErrorContext& ctx){
     ctx.hal.getActors()->redLampOn();
 }
 
-void waitingForResolve::exit(ErrorContext& ctx){}
+void waitingForResolve::exit(ErrorContext& ctx){
+	ctx.data.errorState = CURRENT_NACK_STATE;
+
+}
 

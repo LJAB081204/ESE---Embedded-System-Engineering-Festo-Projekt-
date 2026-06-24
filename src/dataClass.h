@@ -102,6 +102,9 @@ class dataClass{
 	uint32_t heightTime;
 	uint32_t pusherTime;
 	uint32_t exitTime;
+	uint32_t minTimeEntry;
+	bool readyForEntry = true;
+	DynamicTimer* minTimeEntryTimer = nullptr;
 
 	bool isMachine1 = false;
 	private:

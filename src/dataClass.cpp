@@ -20,6 +20,7 @@ dataClass::dataClass(TimerHandler& handler): handler(&handler){
 	pusherTime = 0;
 	exitTime = 0;
 	setTimes();
+	minTimeEntry = entryTime / 3;
 	}
 
 void dataClass::reset(){
@@ -60,6 +61,11 @@ void dataClass::reset(){
 		nextItem.pop();
 	}
 
+	if (minTimeEntryTimer != nullptr){
+		minTimeEntryTimer->stop();
+		delete minTimeEntryTimer;
+		minTimeEntryTimer = nullptr;
+	}
 
 // Item
 	itemCount = 0;
@@ -83,6 +89,8 @@ void dataClass::reset(){
 
 // State Weiche
 	weiche = LET_ITEM_PASS_STATE;
+
+	readyForEntry = true;
 }
 
 bool dataClass::moveFrom1To2(){
