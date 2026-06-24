@@ -41,6 +41,7 @@ namespace M2{
 		}
 		else{
 			ctx.data.handler->pauseAll();
+			ctx.hal.getActors()->motorStop();
 			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 1;
@@ -89,6 +90,7 @@ namespace M2{
 		}
 		else{
 			ctx.data.handler->pauseAll();
+			ctx.hal.getActors()->motorStop();
 			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 2;
@@ -105,6 +107,7 @@ namespace M2{
 			std::cout<< diff << std::endl;
 			if(diff>1200){
 				ctx.data.handler->pauseAll();
+				ctx.hal.getActors()->motorStop();
 				std::cout<< "Error item at exit"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 3;
@@ -127,7 +130,9 @@ namespace M2{
 		}
 		else{
 			ctx.data.handler->pauseAll();
+			ctx.hal.getActors()->motorStop();
 			std::cout<< "Error item arrived (empty)"<< std::endl;
+			ctx.hal.getActors()->motorStop();
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 3;
 			ctx.data.raiseError();

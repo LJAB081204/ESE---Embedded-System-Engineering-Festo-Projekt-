@@ -73,6 +73,7 @@ namespace M1{
 			std::cout<< diff << std::endl;
 			if(diff>400){
 				ctx.data.handler->pauseAll();
+				ctx.hal.getActors()->motorStop();
 				std::cout<< "Error item arrived"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 1;
@@ -105,6 +106,7 @@ namespace M1{
 			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
 			std::cout<< diff << std::endl;
 			if(diff>300){
+				ctx.hal.getActors()->motorStop();
 				ctx.data.handler->pauseAll();
 				std::cout<< "Error item at Pusher"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
@@ -116,6 +118,7 @@ namespace M1{
 			}
 		}
 		else{
+			ctx.hal.getActors()->motorStop();
 			ctx.data.handler->pauseAll();
 			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
@@ -147,6 +150,7 @@ namespace M1{
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 3;
 				raiseError(ctx);
+				ctx.hal.getActors()->motorStop();
 			}
 			else{
 				exit(ctx);
@@ -166,10 +170,12 @@ namespace M1{
 		}
 		else{
 			ctx.data.handler->pauseAll();
+			ctx.hal.getActors()->motorStop();
 			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 3;
 			raiseError(ctx);
+
 		}
 	}
 
@@ -198,6 +204,7 @@ namespace M1{
 
 	}
 	void Forward::raiseError(TransportContext& ctx){
+		ctx.hal.getActors()->motorStop();
 		MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
 	}
 	void Forward::raiseErrorEntry(TransportContext& ctx){
