@@ -17,7 +17,6 @@ namespace M1{
 	}
 
 	void Stop::entry(TransportContext& ctx){
-		std::cout<<"Stop" << std::endl;
 		ctx.hal.getActors()->motorStop();
 		ctx.data.handler->pauseAll();
 		if(ctx.hal.getSensors()->isItemAtEntry()){
@@ -28,9 +27,7 @@ namespace M1{
 		}
 	}
 
-	void Stop::exit(TransportContext& ctx){
-		ctx.data.handler->resumeAll();
-	}
+	void Stop::exit(TransportContext& ctx){}
 
 	void Stop::eventItemAtEntry(TransportContext& ctx){
 		exit(ctx);
