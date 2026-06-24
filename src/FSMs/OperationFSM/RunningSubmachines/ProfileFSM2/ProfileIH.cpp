@@ -18,6 +18,12 @@ ProfileIH::ProfileIH(){};
 
 void ProfileIH::entry(ProfileContext& ctx) {
 	std::cout << "////////////////////ProfileIH detected" << std::endl;
+	if(ctx.data.heightDefault == true){
+		ctx.data.heightDefault = false;
+		exit(ctx);
+		new(this) Default;
+		entry(ctx);
+	}
 }
 
 void ProfileIH::exit(ProfileContext& ctx) {}

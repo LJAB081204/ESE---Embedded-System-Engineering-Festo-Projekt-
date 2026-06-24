@@ -18,10 +18,17 @@ namespace M2{
 	}
 
 	void ForwardSlow2::entry(TransportContext2& ctx){
-		ctx.hal.getActors()->motorForwards();
-		ctx.hal.getActors()->motorSlow();
-		ctx.data.handler->resumeAll();
-		ctx.data.handler->setSlow(ctx.data.slowFactor);
+		if(ctx.data.itemCount == 0 || ctx.hal.getSensors()->isItemAtExit()){
+			exit(ctx);
+			new(this) Stop2;
+			entry(ctx);
+		}
+		else{
+			ctx.hal.getActors()->motorForwards();
+			ctx.hal.getActors()->motorSlow();
+			ctx.data.handler->resumeAll();
+			ctx.data.handler->setSlow(ctx.data.slowFactor);
+		}
 	}
 
 	void ForwardSlow2::exit(TransportContext2& ctx){}
@@ -91,14 +98,50 @@ namespace M2{
 
 	void ForwardSlow2::eventItemAtExit(TransportContext2& ctx){
 		ctx.data.itemAtExit = true;
-		std::cout<< ctx.data.itemCount << std::endl;
-		exit(ctx);
-		new(this) Stop2;
-		entry(ctx);
-
+		if(!ctx.data.section3.empty()){
+			std::cout<< "exit time: "<<ctx.data.exitTime << std::endl;
+			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
+			int diff = ctx.data.exitTime - ctx.data.section3.front().timer->getTime();
+			std::cout<< diff << std::endl;
+			if(diff>1200){
+				ctx.data.handler->pauseAll();
+				std::cout<< "Error item at exit"<< std::endl;
+				ctx.data.err = ITEM_APPEARED;
+				ctx.data.errorLoc = 3;
+				ctx.data.raiseError();
+			}
+			else{
+				if(!ctx.data.section3.empty()){
+					ctx.data.section3.front().timer->stop();
+					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
+					ctx.data.section3.front().timer->stop();
+					std::cout<<"runnedTime:"<<runnedTime<<std::endl;
+					delete ctx.data.section3.front().timer;
+					ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
+					ctx.data.section3.front().timer->start(ctx.data.pusherTime+1000,runnedTime);
+				}
+				exit(ctx);
+				new(this) Stop2;
+				entry(ctx);
+			}
+		}
+		else{
+			ctx.data.handler->pauseAll();
+			std::cout<< "Error item arrived (empty)"<< std::endl;
+			ctx.data.err = ITEM_APPEARED;
+			ctx.data.errorLoc = 3;
+			ctx.data.raiseError();
+		}
 	}
 
-
+	void ForwardSlow2::eventItemLeftEntry(TransportContext2& ctx){
+		if(!ctx.data.section1.empty()){
+			ctx.data.section1.back().timer->start(ctx.data.entryTime+1000,0);
+		}
+		else{
+			std::cout<<"Queue 1 leer Festo1" << std::endl;
+		}
+	}
 
 	void ForwardSlow2::eventItemLeftExitRemote(TransportContext2& ctx){
 		ctx.data.addItem();

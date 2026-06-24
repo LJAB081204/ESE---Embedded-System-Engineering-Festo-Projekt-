@@ -53,6 +53,8 @@ namespace M1{
 		else{
 			transportFSM->reactivate();
 			slideFSM->reactivate();
+			profileFSM->reactivate();
+			weicheFSM->reactivate();
 			if (ctx.data.pusherErrorActive){
 				delete weicheFSM;
 				weicheFSM = new WeicheContext(ctx.hal,ctx.data,ctx.timerHandler);

@@ -90,11 +90,11 @@ bool dataClass::moveFrom1To2(){
 	if (section1.empty()){
 		return false;
 	}
-
 	section2.push(section1.front());
+	section1.front().timer->stop();
 	delete section1.front().timer;
 	section2.back().timer = new DynamicTimer(section2.back().id, *handler);
-	section2.back().timer->start(pusherTime+1000);
+	section2.back().timer->start(pusherTime+1000,0);
 	section1.pop();
 	if(checkReady()){
 		MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
@@ -109,9 +109,10 @@ bool dataClass::moveFrom2To3(){
 		 return false;
 	 }
 	section3.push(section2.front());
+	section2.front().timer->stop();
 	delete section2.front().timer;
 	section3.back().timer = new DynamicTimer(section3.back().id, *handler);
-	section3.back().timer->start(exitTime+1000);
+	section3.back().timer->start(exitTime+1000,0);
 	section2.pop();
 	return true;
 }
@@ -139,6 +140,7 @@ bool dataClass::removeItem(int queue){
 				if(section1.empty()){
 					return false;
 				}
+				section1.front().timer->stop();
 				delete section1.front().timer;
 				section1.pop();
 				itemCount--;
@@ -152,6 +154,7 @@ bool dataClass::removeItem(int queue){
 				if(section2.empty()){
 					return false;
 				}
+				section2.front().timer->stop();
 				delete section2.front().timer;
 				section2.pop();
 				itemCount--;
@@ -165,6 +168,7 @@ bool dataClass::removeItem(int queue){
 				if(section3.empty()){
 					return false;
 				}
+				section3.front().timer->stop();
 				delete section3.front().timer;
 				section3.pop();
 				itemCount--;
