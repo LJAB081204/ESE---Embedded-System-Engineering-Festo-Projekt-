@@ -36,7 +36,6 @@ public:
 
 	    void eventConnectionLost(MainContext& ctx);
 
-
 };
 
 #endif

@@ -39,6 +39,7 @@ namespace M1{
 
 	void Forward::eventItemAtEntry(TransportContext& ctx){
 		if(!ctx.data.readyForEntry){
+			ctx.hal.getActors()->motorStop();
 			ctx.data.isErrorLocal = true;
 			ctx.data.err = ENTRY_TOO_FAST;
 			ctx.data.errorLoc = 1;

@@ -33,15 +33,12 @@ void waitingForStart::entry(ErrorContext& ctx){
                             switch(item){
                                 case IH_PROFILE:
                                     if(ctx.data.oneRound){
-                                        std::cout << "ayri IHM" << std::endl;
                                         MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IHM, 0);
                                     } else {
-                                        std::cout << "Ayri WFP." << std::endl;
                                         MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_WFP, 0);
                                     }
                                     break;
                                 case IM_PROFILE:
-                                    std::cout << "Ayri IH" << std::endl;
                                     MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IH, 0);
                                     break;
                                 case IF_PROFILE:
