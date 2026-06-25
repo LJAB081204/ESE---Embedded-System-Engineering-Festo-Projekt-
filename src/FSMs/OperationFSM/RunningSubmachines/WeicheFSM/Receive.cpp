@@ -31,7 +31,7 @@ void Receive::exit(WeicheContext& ctx){
 }
 
 void Receive::eventItemAtPusher(WeicheContext& ctx){
-	ctx.pusherTimer.start(25,0);
+	ctx.pusherTimer.start(100,0);
 }
 void Receive::eventItemMetal(WeicheContext& ctx){
 	std::cout << "section2 size: " << ctx.data.section2.size() << std::endl;

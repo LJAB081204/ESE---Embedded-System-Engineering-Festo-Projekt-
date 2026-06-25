@@ -35,7 +35,7 @@ void Receive::eventItemAtPusher(WeicheContext& ctx){
 		ctx.pusherTimer.start(25,0);
 	}
 	else {
-		ctx.pusherTimer.start(10,0);
+		ctx.pusherTimer.start(30,0);
 	}
 
 }
