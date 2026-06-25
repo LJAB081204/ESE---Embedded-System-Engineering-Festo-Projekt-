@@ -15,11 +15,13 @@ void Error::entry(MainContext& ctx) {
     ctx.hal.getActors()->greenLampOff();
     ctx.hal.getActors()->redLampBlink(1000);
     ctx.hal.getActors()->ledButtonStartOff();
+    ctx.data.handler->pauseAll();
 
 }
 void Error::exit(MainContext& ctx) {
 	ctx.hal.getActors()->redLampBlinkOff();
 	ctx.hal.getActors()->redLampOff();
+	ctx.data.handler->resumeAll();
 }
 void Error::eventButtonResetPressed(MainContext& ctx) {
 	errorFSM.eventButtonResetPressed();
@@ -109,5 +111,10 @@ void Error::eventConnectionLost(MainContext& ctx) {
 void Error::eventItemLeftEntry(MainContext& ctx){
 	errorFSM.eventItemLeftEntry();
 }
-
+void Error::eventButtonResetPressedRemote(MainContext& ctx){
+	errorFSM.eventButtonResetPressedRemote();
+}
+void Error::eventButtonStartPressedRemote(MainContext& ctx){
+	errorFSM.eventButtonStartPressedRemote();
+}
 

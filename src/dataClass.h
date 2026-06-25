@@ -111,7 +111,6 @@ class dataClass{
 	private:
 
 	void setTimes();
-	void resetEstop();
 };
 
 
