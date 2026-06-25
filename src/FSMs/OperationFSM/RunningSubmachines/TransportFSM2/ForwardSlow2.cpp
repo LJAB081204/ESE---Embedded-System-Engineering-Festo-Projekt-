@@ -33,6 +33,19 @@ namespace M2{
 
 	void ForwardSlow2::exit(TransportContext2& ctx){}
 
+	void ForwardSlow2::eventItemLeftExitRemote(TransportContext2& ctx){
+		ctx.data.addItem();
+	}
+
+	void ForwardSlow2::eventItemLeftEntry(TransportContext2& ctx){
+		if(!ctx.data.section1.empty()){
+			ctx.data.section1.back().timer->start(ctx.data.maxEntryTime,0);
+		}
+		else{
+			std::cout<<"Queue 1 leer Festo1" << std::endl;
+		}
+	}
+
 	void ForwardSlow2::eventItemGone(TransportContext2& ctx){
 		if(!ctx.data.section1.empty()){
 			exit(ctx);
@@ -46,27 +59,6 @@ namespace M2{
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 1;
 			ctx.data.raiseError();
-		}
-	}
-
-	void ForwardSlow2::eventItemInSlide(TransportContext2& ctx){
-		if(!ctx.data.section2.empty()){
-			ctx.data.removeItem(2);
-		}
-		std::cout<< ctx.data.itemCount << std::endl;
-		if(ctx.data.itemCount == 0){
-			exit(ctx);
-			new(this) Stop2;
-			entry(ctx);
-		}
-	}
-
-	void ForwardSlow2::eventItemLeftEntry(TransportContext2& ctx){
-		if(!ctx.data.section1.empty()){
-			ctx.data.section1.back().timer->start(ctx.data.maxEntryTime,0);
-		}
-		else{
-			std::cout<<"Queue 1 leer Festo1" << std::endl;
 		}
 	}
 
@@ -99,6 +91,18 @@ namespace M2{
 		}
 	}
 
+	void ForwardSlow2::eventItemInSlide(TransportContext2& ctx){
+		if(!ctx.data.section2.empty()){
+			ctx.data.removeItem(2);
+		}
+		std::cout<< ctx.data.itemCount << std::endl;
+		if(ctx.data.itemCount == 0){
+			exit(ctx);
+			new(this) Stop2;
+			entry(ctx);
+		}
+	}
+
 	void ForwardSlow2::eventItemAtExit(TransportContext2& ctx){
 		ctx.data.itemAtExit = true;
 		if(!ctx.data.section3.empty()){
@@ -115,15 +119,12 @@ namespace M2{
 				ctx.data.raiseError();
 			}
 			else{
-				if(!ctx.data.section3.empty()){
-					ctx.data.section3.front().timer->stop();
-					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
-					ctx.data.section3.front().timer->stop();
-					std::cout<<"runnedTime:"<<runnedTime<<std::endl;
-					delete ctx.data.section3.front().timer;
-					ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
-					ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
-				}
+				uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
+				ctx.data.section3.front().timer->stop();
+				std::cout<<"runnedTime:"<<runnedTime<<std::endl;
+				delete ctx.data.section3.front().timer;
+				ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
+				ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
 				exit(ctx);
 				new(this) Stop2;
 				entry(ctx);
@@ -140,8 +141,6 @@ namespace M2{
 		}
 	}
 
-	void ForwardSlow2::eventItemLeftExitRemote(TransportContext2& ctx){
-		ctx.data.addItem();
-	}
+
 }
 

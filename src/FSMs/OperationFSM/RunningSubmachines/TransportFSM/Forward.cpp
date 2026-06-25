@@ -27,10 +27,10 @@ namespace M1{
 			entry(ctx);
 		}
 		else{
-		ctx.hal.getActors()->motorStop();
-		ctx.hal.getActors()->motorForwards();
-		ctx.data.handler->resumeAll();
-		ctx.data.handler->setNormal();
+			ctx.hal.getActors()->motorStop();
+			ctx.hal.getActors()->motorForwards();
+			ctx.data.handler->resumeAll();
+			ctx.data.handler->setNormal();
 		}
 	}
 
@@ -99,6 +99,7 @@ namespace M1{
 		}
 		else{
 			ctx.data.handler->pauseAll();
+			ctx.hal.getActors()->motorStop();
 			if(!ctx.data.section1.empty()){
 				ctx.data.section1.front().timer->stop();
 			}
@@ -117,8 +118,9 @@ namespace M1{
 			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
 			std::cout<< diff << std::endl;
 			if(diff>ctx.data.minPusherTime){
-				ctx.hal.getActors()->motorStop();
+
 				ctx.data.handler->pauseAll();
+				ctx.hal.getActors()->motorStop();
 				std::cout<< "Error item at Pusher"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 2;
@@ -129,8 +131,8 @@ namespace M1{
 			}
 		}
 		else{
-			ctx.hal.getActors()->motorStop();
 			ctx.data.handler->pauseAll();
+			ctx.hal.getActors()->motorStop();
 			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 2;
@@ -157,14 +159,13 @@ namespace M1{
 			std::cout<< diff << std::endl;
 			if(diff>ctx.data.minExitTime){
 				ctx.data.handler->pauseAll();
+				ctx.hal.getActors()->motorStop();
 				std::cout<< "Error item at exit"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 3;
 				raiseError(ctx);
-				ctx.hal.getActors()->motorStop();
 			}
 			else{
-				ctx.data.section3.front().timer->stop();
 				uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
 				ctx.data.section3.front().timer->stop();
 				std::cout<<"runnedTime:"<<runnedTime<<std::endl;
@@ -221,7 +222,7 @@ namespace M1{
 		MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR_ENTRY,0);
 	}
 	void Forward::raiseErrorIS(TransportContext& ctx){
-		ctx.data.err = ITEM_SPECIAL_0;
+		ctx.data.err = ITEM_SPECIAL;
 		ctx.data.errorLoc = 0;
 		MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
 	}

@@ -26,9 +26,7 @@
 		ctx.hal.getActors()->redLampOn();
 		ctx.data.errorState = CURRENT_ACK_STATE;
 		switch (ctx.data.err){
-		case ITEM_SPECIAL_0: std::cout << "Spezialitem beim Entry entfernen."<< std::endl;
-			break;
-		case ITEM_SPECIAL_1: std::cout << "Spezialitem beim Höhensensor entfernen."<< std::endl;
+		case ITEM_SPECIAL: std::cout << "Spezialitem entfernen."<< std::endl;
 			break;
 		case BOTH_SLIDES_FULL: std::cout << "Rutsche auf Band zwei leeren." << std::endl;
 			break;
@@ -61,7 +59,7 @@
 	}
 
 	void currentAck::eventItemGone(ErrorContext& ctx){
-		if(ctx.data.err == ITEM_SPECIAL_1){
+		if(ctx.data.err == ITEM_SPECIAL && ctx.data.errorLoc == 1){
 			ctx.data.removeItem(1);
 			raiseItemGone(ctx);
 			exit(ctx);
@@ -142,7 +140,12 @@
 			new (this) waitingForStart;
 			entry(ctx);
 		}
-		if(ctx.data.err == ITEM_SPECIAL_0){
+		if(ctx.data.err == ITEM_APPEARED && ctx.data.errorLoc == 0){
+			exit(ctx);
+			new (this) waitingForStart;
+			entry(ctx);
+		}
+		if(ctx.data.err == ITEM_SPECIAL && ctx.data.errorLoc == 0){
 			ctx.data.removeItem(1);
 			raiseItemGone(ctx);
 			exit(ctx);

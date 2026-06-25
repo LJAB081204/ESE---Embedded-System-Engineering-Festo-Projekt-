@@ -48,9 +48,7 @@
 
 		}
 		switch (ctx.data.err){
-		case ITEM_SPECIAL_0: std::cout << "Fehler: Spezialitem erkannt."<< std::endl;
-			break;
-		case ITEM_SPECIAL_1: std::cout << "Fehler: Spezialitem erkannt."<< std::endl;
+		case ITEM_SPECIAL: std::cout << "Fehler: Spezialitem erkannt."<< std::endl;
 			break;
 		case ITEM_GONE: std::cout << "Fehler: Werkstück verschwunden. Ort: " << location << std::endl;
 			break;

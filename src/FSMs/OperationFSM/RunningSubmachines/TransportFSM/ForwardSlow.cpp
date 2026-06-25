@@ -35,64 +35,11 @@ namespace M1{
 
 	void ForwardSlow::exit(TransportContext& ctx){}
 
-	void ForwardSlow::eventItemGone(TransportContext& ctx){
-		if(!ctx.data.section1.empty()){
-			exit(ctx);
-			new(this) Forward;
-			entry(ctx);
-		}
-		else{
-			ctx.data.handler->pauseAll();
-			std::cout<< "Error item arrived (empty)"<< std::endl;
-			ctx.data.err = ITEM_APPEARED;
-			ctx.data.errorLoc = 1;
-			ctx.data.raiseError();
-		}
-	}
-
-	void ForwardSlow::eventItemAtExit(TransportContext& ctx){
-		if(!ctx.data.section3.empty()){
-			std::cout<< "exit time: "<<ctx.data.exitTime << std::endl;
-			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
-			int diff = ctx.data.exitTime - ctx.data.section3.front().timer->getTime();
-			std::cout<< diff << std::endl;
-			if(diff>ctx.data.minExitTime){
-				ctx.data.handler->pauseAll();
-				std::cout<< "Error item at exit"<< std::endl;
-				ctx.data.err = ITEM_APPEARED;
-				ctx.data.errorLoc = 3;
-				ctx.data.raiseError();
-			}
-			else{
-				if(!ctx.data.section3.empty()){
-					ctx.data.section3.front().timer->stop();
-					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
-					ctx.data.section3.front().timer->stop();
-					std::cout<<"runnedTime:"<<runnedTime<<std::endl;
-					delete ctx.data.section3.front().timer;
-					ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
-					ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
-				}
-				exit(ctx);
-				raiseRequestTransfer(ctx);
-				new(this) SlowWaitForFesto;
-				entry(ctx);
-			}
-		}
-		else{
-			ctx.data.handler->pauseAll();
-			std::cout<< "Error item arrived (empty)"<< std::endl;
-			ctx.data.err = ITEM_APPEARED;
-			ctx.data.errorLoc = 3;
-			ctx.data.raiseError();
-		}
-	}
-
 	void ForwardSlow::eventItemAtEntry(TransportContext& ctx){
 		if(!ctx.data.readyForEntry){
 			ctx.data.isErrorLocal = true;
 			ctx.data.err = ENTRY_TOO_FAST;
-			ctx.data.errorLoc = 1;
+			ctx.data.errorLoc = 0;
 			ctx.data.handler->pauseAll();
 			raiseErrorEntry(ctx);
 			return;
@@ -107,7 +54,9 @@ namespace M1{
 	void ForwardSlow::eventItemLeftEntry(TransportContext& ctx){
 		if(!ctx.data.section1.empty()){
 			ctx.data.section1.back().timer->start(ctx.data.maxEntryTime,0);
-			ctx.data.timerIS->stop();
+		    if(ctx.data.timerIS != nullptr){
+		        ctx.data.timerIS->stop();
+		    }
 		}
 		else{
 			std::cout<<"Queue 1 leer Festo1" << std::endl;
@@ -120,23 +69,20 @@ namespace M1{
 		ctx.data.minTimeEntryTimer->start(ctx.data.minTimeEntry,0);
 	}
 
-	void ForwardSlow::eventItemAtEntryRemote(TransportContext& ctx){
-		exit(ctx);
-		itemData item;
-		if(!ctx.data.section3.empty()){
-			item = ctx.data.section3.front();
+	void ForwardSlow::eventItemGone(TransportContext& ctx){
+		if(!ctx.data.section1.empty()){
+			exit(ctx);
+			new(this) Forward;
+			entry(ctx);
 		}
-
-		uint32_t itemCode = ctx.data.convertItemToInt(item);
-
-		MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_ITEM_TRANSFER,itemCode);
-		if(!ctx.data.section3.empty()){
-			ctx.data.removeItem(3);
+		else{
+			ctx.data.handler->pauseAll();
+			ctx.hal.getActors()->motorStop();
+			std::cout<< "Error item arrived (empty)"<< std::endl;
+			ctx.data.err = ITEM_APPEARED;
+			ctx.data.errorLoc = 1;
+			ctx.data.raiseError();
 		}
-		if(ctx.data.itemCount == 0){
-			new(this) Stop;
-		}
-		entry(ctx);
 	}
 
 	void ForwardSlow::eventItemAtPusher(TransportContext& ctx){
@@ -178,6 +124,63 @@ namespace M1{
 			entry(ctx);
 		}
 	}
+
+	void ForwardSlow::eventItemAtExit(TransportContext& ctx){
+		if(!ctx.data.section3.empty()){
+			std::cout<< "exit time: "<<ctx.data.exitTime << std::endl;
+			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
+			int diff = ctx.data.exitTime - ctx.data.section3.front().timer->getTime();
+			std::cout<< diff << std::endl;
+			if(diff>ctx.data.minExitTime){
+				ctx.data.handler->pauseAll();
+				ctx.hal.getActors()->motorStop();
+				std::cout<< "Error item at exit"<< std::endl;
+				ctx.data.err = ITEM_APPEARED;
+				ctx.data.errorLoc = 3;
+				ctx.data.raiseError();
+			}
+			else{
+				uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
+				ctx.data.section3.front().timer->stop();
+				std::cout<<"runnedTime:"<<runnedTime<<std::endl;
+				delete ctx.data.section3.front().timer;
+				ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
+				ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
+				exit(ctx);
+				raiseRequestTransfer(ctx);
+				new(this) SlowWaitForFesto;
+				entry(ctx);
+			}
+		}
+		else{
+			ctx.data.handler->pauseAll();
+			ctx.hal.getActors()->motorStop();
+			std::cout<< "Error item arrived (empty)"<< std::endl;
+			ctx.data.err = ITEM_APPEARED;
+			ctx.data.errorLoc = 3;
+			ctx.data.raiseError();
+		}
+	}
+
+	void ForwardSlow::eventItemAtEntryRemote(TransportContext& ctx){
+		exit(ctx);
+		itemData item;
+		if(!ctx.data.section3.empty()){
+			item = ctx.data.section3.front();
+		}
+
+		uint32_t itemCode = ctx.data.convertItemToInt(item);
+
+		MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_ITEM_TRANSFER,itemCode);
+		if(!ctx.data.section3.empty()){
+			ctx.data.removeItem(3);
+		}
+		if(ctx.data.itemCount == 0){
+			new(this) Stop;
+		}
+		entry(ctx);
+	}
+
 	void ForwardSlow::raiseRequestTransfer(TransportContext& ctx){
 			MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_TRANSFER_REQUEST,0);
 	}

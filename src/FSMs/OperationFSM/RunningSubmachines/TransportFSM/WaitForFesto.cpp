@@ -42,7 +42,9 @@ namespace M1{
 	void WaitForFesto::eventItemLeftEntry(TransportContext& ctx){
 		if(!ctx.data.section1.empty()){
 			ctx.data.section1.back().timer->start(ctx.data.maxEntryTime,0);
-			ctx.data.timerIS->stop();
+			if(ctx.data.timerIS != nullptr){
+				ctx.data.timerIS->stop();
+			}
 		}
 		else{
 			std::cout<<"Queue 1 leer Festo1" << std::endl;
@@ -51,6 +53,7 @@ namespace M1{
 
 	void WaitForFesto::eventItemInSlide(TransportContext& ctx){
 		if(!ctx.data.section2.empty()){
+			ctx.data.section2.front().timer->stop();
 			delete ctx.data.section2.front().timer;
 			ctx.data.section2.pop();
 			ctx.data.itemCount--;

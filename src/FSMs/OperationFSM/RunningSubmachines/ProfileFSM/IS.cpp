@@ -25,7 +25,7 @@ void IS::entry(ProfileContext& ctx) {
 void IS::exit(ProfileContext& ctx) {}
 
 void IS::raiseError(ProfileContext& ctx){
-	ctx.data.err = ITEM_SPECIAL_1;
+	ctx.data.err = ITEM_SPECIAL;
 	ctx.data.errorLoc = 1;
 	MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
 }

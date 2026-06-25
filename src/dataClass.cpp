@@ -20,15 +20,18 @@ dataClass::dataClass(TimerHandler& handler): handler(&handler){
 	pusherTime = 0;
 	exitTime = 0;
 	setTimes();
+
 	minTimeEntry = entryTime / 2;
+
 	metalDelayJunction = pusherTime/10;
-	meatlDelayPusher = pusherTime/30;
-	maxEntryTime = entryTime * 1.5;
-	maxPusherTime = pusherTime * 1.5;
-	maxExitTime = exitTime * 1.5;
-	minEntryTime = entryTime * 0.25;
-	minPusherTime = pusherTime * 0.25;
-	minExitTime = exitTime * 0.40;
+	meatlDelayPusher = pusherTime/28;
+
+	maxEntryTime = entryTime * 1.40;
+	maxPusherTime = pusherTime * 1.40;
+	maxExitTime = exitTime * 1.40;
+	minEntryTime = entryTime * 0.6;
+	minPusherTime = pusherTime * 0.6;
+	minExitTime = exitTime * 0.6;
 	}
 
 void dataClass::reset(){

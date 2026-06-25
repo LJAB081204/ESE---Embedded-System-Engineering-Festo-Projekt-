@@ -40,4 +40,35 @@ namespace M2{
  			entry(ctx);
 		}
 	}
+//	void Stop2::eventItemAtEntry(TransportContext2& ctx){
+//		ctx.data.isErrorLocal = true;
+//		ctx.data.err = ITEM_APPEARED;
+//		ctx.data.errorLoc = 0;
+//		ctx.data.handler->pauseAll();
+//		ctx.data.raiseError();
+//	}
+	void Stop2::eventItemArrived(TransportContext2& ctx){
+		if(ctx.data.section1.empty()){
+			std::cout<< "Error item arrived (empty)"<< std::endl;
+			ctx.data.err = ITEM_APPEARED;
+			ctx.data.errorLoc = 1;
+			ctx.data.raiseError();
+		}
+	}
+	void Stop2::eventItemAtPusher(TransportContext2& ctx){
+		if(ctx.data.section2.empty()){
+			std::cout<< "Error item at Pusher"<< std::endl;
+			ctx.data.err = ITEM_APPEARED;
+			ctx.data.errorLoc = 2;
+			ctx.data.raiseError();
+		}
+	}
+	void Stop2::eventItemAtExit(TransportContext2& ctx){
+		if(ctx.data.section3.empty()){
+			std::cout<< "Error item at exit"<< std::endl;
+			ctx.data.err = ITEM_APPEARED;
+			ctx.data.errorLoc = 3;
+			ctx.data.raiseError();
+		}
+	}
 }

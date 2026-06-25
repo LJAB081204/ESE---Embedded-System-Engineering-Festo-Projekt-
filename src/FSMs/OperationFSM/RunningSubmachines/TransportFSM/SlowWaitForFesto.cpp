@@ -19,8 +19,8 @@ namespace M1{
 
 	void SlowWaitForFesto::entry(TransportContext& ctx){
 		std::cout<<"SlowWaitForFesto" << std::endl;
-		ctx.hal.getActors()->motorStop();
 		ctx.data.handler->pauseAll();
+		ctx.hal.getActors()->motorStop();
 		MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_TRANSFER_REQUEST, 0);
 	}
 
@@ -44,7 +44,9 @@ namespace M1{
 	void SlowWaitForFesto::eventItemLeftEntry(TransportContext& ctx){
 		if(!ctx.data.section1.empty()){
 			ctx.data.section1.back().timer->start(ctx.data.maxEntryTime,0);
-			ctx.data.timerIS->stop();
+			if(ctx.data.timerIS != nullptr){
+			    ctx.data.timerIS->stop();
+			}
 		}
 		else{
 			std::cout<<"Queue 1 leer Festo1" << std::endl;
@@ -53,6 +55,7 @@ namespace M1{
 
 	void SlowWaitForFesto::eventItemInSlide(TransportContext& ctx){
 		if(!ctx.data.section2.empty()){
+			ctx.data.section2.front().timer->stop();
 			delete ctx.data.section2.front().timer;
 			ctx.data.section2.pop();
 			ctx.data.itemCount--;
