@@ -68,6 +68,7 @@ public:
 	virtual void eventItemLeftSlide(OperationContext& fsm) {}
 	virtual void eventItemLeftSlideRemote(OperationContext& fsm)          {}
 
+	virtual void eventTransportTimerExpired(OperationContext& fsm)          {}
 
 	virtual void eventItemMetal(OperationContext& fsm) {}
 	virtual void eventItemMetalRemote(OperationContext& fsm)              {}

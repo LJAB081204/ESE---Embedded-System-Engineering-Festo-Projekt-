@@ -10,10 +10,12 @@
 
 #include "../../../../HAL.h"
 #include "../../../../dataClass.h"
+#include "../../../../PulseMessages.h"
 #include <new>
 #include "TransportBase.h"
 #include "Stop.h"
 #include "Forward.h"
+#include "../../../../timer.h"
 
 #include <iostream>
 namespace M1{
@@ -25,9 +27,11 @@ class TransportContext{
 
 
 public:
+	SimpleTimer* timer;
 	HAL& hal;
 	dataClass& data;
 	TransportContext(HAL& hal,dataClass& data) : hal(hal),data(data){
+		timer = new SimpleTimer(data.conId,PULSE_EVENT_TRANSPORT_TIMER);
 		new (currentState) Stop;
 		currentState->entry(*this);
 	}
@@ -44,6 +48,7 @@ public:
 	void eventItemAtPusher()		{ currentState->eventItemAtPusher(*this); }
 	void eventItemLeftEntry()		{ currentState->eventItemLeftEntry(*this); }
 
+	void eventTransportTimerExpired()		{ currentState->eventTransportTimerExpired(*this); }
 
 	void eventFestoReady() 			 { currentState->eventFestoReady(*this); }
 	void eventFestoNotReady() 			 { currentState->eventFestoNotReady(*this); }

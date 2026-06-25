@@ -344,6 +344,10 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 								data.readyForEntry = true;
 								hal.getActors()->lampQ1Off();
 								break;
+							case 102:
+								cout << "IS Dispatcher" <<  endl;
+								FSM.eventTransportTimerExpired();
+								break;
 						default:
 							if(msg.code < 0){
 								cout << "Kernel Pulse" << endl;

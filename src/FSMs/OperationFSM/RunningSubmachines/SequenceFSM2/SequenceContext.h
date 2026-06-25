@@ -13,6 +13,7 @@
 #include "IHM.h"
 #include "../../../../dataClass.h"
 #include "waitingForProfile.h"
+#include "../../../../HAL.h"
 namespace M2{
 
 class SequenceContext{
@@ -23,6 +24,7 @@ class SequenceContext{
 
 
 public:
+//	HAL& hal;
 	dataClass& data;
 	SequenceContext(dataClass& data) : data(data){
 		new (currentState) waitingForProfile;
@@ -32,6 +34,9 @@ public:
 	bool oneRound = false;
 
 	itemProfile resolveProfile() {
+//			if(hal.getSensors()->isItemMetal() == true){
+//				data.section2.front().metal = true;
+//			}
 		    if (data.section2.empty()) return UNDEFINED_PROFILE;
 		    if (data.section2.front().special)                                                                                { data.section2.front().item = IS_PROFILE;  return IS_PROFILE; }
 		    if (data.section2.front().flat && !data.section2.front().high && !data.section2.front().hole && !data.section2.front().metal) { data.section2.front().item = IF_PROFILE;  return IF_PROFILE; }

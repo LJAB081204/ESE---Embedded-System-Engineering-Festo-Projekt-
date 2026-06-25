@@ -64,6 +64,7 @@ public:
 	void eventSlideFullRemote(OperationContext& ctx) override;
 
 	void eventSlideTimerExpired(OperationContext& ctx) override;
+	void eventTransportTimerExpired(OperationContext& ctx) override;
 
 	// Höhensensor / Profil
 	void eventHeightHigh(OperationContext& ctx) override;
