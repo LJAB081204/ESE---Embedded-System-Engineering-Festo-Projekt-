@@ -120,6 +120,9 @@ void Operation::eventItemLeftSlide(MainContext& ctx) {
 void Operation::eventItemLeftSlideRemote(MainContext& ctx) {
     operationFSM.eventItemLeftSlideRemote();
 }
+void Operation::eventTransportTimerExpired(MainContext& ctx) {
+    operationFSM.eventTransportTimerExpired();
+}
 void Operation::eventItemMetal(MainContext& ctx){
 	operationFSM.eventItemMetal();
 }

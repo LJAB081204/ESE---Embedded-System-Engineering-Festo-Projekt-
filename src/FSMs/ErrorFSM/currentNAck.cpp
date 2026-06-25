@@ -26,12 +26,15 @@
 	void currentNAck::entry(ErrorContext& ctx){
 		ctx.active = true;
 		ctx.hal.getActors()->ledButtonReset();
-		ctx.hal.getActors()->yellowLampBlinkOff();
-		ctx.hal.getActors()->redLampBlink(100);
+		ctx.hal.getActors()->redLampBlinkOff();
+		ctx.hal.getActors()->redLampBlink(1000);
 		ctx.hal.getActors()->motorStop();
 		ctx.data.errorState = CURRENT_NACK_STATE;
 		std::string location;
 		switch (ctx.data.errorLoc){
+		case 0:
+			location = "Entry";
+			break;
 		case 1:
 			location = "Höhensensor";
 			break;
@@ -45,7 +48,9 @@
 
 		}
 		switch (ctx.data.err){
-		case ITEM_SPECIAL: std::cout << "Fehler: Spezialitem erkannt."<< std::endl;
+		case ITEM_SPECIAL_0: std::cout << "Fehler: Spezialitem erkannt."<< std::endl;
+			break;
+		case ITEM_SPECIAL_1: std::cout << "Fehler: Spezialitem erkannt."<< std::endl;
 			break;
 		case ITEM_GONE: std::cout << "Fehler: Werkstück verschwunden. Ort: " << location << std::endl;
 			break;
@@ -95,7 +100,6 @@
 	}
 
 	void currentNAck::errorPusherTimerExpired(ErrorContext& ctx){
-		ctx.onlyPusher = true;
 		exit(ctx);
 		new (this) errorPusherTooLong;
 		entry(ctx);

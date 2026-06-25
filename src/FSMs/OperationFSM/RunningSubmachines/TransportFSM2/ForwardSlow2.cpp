@@ -63,7 +63,7 @@ namespace M2{
 
 	void ForwardSlow2::eventItemLeftEntry(TransportContext2& ctx){
 		if(!ctx.data.section1.empty()){
-			ctx.data.section1.back().timer->start(ctx.data.entryTime+1000,0);
+			ctx.data.section1.back().timer->start(ctx.data.maxEntryTime,0);
 		}
 		else{
 			std::cout<<"Queue 1 leer Festo1" << std::endl;
@@ -77,8 +77,9 @@ namespace M2{
 			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
 			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
 			std::cout<< diff << std::endl;
-			if(diff>1000){
+			if(diff>ctx.data.minPusherTime){
 				ctx.data.handler->pauseAll();
+				ctx.hal.getActors()->motorStop();
 				std::cout<< "Error item at Pusher"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 2;
@@ -105,7 +106,7 @@ namespace M2{
 			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
 			int diff = ctx.data.exitTime - ctx.data.section3.front().timer->getTime();
 			std::cout<< diff << std::endl;
-			if(diff>1200){
+			if(diff>ctx.data.minExitTime){
 				ctx.data.handler->pauseAll();
 				ctx.hal.getActors()->motorStop();
 				std::cout<< "Error item at exit"<< std::endl;
@@ -121,7 +122,7 @@ namespace M2{
 					std::cout<<"runnedTime:"<<runnedTime<<std::endl;
 					delete ctx.data.section3.front().timer;
 					ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
-					ctx.data.section3.front().timer->start(ctx.data.pusherTime+1000,runnedTime);
+					ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
 				}
 				exit(ctx);
 				new(this) Stop2;

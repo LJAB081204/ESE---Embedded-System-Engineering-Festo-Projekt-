@@ -21,6 +21,14 @@ dataClass::dataClass(TimerHandler& handler): handler(&handler){
 	exitTime = 0;
 	setTimes();
 	minTimeEntry = entryTime / 2;
+	metalDelayJunction = pusherTime/10;
+	meatlDelayPusher = pusherTime/30;
+	maxEntryTime = entryTime * 1.5;
+	maxPusherTime = pusherTime * 1.5;
+	maxExitTime = exitTime * 1.5;
+	minEntryTime = entryTime * 0.25;
+	minPusherTime = pusherTime * 0.25;
+	minExitTime = exitTime * 0.40;
 	}
 
 void dataClass::reset(){
@@ -102,7 +110,7 @@ bool dataClass::moveFrom1To2(){
 	section1.front().timer->stop();
 	delete section1.front().timer;
 	section2.back().timer = new DynamicTimer(section2.back().id, *handler);
-	section2.back().timer->start(pusherTime+1000,0);
+	section2.back().timer->start(maxPusherTime,0);
 	section1.pop();
 	if(checkReady()){
 		MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
@@ -120,7 +128,7 @@ bool dataClass::moveFrom2To3(){
 	section2.front().timer->stop();
 	delete section2.front().timer;
 	section3.back().timer = new DynamicTimer(section3.back().id, *handler);
-	section3.back().timer->start(exitTime+1000,0);
+	section3.back().timer->start(maxExitTime,0);
 	section2.pop();
 	return true;
 }
@@ -263,6 +271,4 @@ void dataClass::setTimes(){
 void dataClass::raiseError(){
 	MsgSendPulse(conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
     }
-void dataClass::resetEstop(){
 
-}

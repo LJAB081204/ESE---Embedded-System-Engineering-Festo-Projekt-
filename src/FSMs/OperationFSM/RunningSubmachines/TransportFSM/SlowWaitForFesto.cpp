@@ -35,11 +35,16 @@ namespace M1{
 
 	void SlowWaitForFesto::eventItemAtEntry(TransportContext& ctx){
 		ctx.data.addItem();
+		if(ctx.data.timerIS == nullptr){
+			ctx.data.timerIS = new DynamicTimer(102,*ctx.data.handler);
+		}
+		ctx.data.timerIS->start(1000,0);
 	}
 
 	void SlowWaitForFesto::eventItemLeftEntry(TransportContext& ctx){
 		if(!ctx.data.section1.empty()){
-			ctx.data.section1.back().timer->start(ctx.data.entryTime+1000,0);
+			ctx.data.section1.back().timer->start(ctx.data.maxEntryTime,0);
+			ctx.data.timerIS->stop();
 		}
 		else{
 			std::cout<<"Queue 1 leer Festo1" << std::endl;

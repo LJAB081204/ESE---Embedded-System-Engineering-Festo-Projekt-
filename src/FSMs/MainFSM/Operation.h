@@ -55,6 +55,7 @@ public:
     void eventItemLeftPusher(MainContext& ctx) override;
     void eventItemLeftPusherRemote(MainContext& ctx) override;
 
+    void eventTransportTimerExpired(MainContext& ctx) override;
 
     void eventItemInSlide(MainContext& ctx) override;
     void eventItemInSlideRemote(MainContext& ctx) override;

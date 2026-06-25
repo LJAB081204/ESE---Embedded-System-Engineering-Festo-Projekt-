@@ -16,7 +16,7 @@
 
 enum systemState { IDLE_STATE,RUNNING_STATE,ERROR_STATE,ESTOP_STATE };
 enum itemProfile { IH_PROFILE, IM_PROFILE, IF_PROFILE, IHM_PROFILE, IU_PROFILE, IS_PROFILE, I_PROFILE, UNDEFINED_PROFILE};
-enum errors { ERROR_CLEARED, ITEM_SPECIAL, ITEM_GONE, BOTH_SLIDES_FULL, ITEM_APPEARED,CONNECTION_LOST,ENTRY_TOO_FAST};
+enum errors { ERROR_CLEARED, ITEM_SPECIAL_0,ITEM_SPECIAL_1, ITEM_GONE, BOTH_SLIDES_FULL, ITEM_APPEARED,CONNECTION_LOST,ENTRY_TOO_FAST};
 				//0				1				2			3					4			5
 enum WeicheState { LET_ITEM_PASS_STATE,WAIT_STATE};
 enum ErrorState  { CURRENT_NACK_STATE,CURRENT_ACK_STATE,PUSHER_TOO_LONG_STATE,GONE_NACK_STATE,WAITING_FOR_START_STATE,WAITING_FOR_START_STATE2};
@@ -104,14 +104,22 @@ class dataClass{
 	uint32_t pusherTime;
 	uint32_t exitTime;
 	uint32_t minTimeEntry;
+	uint32_t metalDelayJunction;
+	uint32_t meatlDelayPusher;
+	int maxEntryTime;
+	int maxPusherTime;
+	int maxExitTime;
+	int minEntryTime;
+	int minPusherTime;
+	int minExitTime;
 	bool readyForEntry = true;
 	DynamicTimer* minTimeEntryTimer = nullptr;
+	DynamicTimer* timerIS = nullptr;
 
 	bool isMachine1 = false;
 	private:
 
 	void setTimes();
-	void resetEstop();
 };
 
 

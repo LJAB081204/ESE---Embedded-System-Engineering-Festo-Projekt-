@@ -20,6 +20,9 @@ public:
     void exit(MainContext& ctx) override;
 
 	void eventButtonResetPressed (MainContext& ctx) override;
+	void eventButtonResetPressedRemote (MainContext& ctx) override;
+	void eventButtonStartPressedRemote (MainContext& ctx) override;
+
 	void eventItemGone(MainContext& ctx) override;
 	void eventItemLeftSlide(MainContext& ctx) override;
 	void eventItemLeftSlideRemote(MainContext& ctx) override;
