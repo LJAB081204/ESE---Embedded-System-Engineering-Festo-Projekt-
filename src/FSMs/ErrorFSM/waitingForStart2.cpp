@@ -21,12 +21,14 @@
 		ctx.data.errorState = WAITING_FOR_START_STATE2;
 		std::cout << "Entferne das Werkstück aus dem Pusher und drücke danach Start." << std::endl;
 		ctx.hal.getActors()->closePusher();
-	    ctx.hal.getActors()->redLampBlink(1500);
+	    ctx.hal.getActors()->redLampBlinkOff();
+	    ctx.hal.getActors()->redLampOn();
 	    ctx.hal.getActors()->ledButtonStart();
 
 	}
 
 	void waitingForStart2::exit(ErrorContext& ctx){
+	    ctx.hal.getActors()->redLampBlinkOff();
 		 ctx.hal.getActors()->ledButtonStartOff();
 
 	}

@@ -26,8 +26,20 @@ void waitingForResolve::entry(ErrorContext& ctx){
     std::cout << "Error auf " << machine << "." << std::endl;
     std::cout << "Warte auf Behebung..."  << std::endl;
     ctx.hal.getActors()->motorStop();
-    ctx.hal.getActors()->redLampBlinkOff();
-    ctx.hal.getActors()->redLampOn();
+	ctx.hal.getActors()->redLampBlinkOff();
+    ctx.hal.getActors()->redLampBlink(1000);
+}
+
+void waitingForResolve::eventButtonResetPressedRemote(ErrorContext& ctx){
+	ctx.hal.getActors()->redLampBlinkOff();
+	ctx.hal.getActors()->redLampOn();
+	ctx.resetPressed = true;
+}
+void waitingForResolve::eventButtonStartPressedRemote(ErrorContext& ctx){
+	if(true){
+		ctx.hal.getActors()->redLampBlinkOff();
+		ctx.hal.getActors()->redLampBlink(1000);
+	}
 }
 
 void waitingForResolve::exit(ErrorContext& ctx){

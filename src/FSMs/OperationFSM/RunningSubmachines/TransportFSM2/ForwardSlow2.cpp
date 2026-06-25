@@ -79,6 +79,7 @@ namespace M2{
 			std::cout<< diff << std::endl;
 			if(diff>ctx.data.minPusherTime){
 				ctx.data.handler->pauseAll();
+				ctx.hal.getActors()->motorStop();
 				std::cout<< "Error item at Pusher"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 2;

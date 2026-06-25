@@ -85,7 +85,9 @@ namespace M1{
 				raiseError(ctx);
 			}
 			else{
-				ctx.data.section1.front().timer->stop();
+				if(!ctx.data.section1.empty()){
+					ctx.data.section1.front().timer->stop();
+				}
 				new(this) ForwardSlow;
 				entry(ctx);
 			}
