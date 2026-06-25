@@ -25,12 +25,13 @@ public:
 	void eventItemAtPusher(TransportContext& ctx)override;
 	void eventItemLeftEntry(TransportContext& ctx)override;
 //	void eventItemGone(TransportContext& ctx)override;
-
+	void eventTransportTimerExpired(TransportContext& ctx)override;
 
 	void raiseRequestTransfer(TransportContext& ctx);
 
 	void raiseError(TransportContext& ctx);
 	void raiseErrorEntry(TransportContext& ctx);
+	void raiseErrorIS(TransportContext& ctx);
 };
 
 }

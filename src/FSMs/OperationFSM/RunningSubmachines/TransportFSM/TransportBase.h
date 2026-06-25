@@ -30,6 +30,8 @@ public:
 	virtual void eventFestoReady(TransportContext& fsm)         {}
 	virtual void eventFestoNotReady(TransportContext& fsm)         {}
 
+	virtual void eventTransportTimerExpired(TransportContext& fsm)         {}
+
 	virtual void entry(TransportContext& fsm){}
 	virtual void exit(TransportContext& fsm){}
 };
