@@ -20,7 +20,6 @@ void EStop::entry(MainContext& ctx) {
 }
 void EStop::exit(MainContext& ctx) {
 	ctx.hal.getActors()->redLampOff();
-	setBackSequences(ctx);
 }
 
 void EStop::eventButtonEstopPressed(MainContext& ctx) {
@@ -118,8 +117,4 @@ void EStop::eventConnectionLost(MainContext& ctx) {
 	entry(ctx);
 }
 
-void EStop::setBackSequences(MainContext& ctx){
-	if(!ctx.data.isMachine1){
 
-	}
-}
