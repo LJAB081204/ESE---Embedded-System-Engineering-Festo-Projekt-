@@ -35,7 +35,9 @@ public:
 		new (currentState) Free;
 		currentState->entry(*this);
 	}
-	virtual ~SlideContext() = default;
+	virtual ~SlideContext(){
+		delete slideTimer;
+	}
 
 	void eventItemLeftSlide()		{currentState->eventItemLeftSlide(*this);}
 	void eventItemInSlide()			{currentState->eventItemAtSlide(*this);}

@@ -29,7 +29,11 @@ namespace M1{
 	}
 
 	void IHM::eventUpdate(SequenceContext& ctx){
-		if(ctx.data.section2.empty()) return;
+		if(ctx.data.section2.empty()){
+			MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_SKIP_UPDATE, 0);
+			return;
+
+		}
 		ctx.resolveProfile();		//Profilierung
 		if(ctx.data.section2.front().item == IH_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 			exit(ctx);

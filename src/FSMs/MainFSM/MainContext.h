@@ -137,6 +137,8 @@ public:
         void eventResponseEStopWasPressed()					{currentState->eventResponseEStopWasPressed(*this);}
         void eventResponseEStopWasNotPressed()					{currentState->eventResponseEStopWasNotPressed(*this);}
 
+        void eventSkipUpdate()	{currentState->eventSkipUpdate(*this);}
+
     };
 
 

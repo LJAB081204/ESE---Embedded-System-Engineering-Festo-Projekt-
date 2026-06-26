@@ -113,6 +113,7 @@ namespace M2{
 
 	void Forward2::eventItemAtExit(TransportContext2& ctx){
 		ctx.data.itemAtExit = true;
+		ctx.hal.getActors()->motorStop();
 		std::cout<< ctx.data.itemCount << std::endl;
 		exit(ctx);
 		if(!ctx.data.section3.empty()){
@@ -129,7 +130,7 @@ namespace M2{
 			}
 			else{
 				if(!ctx.data.section3.empty()){
-					ctx.data.section3.front().timer->stop();
+//					ctx.data.section3.front().timer->stop();
 					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
 					ctx.data.section3.front().timer->stop();
 					std::cout<<"runnedTime:"<<runnedTime<<std::endl;

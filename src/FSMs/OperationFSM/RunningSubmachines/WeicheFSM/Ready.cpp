@@ -12,6 +12,7 @@
 #include "PutItemInSlide.h"
 #include <sys/neutrino.h>
 #include "../../../../PulseMessages.h"
+#include <iostream>
 namespace M1{
 
 Ready::Ready(){
@@ -33,6 +34,13 @@ void Ready::eventItemWrong(WeicheContext& ctx){
 		new(this) LetItemPass;
 	  	entry(ctx);
 	}
+}
+
+void Ready::eventSkipUpdate(WeicheContext& ctx){
+	std::cout << "SKIP REACHED READY" << std::endl;
+	exit(ctx);
+	new(this)Receive;
+	entry(ctx);
 }
 
 }

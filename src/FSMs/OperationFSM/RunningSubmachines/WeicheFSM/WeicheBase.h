@@ -36,6 +36,7 @@ public:
 
 	virtual void reactivate(WeicheContext& fsm) {}
 
+	virtual void eventSkipUpdate(WeicheContext& ctx){}
 
 
 };

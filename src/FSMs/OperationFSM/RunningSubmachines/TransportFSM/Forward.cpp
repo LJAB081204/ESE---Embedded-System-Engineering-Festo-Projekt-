@@ -172,6 +172,15 @@ namespace M1{
 				ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
 				ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
 				exit(ctx);
+				if(!ctx.data.section3.empty()){
+//					ctx.data.section3.front().timer->stop();
+					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
+					ctx.data.section3.front().timer->stop();
+					std::cout<<"runnedTime:"<<runnedTime<<std::endl;
+					delete ctx.data.section3.front().timer;
+					ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
+					ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
+				}
 				raiseRequestTransfer(ctx);
 				new(this) WaitForFesto;
 				entry(ctx);

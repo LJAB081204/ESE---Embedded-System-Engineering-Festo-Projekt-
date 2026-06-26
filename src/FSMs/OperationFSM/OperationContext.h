@@ -55,6 +55,7 @@ public:
 	}
 	~OperationContext(){
 		delete savedRunning;
+		delete calTimer;
 	}
 	void saveHistory(HistorySource source){
 //		if (source == HistorySource::ERROR_HISTORY){
@@ -213,6 +214,8 @@ public:
     void eventGoBackIM()						{currentState->eventGoBackIM(*this);}
     void eventGoBackIF()						{currentState->eventGoBackIF(*this);}
     void eventGoBackIHM()						{currentState->eventGoBackIHM(*this);}
+
+    void eventSkipUpdate() {currentState->eventSkipUpdate(*this);}
 
 };
 

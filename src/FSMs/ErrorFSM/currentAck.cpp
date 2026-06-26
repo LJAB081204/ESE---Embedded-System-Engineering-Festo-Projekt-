@@ -100,6 +100,7 @@
 
 	void currentAck::eventItemLeftPusher(ErrorContext& ctx){
 		if(ctx.data.err == ITEM_APPEARED && ctx.data.errorLoc == 2){
+//			MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_SKIP_UPDATE, 0);
 			if(!ctx.data.section2.empty()){
 				uint32_t runnedTime = ctx.data.section2.front().timer->getTime();
 				ctx.data.section2.front().timer->stop();
