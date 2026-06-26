@@ -163,7 +163,7 @@ namespace M1{
 			else{
 				exit(ctx);
 				if(!ctx.data.section3.empty()){
-					ctx.data.section3.front().timer->stop();
+//					ctx.data.section3.front().timer->stop();
 					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
 					ctx.data.section3.front().timer->stop();
 					std::cout<<"runnedTime:"<<runnedTime<<std::endl;

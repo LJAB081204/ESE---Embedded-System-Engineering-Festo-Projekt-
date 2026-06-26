@@ -36,6 +36,10 @@ public:
 		currentState->entry(*this);
 	}
 
+	~TransportContext(){
+	    delete timer;
+	}
+
 	void eventItemAtEntry()			 {currentState->eventItemAtEntry(*this); }
 	void eventItemInSlide()          { currentState->eventItemInSlide(*this); }
 	void eventItemAtEntryRemote()    { currentState->eventItemAtEntryRemote(*this); }

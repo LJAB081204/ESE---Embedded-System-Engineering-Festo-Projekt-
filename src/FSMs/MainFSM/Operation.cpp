@@ -222,3 +222,7 @@ void Operation::eventConnectionLost(MainContext& ctx){
 	entry(ctx);
 }
 
+void Operation::eventSkipUpdate(MainContext& ctx){
+	operationFSM.eventSkipUpdate();
+}
+

@@ -411,6 +411,9 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 						break;
 
 							default:
+						        if (msg.code < 0) {
+						            break;
+						        }
 								data.isErrorLocal = true;
 								cout << "Dynamic Timer!!"<< msg.value.sival_int << endl;
 								FSM.eventError();
@@ -517,6 +520,9 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 							MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_RESPONSE_ESTOP_STATUS, 2);
 							break;
 						}
+					case PULSE_EVENT_SKIP_UPDATE:
+						FSM.eventSkipUpdate();
+						break;
 
 					case PULSE_RESPONSE_ESTOP_STATUS:
 						switch (msg.value.sival_int){

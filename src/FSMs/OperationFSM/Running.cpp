@@ -208,6 +208,10 @@ namespace M1{
 			sequenceFSM->eventGoBackIHM();
 		}
 
+	void Running::eventSkipUpdate(OperationContext& ctx){
+		weicheFSM->eventSkipUpdate();
+	}
+
 
 
 

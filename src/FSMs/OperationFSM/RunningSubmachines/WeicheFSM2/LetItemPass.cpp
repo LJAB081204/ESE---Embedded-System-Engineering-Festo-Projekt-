@@ -32,7 +32,6 @@ void LetItemPass::exit(WeicheContext& ctx){
 	ctx.timerPusherOpen = nullptr;
 }
 void LetItemPass::eventItemLeftPusher(WeicheContext& ctx){
-	exit(ctx);
 	if(!ctx.data.section2.empty()){
 		ctx.data.moveFrom2To3();
 	}
@@ -41,7 +40,9 @@ void LetItemPass::eventItemLeftPusher(WeicheContext& ctx){
 		entry(ctx);
 	}
 	else{
+		exit(ctx);
 		new (this) Receive;
+		entry(ctx);
 	}
 }
 }

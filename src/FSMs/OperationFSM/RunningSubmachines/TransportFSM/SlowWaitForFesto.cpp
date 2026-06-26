@@ -49,6 +49,12 @@ namespace M1{
 		else{
 			std::cout<<"Queue 1 leer Festo1" << std::endl;
 		}
+		ctx.data.readyForEntry = false;
+		ctx.hal.getActors()->lampQ1();
+		if(ctx.data.minTimeEntryTimer == nullptr){
+		    ctx.data.minTimeEntryTimer = new DynamicTimer(101, *ctx.data.handler);
+		}
+		ctx.data.minTimeEntryTimer->start(ctx.data.minTimeEntry, 0);
 	}
 
 	void SlowWaitForFesto::eventItemInSlide(TransportContext& ctx){

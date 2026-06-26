@@ -105,6 +105,8 @@ public:
 	virtual void eventGoBackIF(OperationContext& fsm)								{}
 	virtual void eventGoBackIHM(OperationContext& fsm)								{}
 
+	virtual void eventSkipUpdate(OperationContext& fsm) {}
+
 };
 
 

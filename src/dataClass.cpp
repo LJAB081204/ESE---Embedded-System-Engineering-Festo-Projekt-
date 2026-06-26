@@ -15,11 +15,12 @@
 dataClass::dataClass(TimerHandler& handler): handler(&handler){
 	entryTime = 0;
 	entryTimeSlow = 0;
-	slowFactor = 0;
 	heightTime = 0;
 	pusherTime = 0;
 	exitTime = 0;
 	setTimes();
+	slowFactor = entryTime / entryTimeSlow;;
+
 	minTimeEntry = entryTime / 2;
 	metalDelayJunction = pusherTime/10;
 	meatlDelayPusher = pusherTime/30;
@@ -75,6 +76,12 @@ void dataClass::reset(){
 		minTimeEntryTimer = nullptr;
 	}
 
+	if (timerIS != nullptr){
+	    timerIS->stop();
+	    delete timerIS;
+	    timerIS = nullptr;
+	}
+
 // Item
 	itemCount = 0;
 	itemCountRemote = 0;
@@ -82,6 +89,7 @@ void dataClass::reset(){
 // Festo
 	readyForItem = false;
 	readyForItemRemote = true;
+	itemAtExit = false;
 
 // Weiche / Slide
 	slideFull = false;
