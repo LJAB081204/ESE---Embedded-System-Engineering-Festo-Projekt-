@@ -23,6 +23,12 @@ namespace M2{
 			new(this) Stop2;
 			entry(ctx);
 		}
+		else if(ctx.data.skipSlow){
+		    ctx.data.skipSlow = false;
+		    exit(ctx);
+		    new(this) Forward2;
+		    entry(ctx);
+		}
 		else{
 			ctx.hal.getActors()->motorForwards();
 			ctx.hal.getActors()->motorSlow();

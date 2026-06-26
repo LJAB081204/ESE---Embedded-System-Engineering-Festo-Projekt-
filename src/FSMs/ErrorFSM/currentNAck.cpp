@@ -29,6 +29,9 @@
 		ctx.hal.getActors()->redLampBlinkOff();
 		ctx.hal.getActors()->redLampBlink(1000);
 		ctx.hal.getActors()->motorStop();
+		if(ctx.data.err == ITEM_SPECIAL_1 || ctx.data.err == ITEM_SPECIAL_0){
+			ctx.data.skipSlow = true;
+		}
 		ctx.data.errorState = CURRENT_NACK_STATE;
 		std::string location;
 		switch (ctx.data.errorLoc){
