@@ -73,6 +73,11 @@ class dataClass{
 	bool returnToError = false;
 	bool heightDefault = false;
 
+
+
+
+	bool skipSlow = false;
+
 	// Estop Status
 	bool eStopIsPressed = false;
 	bool eStopWasPressed = false;
