@@ -123,6 +123,10 @@ class dataClass{
 	DynamicTimer* timerIS = nullptr;
 
 	bool isMachine1 = false;
+
+	bool itemArrived = false;
+	bool itemPusher = false;
+	bool itemExit = false;
 	private:
 
 	void setTimes();

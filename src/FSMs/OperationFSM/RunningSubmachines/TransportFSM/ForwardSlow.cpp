@@ -26,17 +26,26 @@ namespace M1{
 			new(this) Stop;
 			entry(ctx);
 		}
-		else if(ctx.data.skipSlow){
+		if(ctx.data.skipSlow){
 		    ctx.data.skipSlow = false;
 		    exit(ctx);
 		    new(this) Forward;
 		    entry(ctx);
 		}
-		else{
+		if(ctx.data.itemAtExit == true){
+			ctx.data.itemAtExit = false;
+			eventItemAtExit(ctx);
+		}
+		if(ctx.data.itemPusher == true){
+			ctx.data.itemPusher = false;
+			eventItemAtPusher(ctx);
+		}
+		if(ctx.data.itemCount != 0){
 			ctx.hal.getActors()->motorForwards();
 			ctx.hal.getActors()->motorSlow();
 			ctx.data.handler->resumeAll();
 			ctx.data.handler->setSlow(ctx.data.slowFactor);
+			std::cout<<"slow factor set"<<ctx.data.slowFactor<<std::endl;
 		}
 	}
 
@@ -59,7 +68,7 @@ namespace M1{
 
 	void ForwardSlow::eventItemAtExit(TransportContext& ctx){
 		if(!ctx.data.section3.empty()){
-			std::cout<< "exit time: "<<ctx.data.exitTime << std::endl;
+			std::cout<< "min exit time: "<<ctx.data.minExitTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
 			if(ctx.data.section3.front().timer->getTime() < ctx.data.minExitTime){
 				ctx.data.handler->pauseAll();
@@ -70,7 +79,6 @@ namespace M1{
 			}
 			else{
 				if(!ctx.data.section3.empty()){
-//					ctx.data.section3.front().timer->stop();
 					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
 					ctx.data.section3.front().timer->stop();
 					std::cout<<"runnedTime:"<<runnedTime<<std::endl;
@@ -147,7 +155,7 @@ namespace M1{
 	void ForwardSlow::eventItemAtPusher(TransportContext& ctx){
 		exit(ctx);
 		if(!ctx.data.section2.empty()){
-			std::cout<< "pusher time: "<<ctx.data.pusherTime << std::endl;
+			std::cout<< "min pusher time: "<<ctx.data.minPusherTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
 			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
 			std::cout<< diff << std::endl;

@@ -29,6 +29,9 @@ public:
 	virtual void eventButtonStartPressed(ErrorContext& ctx) {}
 	virtual void eventItemLeftEntry(ErrorContext& ctx){}
 	virtual void eventButtonStartPressedRemote(ErrorContext& ctx){}
+	virtual void eventItemArrived(ErrorContext& ctx){}
+	virtual void eventItemAtExit(ErrorContext& ctx){}
+	virtual void eventItemAtPusher(ErrorContext& ctx){}
 
 };
 

@@ -79,7 +79,7 @@ namespace M2{
 	void ForwardSlow2::eventItemAtPusher(TransportContext2& ctx){
 		exit(ctx);
 		if(!ctx.data.section2.empty()){
-			std::cout<< "pusher time: "<<ctx.data.pusherTime << std::endl;
+			std::cout<< "min pusher time: "<<ctx.data.minPusherTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
 			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
 			std::cout<< diff << std::endl;
@@ -108,7 +108,7 @@ namespace M2{
 	void ForwardSlow2::eventItemAtExit(TransportContext2& ctx){
 		ctx.data.itemAtExit = true;
 		if(!ctx.data.section3.empty()){
-			std::cout<< "exit time: "<<ctx.data.exitTime << std::endl;
+			std::cout<< "min exit time: "<<ctx.data.minExitTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
 			int diff = ctx.data.exitTime - ctx.data.section3.front().timer->getTime();
 			std::cout<< diff << std::endl;

@@ -21,12 +21,26 @@ namespace M1{
 	}
 
 	void Forward::entry(TransportContext& ctx){
+		std::cout<<"Forward nach error"<<std::endl;
 		if(ctx.data.itemCount == 0){
 			exit(ctx);
 			new(this) Stop;
 			entry(ctx);
 		}
-		else{
+		if(ctx.data.itemArrived == true){
+			ctx.data.itemArrived = false;
+			eventItemArrived(ctx);
+		}
+		if(ctx.data.itemAtExit == true){
+			ctx.data.itemAtExit = false;
+			eventItemAtExit(ctx);
+
+		}
+		if(ctx.data.itemPusher == true){
+			ctx.data.itemPusher = false;
+			eventItemAtPusher(ctx);
+		}
+		if(ctx.data.itemCount != 0){
 		ctx.hal.getActors()->motorStop();
 		ctx.hal.getActors()->motorForwards();
 		ctx.data.handler->resumeAll();
@@ -34,8 +48,7 @@ namespace M1{
 		}
 	}
 
-	void Forward::exit(TransportContext& ctx){
-	}
+	void Forward::exit(TransportContext& ctx){}
 
 	void Forward::eventItemAtEntry(TransportContext& ctx){
 		if(!ctx.data.readyForEntry){
@@ -76,10 +89,8 @@ namespace M1{
 
 	void Forward::eventItemArrived(TransportContext& ctx){
 		if(!ctx.data.section1.empty()){
-			std::cout<< "entry time: "<<ctx.data.entryTime << std::endl;
+			std::cout<< "min entry time: "<<ctx.data.minEntryTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
-//			int diff = ctx.data.entryTime - ctx.data.section1.front().timer->getTime();
-			//std::cout<< diff << std::endl;
 			if(ctx.data.section1.front().timer->getTime() < ctx.data.minEntryTime){
 				ctx.data.handler->pauseAll();
 				ctx.hal.getActors()->motorStop();
@@ -112,7 +123,7 @@ namespace M1{
 
 	void Forward::eventItemAtPusher(TransportContext& ctx){
 		if(!ctx.data.section2.empty()){
-			std::cout<< "pusher time: "<<ctx.data.pusherTime << std::endl;
+			std::cout<< "min pusher time: "<<ctx.data.minPusherTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
 			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
 			std::cout<< diff << std::endl;
@@ -151,9 +162,8 @@ namespace M1{
 
 	void Forward::eventItemAtExit(TransportContext& ctx){
 		if(!ctx.data.section3.empty()){
-			std::cout<< "exit time: "<<ctx.data.exitTime << std::endl;
-			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
 			std::cout<< "min exit time: "<<ctx.data.minExitTime << std::endl;
+			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
 			if(ctx.data.section3.front().timer->getTime() < ctx.data.minExitTime){
 				ctx.data.handler->pauseAll();
 				std::cout<< "Error item at exit"<< std::endl;
@@ -179,6 +189,7 @@ namespace M1{
 					ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
 					ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
 				}
+				exit(ctx);
 				raiseRequestTransfer(ctx);
 				new(this) WaitForFesto;
 				entry(ctx);

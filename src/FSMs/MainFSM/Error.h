@@ -46,7 +46,11 @@ public:
 
 	void eventItemLeftEntry(MainContext& ctx) override;
 
+	void eventItemArrived(MainContext& ctx) override;
+	void eventItemAtExit(MainContext& ctx) override;
+	void eventItemAtPusher(MainContext& ctx) override;
 
+//	void raiseItemTimer(MainContext& ctx);
 };
 
 
