@@ -40,14 +40,13 @@ void waitForPusher::eventButtonStartPressedLong(OperationContext& ctx){
 }
 
 void waitForPusher::eventButtonStopPressed(OperationContext& ctx){
-	/*exit(ctx);
+	exit(ctx);
 	new (this) Service;
-	entry(ctx);*/
+	entry(ctx);
 }
 
 void waitForPusher::eventButtonStopPressedRemote(OperationContext& ctx){
-	/*exit(ctx);
+	exit(ctx);
 	new (this) Service;
-	entry(ctx);*/
+	entry(ctx);
 }
-

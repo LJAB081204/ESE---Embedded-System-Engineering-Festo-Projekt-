@@ -121,12 +121,12 @@ void dataClass::reset(){
 		minTimeEntry = entryTime / 2;
 		metalDelayJunction = pusherTime/10;
 		meatlDelayPusher = pusherTime/30;
-		maxEntryTime = entryTime * 1.4;
-		maxPusherTime = pusherTime * 1.5;
-		maxExitTime = exitTime * 1.5;
-		minEntryTime = entryTime * 0.6;
-		minPusherTime = pusherTime * 0.25;
-		minExitTime = exitTime * 0.40;
+		maxEntryTime = (int) entryTime * 1.4;
+		maxPusherTime = (int) pusherTime * 1.5;
+		maxExitTime = (int) exitTime * 1.5;
+		minEntryTime = (int) entryTime * 0.6;
+		minPusherTime = (int) pusherTime * 0.25;
+		minExitTime = (int) exitTime * 0.40;
 	}
 }
 
