@@ -23,6 +23,7 @@ void Wait::entry(WeicheContext& ctx){
 
 void Wait::exit(WeicheContext& ctx){
 	ctx.hal.getActors()->closePusher();
+	ctx.pusherTimer.stop();
 	delete ctx.timerPusherOpen;
 	ctx.timerPusherOpen = nullptr;
 

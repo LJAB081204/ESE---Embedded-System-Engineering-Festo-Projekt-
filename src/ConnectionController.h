@@ -47,8 +47,8 @@ private:
 	std::thread tDispatcher;
 	std::thread tHeartbeat;
 
-	int heartbeatTimeoutMs = 500;
-	int heartbeatIntervalMs = 100;
+	int heartbeatTimeoutMs = 600;
+	int heartbeatIntervalMs = 400;
 
 	_pulse msgFromRemote;
 	_pulse msgFromDispatcher;
