@@ -21,6 +21,7 @@ void EStop::entry(MainContext& ctx) {
 }
 void EStop::exit(MainContext& ctx) {
 	ctx.hal.getActors()->redLampOff();
+	ctx.data.reset();
 
 }
 
@@ -124,7 +125,7 @@ void EStop::eventConnectionLost(MainContext& ctx) {
 void EStop::updateSequence(MainContext& ctx) {
 	if(!ctx.data.isMachine1){
 		if(ctx.data.section3.empty()){
-			cout << "hier bin ich" << endl;
+			cout << "Section empty" << endl;
 			switch(ctx.data.sequenceState){
 				case WFP_State: MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_WFP, 0); break;
 				case IH_State: MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IH, 0); break;
@@ -135,6 +136,7 @@ void EStop::updateSequence(MainContext& ctx) {
 					}
 			}
 		else {
+			cout << "Section not empty" << endl;
 			switch(ctx.data.sequenceState){
 				case IH_State:
 					if (ctx.data.oneRound){

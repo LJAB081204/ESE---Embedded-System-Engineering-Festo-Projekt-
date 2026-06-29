@@ -411,6 +411,9 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 						break;
 
 							default:
+						        if (msg.code < 0) {
+						            break;
+						        }
 								data.isErrorLocal = true;
 								cout << "Dynamic Timer!!"<< msg.value.sival_int << endl;
 								FSM.eventError();
@@ -457,31 +460,31 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 
 					case PULSE_EVENT_GO_BACK_LOCAL:
 						FSM.eventGoBack();
-						cout << "EVENT GO BACK LOCAL ARRIVED" << endl;
+						cout << "EVENT GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_WFP:
-						FSM.eventGoBackWFP();
 						data.sequenceState = WFP_State;
+						FSM.eventGoBackWFP();
 						cout << "EVENT WFP GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IH:
-						FSM.eventGoBackIH();
 						data.sequenceState = IH_State;
+						FSM.eventGoBackIH();
 						cout << "EVENT IH GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IM:
-						FSM.eventGoBackIM();
 						data.sequenceState = IM_State;
+						FSM.eventGoBackIM();
 						cout << "EVENT IM GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IF:
-						FSM.eventGoBackIF();
 						data.sequenceState = IF_State;
+						FSM.eventGoBackIF();
 						cout << "EVENT IF GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IHM:
-						FSM.eventGoBackIHM();
 						data.sequenceState = IHM_State;
+						FSM.eventGoBackIHM();
 						cout << "EVENT IHM GO BACK ARRIVED" << endl;
 						break;
 
@@ -522,6 +525,7 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 							MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_RESPONSE_ESTOP_STATUS, 2);
 							break;
 						}
+
 
 					case PULSE_RESPONSE_ESTOP_STATUS:
 						switch (msg.value.sival_int){

@@ -82,6 +82,7 @@ void dataClass::reset(){
 // Festo
 	readyForItem = false;
 	readyForItemRemote = true;
+	itemAtExit = false;
 
 // Weiche / Slide
 	slideFull = false;
