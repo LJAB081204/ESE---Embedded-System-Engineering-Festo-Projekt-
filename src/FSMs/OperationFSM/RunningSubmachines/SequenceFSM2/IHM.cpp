@@ -24,6 +24,7 @@ namespace M2{
 	void IHM::entry(SequenceContext& ctx){
 		std::cout << "IHM --- next expected -> IH" << std::endl;
 		ctx.data.oneRound = true;
+		ctx.data.sequenceState = IHM_State;
 	}
 
 	void IHM::exit(SequenceContext& ctx){

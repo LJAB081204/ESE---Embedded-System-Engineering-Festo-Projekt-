@@ -17,10 +17,11 @@ void EStop::entry(MainContext& ctx) {
     ctx.hal.getActors()->greenLampOff();
     ctx.hal.getActors()->redLampOn();
     ctx.hal.getActors()->ledButtonStartOff();
+    updateSequence(ctx);
 }
 void EStop::exit(MainContext& ctx) {
 	ctx.hal.getActors()->redLampOff();
-	setBackSequences(ctx);
+
 }
 
 void EStop::eventButtonEstopPressed(MainContext& ctx) {
@@ -40,6 +41,7 @@ void EStop::eventButtonResetPressed(MainContext& ctx) {
         	entry(ctx);
         }
         else{
+        	std::cout << "Restore nach Estop" << std::endl;
 			new(this) Operation(ctx.getOperationFSM());
 			ctx.getOperationFSM().restoreHistory();
         }
@@ -56,6 +58,7 @@ void EStop::eventButtonResetPressedRemote(MainContext& ctx) {
 			entry(ctx);
 		}
         else{
+        	std::cout << "Restore nach Estop" << std::endl;
 			new(this) Operation(ctx.getOperationFSM());
 			ctx.getOperationFSM().restoreHistory();
         }
@@ -118,8 +121,58 @@ void EStop::eventConnectionLost(MainContext& ctx) {
 	entry(ctx);
 }
 
-void EStop::setBackSequences(MainContext& ctx){
+void EStop::updateSequence(MainContext& ctx) {
 	if(!ctx.data.isMachine1){
-
+		if(ctx.data.section3.empty()){
+			cout << "hier bin ich" << endl;
+			switch(ctx.data.sequenceState){
+				case WFP_State: MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_WFP, 0); break;
+				case IH_State: MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IH, 0); break;
+				case IM_State: MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IM, 0); break;
+				case IF_State: MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IF, 0); break;
+				case IHM_State: MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IHM, 0); break;
+				default: break;
+					}
+			}
+		else {
+			switch(ctx.data.sequenceState){
+				case IH_State:
+					if (ctx.data.oneRound){
+						MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IHM, 0);
+					} else {
+						MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_WFP, 0);
+					}
+					break;
+				case IM_State: MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IH, 0); break;
+				case IF_State: MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IM, 0); break;
+				case IHM_State: MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IF, 0); break;
+				default: break;
+					}
+			MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_LOCAL, 0);
+		}
+		}
 	}
+
+void EStop::eventGoBackIH(MainContext& ctx){
+	cout << "Go Back IH in Estop" << endl;
+	ctx.getOperationFSM().eventGoBackIH();
+}
+void EStop::eventGoBackIM(MainContext& ctx){
+	ctx.getOperationFSM().eventGoBackIM();
+}
+void EStop::eventGoBackIF(MainContext& ctx){
+	ctx.getOperationFSM().eventGoBackIF();
+}
+void EStop::eventGoBackIHM(MainContext& ctx){
+	ctx.getOperationFSM().eventGoBackIHM();
+}
+
+void EStop::eventGoBackWFP(MainContext& ctx){
+	cout << "Go Back WFP in Estop" << endl;
+	ctx.getOperationFSM().eventGoBackWFP();
+}
+
+void EStop::eventGoBack(MainContext& ctx){
+	cout << "Go Back (1) in Estop" << endl;
+	ctx.getOperationFSM().eventGoBack();
 }

@@ -19,8 +19,28 @@ namespace M1{
 	}
 
 	void waitingForProfile::entry(SequenceContext& ctx){
-		ctx.data.oneRound = false;
-		std::cout << "Next expected -> IH" << std::endl;
+		switch(ctx.data.sequenceState){
+			case WFP_State:
+				ctx.data.oneRound = false;
+				std::cout << "Next expected -> IH" << std::endl;
+				break;
+			case IH_State:
+				std::cout << "WFP: GoBack IH" << std::endl;
+				eventGoBackIH(ctx);
+				break;
+			case IM_State:
+				std::cout << "WFP: GoBack IM" << std::endl;
+				eventGoBackIM(ctx);
+				break;
+			case IF_State:
+				std::cout << "WFP: GoBack IF" << std::endl;
+				eventGoBackIF(ctx);
+				break;
+			case IHM_State:
+				std::cout << "WFP: GoBack IHM" << std::endl;
+				eventGoBackIHM(ctx);
+				break;
+			}
 	}
 
 	void waitingForProfile::exit(SequenceContext& ctx){
@@ -39,6 +59,7 @@ namespace M1{
 		if(ctx.data.section2.front().item == IH_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 			exit(ctx);
 			raiseItemCorrect(ctx);
+			ctx.data.sequenceState = IH_State;
 			new (this) IH;
 			entry(ctx);
 		}

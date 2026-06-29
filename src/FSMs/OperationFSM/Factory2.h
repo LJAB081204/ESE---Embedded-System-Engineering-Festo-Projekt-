@@ -13,10 +13,11 @@
 namespace M2{
 
 class Factory2 : public RunningFactory{
-	SequenceContext seq;
+
 public:
 	Factory2(dataClass& data) : seq(data){}
 	OperationBase* createRunning(HAL& hal,dataClass& data,TimerHandler& timerHandler) override;
+	SequenceContext seq;
 };
 }
 

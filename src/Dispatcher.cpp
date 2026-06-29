@@ -457,26 +457,31 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 
 					case PULSE_EVENT_GO_BACK_LOCAL:
 						FSM.eventGoBack();
-						cout << "EVENT GO BACK ARRIVED" << endl;
+						cout << "EVENT GO BACK LOCAL ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_WFP:
 						FSM.eventGoBackWFP();
+						data.sequenceState = WFP_State;
 						cout << "EVENT WFP GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IH:
 						FSM.eventGoBackIH();
+						data.sequenceState = IH_State;
 						cout << "EVENT IH GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IM:
 						FSM.eventGoBackIM();
+						data.sequenceState = IM_State;
 						cout << "EVENT IM GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IF:
 						FSM.eventGoBackIF();
+						data.sequenceState = IF_State;
 						cout << "EVENT IF GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IHM:
 						FSM.eventGoBackIHM();
+						data.sequenceState = IHM_State;
 						cout << "EVENT IHM GO BACK ARRIVED" << endl;
 						break;
 
