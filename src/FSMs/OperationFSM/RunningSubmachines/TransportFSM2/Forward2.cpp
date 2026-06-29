@@ -49,7 +49,7 @@ namespace M2{
 			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
 			int diff = ctx.data.entryTime - ctx.data.section1.front().timer->getTime();
 			std::cout<< diff << std::endl;
-			if(diff>ctx.data.minEntryTime){
+			if(ctx.data.section1.front().timer->getTime() < ctx.data.minEntryTime){
 				ctx.data.handler->pauseAll();
 				std::cout<< "Error item arrived"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
@@ -79,7 +79,7 @@ namespace M2{
 			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
 			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
 			std::cout<< diff << std::endl;
-			if(diff>ctx.data.minPusherTime){
+			if(ctx.data.section2.front().timer->getTime() < ctx.data.minPusherTime){
 				ctx.data.handler->pauseAll();
 				std::cout<< "Error item at Pusher"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
@@ -121,7 +121,7 @@ namespace M2{
 			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
 			int diff = ctx.data.exitTime - ctx.data.section3.front().timer->getTime();
 			std::cout<< diff << std::endl;
-			if(diff>ctx.data.minExitTime){
+			if(ctx.data.section3.front().timer->getTime() < ctx.data.minExitTime){
 				ctx.data.handler->pauseAll();
 				std::cout<< "Error item at exit"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
@@ -130,7 +130,6 @@ namespace M2{
 			}
 			else{
 				if(!ctx.data.section3.empty()){
-//					ctx.data.section3.front().timer->stop();
 					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
 					ctx.data.section3.front().timer->stop();
 					std::cout<<"runnedTime:"<<runnedTime<<std::endl;

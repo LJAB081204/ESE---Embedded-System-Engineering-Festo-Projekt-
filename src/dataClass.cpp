@@ -31,6 +31,19 @@ dataClass::dataClass(TimerHandler& handler): handler(&handler){
 		minPusherTime = 1;
 		minExitTime = 1;
 	}
+	else{
+		std::cout<< "test entered" << std::endl;
+		slowFactor = entryTime / entryTimeSlow;
+		minTimeEntry = entryTime / 2;
+		metalDelayJunction = (int) pusherTime/10;
+		meatlDelayPusher = (int) pusherTime/30;
+		maxEntryTime = (int) entryTime * 1.4;
+		maxPusherTime = (int) pusherTime * 1.4;
+		maxExitTime = (int) exitTime * 1.4;
+		minEntryTime = (int) entryTime * 0.9;
+		minPusherTime = (int) pusherTime * 0.9;
+		minExitTime = (int) exitTime * 0.6;
+	}
 
 }
 
@@ -108,10 +121,10 @@ void dataClass::reset(){
 		minTimeEntry = entryTime / 2;
 		metalDelayJunction = pusherTime/10;
 		meatlDelayPusher = pusherTime/30;
-		maxEntryTime = entryTime * 1.5;
+		maxEntryTime = entryTime * 1.4;
 		maxPusherTime = pusherTime * 1.5;
 		maxExitTime = exitTime * 1.5;
-		minEntryTime = entryTime * 0.25;
+		minEntryTime = entryTime * 0.6;
 		minPusherTime = pusherTime * 0.25;
 		minExitTime = exitTime * 0.40;
 	}

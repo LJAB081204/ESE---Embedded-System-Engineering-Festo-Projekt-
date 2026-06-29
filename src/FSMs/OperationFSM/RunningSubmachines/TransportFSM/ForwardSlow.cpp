@@ -60,9 +60,7 @@ namespace M1{
 		if(!ctx.data.section3.empty()){
 			std::cout<< "exit time: "<<ctx.data.exitTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
-			int diff = ctx.data.exitTime - ctx.data.section3.front().timer->getTime();
-			std::cout<< diff << std::endl;
-			if(diff>ctx.data.minExitTime){
+			if(ctx.data.section3.front().timer->getTime() < ctx.data.minExitTime){
 				ctx.data.handler->pauseAll();
 				std::cout<< "Error item at exit"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
@@ -152,7 +150,7 @@ namespace M1{
 			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
 			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
 			std::cout<< diff << std::endl;
-			if(diff>ctx.data.minPusherTime){
+			if(ctx.data.section2.front().timer->getTime() < ctx.data.minPusherTime){
 				ctx.data.handler->pauseAll();
 				ctx.hal.getActors()->motorStop();
 				std::cout<< "Error item at Pusher"<< std::endl;
