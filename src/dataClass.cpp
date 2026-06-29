@@ -15,24 +15,22 @@
 dataClass::dataClass(TimerHandler& handler): handler(&handler){
 	entryTime = 0;
 	entryTimeSlow = 0;
-	slowFactor = 0;
 	heightTime = 0;
 	pusherTime = 0;
 	exitTime = 0;
 	setTimes();
+	slowFactor = entryTime / entryTimeSlow;;
 
-	if(entryTime == 0 || entryTimeSlow == 0 || heightTime == 0 || pusherTime == 0 || exitTime == 0){
-		metalDelayJunction = 1;
-		meatlDelayPusher = 1;
-		maxEntryTime = 1;
-		maxPusherTime = 1;
-		maxExitTime = 1;
-		minEntryTime = 1;
-		minPusherTime = 1;
-		minExitTime = 1;
+	minTimeEntry = entryTime / 2;
+	metalDelayJunction = pusherTime/10;
+	meatlDelayPusher = pusherTime/30;
+	maxEntryTime = entryTime * 1.5;
+	maxPusherTime = pusherTime * 1.5;
+	maxExitTime = exitTime * 1.5;
+	minEntryTime = entryTime * 0.25;
+	minPusherTime = pusherTime * 0.25;
+	minExitTime = exitTime * 0.40;
 	}
-
-}
 
 void dataClass::reset(){
  // Connection
@@ -78,6 +76,12 @@ void dataClass::reset(){
 		minTimeEntryTimer = nullptr;
 	}
 
+	if (timerIS != nullptr){
+	    timerIS->stop();
+	    delete timerIS;
+	    timerIS = nullptr;
+	}
+
 // Item
 	itemCount = 0;
 	itemCountRemote = 0;
@@ -85,6 +89,7 @@ void dataClass::reset(){
 // Festo
 	readyForItem = false;
 	readyForItemRemote = true;
+	itemAtExit = false;
 
 // Weiche / Slide
 	slideFull = false;
@@ -102,19 +107,6 @@ void dataClass::reset(){
 	weiche = LET_ITEM_PASS_STATE;
 
 	readyForEntry = true;
-	setTimes();
-	if(entryTime != 0 || entryTimeSlow != 0 || heightTime != 0 || pusherTime != 0 || exitTime != 0){
-		slowFactor = entryTime / entryTimeSlow;
-		minTimeEntry = entryTime / 2;
-		metalDelayJunction = pusherTime/10;
-		meatlDelayPusher = pusherTime/30;
-		maxEntryTime = entryTime * 1.5;
-		maxPusherTime = pusherTime * 1.5;
-		maxExitTime = exitTime * 1.5;
-		minEntryTime = entryTime * 0.25;
-		minPusherTime = pusherTime * 0.25;
-		minExitTime = exitTime * 0.40;
-	}
 }
 
 bool dataClass::moveFrom1To2(){

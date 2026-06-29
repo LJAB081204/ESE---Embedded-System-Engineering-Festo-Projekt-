@@ -48,13 +48,13 @@ void HeightCalibration::eventButtonStartPressedLong(OperationContext& ctx){
 }
 
 void HeightCalibration::eventButtonStopPressed(OperationContext& ctx){
-	/*exit(ctx);
+	exit(ctx);
 	new (this) Service;
-	entry(ctx);*/
+	entry(ctx);
 }
 
 void HeightCalibration::eventButtonStopPressedRemote(OperationContext& ctx){
-	/*exit(ctx);
+	exit(ctx);
 	new (this) Service;
-	entry(ctx);*/
+	entry(ctx);
 }

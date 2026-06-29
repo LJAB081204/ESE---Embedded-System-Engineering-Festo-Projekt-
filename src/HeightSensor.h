@@ -20,7 +20,6 @@ enum Height {
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
-#include "dataClass.h"
 
 class HeightSensor{
 public:

@@ -64,7 +64,6 @@ class dataClass{
 	//Weiche/Slide
 	bool slideFull = false;
 	bool slideFullRemote = false;
-	bool calibrated = false;
 
 	//Error
 	errors err = ERROR_CLEARED;
