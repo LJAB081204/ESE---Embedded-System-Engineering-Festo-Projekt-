@@ -39,8 +39,9 @@
 				std::cout << "Warnung: Werkstück am Ausgang erkannt." << std::endl;
 				ctx.hal.getActors()->yellowLampBlink(1000);
 			}
-			seqUpdate(ctx);
+
 		}
+		seqUpdate(ctx);
 //		ctx.blockStartUntilRelease = false;
 	}
 	void Idle::exit(OperationContext& ctx){

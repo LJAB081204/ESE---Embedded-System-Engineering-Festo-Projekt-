@@ -68,15 +68,18 @@ public:
 			currentState->entry(*this);
 		}
 		else if (source == HistorySource::ESTOP_HISTORY){
-			if (currentState != reinterpret_cast<OperationBase*>(stateBuffer)){
-				currentState->exit(*this);
-				delete currentState;
-			}
 			if (savedRunning != nullptr){
 				savedRunning->exit(*this);
 				delete savedRunning;
 				savedRunning = nullptr;
 			}
+
+			if (currentState != reinterpret_cast<OperationBase*>(stateBuffer)){
+				savedRunning = currentState;
+//				currentState->exit(*this);
+//				delete currentState;
+			}
+
 			new (stateBuffer) Idle;
 			currentState = reinterpret_cast<OperationBase*>(stateBuffer);
 		}
@@ -85,7 +88,7 @@ public:
 	}
 	void restoreHistory(){
 		if(currentState == reinterpret_cast<OperationBase*>(stateBuffer) && savedRunning != nullptr
-				&& historySource== HistorySource::ERROR_HISTORY){
+				&& (historySource== HistorySource::ERROR_HISTORY || historySource == HistorySource::ESTOP_HISTORY)){
 			currentState = savedRunning;
 			savedRunning = nullptr;
 			currentState->onRestore(HistorySource::ERROR_HISTORY, *this);
