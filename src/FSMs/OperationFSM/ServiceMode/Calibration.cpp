@@ -46,16 +46,15 @@
 	}
 
 	void Calibration::eventButtonStopPressed(OperationContext& ctx){
-
-//		exit(ctx);
-//		new (this) Service;
-//		entry(ctx);
+		exit(ctx);
+		new (this) Service;
+		entry(ctx);
 	}
 
 	void Calibration::eventButtonStopPressedRemote(OperationContext& ctx){
-//		exit(ctx);
-//		new (this) Service;
-//		entry(ctx);
+		exit(ctx);
+		new (this) Service;
+		entry(ctx);
 	}
 
 
