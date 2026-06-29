@@ -33,16 +33,16 @@ dataClass::dataClass(TimerHandler& handler): handler(&handler){
 	}
 	else{
 		std::cout<< "test entered" << std::endl;
-		slowFactor = entryTime / entryTimeSlow;
+		slowFactor = (double) entryTime / (double) entryTimeSlow;
 		minTimeEntry = entryTime / 2;
 		metalDelayJunction = (int) pusherTime/10;
 		meatlDelayPusher = (int) pusherTime/30;
 		maxEntryTime = (int) entryTime * 1.4;
 		maxPusherTime = (int) pusherTime * 1.4;
-		maxExitTime = (int) exitTime * 1.4;
+		maxExitTime = (int) exitTime * 1.2;
 		minEntryTime = (int) entryTime * 0.9;
 		minPusherTime = (int) pusherTime * 0.9;
-		minExitTime = (int) exitTime * 0.6;
+		minExitTime = (int) exitTime * 0.8;
 	}
 
 }
@@ -117,16 +117,19 @@ void dataClass::reset(){
 	readyForEntry = true;
 	setTimes();
 	if(entryTime != 0 || entryTimeSlow != 0 || heightTime != 0 || pusherTime != 0 || exitTime != 0){
-		slowFactor = entryTime / entryTimeSlow;
+		slowFactor = (double) entryTime / (double) entryTimeSlow;
+		std::cout << "Slow Factor: " << slowFactor << std::endl;
 		minTimeEntry = entryTime / 2;
-		metalDelayJunction = pusherTime/10;
-		meatlDelayPusher = pusherTime/30;
+		metalDelayJunction = (int) pusherTime/10;
+		meatlDelayPusher = (int) pusherTime/30;
 		maxEntryTime = (int) entryTime * 1.4;
-		maxPusherTime = (int) pusherTime * 1.5;
-		maxExitTime = (int) exitTime * 1.5;
-		minEntryTime = (int) entryTime * 0.6;
-		minPusherTime = (int) pusherTime * 0.25;
-		minExitTime = (int) exitTime * 0.40;
+		maxPusherTime = (int) pusherTime * 1.4;
+		maxExitTime = (int) exitTime * 1.4;
+		minEntryTime = (int) entryTime * 0.9;
+		minPusherTime = (int) pusherTime * 0.9;
+		minExitTime = (int) exitTime * 0.7;
+
+
 	}
 }
 
@@ -158,6 +161,7 @@ bool dataClass::moveFrom2To3(){
 	delete section2.front().timer;
 	section3.back().timer = new DynamicTimer(section3.back().id, *handler);
 	section3.back().timer->start(maxExitTime,0);
+	std::cout << "time after start:" << section3.back().timer->getTime() << std::endl;
 	section2.pop();
 	return true;
 }

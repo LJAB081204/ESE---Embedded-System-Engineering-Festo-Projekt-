@@ -17,6 +17,7 @@ EntryCalibration::EntryCalibration(){};
 void EntryCalibration::entry(OperationContext& ctx) {
 	ctx.round++;
 	if(ctx.round == 2){
+		ctx.data.calibrated = true;
 		ctx.hal.getActors()->motorForwards();
 		ctx.hal.getActors()->motorSlow();
 		std::cout<< "EntryCalibrationSlow" << std::endl;
@@ -62,15 +63,15 @@ void EntryCalibration::eventButtonStartPressedLongRemote(OperationContext& ctx){
 }
 
 void EntryCalibration::eventButtonStopPressed(OperationContext& ctx){
-	exit(ctx);
-	new (this) Service;
-	entry(ctx);
+//	exit(ctx);
+//	new (this) Service;
+//	entry(ctx);
 }
 
 void EntryCalibration::eventButtonStopPressedRemote(OperationContext& ctx){
-	exit(ctx);
-	new (this) Service;
-	entry(ctx);
+//	exit(ctx);
+//	new (this) Service;
+//	entry(ctx);
 }
 
 

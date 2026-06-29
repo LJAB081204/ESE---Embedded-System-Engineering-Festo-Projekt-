@@ -25,6 +25,10 @@
 		ctx.hal.getActors()->ledButtonResetOff();
 		ctx.hal.getActors()->ledButtonStart();
 		ctx.data.handler->pauseAll();
+		if(ctx.data.calibrated){
+		ctx.data.calibrated = false;
+		ctx.data.reset();
+		}
 		if(ctx.firstBoot || ctx.historySource == HistorySource::ESTOP_HISTORY){
 		    ctx.firstBoot = false;
 			if(ctx.hal.getSensors()->isItemAtEntry()){

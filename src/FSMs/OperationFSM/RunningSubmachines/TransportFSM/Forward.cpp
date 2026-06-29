@@ -153,6 +153,7 @@ namespace M1{
 		if(!ctx.data.section3.empty()){
 			std::cout<< "exit time: "<<ctx.data.exitTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
+			std::cout<< "min exit time: "<<ctx.data.minExitTime << std::endl;
 			if(ctx.data.section3.front().timer->getTime() < ctx.data.minExitTime){
 				ctx.data.handler->pauseAll();
 				std::cout<< "Error item at exit"<< std::endl;
