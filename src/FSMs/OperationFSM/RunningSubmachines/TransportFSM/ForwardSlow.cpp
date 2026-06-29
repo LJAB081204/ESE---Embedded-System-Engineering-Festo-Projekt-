@@ -20,7 +20,6 @@ namespace M1{
 	}
 
 	void ForwardSlow::entry(TransportContext& ctx){
-		std::cout << "ForwardSlow::entry skipSlow=" << ctx.data.skipSlow << std::endl;
 		if(ctx.data.itemCount == 0){
 			exit(ctx);
 			new(this) Stop;

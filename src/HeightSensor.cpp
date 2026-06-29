@@ -13,6 +13,7 @@
 HeightSensor::HeightSensor(TSCADC& tscadc, int dispCoid)
     : tscadc(tscadc), adc(tscadc)
 {
+
     this->refConveyor = 0;
     this->refHigh = 0;
     this->refDrilling = 0;
@@ -187,6 +188,7 @@ void HeightSensor::calibrate() {
     }
 
     // Alle 4 Referenzwerte erfolgreich ermittelt -> dauerhaft speichern
+
     saveCalibration();
     std::cout << "Kalibrierung: Abgeschlossen" << std::endl;
     return;
