@@ -22,22 +22,18 @@ namespace M1{
 		switch(ctx.data.sequenceState){
 			case WFP_State:
 				ctx.data.oneRound = false;
-				std::cout << "Next expected -> IH" << std::endl;
+				std::cout << "Nächstes erwartet: IH" << std::endl;
 				break;
 			case IH_State:
-				std::cout << "WFP: GoBack IH" << std::endl;
 				eventGoBackIH(ctx);
 				break;
 			case IM_State:
-				std::cout << "WFP: GoBack IM" << std::endl;
 				eventGoBackIM(ctx);
 				break;
 			case IF_State:
-				std::cout << "WFP: GoBack IF" << std::endl;
 				eventGoBackIF(ctx);
 				break;
 			case IHM_State:
-				std::cout << "WFP: GoBack IHM" << std::endl;
 				eventGoBackIHM(ctx);
 				break;
 			}
@@ -48,8 +44,6 @@ namespace M1{
 	}
 
 	void waitingForProfile::eventUpdate(SequenceContext& ctx){
-		std::cout << "SECTION 2 SIZE AT UPDATE :" << ctx.data.section2.size() << std::endl;
-
 		if(ctx.data.section2.empty()) return;
 //		std::cout << "ENTERED UPDATE FUNCTION" << std::endl;
 
@@ -75,6 +69,8 @@ namespace M1{
 			else{
 				exit(ctx);
 				ctx.data.section2.front().sortOut = true;
+				ctx.data.section2.front().expectedProfile = IH_PROFILE;
+				ctx.data.section2.front().sortOutReason = SortOutReason::WRONG_SEQUENCE;
 				raiseItemWrong(ctx);
 				entry(ctx);
 			}

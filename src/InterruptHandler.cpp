@@ -68,7 +68,6 @@ using namespace std;
 		SIGEV_PULSE_INIT(&eventReset, connectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_RESET_LOCAL, 0);
 		idButtonReset = InterruptAttachEvent((GPIO_0_IRQ_BASE+26),&eventReset,_NTO_INTR_FLAGS_TRK_MSK);
 		eventReset.sigev_value.sival_int = idButtonReset;
-		cout << "ID:" << idButtonReset << endl;
 
 		//Interrupt Button Stop (low when true, Bit 23)
 		out32((gpio_bank_0 + GPIO_IRQSTATUS_SET_0),BUTTON_STOP);
@@ -76,7 +75,6 @@ using namespace std;
 		SIGEV_PULSE_INIT(&eventStop, connectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_STOP_LOCAL, 0);
 		idButtonStop =  InterruptAttachEvent((GPIO_0_IRQ_BASE+23),&eventStop,_NTO_INTR_FLAGS_TRK_MSK);
 		eventStop.sigev_value.sival_int = idButtonStop;
-		cout << "ID:" << idButtonStop << endl;
 
 
 		//Interrupt Button Start (high when true, Bit 22)
@@ -85,7 +83,6 @@ using namespace std;
 		SIGEV_PULSE_INIT(&eventStart, connectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_START_LOCAL, 0);
 		idButtonStart =  InterruptAttachEvent((GPIO_0_IRQ_BASE+22),&eventStart,_NTO_INTR_FLAGS_TRK_MSK);
 		eventStart.sigev_value.sival_int = idButtonStart;
-		cout << "ID:" << idButtonStart << endl;
 
 
 		//Interrupt Item at entry (low when true, Bit 2)
@@ -94,7 +91,6 @@ using namespace std;
 		SIGEV_PULSE_INIT(&eventItemAtEntry, connectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_ENTRY_LOCAL, 0);
 		idItemAtEntry = InterruptAttachEvent((GPIO_0_IRQ_BASE+2), &eventItemAtEntry, _NTO_INTR_FLAGS_TRK_MSK);
 		eventItemAtEntry.sigev_value.sival_int = idItemAtEntry;
-		cout << "ID:" << idItemAtEntry << endl;
 
 
 

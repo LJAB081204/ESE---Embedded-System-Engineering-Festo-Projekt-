@@ -20,7 +20,7 @@ namespace M2{
 	}
 
 	void IM::entry(SequenceContext& ctx){
-		std::cout << "IM --- next expected -> IF" << std::endl;
+		std::cout << "Nächstes erwartet: IF" << std::endl;
 		ctx.data.sequenceState = IM_State;
 	}
 
@@ -35,10 +35,12 @@ namespace M2{
 		item = ctx.data.nextItem.front().item;
 		ctx.data.nextItem.pop();
 		if(item != ctx.data.section2.front().item){
+			ctx.data.section2.front().sortOut = true;
+			ctx.data.section2.front().expectedProfile = item;
+			ctx.data.section2.front().sortOutReason = SortOutReason::ITEM_SWAPPED;
 			raiseGoBackIM(ctx);
 			raiseItemWrong(ctx);
 
-			std::cout << "ITEM HAS CHANGED -> GO BACK" << std::endl;
 		}
 		else{
 			if(ctx.data.section2.front().item == IF_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
@@ -49,6 +51,9 @@ namespace M2{
 			}
 			else{
 				exit(ctx);
+				ctx.data.section2.front().sortOut = true;
+				ctx.data.section2.front().expectedProfile = IF_PROFILE;
+				ctx.data.section2.front().sortOutReason = SortOutReason::WRONG_SEQUENCE;
 				raiseItemWrong(ctx);
 				entry(ctx);
 			}

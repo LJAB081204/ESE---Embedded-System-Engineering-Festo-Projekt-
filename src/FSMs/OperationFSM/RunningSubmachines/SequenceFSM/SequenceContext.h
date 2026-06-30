@@ -34,7 +34,7 @@ public:
 
 	itemProfile resolveProfile() {
 	    if (data.section2.empty()) return UNDEFINED_PROFILE;
-	    std::cout << data.section2.size() << std::endl;
+//	    std::cout << data.section2.size() << std::endl;
 	    if (data.section2.front().special)                                                                                { data.section2.front().item = IS_PROFILE;  return IS_PROFILE; }
 	    if (data.section2.front().flat && !data.section2.front().high && !data.section2.front().hole && !data.section2.front().metal) { data.section2.front().item = IF_PROFILE;  return IF_PROFILE; }
 	    if (data.section2.front().high && data.section2.front().hole && data.section2.front().metal)                      { data.section2.front().item = IHM_PROFILE; return IHM_PROFILE; }

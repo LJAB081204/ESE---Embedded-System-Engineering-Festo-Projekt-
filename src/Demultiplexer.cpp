@@ -131,7 +131,7 @@ using namespace std;
 				    break;
 				case PULSE_ITEM_METAL_LOCAL:
 				    if(in32(gpio_bank_0 + GPIO_DATAIN) & ITEM_METAL) {
-				        cout << "Item is metal!" << endl;
+//				        cout << "Item is metal!" << endl;
 				        MsgSendPulse(dispatcherID,-1,PULSE_ITEM_METAL_LOCAL,1);
 				    } else {
 //				        cout << "Item is not metal!" << endl;

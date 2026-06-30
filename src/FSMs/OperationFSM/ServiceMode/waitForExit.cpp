@@ -17,7 +17,7 @@
 waitForExit::waitForExit(){};
 
 void waitForExit::entry(OperationContext& ctx) {
-	std::cout<< "waitForExit" << std::endl;
+	std::cout << "Warte auf Werkstück am Ausgang..." << std::endl;
 }
 
 void waitForExit::exit(OperationContext& ctx) {
@@ -31,6 +31,7 @@ void waitForExit::eventItemAtExit(OperationContext& ctx) {
 }
 
 void waitForExit::eventButtonStartPressedLong(OperationContext& ctx){
+	std::cout << "Kalibrierung abgebrochen." << std::endl;
 	exit(ctx);
 	new (this) Idle;
 	entry(ctx);

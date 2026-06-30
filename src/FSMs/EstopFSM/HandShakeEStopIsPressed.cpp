@@ -20,7 +20,6 @@ HandShakeEStopIsPressed::HandShakeEStopIsPressed(){
 
 void HandShakeEStopIsPressed::entry(EStopContext& ctx){
 	MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_HANDSHAKE_ESTOP_STATUS, 0);
-	cout << "Handshake EStop Is Pressed" << endl;
 }
 
 void HandShakeEStopIsPressed::exit(EStopContext& ctx){

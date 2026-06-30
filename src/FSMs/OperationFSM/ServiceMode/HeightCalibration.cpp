@@ -20,7 +20,7 @@ void HeightCalibration::entry(OperationContext& ctx) {
 		ctx.calTimer->start(10000);
 	}
 	ctx.hal.getActors()->motorSlow();
-	std::cout<< "HeightCalibration" << std::endl;
+	std::cout << "Höhenmessung aktiv..." << std::endl;
 }
 
 void HeightCalibration::exit(OperationContext& ctx) {
@@ -42,6 +42,7 @@ void HeightCalibration::eventItemGone(OperationContext& ctx) {
 }
 
 void HeightCalibration::eventButtonStartPressedLong(OperationContext& ctx){
+	std::cout << "Kalibrierung abgebrochen." << std::endl;
 	exit(ctx);
 	new (this) Idle;
 	entry(ctx);

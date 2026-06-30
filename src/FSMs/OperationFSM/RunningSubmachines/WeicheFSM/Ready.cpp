@@ -37,7 +37,6 @@ void Ready::eventItemWrong(WeicheContext& ctx){
 }
 
 void Ready::eventSkipUpdate(WeicheContext& ctx){
-	std::cout << "SKIP REACHED READY" << std::endl;
 	exit(ctx);
 	new(this)Receive;
 	entry(ctx);

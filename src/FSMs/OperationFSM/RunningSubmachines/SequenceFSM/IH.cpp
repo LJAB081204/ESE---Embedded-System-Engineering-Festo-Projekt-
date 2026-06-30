@@ -21,22 +21,18 @@ namespace M1{
 	void IH::entry(SequenceContext& ctx){
 		switch(ctx.data.sequenceState){
 				case WFP_State:
-					std::cout << "IH: GoBack WFP" << std::endl;
 					eventGoBackWFP(ctx);
 					break;
 				case IH_State:
-					std::cout << "IH --- next expected -> IM" << std::endl;
+					std::cout << "Nächstes erwartet: IM" << std::endl;
 					break;
 				case IM_State:
-					std::cout << "IH: GoBack IM" << std::endl;
 					eventGoBackIM(ctx);
 					break;
 				case IF_State:
-					std::cout << "IH: GoBack IF" << std::endl;
 					eventGoBackIF(ctx);
 					break;
 				case IHM_State:
-					std::cout << "IH: GoBack IHM" << std::endl;
 					eventGoBackIHM(ctx);
 					break;
 				}
@@ -47,8 +43,6 @@ namespace M1{
 	}
 
 	void IH::eventUpdate(SequenceContext& ctx){
-		std::cout << "SECTION 2 SIZE AT UPDATE :" << ctx.data.section2.size() << std::endl;
-
 		if(ctx.data.section2.empty()){
 			MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_SKIP_UPDATE, 0);
 			return;
@@ -65,6 +59,8 @@ namespace M1{
 		else{
 			exit(ctx);
 			ctx.data.section2.front().sortOut = true;
+			ctx.data.section2.front().expectedProfile = IM_PROFILE;
+			ctx.data.section2.front().sortOutReason = SortOutReason::WRONG_SEQUENCE;
 			raiseItemWrong(ctx);
 			entry(ctx);
 		}
@@ -90,8 +86,6 @@ namespace M1{
 	}*/
 
 	void IH::eventGoBackWFP(SequenceContext& ctx){
-		std::cout << "GO GACK WFP REACHED IH-STATE" << std::endl;
-
 		exit(ctx);
 		new(this) waitingForProfile;
 		entry(ctx);

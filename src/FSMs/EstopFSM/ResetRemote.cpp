@@ -38,7 +38,6 @@ void ResetRemote::eventButtonEstopPressed(EStopContext& ctx){
 void ResetRemote::eventButtonResetPressed(EStopContext& ctx){
 	exit(ctx);
 	ctx.setActive(false);
-	std::cout << "estop set false!!!!" << std::endl;
 }
 
 

@@ -20,7 +20,6 @@ LetItemPass::LetItemPass(){
 }
 
 void LetItemPass::entry(WeicheContext& ctx){
-	std::cout<<"Let Item Pass"<<std::endl;
 	ctx.data.weiche = LET_ITEM_PASS_STATE;
 	ctx.hal.getActors()->letItemPass();
 	if(ctx.hal.getActors()->isJunction()){

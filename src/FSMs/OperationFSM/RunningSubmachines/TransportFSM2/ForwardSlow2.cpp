@@ -66,7 +66,6 @@ namespace M2{
 		else{
 			ctx.data.handler->pauseAll();
 			ctx.hal.getActors()->motorStop();
-			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 1;
 			ctx.data.raiseError();
@@ -77,7 +76,6 @@ namespace M2{
 		if(!ctx.data.section2.empty()){
 			ctx.data.removeItem(2);
 		}
-		std::cout<< ctx.data.itemCount << std::endl;
 		if(ctx.data.itemCount == 0){
 			exit(ctx);
 			new(this) Stop2;
@@ -90,21 +88,16 @@ namespace M2{
 			ctx.data.section1.back().timer->start(ctx.data.maxEntryTime,0);
 		}
 		else{
-			std::cout<<"Queue 1 leer Festo1" << std::endl;
 		}
 	}
 
 	void ForwardSlow2::eventItemAtPusher(TransportContext2& ctx){
 		exit(ctx);
 		if(!ctx.data.section2.empty()){
-			std::cout<< "min pusher time: "<<ctx.data.minPusherTime << std::endl;
-			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
 			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
-			std::cout<< diff << std::endl;
 			if(ctx.data.section2.front().timer->getTime() < ctx.data.minPusherTime){
 				ctx.data.handler->pauseAll();
 				ctx.hal.getActors()->motorStop();
-				std::cout<< "Error item at Pusher"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 2;
 				ctx.data.raiseError();
@@ -116,7 +109,6 @@ namespace M2{
 		else{
 			ctx.data.handler->pauseAll();
 			ctx.hal.getActors()->motorStop();
-			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 2;
 			ctx.data.raiseError();
@@ -126,14 +118,10 @@ namespace M2{
 	void ForwardSlow2::eventItemAtExit(TransportContext2& ctx){
 		ctx.data.itemAtExit = true;
 		if(!ctx.data.section3.empty()){
-			std::cout<< "min exit time: "<<ctx.data.minExitTime << std::endl;
-			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
 			int diff = ctx.data.exitTime - ctx.data.section3.front().timer->getTime();
-			std::cout<< diff << std::endl;
 			if(ctx.data.section3.front().timer->getTime() < ctx.data.minExitTime){
 				ctx.data.handler->pauseAll();
 				ctx.hal.getActors()->motorStop();
-				std::cout<< "Error item at exit"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 3;
 				ctx.data.raiseError();
@@ -141,6 +129,8 @@ namespace M2{
 			else{
 				if(!ctx.data.section3.empty()){
 					ctx.data.section3.front().timer->stop();
+					std::cout << "Werkstück am Ende angekommen | ID: " << ctx.data.section3.front().id
+					          << " | Typ: " << profileName(ctx.data.section3.front().item) << std::endl;
 				}
 				exit(ctx);
 				new(this) Stop2;
@@ -149,8 +139,6 @@ namespace M2{
 		}
 		else{
 			ctx.data.handler->pauseAll();
-			ctx.hal.getActors()->motorStop();
-			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.hal.getActors()->motorStop();
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 3;

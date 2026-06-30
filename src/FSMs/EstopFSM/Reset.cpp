@@ -10,6 +10,7 @@
 #include "EStopRemote.h"
 #include "BothEStop.h"
 #include "Reset.h"
+#include <iostream>
 
 
 Reset::Reset(){
@@ -17,6 +18,7 @@ Reset::Reset(){
 
 void Reset::entry(EStopContext& ctx){
 	ctx.hal.getActors()->ledButtonResetOff();
+	std::cout << "E-Stop gezogen – bitte beide Reset-Tasten drücken." << std::endl;
 }
 
 void Reset::exit(EStopContext& ctx){
