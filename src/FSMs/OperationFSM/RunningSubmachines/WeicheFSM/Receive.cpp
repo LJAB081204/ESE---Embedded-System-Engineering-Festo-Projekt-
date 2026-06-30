@@ -25,13 +25,9 @@ void Receive::entry(WeicheContext& ctx){
 //	std::cout << "READY TO RECEIVE ITEM" << std::endl;
 	if(ctx.data.itemPusher == true){
 		ctx.data.itemPusher = false;
-		if(ctx.data.slideFull == true){
-			exit(ctx);
-			new(this) LetItemPass;
-			entry(ctx);
-		}else{
-			ctx.hal.getActors()->sortItemOut();
-		}
+//		eventItemAtPusher(ctx);
+		eventTimerExpired(ctx);
+//		ctx.hal.getActors()->sortItemOut();
 		return;
 	}
 	if(ctx.data.itemLeftPusher == true){

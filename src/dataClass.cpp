@@ -33,7 +33,7 @@ dataClass::dataClass(TimerHandler& handler): handler(&handler){
 	}
 	else{
 		slowFactor = (double) entryTime / (double) entryTimeSlow;
-		minTimeEntry = entryTime / 1,5;
+		minTimeEntry = entryTime / 1,9;
 		metalDelayJunction = (int) pusherTime/10;
 		meatlDelayPusher = (int) pusherTime/30;
 		maxEntryTime = (int) entryTime * 1.4;
