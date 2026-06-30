@@ -20,11 +20,11 @@ void EntryCalibration::entry(OperationContext& ctx) {
 		ctx.data.calibrated = true;
 		ctx.hal.getActors()->motorForwards();
 		ctx.hal.getActors()->motorSlow();
-		std::cout<< "EntryCalibrationSlow" << std::endl;
+		std::cout << "Kalibrierung Runde 2: Flaches Werkstück auf Band." << std::endl;
 	}
 	else{
 		ctx.hal.getActors()->motorForwards();
-		std::cout<< "EntryCalibration" << std::endl;
+		std::cout << "Kalibrierung Runde 1: Werkstück mit Bohrung auf Band." << std::endl;
 	}
 
 }
@@ -51,12 +51,14 @@ void EntryCalibration::eventItemArrived(OperationContext& ctx){
 }
 
 void EntryCalibration::eventButtonStartPressedLong(OperationContext& ctx){
+	std::cout << "Kalibrierung abgebrochen." << std::endl;
 	exit(ctx);
 	new (this) Idle;
 	entry(ctx);
 }
 
 void EntryCalibration::eventButtonStartPressedLongRemote(OperationContext& ctx){
+	std::cout << "Kalibrierung abgebrochen." << std::endl;
 	exit(ctx);
 	new (this) Idle;
 	entry(ctx);

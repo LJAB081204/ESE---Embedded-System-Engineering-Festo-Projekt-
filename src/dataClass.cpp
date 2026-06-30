@@ -33,7 +33,7 @@ dataClass::dataClass(TimerHandler& handler): handler(&handler){
 	}
 	else{
 		slowFactor = (double) entryTime / (double) entryTimeSlow;
-		minTimeEntry = entryTime / 1,5;
+		minTimeEntry = entryTime / 2;
 		metalDelayJunction = (int) pusherTime/10;
 		meatlDelayPusher = (int) pusherTime/30;
 		maxEntryTime = (int) entryTime * 1.4;
@@ -118,7 +118,6 @@ void dataClass::reset(){
 	setTimes();
 	if(entryTime != 0 || entryTimeSlow != 0 || heightTime != 0 || pusherTime != 0 || exitTime != 0){
 		slowFactor = (double) entryTime / (double) entryTimeSlow;
-		std::cout << "Slow Factor: " << slowFactor << std::endl;
 		minTimeEntry = entryTime / 2;
 		metalDelayJunction = (int) pusherTime/10;
 		meatlDelayPusher = (int) pusherTime/60;
@@ -132,7 +131,6 @@ void dataClass::reset(){
 }
 
 bool dataClass::moveFrom1To2(){
-	std::cout << "SIZE:" << section1.size() << std::endl;
 	if (section1.empty()){
 		return false;
 	}
@@ -145,12 +143,10 @@ bool dataClass::moveFrom1To2(){
 	if(checkReady()){
 		MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
 	}
-		std::cout << "SIZE2:" << section2.size() << std::endl;
 	return true;
 }
 
 bool dataClass::moveFrom2To3(){
-	std::cout << "SIZE:" << section2.size() << std::endl;
 	 if (section2.empty()){
 		 return false;
 	 }
@@ -159,7 +155,6 @@ bool dataClass::moveFrom2To3(){
 	delete section2.front().timer;
 	section3.back().timer = new DynamicTimer(section3.back().id, *handler);
 	section3.back().timer->start(maxExitTime,0);
-	std::cout << "time after start:" << section3.back().timer->getTime() << std::endl;
 	section2.pop();
 	return true;
 }
@@ -170,14 +165,13 @@ bool dataClass::addItem(){
 	itemCount++;
 	item.timer = new DynamicTimer(item.id, *handler);
 	section1.push(item);
+	std::cout << "Werkstück eingelegt | ID: " << item.id << " | Typ: unbekannt" << std::endl;
 	return true;
 }
 
 bool dataClass::addTransferredItem(itemData item){
-	std::cout << "addTransferredItem: id=" << item.id << " nextItem size before=" << nextItem.size() << std::endl;
 	item.timer = new DynamicTimer(item.id, *handler);
 	nextItem.push(item);
-	std::cout << "addTransferredItem: nextItem size after=" << nextItem.size() << std::endl;
 	return true;
 }
 
@@ -193,8 +187,6 @@ bool dataClass::removeItem(int queue){
 				itemCount--;
 				if(checkReady()){
 					MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
-					std::cout << "PULSE READY SEND" << std::endl;
-
 				}
 				return true;
 			case 2:
@@ -207,8 +199,6 @@ bool dataClass::removeItem(int queue){
 				itemCount--;
 				if(checkReady()){
 					MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
-					std::cout << "PULSE READY SEND" << std::endl;
-
 				}
 				return true;
 			case 3:
@@ -221,7 +211,6 @@ bool dataClass::removeItem(int queue){
 				itemCount--;
 				if(checkReady()){
 					MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
-					std::cout << "PULSE READY SEND" << std::endl;
 				}
 				return true;
 			default:
@@ -230,10 +219,6 @@ bool dataClass::removeItem(int queue){
 }
 
 int dataClass::findItem(int id){
-	std::cout << "findItem called with id: " << id << std::endl;
-	std::cout << "s1 front: " << (section1.empty() ? -1 : section1.front().id) << std::endl;
-	std::cout << "s2 front: " << (section2.empty() ? -1 : section2.front().id) << std::endl;
-	std::cout << "s3 front: " << (section3.empty() ? -1 : section3.front().id) << std::endl;
     if(!section1.empty() && section1.front().id == id){
         return 1;
     }
@@ -272,7 +257,7 @@ bool dataClass::checkReady(){
 void dataClass::setTimes(){
     std::ifstream file(CALIBRATION_FILE);
     if(!file.is_open()){
-        std::cout << "Warning: No calibration file found!" << std::endl;
+        std::cout << "Achtung: Keine Kalibrierungsdatei gefunden. Bitte in den Service-Mode wechseln und die Anlage Kalibrieren" << std::endl;
         return;
     }
 
@@ -290,11 +275,11 @@ void dataClass::setTimes(){
             std::cerr << "Fehler beim Parsen: '" << line << "' -> " << e.what() << std::endl;
         }
     }
-    std::cout<<"Festo calibrated"<<std::endl;
+    std::cout<<"Anlage Fertig kalibriert."<<std::endl;
     file.close();
 
     if(!foundEntry || !foundEntrySlow || !foundHeight || !foundPusher || !foundExit){
-        std::cout << "Times not fully calibrated" << std::endl;
+        std::cout << "Laufbandzeiten nicht vollständig kalibriert." << std::endl;
     }
 
 

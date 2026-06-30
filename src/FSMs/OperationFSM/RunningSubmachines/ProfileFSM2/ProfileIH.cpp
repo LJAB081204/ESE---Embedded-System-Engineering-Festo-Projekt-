@@ -17,7 +17,6 @@ namespace M2{
 ProfileIH::ProfileIH(){};
 
 void ProfileIH::entry(ProfileContext& ctx) {
-	std::cout << "////////////////////ProfileIH detected" << std::endl;
 	if(ctx.data.heightDefault == true){
 		ctx.data.heightDefault = false;
 		exit(ctx);
@@ -34,17 +33,13 @@ void ProfileIH::exit(ProfileContext& ctx) {}
 
 void ProfileIH::eventItemGone(ProfileContext& ctx) {
 	exit(ctx);
-	std::cout<< ctx.data.section1.size() << std::endl;
 
 	if(!ctx.data.section1.empty()){
 		ctx.data.section1.front().hole = true;
 		ctx.data.section1.front().high = true;
 
-		std::cout << "Profile set to IH" << std::endl;
 		ctx.data.moveFrom1To2();
 	}
-
-	std::cout<< ctx.data.section2.size() << std::endl;
 
 	new(this) Default;
 	entry(ctx);

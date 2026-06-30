@@ -20,7 +20,6 @@ LetItemPass::LetItemPass(){
 }
 
 void LetItemPass::entry(WeicheContext& ctx){
-	std::cout<<"Let Item Pass"<<std::endl;
 	ctx.data.weiche = LET_ITEM_PASS_STATE;
 	ctx.hal.getActors()->letItemPass();
 	if(ctx.hal.getActors()->isJunction()){
@@ -39,8 +38,6 @@ void LetItemPass::exit(WeicheContext& ctx){
 
 }
 void LetItemPass::eventItemLeftPusher(WeicheContext& ctx){
-	std::cout<<"sec2:" << ctx.data.section2.size() <<std::endl;
-
 	if(!ctx.data.section2.empty()){
 		ctx.data.moveFrom2To3();
 	}

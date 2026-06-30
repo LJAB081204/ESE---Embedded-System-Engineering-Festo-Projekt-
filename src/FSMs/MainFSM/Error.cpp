@@ -7,6 +7,7 @@
 #include "Error.h"
 #include "MainContext.h"
 #include "ConnectionLost.h"
+#include <iostream>
 
 Error::Error(HAL& hal, dataClass& data) : errorFSM(hal, data) {}
 
@@ -16,7 +17,7 @@ void Error::entry(MainContext& ctx) {
     ctx.hal.getActors()->redLampBlink(1000);
     ctx.hal.getActors()->ledButtonStartOff();
     ctx.data.handler->pauseAll();
-
+    std::cout << "--- [FEHLER] ---" << std::endl;
 }
 void Error::exit(MainContext& ctx) {
 	ctx.hal.getActors()->redLampBlinkOff();

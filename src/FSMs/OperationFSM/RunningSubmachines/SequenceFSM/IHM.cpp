@@ -34,7 +34,7 @@ namespace M1{
 				eventGoBackIF(ctx);
 				break;
 			case IHM_State:
-				std::cout << "IHM --- next expected -> IH" << std::endl;
+				std::cout << "Nächstes erwartet: IH (neue Runde)" << std::endl;
 				ctx.data.oneRound = true;
 				break;
 			}
@@ -61,6 +61,8 @@ namespace M1{
 		else{
 			exit(ctx);
 			ctx.data.section2.front().sortOut = true;
+			ctx.data.section2.front().expectedProfile = IH_PROFILE;
+			ctx.data.section2.front().sortOutReason = SortOutReason::WRONG_SEQUENCE;
 			raiseItemWrong(ctx);
 			entry(ctx);
 		}

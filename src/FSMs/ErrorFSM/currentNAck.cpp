@@ -33,38 +33,34 @@
 			ctx.data.skipSlow = true;
 		}
 		ctx.data.errorState = CURRENT_NACK_STATE;
-		std::string location;
+		const char* location = "";
 		switch (ctx.data.errorLoc){
-		case 0:
-			location = "Entry";
-			break;
-		case 1:
-			location = "Höhensensor";
-			break;
-		case 2:
-			location = "Pusher";
-			break;
-		case 3:
-			location = "Ausgang";
-			break;
+		case 1: location = "Höhensensor"; break;
+		case 2: location = "Pusher"; break;
+		case 3: location = "Ausgang"; break;
 		default: break;
-
 		}
+		int errItemId = 0;
+		if(ctx.data.errorLoc == 1 && !ctx.data.section1.empty()) errItemId = ctx.data.section1.front().id;
+		else if(ctx.data.errorLoc == 2 && !ctx.data.section2.empty()) errItemId = ctx.data.section2.front().id;
+		else if(ctx.data.errorLoc == 3 && !ctx.data.section3.empty()) errItemId = ctx.data.section3.front().id;
 		switch (ctx.data.err){
-		case ITEM_SPECIAL_0: std::cout << "Fehler: Spezialitem erkannt."<< std::endl;
+		case ITEM_SPECIAL_0: std::cout << "Fehler: Spezialitem erkannt." << std::endl;
 			break;
-		case ITEM_SPECIAL_1: std::cout << "Fehler: Spezialitem erkannt."<< std::endl;
+		case ITEM_SPECIAL_1: std::cout << "Fehler: Spezialitem erkannt." << std::endl;
 			break;
-		case ITEM_GONE: std::cout << "Fehler: Werkstück verschwunden. Ort: " << location << std::endl;
+		case ITEM_GONE: std::cout << "Fehler: Werkstück verschwunden | Ort: " << location
+			                      << " | Werkstück-ID: " << errItemId << std::endl;
 			break;
-		case BOTH_SLIDES_FULL: std::cout << "Fehler: Versuchte Aussortierung bei voller Rutsche." << std::endl;
+		case BOTH_SLIDES_FULL: std::cout << "Fehler: Aussortierung bei voller Rutsche." << std::endl;
 			break;
-		case ITEM_APPEARED: std::cout << "Fehler: Werkstück aufgetaucht. Ort: "  << location << std::endl;
+		case ITEM_APPEARED: std::cout << "Fehler: Unerwartetes Werkstück | Ort: " << location
+			                          << " | Werkstück-ID: " << errItemId << std::endl;
 			break;
 		case ENTRY_TOO_FAST: std::cout << "Fehler: Wartezeit beim Einlegen nicht eingehalten." << std::endl;
 			break;
 		default:
-			std::cout << "Unbekannter Fehler"<< ctx.data.err << std::endl;
+			std::cout << "Unbekannter Fehler: " << ctx.data.err << std::endl;
 			break;
 		}
 		std::cout << "Bitte Fehler mit Resettaste quittieren." << std::endl;

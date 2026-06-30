@@ -27,7 +27,7 @@ namespace M1{
 				eventGoBackIHM(ctx);
 				break;
 			case IM_State:
-				std::cout << "IM --- next expected -> IF" << std::endl;
+				std::cout << "Nächstes erwartet: IF" << std::endl;
 				break;
 			case IF_State:
 				eventGoBackIF(ctx);
@@ -59,6 +59,8 @@ namespace M1{
 		else{
 			exit(ctx);
 			ctx.data.section2.front().sortOut = true;
+			ctx.data.section2.front().expectedProfile = IF_PROFILE;
+			ctx.data.section2.front().sortOutReason = SortOutReason::WRONG_SEQUENCE;
 			raiseItemWrong(ctx);
 			entry(ctx);
 		}
@@ -88,7 +90,6 @@ namespace M1{
 	}*/
 
 	void IM::eventGoBackWFP(SequenceContext& ctx){
-		std::cout << "EVENT REACHED IM" << std::endl;
 		exit(ctx);
 		new(this) waitingForProfile;
 		entry(ctx);

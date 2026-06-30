@@ -23,7 +23,12 @@
 		ctx.hal.getActors()->ledButtonStart();
 		ctx.hal.getActors()->ledButtonResetOff();
 		ctx.hal.getActors()->closePusher();
-		std::cout<<"Calibration started"<<std::endl;
+		if(ctx.round == 0) {
+			std::cout << "Kalibrierung gestartet." << std::endl;
+			std::cout << "Führe Werkstück mit Bohrung ein." << std::endl;
+		} else {
+			std::cout << "Führe flaches Werkstück ein." << std::endl;
+		}
 	}
 
 	void Calibration::exit(OperationContext& ctx){}
@@ -35,11 +40,21 @@
 	}
 
 	void Calibration::eventButtonStartPressedLong(OperationContext& ctx){
+		if(ctx.data.calibrated) {
+			std::cout << "Kalibrierung abgeschlossen." << std::endl;
+		} else {
+			std::cout << "Kalibrierung abgebrochen." << std::endl;
+		}
 		exit(ctx);
 		new (this) Idle;
 		entry(ctx);
 	}
 	void Calibration::eventButtonStartPressedLongRemote(OperationContext& ctx){
+		if(ctx.data.calibrated) {
+			std::cout << "Kalibrierung abgeschlossen." << std::endl;
+		} else {
+			std::cout << "Kalibrierung abgebrochen." << std::endl;
+		}
 		exit(ctx);
 		new (this) Idle;
 		entry(ctx);

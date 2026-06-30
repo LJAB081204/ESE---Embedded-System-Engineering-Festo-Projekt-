@@ -17,7 +17,6 @@ namespace M2{
 ProfileIF::ProfileIF(){};
 
 void ProfileIF::entry(ProfileContext& ctx) {
-	std::cout << "//////////////////////ProfileIF detected" << std::endl;
 	if(ctx.data.heightDefault == true){
 		ctx.data.heightDefault = false;
 		exit(ctx);
@@ -47,7 +46,6 @@ void ProfileIF::eventHeightHole(ProfileContext& ctx) {
 void ProfileIF::eventItemGone(ProfileContext& ctx) {
 	exit(ctx);
 
-	std::cout << "ProfileIF" << std::endl;
 	if(!ctx.data.section1.empty()){
 		ctx.data.section1.front().flat = true;
 		ctx.data.moveFrom1To2();

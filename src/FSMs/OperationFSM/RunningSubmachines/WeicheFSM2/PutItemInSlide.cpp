@@ -16,7 +16,21 @@ namespace M2{
 PutItemInSlide::PutItemInSlide(){
 }
 void PutItemInSlide::entry(WeicheContext& ctx){
-	std::cout<<"Put Item in Slide"<<std::endl;
+	if(!ctx.data.section2.empty()) {
+		const auto& front = ctx.data.section2.front();
+		std::cout << "Werkstück aussortiert | ID: " << front.id
+		          << " | Typ: " << profileName(front.item);
+		if(front.sortOutReason == SortOutReason::ITEM_SWAPPED) {
+			std::cout << " | FM1 meldete: " << profileName(front.expectedProfile)
+			          << " | Grund: Werkstück getauscht";
+		} else if(front.sortOutReason == SortOutReason::WRONG_SEQUENCE) {
+			std::cout << " | Erwartet: " << profileName(front.expectedProfile)
+			          << " | Grund: falsche Reihenfolge";
+		} else if(front.item == IU_PROFILE || front.item == UNDEFINED_PROFILE) {
+			std::cout << " | Grund: Profil nicht erkannt";
+		}
+		std::cout << std::endl;
+	}
 	ctx.hal.getActors()->sortItemOut();
 }
 void PutItemInSlide::eventItemLeftPusher(WeicheContext& ctx){

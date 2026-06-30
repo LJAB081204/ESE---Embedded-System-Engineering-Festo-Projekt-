@@ -192,23 +192,18 @@ void Operation::eventGoBack(MainContext& ctx){
 }
 
 void Operation::eventGoBackWFP(MainContext& ctx){
-	std::cout << "Operation GoBack WFP" << std::endl;
 	operationFSM.eventGoBackWFP();
 }
 void Operation::eventGoBackIH(MainContext& ctx){
-	std::cout << "Operation GoBack IH" << std::endl;
 	operationFSM.eventGoBackIH();
 }
 void Operation::eventGoBackIM(MainContext& ctx){
-	std::cout << "Operation GoBack IM" << std::endl;
 	operationFSM.eventGoBackIM();
 }
 void Operation::eventGoBackIF(MainContext& ctx){
-	std::cout << "Operation GoBack IF" << std::endl;
 	operationFSM.eventGoBackIF();
 }
 void Operation::eventGoBackIHM(MainContext& ctx){
-	std::cout << "Operation GoBack IHM" << std::endl;
 	operationFSM.eventGoBackIHM();
 }
 
