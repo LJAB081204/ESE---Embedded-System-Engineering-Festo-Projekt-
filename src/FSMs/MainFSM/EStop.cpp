@@ -23,6 +23,7 @@ void EStop::exit(MainContext& ctx) {
 	ctx.hal.getActors()->redLampOff();
 	ctx.data.reset();
 
+
 }
 
 void EStop::eventButtonEstopPressed(MainContext& ctx) {
@@ -178,3 +179,4 @@ void EStop::eventGoBack(MainContext& ctx){
 	cout << "Go Back (1) in Estop" << endl;
 	ctx.getOperationFSM().eventGoBack();
 }
+

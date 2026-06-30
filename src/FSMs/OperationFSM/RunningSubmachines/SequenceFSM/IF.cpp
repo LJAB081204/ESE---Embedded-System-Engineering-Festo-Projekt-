@@ -44,7 +44,13 @@ namespace M1{
 	}
 
 	void IF::eventUpdate(SequenceContext& ctx){
-		if(ctx.data.section2.empty()) return;
+		std::cout << "SECTION 2 SIZE AT UPDATE :" << ctx.data.section2.size() << std::endl;
+
+		if(ctx.data.section2.empty()){
+			MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_SKIP_UPDATE, 0);
+			return;
+
+		}
 		ctx.resolveProfile();		//Profilierung
 		if(ctx.data.section2.front().item == IHM_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 			exit(ctx);

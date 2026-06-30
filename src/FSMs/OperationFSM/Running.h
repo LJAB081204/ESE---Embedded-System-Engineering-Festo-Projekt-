@@ -89,6 +89,7 @@ public:
 	void eventGoBackIF(OperationContext& ctx) override;
 	void eventGoBackIHM(OperationContext& ctx) override;
 
+	void eventSkipUpdate(OperationContext& ctx)override;
 
 
 };

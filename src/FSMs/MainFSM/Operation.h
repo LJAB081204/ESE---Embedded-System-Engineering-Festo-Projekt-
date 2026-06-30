@@ -107,6 +107,8 @@ public:
 
     void eventConnectionLost(MainContext& ctx) override;
 
+    void eventSkipUpdate(MainContext& ctx)override;
+
 };
 
 

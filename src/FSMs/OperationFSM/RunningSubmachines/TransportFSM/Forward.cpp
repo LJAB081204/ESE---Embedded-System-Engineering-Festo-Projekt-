@@ -58,7 +58,9 @@ namespace M1{
 	void Forward::eventItemLeftEntry(TransportContext& ctx){
 		if(!ctx.data.section1.empty()){
 			ctx.data.section1.back().timer->start(ctx.data.maxEntryTime,0);
-			ctx.data.timerIS->stop();
+			if(ctx.data.timerIS != nullptr){
+				ctx.data.timerIS->stop();
+			}
 		}
 		else{
 			std::cout<<"Queue 1 leer Festo1" << std::endl;
@@ -70,14 +72,15 @@ namespace M1{
 		}
 		ctx.data.minTimeEntryTimer->start(ctx.data.minTimeEntry,0);
 	}
+
+
 	void Forward::eventItemArrived(TransportContext& ctx){
-		exit(ctx);
 		if(!ctx.data.section1.empty()){
 			std::cout<< "entry time: "<<ctx.data.entryTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
-			int diff = ctx.data.entryTime - ctx.data.section1.front().timer->getTime();
-			std::cout<< diff << std::endl;
-			if(diff>ctx.data.minEntryTime){
+//			int diff = ctx.data.entryTime - ctx.data.section1.front().timer->getTime();
+			//std::cout<< diff << std::endl;
+			if(ctx.data.section1.front().timer->getTime() < ctx.data.minEntryTime){
 				ctx.data.handler->pauseAll();
 				ctx.hal.getActors()->motorStop();
 				std::cout<< "Error item arrived"<< std::endl;
@@ -89,6 +92,7 @@ namespace M1{
 				if(!ctx.data.section1.empty()){
 					ctx.data.section1.front().timer->stop();
 				}
+				exit(ctx);
 				new(this) ForwardSlow;
 				entry(ctx);
 			}
@@ -107,13 +111,12 @@ namespace M1{
 	}
 
 	void Forward::eventItemAtPusher(TransportContext& ctx){
-		exit(ctx);
 		if(!ctx.data.section2.empty()){
 			std::cout<< "pusher time: "<<ctx.data.pusherTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
 			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
 			std::cout<< diff << std::endl;
-			if(diff>ctx.data.minPusherTime){
+			if(ctx.data.section2.front().timer->getTime() < ctx.data.minPusherTime){
 				ctx.hal.getActors()->motorStop();
 				ctx.data.handler->pauseAll();
 				std::cout<< "Error item at Pusher"<< std::endl;
@@ -140,19 +143,17 @@ namespace M1{
 			ctx.data.removeItem(2);
 		}
 		if(ctx.data.itemCount == 0){
+			exit(ctx);
 			new(this) Stop;
+			entry(ctx);
 		}
-		entry(ctx);
 	}
 
 	void Forward::eventItemAtExit(TransportContext& ctx){
-		exit(ctx);
 		if(!ctx.data.section3.empty()){
 			std::cout<< "exit time: "<<ctx.data.exitTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
-			int diff = ctx.data.exitTime - ctx.data.section3.front().timer->getTime();
-			std::cout<< diff << std::endl;
-			if(diff>ctx.data.minExitTime){
+			if(ctx.data.section3.front().timer->getTime() < ctx.data.minExitTime){
 				ctx.data.handler->pauseAll();
 				std::cout<< "Error item at exit"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
@@ -161,9 +162,15 @@ namespace M1{
 				ctx.hal.getActors()->motorStop();
 			}
 			else{
+				ctx.data.section3.front().timer->stop();
+				uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
+				ctx.data.section3.front().timer->stop();
+				std::cout<<"runnedTime:"<<runnedTime<<std::endl;
+				delete ctx.data.section3.front().timer;
+				ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
+				ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
 				exit(ctx);
 				if(!ctx.data.section3.empty()){
-					ctx.data.section3.front().timer->stop();
 					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
 					ctx.data.section3.front().timer->stop();
 					std::cout<<"runnedTime:"<<runnedTime<<std::endl;
@@ -188,22 +195,20 @@ namespace M1{
 	}
 
 	void Forward::eventItemAtEntryRemote(TransportContext& ctx){
-		exit(ctx);
 		itemData item;
 		if(!ctx.data.section3.empty()){
 			item = ctx.data.section3.front();
 		}
-
 		uint32_t itemCode = ctx.data.convertItemToInt(item);
-
 		MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_ITEM_TRANSFER,itemCode);
 		if(!ctx.data.section3.empty()){
 			ctx.data.removeItem(3);
 		}
 		if(ctx.data.itemCount == 0){
+			exit(ctx);
 			new(this) Stop;
+			entry(ctx);
 		}
-		entry(ctx);
 	}
 
 	void Forward::eventTransportTimerExpired(TransportContext& ctx){

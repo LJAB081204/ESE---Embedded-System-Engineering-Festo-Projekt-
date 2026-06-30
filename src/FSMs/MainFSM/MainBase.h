@@ -108,6 +108,8 @@ public:
 	virtual void eventResponseEStopWasPressed(MainContext& ctx) {}
 	virtual void eventResponseEStopWasNotPressed(MainContext& ctx) {}
 
+	virtual void eventSkipUpdate(MainContext& ctx){}
+
 };
 
 

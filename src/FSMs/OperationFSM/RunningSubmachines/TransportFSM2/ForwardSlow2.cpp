@@ -23,6 +23,12 @@ namespace M2{
 			new(this) Stop2;
 			entry(ctx);
 		}
+		else if(ctx.data.skipSlow){
+		    ctx.data.skipSlow = false;
+		    exit(ctx);
+		    new(this) Forward2;
+		    entry(ctx);
+		}
 		else{
 			ctx.hal.getActors()->motorForwards();
 			ctx.hal.getActors()->motorSlow();
@@ -77,7 +83,7 @@ namespace M2{
 			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
 			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
 			std::cout<< diff << std::endl;
-			if(diff>ctx.data.minPusherTime){
+			if(ctx.data.section2.front().timer->getTime() < ctx.data.minPusherTime){
 				ctx.data.handler->pauseAll();
 				ctx.hal.getActors()->motorStop();
 				std::cout<< "Error item at Pusher"<< std::endl;
@@ -106,7 +112,7 @@ namespace M2{
 			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
 			int diff = ctx.data.exitTime - ctx.data.section3.front().timer->getTime();
 			std::cout<< diff << std::endl;
-			if(diff>ctx.data.minExitTime){
+			if(ctx.data.section3.front().timer->getTime() < ctx.data.minExitTime){
 				ctx.data.handler->pauseAll();
 				ctx.hal.getActors()->motorStop();
 				std::cout<< "Error item at exit"<< std::endl;
@@ -116,7 +122,6 @@ namespace M2{
 			}
 			else{
 				if(!ctx.data.section3.empty()){
-					ctx.data.section3.front().timer->stop();
 					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
 					ctx.data.section3.front().timer->stop();
 					std::cout<<"runnedTime:"<<runnedTime<<std::endl;

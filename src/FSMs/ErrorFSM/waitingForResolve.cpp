@@ -36,7 +36,7 @@ void waitingForResolve::eventButtonResetPressedRemote(ErrorContext& ctx){
 	ctx.resetPressed = true;
 }
 void waitingForResolve::eventButtonStartPressedRemote(ErrorContext& ctx){
-	if(true){
+	if(ctx.resetPressed){
 		ctx.hal.getActors()->redLampBlinkOff();
 		ctx.hal.getActors()->redLampBlink(1000);
 	}

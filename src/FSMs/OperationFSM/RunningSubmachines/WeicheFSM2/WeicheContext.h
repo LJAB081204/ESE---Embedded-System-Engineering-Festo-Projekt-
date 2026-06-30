@@ -49,6 +49,7 @@ public:
     void eventError()			   { currentState->eventError(*this);}
     void eventTimerExpired()	   { currentState->eventTimerExpired(*this);}
     void reactivate()	   			{
+    	currentState->exit(*this);
     	new(currentState)Receive;
     	if(!data.section2.empty()){
     		data.section2.front().metal = false;

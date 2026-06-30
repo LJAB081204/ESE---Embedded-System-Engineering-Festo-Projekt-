@@ -525,6 +525,9 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 							MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_RESPONSE_ESTOP_STATUS, 2);
 							break;
 						}
+					case PULSE_EVENT_SKIP_UPDATE:
+						FSM.eventSkipUpdate();
+						break;
 
 
 					case PULSE_RESPONSE_ESTOP_STATUS:

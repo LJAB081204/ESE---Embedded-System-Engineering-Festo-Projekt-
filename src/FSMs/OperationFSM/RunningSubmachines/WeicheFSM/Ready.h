@@ -17,6 +17,8 @@ public:
 	void eventItemWrong(WeicheContext& ctx)override;
 	void eventItemCorrect(WeicheContext& ctx)override;
 
+	void eventSkipUpdate(WeicheContext& ctx)override;
+
 };
 
 

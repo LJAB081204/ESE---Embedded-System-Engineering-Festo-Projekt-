@@ -49,6 +49,7 @@
 		ctx.hal.getActors()->yellowLampBlinkOff();
 		ctx.data.handler->resumeAll();
 
+
 	}
 
 	void Idle::eventButtonStartPressed(OperationContext& ctx){

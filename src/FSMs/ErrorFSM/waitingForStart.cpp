@@ -156,6 +156,7 @@ void waitingForStart::entry(ErrorContext& ctx){
 		 std::cout << ctx.data.itemCount << std::endl;
 		 if(ctx.data.checkReady()){
 		 MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_TRANSFER_REPLY, 1);
+		 ctx.data.err = ERROR_CLEARED;
 		 }
 	}
 
