@@ -53,7 +53,6 @@ void Receive::eventItemAtPusher(WeicheContext& ctx){
 	}
 }
 void Receive::eventItemMetal(WeicheContext& ctx){
-	std::cout << "section2 size: " << ctx.data.section2.size() << std::endl;
 	if(!ctx.data.section2.empty()){
 			ctx.data.section2.front().metal = true;
 	}
@@ -62,7 +61,6 @@ void Receive::eventItemMetal(WeicheContext& ctx){
 
 void Receive::eventTimerExpired(WeicheContext& ctx){
 	exit(ctx);
-	std::cout<<"Weiche Ready"<<std::endl;
 	raiseUpdate(ctx);
 	new (this) Ready;
 	entry(ctx);

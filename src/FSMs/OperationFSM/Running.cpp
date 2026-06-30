@@ -29,6 +29,8 @@ namespace M1{
 
 	void Running::entry(OperationContext& ctx){
 		ctx.hal.getActors()->greenLampOn();
+		std::cout << "--- [BETRIEB] ---" << std::endl;
+		std::cout << "Nächstes erwartet: " << nextExpected(ctx.data.sequenceState) << std::endl;
 	}
 
 	void Running::exit(OperationContext& ctx){
@@ -41,7 +43,7 @@ namespace M1{
 	}
 
 	void Running::onRestore(HistorySource source, OperationContext& ctx){
-		std::cout << "Restore" << std::endl;
+		std::cout << "--- [BETRIEB WIEDERHERGESTELLT] ---" << std::endl;
 		if (source == HistorySource::ESTOP_HISTORY){
 			delete transportFSM;
 			transportFSM = new TransportContext(ctx.hal,ctx.data);

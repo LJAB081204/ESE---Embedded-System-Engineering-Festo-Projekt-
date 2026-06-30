@@ -21,7 +21,7 @@ void PusherCalibration::entry(OperationContext& ctx) {
 		ctx.calTimer->start(5000);
 	}
 	ctx.hal.getActors()->motorForwards();
-	std::cout<< "PusherCalibration" << std::endl;
+	std::cout << "Kalibriere Pusherzeit..." << std::endl;
 }
 
 void PusherCalibration::exit(OperationContext& ctx) {}
@@ -41,12 +41,14 @@ void PusherCalibration::eventItemLeftPusher(OperationContext& ctx) {
 }
 
 void PusherCalibration::eventButtonStartPressedLong(OperationContext& ctx){
+	std::cout << "Kalibrierung abgebrochen." << std::endl;
 	exit(ctx);
 	new (this) Idle;
 	entry(ctx);
 }
 
 void PusherCalibration::eventButtonStartPressedLongRemote(OperationContext& ctx){
+	std::cout << "Kalibrierung abgebrochen." << std::endl;
 	exit(ctx);
 	new (this) Idle;
 	entry(ctx);

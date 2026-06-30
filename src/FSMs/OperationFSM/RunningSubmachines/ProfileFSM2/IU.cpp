@@ -16,7 +16,6 @@ namespace M2{
 IU::IU(){};
 
 void IU::entry(ProfileContext& ctx) {
-	std::cout << "///////////////////IU detected" << std::endl;
 	if(ctx.data.heightDefault == true){
 		ctx.data.heightDefault = false;
 		exit(ctx);

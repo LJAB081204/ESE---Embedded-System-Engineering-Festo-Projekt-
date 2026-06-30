@@ -7,6 +7,7 @@
 #include "Error.h"
 #include "MainContext.h"
 #include "ConnectionLost.h"
+#include <iostream>
 
 Error::Error(HAL& hal, dataClass& data) : errorFSM(hal, data) {}
 
@@ -16,7 +17,7 @@ void Error::entry(MainContext& ctx) {
     ctx.hal.getActors()->redLampBlink(1000);
     ctx.hal.getActors()->ledButtonStartOff();
     ctx.data.handler->pauseAll();
-
+    std::cout << "--- [FEHLER] ---" << std::endl;
 }
 void Error::exit(MainContext& ctx) {
 	ctx.hal.getActors()->redLampBlinkOff();
@@ -67,6 +68,12 @@ void Error::eventErrorResolved(MainContext& ctx) {
     ctx.data.errorState = CURRENT_NACK_STATE;
     new(this) Operation(ctx.getOperationFSM());
     ctx.getOperationFSM().restoreHistory();
+	if(!ctx.data.isMachine1 && ctx.data.checkReady()){
+		MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_FESTO_READY, 0);
+
+	}
+
+
 }
 void Error::eventGoBackIH(MainContext& ctx){
 	ctx.getOperationFSM().eventGoBackIH();

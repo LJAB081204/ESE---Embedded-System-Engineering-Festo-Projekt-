@@ -9,12 +9,16 @@
 #include "ConnectionLostEStopIsPressed.h"
 #include "ConnectionLostEStopWasPressed.h"
 #include "../MainFSM/EStop.h"
+#include <iostream>
 
 ConnectionLostEStopIsPressed::ConnectionLostEStopIsPressed(){
 }
 
 void ConnectionLostEStopIsPressed::entry(ConnectionLostContext& ctx){
+	ctx.hal.getActors()->redLampBlinkOff();
+	ctx.hal.getActors()->redLampOn();
 	ctx.estopState = EStopButtonState::ISPRESSED;
+	std::cout << "E-Stop gedrückt – bitte zuerst Verbindung wiederherstellen." << std::endl;
 }
 
 void ConnectionLostEStopIsPressed::exit(ConnectionLostContext& ctx){

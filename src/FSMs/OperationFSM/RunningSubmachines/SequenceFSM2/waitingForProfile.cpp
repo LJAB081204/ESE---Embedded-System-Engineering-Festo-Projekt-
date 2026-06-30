@@ -21,7 +21,7 @@ namespace M2{
 
 	void waitingForProfile::entry(SequenceContext& ctx){
 		ctx.oneRound = false;
-		std::cout << "Next expected -> IH" << std::endl;
+		std::cout << "Nächstes erwartet: IH" << std::endl;
 		ctx.data.sequenceState = WFP_State;
 	}
 
@@ -36,7 +36,9 @@ namespace M2{
 		item = ctx.data.nextItem.front().item;
 		ctx.data.nextItem.pop();
 		if(item != ctx.data.section2.front().item){
-			std::cout << "ITEM HAS CHANGED -> GO BACK" << std::endl;
+			ctx.data.section2.front().sortOut = true;
+			ctx.data.section2.front().expectedProfile = item;
+			ctx.data.section2.front().sortOutReason = SortOutReason::ITEM_SWAPPED;
 			raiseGoBackWFP(ctx);
 			raiseItemWrong(ctx);
 		}
@@ -50,6 +52,9 @@ namespace M2{
 			}
 			else{
 				exit(ctx);
+				ctx.data.section2.front().sortOut = true;
+				ctx.data.section2.front().expectedProfile = IH_PROFILE;
+				ctx.data.section2.front().sortOutReason = SortOutReason::WRONG_SEQUENCE;
 				raiseItemWrong(ctx);
 				entry(ctx);
 			}

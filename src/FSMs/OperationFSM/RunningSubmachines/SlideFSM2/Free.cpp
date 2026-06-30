@@ -23,7 +23,6 @@ void Free::entry(SlideContext& ctx){
 	if(!ctx.hal.getSensors()->isSlideFull()){
 		ctx.hal.getActors()->yellowLampBlinkOff();
 		ctx.data.slideFull = false;
-		std::cout << "Slide Free"<<std::endl;
 	}
 	else{
 		exit(ctx);

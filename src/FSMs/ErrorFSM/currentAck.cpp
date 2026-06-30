@@ -32,8 +32,12 @@
 			break;
 		case BOTH_SLIDES_FULL: std::cout << "Rutsche auf Band zwei leeren." << std::endl;
 			break;
-		case ITEM_APPEARED: std::cout << "Werkstück entfernen. Location :"  << ctx.data.errorLoc << std::endl;
+		case ITEM_APPEARED: {
+			const char* loc = (ctx.data.errorLoc == 1) ? "Höhensensor" :
+			                  (ctx.data.errorLoc == 2) ? "Pusher" : "Ausgang";
+			std::cout << "Werkstück am " << loc << " entfernen." << std::endl;
 			break;
+		}
 		case ENTRY_TOO_FAST: std::cout << "Werkstück aus Einlauf entfernen." << std::endl;
 			break;
 		default:
@@ -46,18 +50,18 @@
 	}
 
 	void currentAck::eventItemLeftSlide(ErrorContext& ctx){
-		if(ctx.data.err == BOTH_SLIDES_FULL){
-			ctx.data.err = ERROR_CLEARED;
-			raiseItemAtPusher(ctx);
-			exit(ctx);
-			new(this) waitingForStart;
-			entry(ctx);
-		}
-		else{
-			exit(ctx);
-			new(this) waitingForStart;
-			entry(ctx);
-		}
+//		if(ctx.data.err == BOTH_SLIDES_FULL){
+//			ctx.data.err = ERROR_CLEARED;
+//			raiseItemAtPusher(ctx);
+//			exit(ctx);
+//			new(this) waitingForStart;
+//			entry(ctx);
+//		}
+//		else{
+//			exit(ctx);
+//			new(this) waitingForStart;
+//			entry(ctx);
+//		}
 	}
 
 	void currentAck::eventItemGone(ErrorContext& ctx){
@@ -73,12 +77,10 @@
 			if(!ctx.data.section1.empty()){
 				uint32_t runnedTime = ctx.data.section1.front().timer->getTime();
 				ctx.data.section1.front().timer->stop();
-				std::cout<<"runnedTime:"<<runnedTime<<std::endl;
 				delete ctx.data.section1.front().timer;
 				ctx.data.section1.front().timer = new DynamicTimer(ctx.data.section1.front().id, *ctx.data.handler);
 				ctx.data.section1.front().timer->start(ctx.data.maxEntryTime,runnedTime);
 			}
-			std::cout << ctx.data.heightDefault<< std::endl;
 			exit(ctx);
 			new(this) waitingForStart;
 			entry(ctx);
@@ -104,10 +106,20 @@
 			if(!ctx.data.section2.empty()){
 				uint32_t runnedTime = ctx.data.section2.front().timer->getTime();
 				ctx.data.section2.front().timer->stop();
-				std::cout<<"runnedTime:"<<runnedTime<<std::endl;
 				delete ctx.data.section2.front().timer;
 				ctx.data.section2.front().timer = new DynamicTimer(ctx.data.section2.front().id, *ctx.data.handler);
 				ctx.data.section2.front().timer->start(ctx.data.maxPusherTime,runnedTime);
+			}
+			exit(ctx);
+			new(this) waitingForStart;
+			entry(ctx);
+		}
+		if(ctx.data.err == BOTH_SLIDES_FULL){
+			ctx.data.err = ERROR_CLEARED;
+			//raiseItemLeftPusher(ctx);
+			if(!ctx.data.section2.empty()){
+				ctx.data.section2.front().timer->stop();
+				ctx.data.removeItem(2);
 			}
 			exit(ctx);
 			new(this) waitingForStart;
@@ -119,7 +131,6 @@
 			if(!ctx.data.section3.empty()){
 				uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
 				ctx.data.section3.front().timer->stop();
-				std::cout<<"runnedTime:"<<runnedTime<<std::endl;
 				delete ctx.data.section3.front().timer;
 				ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
 				ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);

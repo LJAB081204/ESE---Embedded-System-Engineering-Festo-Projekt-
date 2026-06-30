@@ -21,7 +21,6 @@ HandShakeEStopWasNotPressed::HandShakeEStopWasNotPressed(){
 
 void HandShakeEStopWasNotPressed::entry(EStopContext& ctx){
 	MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_HANDSHAKE_ESTOP_STATUS, 0);
-	cout << "Handshake EStop Was Not Pressed" << endl;
 }
 
 void HandShakeEStopWasNotPressed::exit(EStopContext& ctx){

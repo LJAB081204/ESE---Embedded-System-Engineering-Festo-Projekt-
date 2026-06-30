@@ -314,11 +314,9 @@ void HeightSensor::detectHeight(int value){
     // Frueher Pulse: schon nach 3 stabilen Werten, basierend auf demselben Counter
        if(heightCounter == 3){
            if(previousHeight == HEIGHT_CONVEYOR && currentHeight != HEIGHT_CONVEYOR){
-               std::cout << "Item arrived" << std::endl;
                MsgSendPulse(dispCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_ARRIVED, currentHeight);
            }
            if(previousHeight != HEIGHT_CONVEYOR && currentHeight == HEIGHT_CONVEYOR){
-               std::cout << "Item Gone" << std::endl;
                MsgSendPulse(dispCoid, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_GONE, 0);
            }
        }

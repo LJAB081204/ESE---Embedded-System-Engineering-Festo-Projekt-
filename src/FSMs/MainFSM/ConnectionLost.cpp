@@ -13,14 +13,14 @@ using namespace std;
 void ConnectionLost::entry(MainContext& ctx) {
 	ctx.hal.getActors()->motorStop();
 	ctx.hal.getActors()->greenLampOff();
-	ctx.hal.getActors()->redLampOn();
 	ctx.hal.getActors()->ledButtonStartOff();
 	ctx.hal.getActors()->closePusher();
-	cout << "Connection Lost" << endl;
+	cout << "--- [VERBINDUNG VERLOREN] ---" << endl;
+	cout << "Bitte stelle Verbindung wieder her." << endl;
 }
 void ConnectionLost::exit(MainContext& ctx) {
-	ctx.hal.getActors()->redLampOff();
-	cout << "Connection Restored" << endl;
+	ctx.hal.getActors()->redLampBlinkOff();
+	cout << "Verbindung wiederhergestellt – bitte Reset drücken." << endl;
 }
 
 void ConnectionLost::eventButtonEstopPressed(MainContext& ctx) {

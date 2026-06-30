@@ -17,7 +17,6 @@ namespace M1{
 IS::IS(){};
 
 void IS::entry(ProfileContext& ctx) {
-	std::cout << "//////////////////IS detected" << std::endl ;
 	ctx.data.handler->pauseAll();
 	raiseError(ctx);
 	new (this) Default;

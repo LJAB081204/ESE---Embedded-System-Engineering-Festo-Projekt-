@@ -22,6 +22,29 @@ enum WeicheState { LET_ITEM_PASS_STATE,WAIT_STATE};
 enum ErrorState  { CURRENT_NACK_STATE,CURRENT_ACK_STATE,PUSHER_TOO_LONG_STATE,GONE_NACK_STATE,WAITING_FOR_START_STATE,WAITING_FOR_START_STATE2};
 enum SequenceState {WFP_State, IH_State, IM_State, IF_State, IHM_State};
 
+inline const char* profileName(itemProfile p) {
+    switch(p) {
+        case IH_PROFILE:  return "IH";
+        case IM_PROFILE:  return "IM";
+        case IF_PROFILE:  return "IF";
+        case IHM_PROFILE: return "IHM";
+        case IU_PROFILE:  return "IU";
+        default:          return "unbekannt";
+    }
+}
+inline const char* nextExpected(SequenceState s) {
+    switch(s) {
+        case WFP_State:  return "IH";
+        case IH_State:   return "IM";
+        case IM_State:   return "IF";
+        case IF_State:   return "IHM";
+        case IHM_State:  return "IH";
+        default:         return "unbekannt";
+    }
+}
+
+enum class SortOutReason { NONE, WRONG_SEQUENCE, ITEM_SWAPPED };
+
 struct itemData{
 		int id = 0;
 		bool flat = false;
@@ -31,6 +54,8 @@ struct itemData{
 		bool unknown = false;
 		bool special = false;
 		bool sortOut = false;
+		itemProfile expectedProfile = UNDEFINED_PROFILE;
+		SortOutReason sortOutReason = SortOutReason::NONE;
 
 		itemProfile item = UNDEFINED_PROFILE;
 		DynamicTimer* timer = nullptr;
