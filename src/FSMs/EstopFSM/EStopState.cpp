@@ -24,6 +24,7 @@ void EStopState::entry(EStopContext& ctx){
 	ctx.hal.getActors()->greenLampBlinkOff();
 	ctx.hal.getActors()->yellowLampBlinkOff();
 	ctx.hal.getActors()->ledButtonResetOff();
+	ctx.hal.getActors()->redLampBlinkOff();
 	ctx.hs.stopCalibration();
 	ctx.setActive(true);
 	std::string machine;

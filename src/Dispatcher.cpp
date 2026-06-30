@@ -77,12 +77,11 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    case PULSE_BTN_START_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            //cout << "Start pressed!" << endl;
-				            buttonPressStart = chrono::steady_clock::now();
+				            buttonPressStartLocal = chrono::steady_clock::now();
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_START_REMOTE, 1);
 				        } else {
-				            //cout << "Start released!" << endl;
-				            auto diff = chrono::steady_clock::now() - buttonPressStart;
-				            auto ms = chrono::duration_cast<chrono::milliseconds>(diff).count();
+				            auto ms = chrono::duration_cast<chrono::milliseconds>(
+				            	chrono::steady_clock::now() - buttonPressStartLocal).count();
 				            if(ms > 1000){
 				            	FSM.eventButtonStartPressedLong();
 				            }
@@ -95,11 +94,11 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 
 				    case PULSE_BTN_START_REMOTE:
 				        if(msg.value.sival_int == 1){
-				            buttonPressStart = chrono::steady_clock::now();
-				            //cout << "Start pressed on remote!" << endl;
+				            buttonPressStartRemote = chrono::steady_clock::now();
 				        } else {
-				            auto diff = chrono::steady_clock::now() - buttonPressStart;
-				            auto ms = chrono::duration_cast<chrono::milliseconds>(diff).count();
+				            auto ms = chrono::duration_cast<chrono::milliseconds>(
+				            	chrono::steady_clock::now() - buttonPressStartRemote).count();
+
 				            if(ms > 1000){
 				            	FSM.eventButtonStartPressedLongRemote();
 				            }

@@ -22,6 +22,7 @@ void EStopRemote::entry(EStopContext& ctx){
 	ctx.hal.getActors()->redLampOn();
 	ctx.hal.getActors()->greenLampBlinkOff();
 	ctx.hal.getActors()->yellowLampBlinkOff();
+	ctx.hal.getActors()->redLampBlinkOff();
 	ctx.hal.getActors()->ledButtonResetOff();
 	ctx.hs.stopCalibration();
 	ctx.setActive(true);

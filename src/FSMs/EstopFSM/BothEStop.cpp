@@ -21,6 +21,7 @@ BothEStop::BothEStop(){
 void BothEStop::entry(EStopContext& ctx){
 	ctx.hal.getActors()->motorStop();
 	ctx.hal.getActors()->closePusher();
+	ctx.hal.getActors()->redLampBlinkOff();
 	ctx.hal.getActors()->redLampOn();
 	ctx.setActive(true);
 	std::string machine;
