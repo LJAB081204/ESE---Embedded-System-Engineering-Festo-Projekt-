@@ -25,10 +25,26 @@
 		ctx.hal.getActors()->ledButtonResetOff();
 		ctx.hal.getActors()->ledButtonStart();
 		ctx.data.handler->pauseAll();
+		if(ctx.firstBoot || ctx.historySource == HistorySource::ESTOP_HISTORY){
+		    ctx.firstBoot = false;
+			if(ctx.hal.getSensors()->isItemAtEntry()){
+				std::cout << "Warnung: Werkstück am Eingang erkannt." << std::endl;
+				ctx.hal.getActors()->yellowLampBlink(1000);
+			}
+			if(ctx.hal.getSensors()->isItemInPusher()){
+				std::cout << "Warnung: Werkstück am Pusher erkannt." << std::endl;
+				ctx.hal.getActors()->yellowLampBlink(1000);
+			}
+			if(ctx.hal.getSensors()->isItemAtExit()){
+				std::cout << "Warnung: Werkstück am Ausgang erkannt." << std::endl;
+				ctx.hal.getActors()->yellowLampBlink(1000);
+			}
+		}
 //		ctx.blockStartUntilRelease = false;
 	}
 	void Idle::exit(OperationContext& ctx){
 		ctx.hal.getActors()->ledButtonStartOff();
+		ctx.hal.getActors()->yellowLampBlinkOff();
 		ctx.data.handler->resumeAll();
 
 	}

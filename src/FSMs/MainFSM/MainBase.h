@@ -60,6 +60,7 @@ public:
 	virtual void eventItemLeftSlide(MainContext& fsm) {}
 	virtual void eventItemLeftSlideRemote(MainContext& fsm) {}
 
+	virtual void eventTransportTimerExpired(MainContext& fsm) {}
 
 	virtual void eventItemMetal(MainContext& fsm){}
 	virtual void eventItemMetalRemote(MainContext& fsm)      {}
@@ -106,6 +107,8 @@ public:
 	virtual void eventResponseEStopIsNotPressed(MainContext& ctx) {}
 	virtual void eventResponseEStopWasPressed(MainContext& ctx) {}
 	virtual void eventResponseEStopWasNotPressed(MainContext& ctx) {}
+
+	virtual void eventSkipUpdate(MainContext& ctx){}
 
 };
 

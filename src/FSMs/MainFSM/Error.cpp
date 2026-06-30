@@ -15,10 +15,13 @@ void Error::entry(MainContext& ctx) {
     ctx.hal.getActors()->greenLampOff();
     ctx.hal.getActors()->redLampBlink(1000);
     ctx.hal.getActors()->ledButtonStartOff();
+    ctx.data.handler->pauseAll();
+
 }
 void Error::exit(MainContext& ctx) {
 	ctx.hal.getActors()->redLampBlinkOff();
 	ctx.hal.getActors()->redLampOff();
+	ctx.data.handler->resumeAll();
 }
 void Error::eventButtonResetPressed(MainContext& ctx) {
 	errorFSM.eventButtonResetPressed();
@@ -48,6 +51,7 @@ void Error::eventButtonStartPressed(MainContext& ctx) {
 	errorFSM.eventButtonStartPressed();
 	if(errorFSM.isActive() == false){
 		exit(ctx);
+		ctx.data.errorState = CURRENT_NACK_STATE;
 		new (this) Operation(ctx.getOperationFSM());
 		ctx.getOperationFSM().restoreHistory();
 		MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_RESOLVED, 0);
@@ -55,6 +59,7 @@ void Error::eventButtonStartPressed(MainContext& ctx) {
 }
 void Error::eventErrorResolved(MainContext& ctx) {
     exit(ctx);
+    ctx.data.errorState = CURRENT_NACK_STATE;
     new(this) Operation(ctx.getOperationFSM());
     ctx.getOperationFSM().restoreHistory();
 }
@@ -80,6 +85,8 @@ void Error::eventGoBack(MainContext& ctx){
 }
 
 void Error::eventButtonEstopPressed(MainContext& ctx) {
+	errorFSM.setActive(false);
+	ctx.data.errorState = CURRENT_NACK_STATE;
 	ctx.data.reset();
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
@@ -87,6 +94,8 @@ void Error::eventButtonEstopPressed(MainContext& ctx) {
     entry(ctx);
 }
 void Error::eventButtonEstopPressedRemote(MainContext& ctx) {
+	errorFSM.setActive(false);
+	ctx.data.errorState = CURRENT_NACK_STATE;
 	ctx.data.reset();
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
@@ -99,5 +108,13 @@ void Error::eventConnectionLost(MainContext& ctx) {
 	new(this) ConnectionLost(ctx.hal, ctx.hs, PreviousFsmState::ERROR);
 	entry(ctx);
 }
-
+void Error::eventItemLeftEntry(MainContext& ctx){
+	errorFSM.eventItemLeftEntry();
+}
+void Error::eventButtonResetPressedRemote(MainContext& ctx){
+	errorFSM.eventButtonResetPressedRemote();
+}
+void Error::eventButtonStartPressedRemote(MainContext& ctx){
+	errorFSM.eventButtonStartPressedRemote();
+}
 

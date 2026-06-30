@@ -17,7 +17,11 @@
 	}
 
 	void errorPusherTooLong::entry(ErrorContext& ctx){
+	    ctx.onlyPusher = (ctx.data.err == ERROR_CLEARED);
 		ctx.data.errorState = PUSHER_TOO_LONG_STATE;
+		ctx.active = true;
+		ctx.hal.getActors()->redLampBlinkOff();
+		ctx.hal.getActors()->redLampBlink(1000);
 		ctx.data.pusherErrorActive = true;
 	    ctx.hal.getActors()->closePusher();
 	    ctx.hal.getActors()->ledButtonReset();

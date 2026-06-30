@@ -30,6 +30,7 @@ public:
 	dataClass& data;
 	bool active = true;
 	bool onlyPusher = false;
+	bool resetPressed = false;
 	ErrorContext(HAL& hal,dataClass& data) : hal(hal),data(data){
 		if(!data.isErrorLocal){
 			new (currentState) waitingForResolve;
@@ -49,6 +50,8 @@ public:
 	}
 
 	void eventButtonResetPressed() { currentState->eventButtonResetPressed(*this); }
+	void eventButtonResetPressedRemote() { currentState->eventButtonResetPressedRemote(*this); }
+	void eventButtonStartPressedRemote() { currentState->eventButtonStartPressedRemote(*this);}
 	void eventItemGone() { currentState->eventItemGone(*this); }
 	void eventItemLeftSlide() { currentState->eventItemLeftSlide(*this); }
 	void eventItemLeftSlideRemote() { currentState->eventItemLeftSlideRemote(*this); }
@@ -57,7 +60,9 @@ public:
 	void eventConnectionRestored() { currentState->eventConnectionRestored(*this); }
 	void errorPusherTimerExpired() { currentState->errorPusherTimerExpired(*this); }
 	void eventButtonStartPressed() { currentState->eventButtonStartPressed(*this); }
+	void eventItemLeftEntry() 	   {currentState->eventItemLeftEntry(*this);}
 	bool isActive() const { return active; }
+	void setActive(bool b) {active = b;}
 };
 
 

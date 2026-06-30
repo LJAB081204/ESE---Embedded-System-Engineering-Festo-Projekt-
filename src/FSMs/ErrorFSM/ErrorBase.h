@@ -18,6 +18,7 @@ public:
 	virtual void exit(ErrorContext& ctx) {}
 
 	virtual void eventButtonResetPressed(ErrorContext& ctx) {}
+	virtual void eventButtonResetPressedRemote(ErrorContext& ctx) {}
 	virtual void eventItemGone(ErrorContext& ctx) {}
 	virtual void eventItemLeftSlide(ErrorContext& ctx) {}
 	virtual void eventItemLeftSlideRemote(ErrorContext& ctx) {}
@@ -26,6 +27,8 @@ public:
 	virtual void eventConnectionRestored(ErrorContext& ctx) {}
 	virtual void errorPusherTimerExpired(ErrorContext& ctx) {}
 	virtual void eventButtonStartPressed(ErrorContext& ctx) {}
+	virtual void eventItemLeftEntry(ErrorContext& ctx){}
+	virtual void eventButtonStartPressedRemote(ErrorContext& ctx){}
 
 };
 

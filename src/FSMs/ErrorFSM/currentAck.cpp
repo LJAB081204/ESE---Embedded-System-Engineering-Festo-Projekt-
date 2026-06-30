@@ -21,15 +21,20 @@
 	}
 
 	void currentAck::entry(ErrorContext& ctx){
+		ctx.active = true;
 		ctx.hal.getActors()->redLampBlinkOff();
 		ctx.hal.getActors()->redLampOn();
 		ctx.data.errorState = CURRENT_ACK_STATE;
 		switch (ctx.data.err){
-		case ITEM_SPECIAL: std::cout << "Spezialitem beim Höhensensor entfernen."<< std::endl;
+		case ITEM_SPECIAL_0: std::cout << "Spezialitem beim Entry entfernen."<< std::endl;
+			break;
+		case ITEM_SPECIAL_1: std::cout << "Spezialitem beim Höhensensor entfernen."<< std::endl;
 			break;
 		case BOTH_SLIDES_FULL: std::cout << "Rutsche auf Band zwei leeren." << std::endl;
 			break;
 		case ITEM_APPEARED: std::cout << "Werkstück entfernen. Location :"  << ctx.data.errorLoc << std::endl;
+			break;
+		case ENTRY_TOO_FAST: std::cout << "Werkstück aus Einlauf entfernen." << std::endl;
 			break;
 		default:
 			break;
@@ -56,7 +61,7 @@
 	}
 
 	void currentAck::eventItemGone(ErrorContext& ctx){
-		if(ctx.data.err == ITEM_SPECIAL){
+		if(ctx.data.err == ITEM_SPECIAL_1){
 			ctx.data.removeItem(1);
 			raiseItemGone(ctx);
 			exit(ctx);
@@ -71,10 +76,9 @@
 				std::cout<<"runnedTime:"<<runnedTime<<std::endl;
 				delete ctx.data.section1.front().timer;
 				ctx.data.section1.front().timer = new DynamicTimer(ctx.data.section1.front().id, *ctx.data.handler);
-				ctx.data.section1.front().timer->start(ctx.data.entryTime+1000,runnedTime);
+				ctx.data.section1.front().timer->start(ctx.data.maxEntryTime,runnedTime);
 			}
 			std::cout << ctx.data.heightDefault<< std::endl;
-//			raiseItemGone(ctx);
 			exit(ctx);
 			new(this) waitingForStart;
 			entry(ctx);
@@ -96,13 +100,14 @@
 
 	void currentAck::eventItemLeftPusher(ErrorContext& ctx){
 		if(ctx.data.err == ITEM_APPEARED && ctx.data.errorLoc == 2){
+//			MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_SKIP_UPDATE, 0);
 			if(!ctx.data.section2.empty()){
 				uint32_t runnedTime = ctx.data.section2.front().timer->getTime();
 				ctx.data.section2.front().timer->stop();
 				std::cout<<"runnedTime:"<<runnedTime<<std::endl;
 				delete ctx.data.section2.front().timer;
 				ctx.data.section2.front().timer = new DynamicTimer(ctx.data.section2.front().id, *ctx.data.handler);
-				ctx.data.section2.front().timer->start(ctx.data.pusherTime+1000,runnedTime);
+				ctx.data.section2.front().timer->start(ctx.data.maxPusherTime,runnedTime);
 			}
 			exit(ctx);
 			new(this) waitingForStart;
@@ -117,7 +122,7 @@
 				std::cout<<"runnedTime:"<<runnedTime<<std::endl;
 				delete ctx.data.section3.front().timer;
 				ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
-				ctx.data.section3.front().timer->start(ctx.data.exitTime+1000,runnedTime);
+				ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
 			}
 			exit(ctx);
 			new(this) waitingForStart;
@@ -126,6 +131,21 @@
 	}
 	void currentAck::eventConnectionRestored(ErrorContext& ctx){
 		if(ctx.data.err == CONNECTION_LOST){
+			exit(ctx);
+			new(this) waitingForStart;
+			entry(ctx);
+		}
+	}
+
+	void currentAck::eventItemLeftEntry(ErrorContext& ctx){
+		if(ctx.data.err == ENTRY_TOO_FAST){
+			exit(ctx);
+			new (this) waitingForStart;
+			entry(ctx);
+		}
+		if(ctx.data.err == ITEM_SPECIAL_0){
+			ctx.data.removeItem(1);
+			raiseItemGone(ctx);
 			exit(ctx);
 			new(this) waitingForStart;
 			entry(ctx);

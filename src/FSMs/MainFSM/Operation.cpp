@@ -120,6 +120,9 @@ void Operation::eventItemLeftSlide(MainContext& ctx) {
 void Operation::eventItemLeftSlideRemote(MainContext& ctx) {
     operationFSM.eventItemLeftSlideRemote();
 }
+void Operation::eventTransportTimerExpired(MainContext& ctx) {
+    operationFSM.eventTransportTimerExpired();
+}
 void Operation::eventItemMetal(MainContext& ctx){
 	operationFSM.eventItemMetal();
 }
@@ -217,5 +220,9 @@ void Operation::eventConnectionLost(MainContext& ctx){
 	exit(ctx);
 	new(this) ConnectionLost(ctx.hal, ctx.hs, PreviousFsmState::OPERATION);
 	entry(ctx);
+}
+
+void Operation::eventSkipUpdate(MainContext& ctx){
+	operationFSM.eventSkipUpdate();
 }
 

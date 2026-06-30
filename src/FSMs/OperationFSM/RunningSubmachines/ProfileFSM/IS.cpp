@@ -18,6 +18,7 @@ IS::IS(){};
 
 void IS::entry(ProfileContext& ctx) {
 	std::cout << "//////////////////IS detected" << std::endl ;
+	ctx.data.handler->pauseAll();
 	raiseError(ctx);
 	new (this) Default;
 }
@@ -25,7 +26,7 @@ void IS::entry(ProfileContext& ctx) {
 void IS::exit(ProfileContext& ctx) {}
 
 void IS::raiseError(ProfileContext& ctx){
-	ctx.data.err = ITEM_SPECIAL;
+	ctx.data.err = ITEM_SPECIAL_1;
 	ctx.data.errorLoc = 1;
 	MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
 }

@@ -41,11 +41,12 @@ public:
 	int round;
 	bool longPressTransition;
 	bool blockStartUntilRelease;
-
+	bool firstBoot;
 
 	OperationContext(HAL& hal,dataClass& data, HeightSensor& hs,RunningFactory& factory,TimerHandler& timerHandler)
 	: hal(hal),data(data),hs(hs),factory(factory),timerHandler(timerHandler){
 		calTimer = new SimpleTimer(0,0);
+		firstBoot = true;
 		new (currentState) Idle;
 		currentState->entry(*this);
 		round = 0;
@@ -54,6 +55,7 @@ public:
 	}
 	~OperationContext(){
 		delete savedRunning;
+		delete calTimer;
 	}
 	void saveHistory(HistorySource source){
 //		if (source == HistorySource::ERROR_HISTORY){
@@ -174,6 +176,7 @@ public:
     void eventItemLeftSlide()          { currentState->eventItemLeftSlide(*this); }
     void eventItemLeftSlideRemote()          { currentState->eventItemLeftSlideRemote(*this); }
 
+    void eventTransportTimerExpired()          { currentState->eventTransportTimerExpired(*this); }
 
     void eventItemMetal()			   { currentState->eventItemMetal(*this); }
     void eventItemMetalRemote()              { currentState->eventItemMetalRemote(*this); }
@@ -211,6 +214,8 @@ public:
     void eventGoBackIM()						{currentState->eventGoBackIM(*this);}
     void eventGoBackIF()						{currentState->eventGoBackIF(*this);}
     void eventGoBackIHM()						{currentState->eventGoBackIHM(*this);}
+
+    void eventSkipUpdate() {currentState->eventSkipUpdate(*this);}
 
 };
 

@@ -15,6 +15,8 @@ public:
 	waitingForResolve();
 	void entry(ErrorContext& ctx)override;
 	void exit(ErrorContext& ctx)override;
+	void eventButtonResetPressedRemote(ErrorContext& ctx)override;
+	void eventButtonStartPressedRemote(ErrorContext& ctx)override;
 };
 
 

@@ -20,7 +20,32 @@ dataClass::dataClass(TimerHandler& handler): handler(&handler){
 	pusherTime = 0;
 	exitTime = 0;
 	setTimes();
+
+	if(entryTime == 0 || entryTimeSlow == 0 || heightTime == 0 || pusherTime == 0 || exitTime == 0){
+		metalDelayJunction = 1;
+		meatlDelayPusher = 1;
+		maxEntryTime = 1;
+		maxPusherTime = 1;
+		maxExitTime = 1;
+		minEntryTime = 1;
+		minPusherTime = 1;
+		minExitTime = 1;
 	}
+	else{
+		std::cout<< "test entered" << std::endl;
+		slowFactor = entryTime / entryTimeSlow;
+		minTimeEntry = entryTime / 2;
+		metalDelayJunction = (int) pusherTime/10;
+		meatlDelayPusher = (int) pusherTime/30;
+		maxEntryTime = (int) entryTime * 1.4;
+		maxPusherTime = (int) pusherTime * 1.4;
+		maxExitTime = (int) exitTime * 1.4;
+		minEntryTime = (int) entryTime * 0.9;
+		minPusherTime = (int) pusherTime * 0.9;
+		minExitTime = (int) exitTime * 0.6;
+	}
+
+}
 
 void dataClass::reset(){
  // Connection
@@ -60,6 +85,11 @@ void dataClass::reset(){
 		nextItem.pop();
 	}
 
+	if (minTimeEntryTimer != nullptr){
+		minTimeEntryTimer->stop();
+		delete minTimeEntryTimer;
+		minTimeEntryTimer = nullptr;
+	}
 
 // Item
 	itemCount = 0;
@@ -83,6 +113,21 @@ void dataClass::reset(){
 
 // State Weiche
 	weiche = LET_ITEM_PASS_STATE;
+
+	readyForEntry = true;
+	setTimes();
+	if(entryTime != 0 || entryTimeSlow != 0 || heightTime != 0 || pusherTime != 0 || exitTime != 0){
+		slowFactor = entryTime / entryTimeSlow;
+		minTimeEntry = entryTime / 2;
+		metalDelayJunction = pusherTime/10;
+		meatlDelayPusher = pusherTime/30;
+		maxEntryTime = (int) entryTime * 1.4;
+		maxPusherTime = (int) pusherTime * 1.5;
+		maxExitTime = (int) exitTime * 1.5;
+		minEntryTime = (int) entryTime * 0.6;
+		minPusherTime = (int) pusherTime * 0.25;
+		minExitTime = (int) exitTime * 0.40;
+	}
 }
 
 bool dataClass::moveFrom1To2(){
@@ -94,7 +139,7 @@ bool dataClass::moveFrom1To2(){
 	section1.front().timer->stop();
 	delete section1.front().timer;
 	section2.back().timer = new DynamicTimer(section2.back().id, *handler);
-	section2.back().timer->start(pusherTime+1000,0);
+	section2.back().timer->start(maxPusherTime,0);
 	section1.pop();
 	if(checkReady()){
 		MsgSendPulse(controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_FESTO_READY,0);
@@ -112,7 +157,7 @@ bool dataClass::moveFrom2To3(){
 	section2.front().timer->stop();
 	delete section2.front().timer;
 	section3.back().timer = new DynamicTimer(section3.back().id, *handler);
-	section3.back().timer->start(exitTime+1000,0);
+	section3.back().timer->start(maxExitTime,0);
 	section2.pop();
 	return true;
 }
@@ -255,6 +300,4 @@ void dataClass::setTimes(){
 void dataClass::raiseError(){
 	MsgSendPulse(conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
     }
-void dataClass::resetEstop(){
 
-}

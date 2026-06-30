@@ -8,6 +8,8 @@
 #include "EStop.h"
 #include "Operation.h"
 #include "ConnectionLost.h"
+#include <iostream>
+using namespace std;
 
 
 void EStop::entry(MainContext& ctx) {
@@ -80,6 +82,8 @@ void EStop::enterHandShakeEStopWasPressed(MainContext& ctx) {
 }
 
 void EStop::eventResponseEStopIsPressed(MainContext& ctx) {
+    ctx.data.reset();
+    ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
 	eStopFSM.eventResponseEStopIsPressed();
 }
 
@@ -88,6 +92,8 @@ void EStop::eventResponseEStopIsNotPressed(MainContext& ctx) {
 }
 
 void EStop::eventResponseEStopWasPressed(MainContext& ctx) {
+    ctx.data.reset();
+    ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
 	eStopFSM.eventResponseEStopWasPressed();
 }
 
@@ -110,4 +116,5 @@ void EStop::eventConnectionLost(MainContext& ctx) {
 	}
 	entry(ctx);
 }
+
 

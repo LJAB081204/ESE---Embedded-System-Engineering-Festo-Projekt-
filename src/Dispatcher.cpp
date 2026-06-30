@@ -338,7 +338,21 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 							case 100:
 								FSM.eventTimerExpired();
 								break;
+							case 101:
+								cout << "Timer entry expired" <<  endl;
+
+								data.readyForEntry = true;
+								hal.getActors()->lampQ1Off();
+								break;
+							case 102:
+								cout << "IS Dispatcher" <<  endl;
+								FSM.eventTransportTimerExpired();
+								break;
 						default:
+							if(msg.code < 0){
+								cout << "Kernel Pulse" << endl;
+								break;
+							}
 							 std::cout << "item count: " << data.itemCount << std::endl;
 							data.isErrorLocal = true;
 							int itemLoc = data.findItem(msg.value.sival_int);
@@ -397,6 +411,9 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 						break;
 
 							default:
+						        if (msg.code < 0) {
+						            break;
+						        }
 								data.isErrorLocal = true;
 								cout << "Dynamic Timer!!"<< msg.value.sival_int << endl;
 								FSM.eventError();
@@ -478,7 +495,12 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 					case PULSE_EVENT_ERROR_RESOLVED:
 					    FSM.eventErrorResolved();
 					    break;
-
+					case PULSE_EVENT_ERROR_ENTRY:
+						data.isErrorLocal = true;
+						data.err = ENTRY_TOO_FAST;
+			            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_REMOTE, 0);
+			            FSM.eventError();
+			            break;
 					case PULSE_CONNECTION_LOST:
 						FSM.eventConnectionLost();
 						break;
@@ -487,6 +509,7 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 						break;
 
 					case PULSE_HANDSHAKE_ESTOP_STATUS:
+						cout << "[HANDSHAKE] eStopIsPressed=" << data.eStopIsPressed << " eStopWasPressed=" << data.eStopWasPressed << endl;
 						if (data.eStopIsPressed){
 							MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_RESPONSE_ESTOP_STATUS, 0);
 							break;
@@ -497,6 +520,9 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 							MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_RESPONSE_ESTOP_STATUS, 2);
 							break;
 						}
+					case PULSE_EVENT_SKIP_UPDATE:
+						FSM.eventSkipUpdate();
+						break;
 
 					case PULSE_RESPONSE_ESTOP_STATUS:
 						switch (msg.value.sival_int){

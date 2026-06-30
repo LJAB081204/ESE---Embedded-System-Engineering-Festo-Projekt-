@@ -90,6 +90,7 @@ public:
         void eventItemLeftSlide()          { currentState->eventItemLeftSlide(*this); }
         void eventItemLeftSlideRemote()          { currentState->eventItemLeftSlideRemote(*this); }
 
+        void eventTransportTimerExpired()          {currentState->eventTransportTimerExpired(*this); }
 
         void eventItemMetal()			   { currentState->eventItemMetal(*this); }
         void eventItemMetalRemote()              { currentState->eventItemMetalRemote(*this); }
@@ -135,6 +136,8 @@ public:
         void eventResponseEStopIsNotPressed()					{currentState->eventResponseEStopIsNotPressed(*this);}
         void eventResponseEStopWasPressed()					{currentState->eventResponseEStopWasPressed(*this);}
         void eventResponseEStopWasNotPressed()					{currentState->eventResponseEStopWasNotPressed(*this);}
+
+        void eventSkipUpdate()	{currentState->eventSkipUpdate(*this);}
 
     };
 

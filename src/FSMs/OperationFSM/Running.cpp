@@ -136,6 +136,9 @@ namespace M1{
 	void Running::eventItemLeftSlideRemote(OperationContext& ctx){
 	    // kein Sub-FSM braucht das aktuell
 	}
+	void Running::eventTransportTimerExpired(OperationContext& ctx){
+	    transportFSM->eventTransportTimerExpired();
+	}
 	void Running::eventItemMetalRemote(OperationContext& ctx){
 	    // kein Sub-FSM braucht das aktuell
 	}
@@ -204,6 +207,10 @@ namespace M1{
 	void Running::eventGoBackIHM(OperationContext& ctx){
 			sequenceFSM->eventGoBackIHM();
 		}
+
+	void Running::eventSkipUpdate(OperationContext& ctx){
+		weicheFSM->eventSkipUpdate();
+	}
 
 
 

@@ -28,25 +28,27 @@ namespace M1{
 	}
 
 	void waitingForProfile::eventUpdate(SequenceContext& ctx){
-//		std::cout << "SECTION 2 SIZE AT UPDATE :" << ctx.data.section2.size() << std::endl;
+		std::cout << "SECTION 2 SIZE AT UPDATE :" << ctx.data.section2.size() << std::endl;
 
-		if(ctx.data.section2.empty()) return;
-//		std::cout << "ENTERED UPDATE FUNCTION" << std::endl;
-
-		ctx.resolveProfile();									//Profilierung
-//		std::cout << "SECTION2 NOT EMPTY" << std::endl;
-
-		if(ctx.data.section2.front().item == IH_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
-			exit(ctx);
-			raiseItemCorrect(ctx);
-			new (this) IH;
-			entry(ctx);
+		if(ctx.data.section2.empty()){
+			MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_SKIP_UPDATE, 0);
 		}
 		else{
-			exit(ctx);
-			ctx.data.section2.front().sortOut = true;
-			raiseItemWrong(ctx);
-			entry(ctx);
+			ctx.resolveProfile();									//Profilierung
+	//		std::cout << "SECTION2 NOT EMPTY" << std::endl;
+
+			if(ctx.data.section2.front().item == IH_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
+				exit(ctx);
+				raiseItemCorrect(ctx);
+				new (this) IH;
+				entry(ctx);
+			}
+			else{
+				exit(ctx);
+				ctx.data.section2.front().sortOut = true;
+				raiseItemWrong(ctx);
+				entry(ctx);
+			}
 		}
 	}
 

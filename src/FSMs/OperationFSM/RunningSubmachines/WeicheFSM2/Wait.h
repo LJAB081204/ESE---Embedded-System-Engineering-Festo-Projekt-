@@ -21,7 +21,6 @@ public:
 	void exit(WeicheContext& ctx) override;
 
 	void eventTimerExpired(WeicheContext& ctx) override;
-	SimpleTimer* timerPusherOpen;
 };
 }
 
