@@ -44,4 +44,15 @@ namespace M1{
 		}
 		ctx.data.timerIS->start(1000,0);
 	}
+	void Stop::eventItemAtExit(TransportContext& ctx){
+		ctx.data.err = ITEM_APPEARED;
+		ctx.data.errorLoc = 3;
+		ctx.data.raiseError();
+	}
+	void Stop::eventItemAtPusher(TransportContext& ctx){
+		ctx.data.err = ITEM_APPEARED;
+		ctx.data.errorLoc = 2;
+		ctx.data.raiseError();
+	}
+
 }

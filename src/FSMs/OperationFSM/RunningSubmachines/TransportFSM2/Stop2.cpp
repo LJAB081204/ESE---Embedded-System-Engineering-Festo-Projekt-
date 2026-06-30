@@ -40,4 +40,14 @@ namespace M2{
  			entry(ctx);
 		}
 	}
+	void Stop2::eventItemAtExit(TransportContext2& ctx){
+		ctx.data.err = ITEM_APPEARED;
+		ctx.data.errorLoc = 3;
+		ctx.data.raiseError();
+	}
+	void Stop2::eventItemAtPusher(TransportContext2& ctx){
+		ctx.data.err = ITEM_APPEARED;
+		ctx.data.errorLoc = 2;
+		ctx.data.raiseError();
+	}
 }

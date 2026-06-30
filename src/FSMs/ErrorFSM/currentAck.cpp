@@ -135,7 +135,7 @@
 				ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
 				ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
 			}
-			if(ctx.data.isMachine1){
+			if(!ctx.data.isMachine1){
 				ctx.data.itemAtExit = false;
 			}
 			exit(ctx);

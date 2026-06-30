@@ -56,8 +56,9 @@ void Error::eventButtonStartPressed(MainContext& ctx) {
 		ctx.data.errorState = CURRENT_NACK_STATE;
 		new (this) Operation(ctx.getOperationFSM());
 		ctx.getOperationFSM().restoreHistory();
-		if(ctx.data.isMachine1 && ctx.data.checkReady()){
-			ctx.getOperationFSM().eventFestoReady();
+		if(!ctx.data.isMachine1 && ctx.data.checkReady()){
+			std::cout << "TRANSFER STATE:" << ctx.data.itemCount << ctx.data.itemAtExit << std::endl;
+			MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_FESTO_READY, 0);
 		}
 		MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_RESOLVED, 0);
 	}

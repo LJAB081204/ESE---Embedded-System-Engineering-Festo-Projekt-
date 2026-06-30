@@ -22,14 +22,10 @@ Receive::Receive(){
 void Receive::entry(WeicheContext& ctx){
 	if(ctx.data.itemPusher == true){
 		ctx.data.itemPusher = false;
-		if(ctx.data.slideFull == true){
-			ctx.data.err = BOTH_SLIDES_FULL;
-			MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
-		}
-		else{
-			ctx.hal.getActors()->sortItemOut();
-		}
+//		ctx.hal.getActors()->sortItemOut();
+		eventTimerExpired(ctx);
 		return;
+
 	}
 	if(ctx.data.itemLeftPusher == true){
 		ctx.data.itemLeftPusher = false;
