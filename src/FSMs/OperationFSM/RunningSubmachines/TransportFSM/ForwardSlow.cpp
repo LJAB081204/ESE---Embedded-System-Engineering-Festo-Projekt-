@@ -41,13 +41,21 @@ namespace M1{
 		    entry(ctx);
 		    return;
 		}
-		if(ctx.data.itemAtExit == true){
-			ctx.data.itemAtExit = false;
+		if(ctx.data.itemGone == true){
+//			ctx.data.itemGone = false;
+			eventItemGone(ctx);
+		}
+		if(ctx.data.itemExit == true){
+			ctx.data.itemExit = false;
 			eventItemAtExit(ctx);
 		}
 		if(ctx.data.itemPusher == true){
 			ctx.data.itemPusher = false;
 			eventItemAtPusher(ctx);
+		}
+		if(ctx.data.itemLeftExit == true){
+			ctx.data.itemLeftExit = false;
+			eventItemLeftExit(ctx);
 		}
 	}
 
@@ -61,6 +69,7 @@ namespace M1{
 		}
 		else{
 			ctx.data.handler->pauseAll();
+			ctx.hal.getActors()->motorStop();
 			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 1;
@@ -81,12 +90,7 @@ namespace M1{
 			}
 			else{
 				if(!ctx.data.section3.empty()){
-					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
 					ctx.data.section3.front().timer->stop();
-					std::cout<<"runnedTime:"<<runnedTime<<std::endl;
-					delete ctx.data.section3.front().timer;
-					ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
-					ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
 				}
 				exit(ctx);
 				raiseRequestTransfer(ctx);

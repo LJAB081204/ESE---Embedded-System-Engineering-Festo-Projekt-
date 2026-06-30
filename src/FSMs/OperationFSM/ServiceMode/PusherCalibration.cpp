@@ -24,7 +24,9 @@ void PusherCalibration::entry(OperationContext& ctx) {
 	std::cout<< "PusherCalibration" << std::endl;
 }
 
-void PusherCalibration::exit(OperationContext& ctx) {
+void PusherCalibration::exit(OperationContext& ctx) {}
+
+void PusherCalibration::eventItemAtPusher(OperationContext& ctx) {
 	if(ctx.round == 2){
 		ctx.data.pusherTime = ctx.calTimer->stop();
 		ctx.saveCalibrationTime("timePusher", ctx.data.pusherTime);

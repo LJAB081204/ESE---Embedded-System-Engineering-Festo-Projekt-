@@ -20,6 +20,7 @@ public:
 	void eventFestoNotReady(TransportContext& ctx)override;
 	void eventFestoReady(TransportContext& ctx)override;
 	void eventItemAtEntry(TransportContext& ctx)override;
+	void eventItemArrived(TransportContext& ctx)override;
 	void eventItemAtPusher(TransportContext& ctx)override;
 	void eventItemLeftEntry(TransportContext& ctx)override;
 	void eventItemInSlide(TransportContext& ctx)override;

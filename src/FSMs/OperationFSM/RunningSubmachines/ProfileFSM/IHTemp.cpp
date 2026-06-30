@@ -25,6 +25,10 @@ void IHTemp::entry(ProfileContext& ctx) {
 		new(this) Default;
 		entry(ctx);
 	}
+	if(ctx.data.itemGone == true){
+		ctx.data.itemGone = false;
+		eventItemGone(ctx);
+	}
 }
 
 void IHTemp::exit(ProfileContext& ctx) {}

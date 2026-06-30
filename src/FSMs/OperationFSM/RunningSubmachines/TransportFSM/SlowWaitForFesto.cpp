@@ -20,6 +20,27 @@ namespace M1{
 	void SlowWaitForFesto::entry(TransportContext& ctx){
 		std::cout<<"SlowWaitForFesto" << std::endl;
 		MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_TRANSFER_REQUEST, 0);
+		if(ctx.data.itemArrived == true){
+			ctx.data.itemArrived = false;
+			eventItemArrived(ctx);
+		}
+		if(ctx.data.itemArrived == true){
+			ctx.data.itemArrived = false;
+			eventItemArrived(ctx);
+		}
+		if(ctx.data.itemExit == true){
+			ctx.data.itemExit = false;
+			eventItemAtExit(ctx);
+
+		}
+		if(ctx.data.itemPusher == true){
+			ctx.data.itemPusher = false;
+			eventItemAtPusher(ctx);
+		}
+		if(ctx.data.itemLeftExit == true){
+			ctx.data.itemLeftExit = false;
+			eventItemLeftExit(ctx);
+		}
 	}
 
 	void SlowWaitForFesto::exit(TransportContext& ctx){}
@@ -60,6 +81,37 @@ namespace M1{
 		}
 		ctx.data.minTimeEntryTimer->start(ctx.data.minTimeEntry, 0);
 	}
+
+	void SlowWaitForFesto::eventItemArrived(TransportContext& ctx){
+			if(!ctx.data.section1.empty()){
+				std::cout<< "min entry time: "<<ctx.data.minEntryTime << std::endl;
+				std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
+				if(ctx.data.section1.front().timer->getTime() < ctx.data.minEntryTime){
+					ctx.data.handler->pauseAll();
+					ctx.hal.getActors()->motorStop();
+					std::cout<< "Error item arrived"<< std::endl;
+					ctx.data.err = ITEM_APPEARED;
+					ctx.data.errorLoc = 1;
+					ctx.data.raiseError();
+				}
+				else{
+					if(!ctx.data.section1.empty()){
+						ctx.data.section1.front().timer->stop();
+					}
+				}
+			}
+			else{
+				ctx.data.handler->pauseAll();
+				if(!ctx.data.section1.empty()){
+					ctx.data.section1.front().timer->stop();
+				}
+				std::cout<< "Error item arrived (empty)"<< std::endl;
+				ctx.data.err = ITEM_APPEARED;
+				ctx.data.errorLoc = 1;
+				ctx.data.raiseError();
+			}
+
+		}
 
 	void SlowWaitForFesto::eventItemAtPusher(TransportContext& ctx){
 		if(!ctx.data.section2.empty()){

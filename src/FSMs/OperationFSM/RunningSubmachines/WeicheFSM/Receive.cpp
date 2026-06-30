@@ -9,6 +9,8 @@
 #include <sys/neutrino.h>
 #include "Receive.h"
 #include "Ready.h"
+#include "LetItemPass.h"
+#include "PutItemInSlide.h"
 #include "WeicheBase.h"
 #include "WeicheContext.h"
 #include "../../../../PulseMessages.h"
@@ -20,8 +22,27 @@ Receive::Receive(){
 }
 
 void Receive::entry(WeicheContext& ctx){
+//	std::cout << "READY TO RECEIVE ITEM" << std::endl;
+	if(ctx.data.itemPusher == true){
+		ctx.data.itemPusher = false;
+		if(ctx.data.slideFull == true){
+			exit(ctx);
+			new(this) LetItemPass;
+			entry(ctx);
+		}else{
+			ctx.hal.getActors()->sortItemOut();
+		}
+		return;
+	}
+	if(ctx.data.itemLeftPusher == true){
+		ctx.data.itemLeftPusher = false;
+		exit(ctx);
+		new(this) LetItemPass;
+		entry(ctx);
+		eventItemLeftPusher(ctx);
+		return;
+	}
 	ctx.hal.getActors()->closePusher();
-	std::cout << "READY TO RECEIVE ITEM" << std::endl;
 }
 void Receive::exit(WeicheContext& ctx){
 
