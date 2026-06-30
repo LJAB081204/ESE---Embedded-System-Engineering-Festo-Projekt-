@@ -45,7 +45,7 @@ namespace M2{
 	void Forward2::eventItemArrived(TransportContext2& ctx){
 		exit(ctx);
 		if(!ctx.data.section1.empty()){
-			std::cout<< "entry time: "<<ctx.data.entryTime << std::endl;
+			std::cout<< "min entry time: "<<ctx.data.minEntryTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
 			int diff = ctx.data.entryTime - ctx.data.section1.front().timer->getTime();
 			std::cout<< diff << std::endl;
@@ -75,7 +75,7 @@ namespace M2{
 	void Forward2::eventItemAtPusher(TransportContext2& ctx){
 		exit(ctx);
 		if(!ctx.data.section2.empty()){
-			std::cout<< "pusher time: "<<ctx.data.pusherTime << std::endl;
+			std::cout<< "min pusher time: "<<ctx.data.minPusherTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
 			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
 			std::cout<< diff << std::endl;
@@ -117,7 +117,7 @@ namespace M2{
 		std::cout<< ctx.data.itemCount << std::endl;
 		exit(ctx);
 		if(!ctx.data.section3.empty()){
-			std::cout<< "exit time: "<<ctx.data.exitTime << std::endl;
+			std::cout<< "min exit time: "<<ctx.data.minExitTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
 			int diff = ctx.data.exitTime - ctx.data.section3.front().timer->getTime();
 			std::cout<< diff << std::endl;

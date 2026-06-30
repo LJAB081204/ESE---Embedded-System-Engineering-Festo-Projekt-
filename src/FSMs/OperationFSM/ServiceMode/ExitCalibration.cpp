@@ -18,7 +18,7 @@ ExitCalibration::ExitCalibration(){};
 
 void ExitCalibration::entry(OperationContext& ctx) {
 	if(ctx.round == 2){
-		ctx.calTimer->start(5000);
+		ctx.calTimer->start(4999);
 	}
 	std::cout<< "ExitCalibration" << std::endl;
 }
@@ -53,17 +53,17 @@ void ExitCalibration::eventButtonStartPressedLongRemote(OperationContext& ctx){
 }
 
 void ExitCalibration::eventButtonStopPressed(OperationContext& ctx){
-	exit(ctx);
-	ctx.hs.stopCalibration();
-	new (this) Service;
-	entry(ctx);
+//	exit(ctx);
+//	ctx.hs.stopCalibration();
+//	new (this) Service;
+//	entry(ctx);
 }
 
 void ExitCalibration::eventButtonStopPressedRemote(OperationContext& ctx){
-	exit(ctx);
-	ctx.hs.stopCalibration();
-	new (this) Service;
-	entry(ctx);
+//	exit(ctx);
+//	ctx.hs.stopCalibration();
+//	new (this) Service;
+//	entry(ctx);
 }
 
 

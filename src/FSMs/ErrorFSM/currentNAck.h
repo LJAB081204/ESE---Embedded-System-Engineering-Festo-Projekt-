@@ -20,6 +20,9 @@ public:
 	void eventButtonStartPressed(ErrorContext& ctx)override;
 	void eventButtonResetPressed(ErrorContext& ctx)override;
 	void errorPusherTimerExpired(ErrorContext& ctx)override;
+	void eventItemArrived(ErrorContext& ctx)override;
+	void eventItemAtExit(ErrorContext& ctx)override;
+	void eventItemAtPusher(ErrorContext& ctx)override;
 };
 
 

@@ -117,4 +117,27 @@ void Error::eventButtonResetPressedRemote(MainContext& ctx){
 void Error::eventButtonStartPressedRemote(MainContext& ctx){
 	errorFSM.eventButtonStartPressedRemote();
 }
-
+void Error::eventItemAtPusher(MainContext& ctx) {
+	errorFSM.eventItemAtPusher();
+}
+void Error::eventItemAtExit(MainContext& ctx) {
+	errorFSM.eventItemAtExit();
+}
+void Error::eventItemArrived(MainContext& ctx) {
+	errorFSM.eventItemArrived();
+}
+//void Error::raiseItemTimer(MainContext& ctx){
+//	if(ctx.data.itemArrived == true){
+//		ctx.data.itemArrived = false;
+//		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_ARRIVED, 0);
+//	}
+//	if(ctx.data.itemExit == true){
+//		ctx.data.itemExit = false;
+//		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_EXIT_LOCAL, 0);
+//	}
+//	if(ctx.data.itemPusher == true){
+//		ctx.data.itemPusher = false;
+//		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_ITEM_AT_PUSHER_LOCAL, 0);
+//		MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_UPDATE, 0);
+//	}
+//}
