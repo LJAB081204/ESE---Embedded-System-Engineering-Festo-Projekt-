@@ -66,6 +66,7 @@ class dataClass{
 	//Weiche/Slide
 	bool slideFull = false;
 	bool slideFullRemote = false;
+	bool calibrated = false;
 
 	//Error
 	errors err = ERROR_CLEARED;
@@ -127,6 +128,10 @@ class dataClass{
 	DynamicTimer* timerIS = nullptr;
 
 	bool isMachine1 = false;
+
+	bool itemArrived = false;
+	bool itemPusher = false;
+	bool itemExit = false;
 	private:
 
 	void setTimes();

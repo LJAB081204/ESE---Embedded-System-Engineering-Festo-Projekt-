@@ -61,8 +61,12 @@ public:
 	void errorPusherTimerExpired() { currentState->errorPusherTimerExpired(*this); }
 	void eventButtonStartPressed() { currentState->eventButtonStartPressed(*this); }
 	void eventItemLeftEntry() 	   {currentState->eventItemLeftEntry(*this);}
+	void eventItemArrived() 	   {currentState->eventItemArrived(*this);}
+	void eventItemAtExit() 	   {currentState->eventItemAtExit(*this);}
+	void eventItemAtPusher() 	   {currentState->eventItemAtPusher(*this);}
 	bool isActive() const { return active; }
 	void setActive(bool b) {active = b;}
+
 };
 
 

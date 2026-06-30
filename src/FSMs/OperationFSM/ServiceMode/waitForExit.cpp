@@ -37,13 +37,13 @@ void waitForExit::eventButtonStartPressedLong(OperationContext& ctx){
 }
 
 void waitForExit::eventButtonStopPressed(OperationContext& ctx){
-	exit(ctx);
-	new (this) Service;
-	entry(ctx);
+//	exit(ctx);
+//	new (this) Service;
+//	entry(ctx);
 }
 
 void waitForExit::eventButtonStopPressedRemote(OperationContext& ctx){
-	exit(ctx);
-	new (this) Service;
-	entry(ctx);
+//	exit(ctx);
+//	new (this) Service;
+//	entry(ctx);
 }

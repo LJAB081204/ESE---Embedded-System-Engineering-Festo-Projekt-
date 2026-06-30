@@ -32,17 +32,16 @@ dataClass::dataClass(TimerHandler& handler): handler(&handler){
 		minExitTime = 1;
 	}
 	else{
-		std::cout<< "test entered" << std::endl;
-		slowFactor = entryTime / entryTimeSlow;
+		slowFactor = (double) entryTime / (double) entryTimeSlow;
 		minTimeEntry = entryTime / 2;
 		metalDelayJunction = (int) pusherTime/10;
 		meatlDelayPusher = (int) pusherTime/30;
 		maxEntryTime = (int) entryTime * 1.4;
-		maxPusherTime = (int) pusherTime * 1.4;
-		maxExitTime = (int) exitTime * 1.4;
+		maxPusherTime = (int) pusherTime * 1.6;
+		maxExitTime = (int) exitTime * 1.2;
 		minEntryTime = (int) entryTime * 0.9;
 		minPusherTime = (int) pusherTime * 0.9;
-		minExitTime = (int) exitTime * 0.6;
+		minExitTime = (int) exitTime * 0.65;
 	}
 
 }
@@ -118,16 +117,17 @@ void dataClass::reset(){
 	readyForEntry = true;
 	setTimes();
 	if(entryTime != 0 || entryTimeSlow != 0 || heightTime != 0 || pusherTime != 0 || exitTime != 0){
-		slowFactor = entryTime / entryTimeSlow;
+		slowFactor = (double) entryTime / (double) entryTimeSlow;
+		std::cout << "Slow Factor: " << slowFactor << std::endl;
 		minTimeEntry = entryTime / 2;
-		metalDelayJunction = pusherTime/10;
-		meatlDelayPusher = pusherTime/30;
+		metalDelayJunction = (int) pusherTime/10;
+		meatlDelayPusher = (int) pusherTime/60;
 		maxEntryTime = (int) entryTime * 1.4;
-		maxPusherTime = (int) pusherTime * 1.5;
-		maxExitTime = (int) exitTime * 1.5;
-		minEntryTime = (int) entryTime * 0.6;
-		minPusherTime = (int) pusherTime * 0.25;
-		minExitTime = (int) exitTime * 0.40;
+		maxPusherTime = (int) pusherTime * 1.6;
+		maxExitTime = (int) exitTime * 1.2;
+		minEntryTime = (int) entryTime * 0.8;
+		minPusherTime = (int) pusherTime * 0.9;
+		minExitTime = (int) exitTime * 0.65;
 	}
 }
 
@@ -159,6 +159,7 @@ bool dataClass::moveFrom2To3(){
 	delete section2.front().timer;
 	section3.back().timer = new DynamicTimer(section3.back().id, *handler);
 	section3.back().timer->start(maxExitTime,0);
+	std::cout << "time after start:" << section3.back().timer->getTime() << std::endl;
 	section2.pop();
 	return true;
 }
@@ -271,7 +272,7 @@ bool dataClass::checkReady(){
 void dataClass::setTimes(){
     std::ifstream file(CALIBRATION_FILE);
     if(!file.is_open()){
-        std::cout << "Keine Kalibrierungsdatei gefunden, Zeiten nicht verfuegbar" << std::endl;
+        std::cout << "Warning: No calibration file found!" << std::endl;
         return;
     }
 
@@ -289,10 +290,11 @@ void dataClass::setTimes(){
             std::cerr << "Fehler beim Parsen: '" << line << "' -> " << e.what() << std::endl;
         }
     }
+    std::cout<<"Festo calibrated"<<std::endl;
     file.close();
 
     if(!foundEntry || !foundEntrySlow || !foundHeight || !foundPusher || !foundExit){
-        std::cout << "Zeiten noch nicht vollstaendig kalibriert" << std::endl;
+        std::cout << "Times not fully calibrated" << std::endl;
     }
 
 
