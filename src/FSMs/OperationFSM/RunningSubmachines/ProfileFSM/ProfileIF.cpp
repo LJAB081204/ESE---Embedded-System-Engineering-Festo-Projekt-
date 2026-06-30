@@ -25,6 +25,10 @@ void ProfileIF::entry(ProfileContext& ctx) {
 		new(this) Default;
 		entry(ctx);
 	}
+	if(ctx.data.itemGone == true){
+		ctx.data.itemGone = false;
+		eventItemGone(ctx);
+	}
 }
 
 void ProfileIF::exit(ProfileContext& ctx) {}

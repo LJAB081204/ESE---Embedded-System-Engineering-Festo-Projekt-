@@ -22,6 +22,7 @@ void Error::exit(MainContext& ctx) {
 	ctx.hal.getActors()->redLampBlinkOff();
 	ctx.hal.getActors()->redLampOff();
 	ctx.data.handler->resumeAll();
+
 }
 void Error::eventButtonResetPressed(MainContext& ctx) {
 	errorFSM.eventButtonResetPressed();
@@ -54,6 +55,9 @@ void Error::eventButtonStartPressed(MainContext& ctx) {
 		ctx.data.errorState = CURRENT_NACK_STATE;
 		new (this) Operation(ctx.getOperationFSM());
 		ctx.getOperationFSM().restoreHistory();
+		if(ctx.data.isMachine1 && ctx.data.checkReady()){
+			ctx.getOperationFSM().eventFestoReady();
+		}
 		MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_RESOLVED, 0);
 	}
 }
@@ -124,6 +128,7 @@ void Error::eventItemAtExit(MainContext& ctx) {
 void Error::eventItemArrived(MainContext& ctx) {
 	errorFSM.eventItemArrived();
 }
+
 //void Error::raiseItemTimer(MainContext& ctx){
 //	if(ctx.data.itemArrived == true){
 //		ctx.data.itemArrived = false;

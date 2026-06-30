@@ -68,6 +68,8 @@
 			break;
 		}
 		std::cout << "Bitte Fehler mit Resettaste quittieren." << std::endl;
+
+
 	}
 
 	void currentNAck::exit(ErrorContext& ctx){
@@ -108,18 +110,30 @@
 		entry(ctx);
 	}
 
+	void currentNAck::eventItemLeftEntry(ErrorContext& ctx){
+		ctx.data.itemLeftEntry = true;
+	}
+
 	void currentNAck::eventItemArrived(ErrorContext& ctx){
-		std::cout<<"Arrived = true"<<std::endl;
 		ctx.data.itemArrived = true;
 	}
 
+	void currentNAck::eventItemGone(ErrorContext& ctx){
+		ctx.data.itemGone = true;
+	}
+
 	void currentNAck::eventItemAtExit(ErrorContext& ctx){
-		std::cout<<"Exit = true"<<std::endl;
 		ctx.data.itemExit = true;
 	}
 
 	void currentNAck::eventItemAtPusher(ErrorContext& ctx){
-		std::cout<<"Pusher = true"<<std::endl;
 		ctx.data.itemPusher = true;
 	}
+	void currentNAck::eventItemLeftPusher(ErrorContext& ctx){
+		ctx.data.itemLeftPusher = true;
+	}
+	void currentNAck::eventItemLeftExit(ErrorContext& ctx){
+		ctx.data.itemLeftExit = true;
+	}
+
 

@@ -23,6 +23,10 @@ void IU::entry(ProfileContext& ctx) {
 		new(this) Default;
 		entry(ctx);
 	}
+	if(ctx.data.itemGone == true){
+		ctx.data.itemGone = false;
+		eventItemGone(ctx);
+	}
 }
 
 void IU::exit(ProfileContext& ctx) {}

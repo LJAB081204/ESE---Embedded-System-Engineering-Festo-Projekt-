@@ -34,19 +34,28 @@ namespace M1{
 			entry(ctx);
 			return;
 		}
+		if(ctx.data.itemLeftEntry == true){
+			ctx.data.itemLeftEntry = false;
+			eventItemLeftEntry(ctx);
+		}
 		if(ctx.data.itemArrived == true){
 			ctx.data.itemArrived = false;
 			eventItemArrived(ctx);
 		}
-		if(ctx.data.itemAtExit == true){
-			ctx.data.itemAtExit = false;
+		if(ctx.data.itemExit == true){
+			ctx.data.itemExit = false;
 			eventItemAtExit(ctx);
 
 		}
 		if(ctx.data.itemPusher == true){
-			ctx.data.itemPusher = false;
+//			ctx.data.itemPusher = false;
 			eventItemAtPusher(ctx);
 		}
+		if(ctx.data.itemLeftExit == true){
+			ctx.data.itemLeftExit = false;
+			eventItemLeftExit(ctx);
+		}
+
 	}
 
 	void Forward::exit(TransportContext& ctx){}
@@ -174,14 +183,6 @@ namespace M1{
 				ctx.hal.getActors()->motorStop();
 			}
 			else{
-//				if(!ctx.data.section3.empty()){
-//					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
-//					ctx.data.section3.front().timer->stop();
-//					std::cout<<"runnedTime:"<<runnedTime<<std::endl;
-//					delete ctx.data.section3.front().timer;
-//					ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
-//					ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
-//				}
 				if(!ctx.data.section3.empty()){
 					ctx.data.section3.front().timer->stop();
 				}

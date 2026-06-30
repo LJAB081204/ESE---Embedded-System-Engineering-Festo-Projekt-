@@ -24,6 +24,11 @@ void I::entry(ProfileContext& ctx) {
 		exit(ctx);
 		new(this) Default;
 		entry(ctx);
+		return;
+	}
+	if(ctx.data.itemGone == true){
+		ctx.data.itemGone = false;
+		eventItemGone(ctx);
 	}
 }
 

@@ -33,14 +33,14 @@ dataClass::dataClass(TimerHandler& handler): handler(&handler){
 	}
 	else{
 		slowFactor = (double) entryTime / (double) entryTimeSlow;
-		minTimeEntry = entryTime / 2;
+		minTimeEntry = entryTime / 1,5;
 		metalDelayJunction = (int) pusherTime/10;
 		meatlDelayPusher = (int) pusherTime/30;
 		maxEntryTime = (int) entryTime * 1.4;
 		maxPusherTime = (int) pusherTime * 1.6;
 		maxExitTime = (int) exitTime * 1.2;
-		minEntryTime = (int) entryTime * 0.9;
-		minPusherTime = (int) pusherTime * 0.9;
+		minEntryTime = (int) entryTime * 0.65;
+		minPusherTime = (int) pusherTime * 0.65;
 		minExitTime = (int) exitTime * 0.65;
 	}
 
@@ -125,8 +125,8 @@ void dataClass::reset(){
 		maxEntryTime = (int) entryTime * 1.4;
 		maxPusherTime = (int) pusherTime * 1.6;
 		maxExitTime = (int) exitTime * 1.2;
-		minEntryTime = (int) entryTime * 0.8;
-		minPusherTime = (int) pusherTime * 0.9;
+		minEntryTime = (int) entryTime * 0.65;
+		minPusherTime = (int) pusherTime * 0.5;
 		minExitTime = (int) exitTime * 0.65;
 	}
 }

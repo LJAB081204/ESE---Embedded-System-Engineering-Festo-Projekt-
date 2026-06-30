@@ -28,6 +28,28 @@ namespace M2{
 		ctx.data.handler->resumeAll();
 		ctx.data.handler->setNormal();
 		}
+		if(ctx.data.itemLeftEntry == true){
+			ctx.data.itemLeftEntry = false;
+			eventItemLeftEntry(ctx);
+		}
+		if(ctx.data.itemArrived == true){
+			ctx.data.itemArrived = false;
+			eventItemArrived(ctx);
+		}
+		if(ctx.data.itemExit == true){
+			ctx.data.itemExit = false;
+			eventItemAtExit(ctx);
+
+		}
+		if(ctx.data.itemPusher == true){
+//			ctx.data.itemPusher = false;
+			eventItemAtPusher(ctx);
+		}
+		if(ctx.data.itemLeftExit == true){
+			ctx.data.itemLeftExit = false;
+			eventItemLeftExit(ctx);
+		}
+
 	}
 
 	void Forward2::exit(TransportContext2& ctx){
@@ -87,10 +109,13 @@ namespace M2{
 				raiseError(ctx);
 			}
 			else{
-				ctx.data.section2.front().timer->stop();
+				if(!ctx.data.section2.empty()){
+					ctx.data.section2.front().timer->stop();
+				}
 			}
 		}
 		else{
+			ctx.hal.getActors()->motorStop();
 			ctx.data.handler->pauseAll();
 			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
@@ -130,12 +155,7 @@ namespace M2{
 			}
 			else{
 				if(!ctx.data.section3.empty()){
-					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
 					ctx.data.section3.front().timer->stop();
-					std::cout<<"runnedTime:"<<runnedTime<<std::endl;
-					delete ctx.data.section3.front().timer;
-					ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
-					ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
 				}
 				exit(ctx);
 				new(this) Stop2;

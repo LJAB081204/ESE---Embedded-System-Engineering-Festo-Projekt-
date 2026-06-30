@@ -129,9 +129,13 @@ class dataClass{
 
 	bool isMachine1 = false;
 
+	bool itemLeftEntry = false;
 	bool itemArrived = false;
+	bool itemGone = false;
 	bool itemPusher = false;
+	bool itemLeftPusher = false;
 	bool itemExit = false;
+	bool itemLeftExit = false;
 	private:
 
 	void setTimes();
