@@ -96,6 +96,8 @@ class dataClass{
 	bool removeItem(int queue);
 	bool addTransferredItem(itemData item);
 
+	void updateSequence();
+
 	int findItem(int id);
 
 	uint32_t convertItemToInt(const itemData& item);

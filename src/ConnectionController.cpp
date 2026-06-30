@@ -59,7 +59,7 @@ ConnectionController::ConnectionController(
         sleep(1);
         cout << "trying to connect heartbeat..." << endl;
     }
-    cout << "heartbeat channel established, coid: " << heartbeatOutCoid << endl;
+    cout << "heartbeat connection established, coid: " << heartbeatOutCoid << endl;
 }
 
 // ------------------------------------------------------------
