@@ -24,10 +24,6 @@ namespace M1{
 			ctx.data.addItem();
 			new (this) Forward;
 			entry(ctx);
-//	        if(ctx.data.timerIS == nullptr){
-//	            ctx.data.timerIS = new DynamicTimer(102, *ctx.data.handler);
-//	        }
-//	        ctx.data.timerIS->start(1000, 0);
 		}
 	}
 

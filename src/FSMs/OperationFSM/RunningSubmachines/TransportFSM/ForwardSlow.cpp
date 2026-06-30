@@ -21,16 +21,25 @@ namespace M1{
 
 	void ForwardSlow::entry(TransportContext& ctx){
 		std::cout << "ForwardSlow::entry skipSlow=" << ctx.data.skipSlow << std::endl;
-		if(ctx.data.itemCount == 0){
+		if(ctx.data.itemCount != 0){
+			ctx.hal.getActors()->motorForwards();
+			ctx.hal.getActors()->motorSlow();
+			ctx.data.handler->resumeAll();
+			ctx.data.handler->setSlow(ctx.data.slowFactor);
+			std::cout<<"slow factor set"<<ctx.data.slowFactor<<std::endl;
+		}
+		else{
 			exit(ctx);
 			new(this) Stop;
 			entry(ctx);
+			return;
 		}
 		if(ctx.data.skipSlow){
 		    ctx.data.skipSlow = false;
 		    exit(ctx);
 		    new(this) Forward;
 		    entry(ctx);
+		    return;
 		}
 		if(ctx.data.itemAtExit == true){
 			ctx.data.itemAtExit = false;
@@ -39,13 +48,6 @@ namespace M1{
 		if(ctx.data.itemPusher == true){
 			ctx.data.itemPusher = false;
 			eventItemAtPusher(ctx);
-		}
-		if(ctx.data.itemCount != 0){
-			ctx.hal.getActors()->motorForwards();
-			ctx.hal.getActors()->motorSlow();
-			ctx.data.handler->resumeAll();
-			ctx.data.handler->setSlow(ctx.data.slowFactor);
-			std::cout<<"slow factor set"<<ctx.data.slowFactor<<std::endl;
 		}
 	}
 
@@ -120,7 +122,9 @@ namespace M1{
 	void ForwardSlow::eventItemLeftEntry(TransportContext& ctx){
 		if(!ctx.data.section1.empty()){
 			ctx.data.section1.back().timer->start(ctx.data.maxEntryTime,0);
-			ctx.data.timerIS->stop();
+			if(ctx.data.timerIS != nullptr){
+				ctx.data.timerIS->stop();
+			}
 		}
 		else{
 			std::cout<<"Queue 1 leer Festo1" << std::endl;
@@ -157,8 +161,6 @@ namespace M1{
 		if(!ctx.data.section2.empty()){
 			std::cout<< "min pusher time: "<<ctx.data.minPusherTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
-			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
-			std::cout<< diff << std::endl;
 			if(ctx.data.section2.front().timer->getTime() < ctx.data.minPusherTime){
 				ctx.data.handler->pauseAll();
 				ctx.hal.getActors()->motorStop();

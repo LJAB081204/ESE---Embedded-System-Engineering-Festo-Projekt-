@@ -311,23 +311,23 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 
 				    case PULSE_NEW_HEIGHT_LOCAL:
 				    	switch(msg.value.sival_int){
-				    	case HEIGHT_CONVEYOR: // Height Conveyer
-				    		FSM.eventItemGone();
-			            	break;
-				    	case HEIGHT_DRILLING:
-				    		FSM.eventHeightHole();
-				    		break;
-				    	case HEIGHT_WORKPIECE_HIGH:
-				    		FSM.eventHeightHigh();
-				    		break;
-				    	case HEIGHT_WORKPIECE_FLAT:
-				    		FSM.eventHeightFlat();
-				    		break;
-				    	case HEIGHT_TOO_HIGH:
-				    		FSM.eventHeightWrong();
-				    		break;
-				    	default:
-				    		break;
+							case HEIGHT_CONVEYOR: // Height Conveyer
+								FSM.eventItemGone();
+								break;
+							case HEIGHT_DRILLING:
+								FSM.eventHeightHole();
+								break;
+							case HEIGHT_WORKPIECE_HIGH:
+								FSM.eventHeightHigh();
+								break;
+							case HEIGHT_WORKPIECE_FLAT:
+								FSM.eventHeightFlat();
+								break;
+							case HEIGHT_TOO_HIGH:
+								FSM.eventHeightWrong();
+								break;
+							default:
+								break;
 				    	break;
 				    	}
 				    	break;
@@ -340,7 +340,6 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 								break;
 							case 101:
 								cout << "Timer entry expired" <<  endl;
-
 								data.readyForEntry = true;
 								hal.getActors()->lampQ1Off();
 								break;
@@ -359,18 +358,12 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 							data.handler->pauseAll();
 							switch(itemLoc){
 								case 1:
-									//if(!data.section1.front().timer->expired_) break;
-									//data.section1.front().timer->stop();
-									//data.section1.pop();
 									data.err = ITEM_GONE;
 									data.errorLoc = 1;
 									FSM.eventError();
 									MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_REMOTE, 0);
 									break;
 								case 2:
-									//if(!data.section2.front().timer->expired_) break;
-									//data.section2.front().timer->stop();
-									//data.section2.pop();
 									data.err = ITEM_GONE;
 									data.errorLoc = 2;
 									FSM.eventError();
@@ -378,36 +371,18 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 									break;
 								case 3:
 								{
-								    //itemProfile item = data.section3.front().item;
-								    //data.section3.pop();
 								    data.err = ITEM_GONE;
 								    data.errorLoc = 3;
 								    FSM.eventError();  // ← erst Error
 								    MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_REMOTE, 0);
-								    // dann GoBack je nach Profil
-//								    switch(item){
-//								        case IH_PROFILE:
-//								            FSM.eventGoBackIH();
-//								            break;
-//								        case IM_PROFILE:
-//								            FSM.eventGoBackIM();
-//								            break;
-//								        case IF_PROFILE:
-//								            FSM.eventGoBackIF();
-//								            break;
-//								        case IHM_PROFILE:
-//								            FSM.eventGoBackIHM();
-//								            break;
-//								        default:
-//								            break;
-//								    }
 								    break;
 								}
 								default:
 								    cout << "Item not found: " << msg.value.sival_int << endl;
+								    break;
 								}
 								break;
-								}
+						}
 						break;
 
 							default:

@@ -32,7 +32,7 @@ void PusherCalibration::exit(OperationContext& ctx) {
 	ctx.hal.getActors()->letItemPass();
 }
 
-void PusherCalibration::eventItemAtPusher(OperationContext& ctx) {
+void PusherCalibration::eventItemLeftPusher(OperationContext& ctx) {
 	exit(ctx);
 	new(this) ExitCalibration;
 	entry(ctx);

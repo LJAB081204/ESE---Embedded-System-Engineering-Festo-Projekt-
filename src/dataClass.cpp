@@ -124,7 +124,7 @@ void dataClass::reset(){
 		maxEntryTime = (int) entryTime * 1.4;
 		maxPusherTime = (int) pusherTime * 1.6;
 		maxExitTime = (int) exitTime * 1.2;
-		minEntryTime = (int) entryTime * 0.9;
+		minEntryTime = (int) entryTime * 0.8;
 		minPusherTime = (int) pusherTime * 0.9;
 		minExitTime = (int) exitTime * 0.65;
 	}

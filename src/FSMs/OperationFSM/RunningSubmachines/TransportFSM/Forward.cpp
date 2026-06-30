@@ -22,10 +22,17 @@ namespace M1{
 
 	void Forward::entry(TransportContext& ctx){
 		std::cout<<"Forward nach error"<<std::endl;
-		if(ctx.data.itemCount == 0){
+		if(ctx.data.itemCount != 0){
+			ctx.hal.getActors()->motorStop();
+			ctx.hal.getActors()->motorForwards();
+			ctx.data.handler->resumeAll();
+			ctx.data.handler->setNormal();
+		}
+		else{
 			exit(ctx);
 			new(this) Stop;
 			entry(ctx);
+			return;
 		}
 		if(ctx.data.itemArrived == true){
 			ctx.data.itemArrived = false;
@@ -39,12 +46,6 @@ namespace M1{
 		if(ctx.data.itemPusher == true){
 			ctx.data.itemPusher = false;
 			eventItemAtPusher(ctx);
-		}
-		if(ctx.data.itemCount != 0){
-		ctx.hal.getActors()->motorStop();
-		ctx.hal.getActors()->motorForwards();
-		ctx.data.handler->resumeAll();
-		ctx.data.handler->setNormal();
 		}
 	}
 
@@ -125,8 +126,6 @@ namespace M1{
 		if(!ctx.data.section2.empty()){
 			std::cout<< "min pusher time: "<<ctx.data.minPusherTime << std::endl;
 			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
-			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
-			std::cout<< diff << std::endl;
 			if(ctx.data.section2.front().timer->getTime() < ctx.data.minPusherTime){
 				ctx.hal.getActors()->motorStop();
 				ctx.data.handler->pauseAll();
@@ -136,7 +135,9 @@ namespace M1{
 				raiseError(ctx);
 			}
 			else{
-				ctx.data.section2.front().timer->stop();
+				if(!ctx.data.section2.empty()){
+					ctx.data.section2.front().timer->stop();
+				}
 			}
 		}
 		else{
@@ -173,21 +174,16 @@ namespace M1{
 				ctx.hal.getActors()->motorStop();
 			}
 			else{
-				ctx.data.section3.front().timer->stop();
-				uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
-				ctx.data.section3.front().timer->stop();
-				std::cout<<"runnedTime:"<<runnedTime<<std::endl;
-				delete ctx.data.section3.front().timer;
-				ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
-				ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
-				exit(ctx);
+//				if(!ctx.data.section3.empty()){
+//					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
+//					ctx.data.section3.front().timer->stop();
+//					std::cout<<"runnedTime:"<<runnedTime<<std::endl;
+//					delete ctx.data.section3.front().timer;
+//					ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
+//					ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
+//				}
 				if(!ctx.data.section3.empty()){
-					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
 					ctx.data.section3.front().timer->stop();
-					std::cout<<"runnedTime:"<<runnedTime<<std::endl;
-					delete ctx.data.section3.front().timer;
-					ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
-					ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
 				}
 				exit(ctx);
 				raiseRequestTransfer(ctx);
