@@ -15,6 +15,7 @@ void ConnectionLost::entry(MainContext& ctx) {
 	ctx.hal.getActors()->greenLampOff();
 	ctx.hal.getActors()->redLampOn();
 	ctx.hal.getActors()->ledButtonStartOff();
+	ctx.hal.getActors()->closePusher();
 	cout << "Connection Lost" << endl;
 }
 void ConnectionLost::exit(MainContext& ctx) {

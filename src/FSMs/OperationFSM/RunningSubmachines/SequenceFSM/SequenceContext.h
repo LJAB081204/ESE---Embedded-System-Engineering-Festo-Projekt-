@@ -54,6 +54,8 @@ public:
 	void eventGoBackIF()   { currentState->eventGoBackIF(*this); }
 	void eventGoBackIHM()   { currentState->eventGoBackIHM(*this); }
 
+	void reactivate() 			 { currentState->entry(*this); }
+
 };
 
 

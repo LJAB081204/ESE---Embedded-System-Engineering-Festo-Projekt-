@@ -20,6 +20,8 @@ enum errors { ERROR_CLEARED, ITEM_SPECIAL_0,ITEM_SPECIAL_1, ITEM_GONE, BOTH_SLID
 				//0				1				2			3					4			5
 enum WeicheState { LET_ITEM_PASS_STATE,WAIT_STATE};
 enum ErrorState  { CURRENT_NACK_STATE,CURRENT_ACK_STATE,PUSHER_TOO_LONG_STATE,GONE_NACK_STATE,WAITING_FOR_START_STATE,WAITING_FOR_START_STATE2};
+enum SequenceState {WFP_State, IH_State, IM_State, IF_State, IHM_State};
+
 struct itemData{
 		int id = 0;
 		bool flat = false;
@@ -85,6 +87,7 @@ class dataClass{
 
 	WeicheState weiche = LET_ITEM_PASS_STATE;
 	ErrorState errorState = CURRENT_NACK_STATE;
+	SequenceState sequenceState = WFP_State;
 
 	dataClass(TimerHandler& handler);
 	void reset();
@@ -93,6 +96,8 @@ class dataClass{
 	bool addItem();
 	bool removeItem(int queue);
 	bool addTransferredItem(itemData item);
+
+	void updateSequence();
 
 	int findItem(int id);
 

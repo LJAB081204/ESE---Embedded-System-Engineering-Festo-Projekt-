@@ -87,7 +87,6 @@ void Error::eventGoBack(MainContext& ctx){
 void Error::eventButtonEstopPressed(MainContext& ctx) {
 	errorFSM.setActive(false);
 	ctx.data.errorState = CURRENT_NACK_STATE;
-	ctx.data.reset();
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
     new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::LOCAL);
@@ -96,7 +95,6 @@ void Error::eventButtonEstopPressed(MainContext& ctx) {
 void Error::eventButtonEstopPressedRemote(MainContext& ctx) {
 	errorFSM.setActive(false);
 	ctx.data.errorState = CURRENT_NACK_STATE;
-	ctx.data.reset();
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
     new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::REMOTE);

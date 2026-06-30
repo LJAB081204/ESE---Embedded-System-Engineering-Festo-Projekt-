@@ -22,6 +22,7 @@ namespace M2{
 	void waitingForProfile::entry(SequenceContext& ctx){
 		ctx.oneRound = false;
 		std::cout << "Next expected -> IH" << std::endl;
+		ctx.data.sequenceState = WFP_State;
 	}
 
 	void waitingForProfile::exit(SequenceContext& ctx){

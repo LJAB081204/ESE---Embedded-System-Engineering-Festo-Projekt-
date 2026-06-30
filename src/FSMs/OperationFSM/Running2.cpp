@@ -38,6 +38,8 @@ Running2::Running2(HAL& hal,dataClass& data,SequenceContext& sequence,TimerHandl
 		delete weicheFSM;
 		delete profileFSM;
 		delete slideFSM;
+		ctx.hal.getActors()->lampQ1Off();
+
 	}
 
 	void Running2::onRestore(HistorySource source, OperationContext& ctx){
@@ -50,12 +52,14 @@ Running2::Running2(HAL& hal,dataClass& data,SequenceContext& sequence,TimerHandl
 			profileFSM = new ProfileContext(ctx.data);
 			delete slideFSM;
 			slideFSM = new SlideContext(ctx.hal,ctx.data);
+			sequenceFSM->reactivate();
 		}
 		else{
 			transportFSM->reactivate();
 			slideFSM->reactivate();
 			profileFSM->reactivate();
 			weicheFSM->reactivate();
+			sequenceFSM->reactivate();
 			if (ctx.data.pusherErrorActive){
 				delete weicheFSM;
 				weicheFSM = new WeicheContext(ctx.hal,ctx.data,ctx.timerHandler);

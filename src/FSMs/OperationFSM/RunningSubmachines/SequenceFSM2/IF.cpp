@@ -22,6 +22,7 @@ namespace M2{
 
 	void IF::entry(SequenceContext& ctx){
 		std::cout << "IF --- next expected -> IHM" << std::endl;
+		ctx.data.sequenceState = IF_State;
 	}
 
 	void IF::exit(SequenceContext& ctx){

@@ -18,7 +18,9 @@
 
 
 
-void Operation::entry(MainContext& ctx) {}
+void Operation::entry(MainContext& ctx) {
+}
+
 void Operation::exit(MainContext& ctx)  {
 	ctx.hal.getActors()->greenLampOff();
 }
@@ -52,14 +54,12 @@ void Operation::eventButtonResetPressedRemote(MainContext& ctx) {
 	operationFSM.eventButtonResetPressedRemote();
 }
 void Operation::eventButtonEstopPressed(MainContext& ctx) {
-	ctx.data.reset();
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
     new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::LOCAL);
     entry(ctx);
 }
 void Operation::eventButtonEstopPressedRemote(MainContext& ctx) {
-	ctx.data.reset();
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
     new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::REMOTE);
@@ -192,18 +192,23 @@ void Operation::eventGoBack(MainContext& ctx){
 }
 
 void Operation::eventGoBackWFP(MainContext& ctx){
+	std::cout << "Operation GoBack WFP" << std::endl;
 	operationFSM.eventGoBackWFP();
 }
 void Operation::eventGoBackIH(MainContext& ctx){
+	std::cout << "Operation GoBack IH" << std::endl;
 	operationFSM.eventGoBackIH();
 }
 void Operation::eventGoBackIM(MainContext& ctx){
+	std::cout << "Operation GoBack IM" << std::endl;
 	operationFSM.eventGoBackIM();
 }
 void Operation::eventGoBackIF(MainContext& ctx){
+	std::cout << "Operation GoBack IF" << std::endl;
 	operationFSM.eventGoBackIF();
 }
 void Operation::eventGoBackIHM(MainContext& ctx){
+	std::cout << "Operation GoBack IHM" << std::endl;
 	operationFSM.eventGoBackIHM();
 }
 

@@ -17,6 +17,7 @@ void EStop::entry(MainContext& ctx) {
     ctx.hal.getActors()->greenLampOff();
     ctx.hal.getActors()->redLampOn();
     ctx.hal.getActors()->ledButtonStartOff();
+    //updateSequence(ctx);
 }
 void EStop::exit(MainContext& ctx) {
 	ctx.hal.getActors()->redLampOff();
@@ -39,8 +40,10 @@ void EStop::eventButtonResetPressed(MainContext& ctx) {
         	entry(ctx);
         }
         else{
+        	std::cout << "Restore nach Estop" << std::endl;
 			new(this) Operation(ctx.getOperationFSM());
 			ctx.getOperationFSM().restoreHistory();
+			ctx.getOperationFSM().eventButtonStopPressed();		// nach E-Stop in Idle gehen
         }
     }
 }
@@ -55,8 +58,10 @@ void EStop::eventButtonResetPressedRemote(MainContext& ctx) {
 			entry(ctx);
 		}
         else{
+        	std::cout << "Restore nach Estop" << std::endl;
 			new(this) Operation(ctx.getOperationFSM());
 			ctx.getOperationFSM().restoreHistory();
+			ctx.getOperationFSM().eventButtonStopPressed();		// nach E-Stop in Idle gehen
         }
     }
 }
@@ -117,4 +122,27 @@ void EStop::eventConnectionLost(MainContext& ctx) {
 	entry(ctx);
 }
 
+void EStop::eventGoBackIH(MainContext& ctx){
+	cout << "Go Back IH in Estop" << endl;
+	ctx.getOperationFSM().eventGoBackIH();
+}
+void EStop::eventGoBackIM(MainContext& ctx){
+	ctx.getOperationFSM().eventGoBackIM();
+}
+void EStop::eventGoBackIF(MainContext& ctx){
+	ctx.getOperationFSM().eventGoBackIF();
+}
+void EStop::eventGoBackIHM(MainContext& ctx){
+	ctx.getOperationFSM().eventGoBackIHM();
+}
+
+void EStop::eventGoBackWFP(MainContext& ctx){
+	cout << "Go Back WFP in Estop" << endl;
+	ctx.getOperationFSM().eventGoBackWFP();
+}
+
+void EStop::eventGoBack(MainContext& ctx){
+	cout << "Go Back (1) in Estop" << endl;
+	ctx.getOperationFSM().eventGoBack();
+}
 

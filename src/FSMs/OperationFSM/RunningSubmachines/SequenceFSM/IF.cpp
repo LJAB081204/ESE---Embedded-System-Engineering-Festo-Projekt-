@@ -20,7 +20,23 @@ namespace M1{
 	}
 
 	void IF::entry(SequenceContext& ctx){
-		std::cout << "IF --- next expected -> IHM" << std::endl;
+		switch(ctx.data.sequenceState){
+		case WFP_State:
+			eventGoBackWFP(ctx);
+			break;
+		case IH_State:
+			eventGoBackIH(ctx);
+			break;
+		case IM_State:
+			eventGoBackIM(ctx);
+			break;
+		case IF_State:
+			std::cout << "IF --- next expected -> IHM" << std::endl;
+			break;
+		case IHM_State:
+			eventGoBackIHM(ctx);
+			break;
+		}
 	}
 
 	void IF::exit(SequenceContext& ctx){
@@ -39,6 +55,7 @@ namespace M1{
 		if(ctx.data.section2.front().item == IHM_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 			exit(ctx);
 			raiseItemCorrect(ctx);
+			ctx.data.sequenceState = IHM_State;
 			new (this) IHM;
 			entry(ctx);
 		}

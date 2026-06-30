@@ -21,6 +21,7 @@ namespace M2{
 
 	void IM::entry(SequenceContext& ctx){
 		std::cout << "IM --- next expected -> IF" << std::endl;
+		ctx.data.sequenceState = IM_State;
 	}
 
 	void IM::exit(SequenceContext& ctx){

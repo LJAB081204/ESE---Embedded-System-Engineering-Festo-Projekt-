@@ -19,7 +19,23 @@ namespace M1{
 	}
 
 	void IM::entry(SequenceContext& ctx){
-		std::cout << "IM --- next expected -> IF" << std::endl;
+		switch(ctx.data.sequenceState){
+			case WFP_State:
+				eventGoBackWFP(ctx);
+				break;
+			case IH_State:
+				eventGoBackIHM(ctx);
+				break;
+			case IM_State:
+				std::cout << "IM --- next expected -> IF" << std::endl;
+				break;
+			case IF_State:
+				eventGoBackIF(ctx);
+				break;
+			case IHM_State:
+				eventGoBackIHM(ctx);
+				break;
+			}
 	}
 
 	void IM::exit(SequenceContext& ctx){
@@ -36,6 +52,7 @@ namespace M1{
 		if(ctx.data.section2.front().item == IF_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 		    exit(ctx);
 			raiseItemCorrect(ctx);
+			ctx.data.sequenceState = IF_State;
 			new (this) IF;
 			entry(ctx);
 		}

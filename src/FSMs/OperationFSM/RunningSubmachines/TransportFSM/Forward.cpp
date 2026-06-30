@@ -230,6 +230,7 @@ namespace M1{
 	void Forward::raiseError(TransportContext& ctx){
 		ctx.hal.getActors()->motorStop();
 		MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
+        MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_REMOTE, 0);
 	}
 	void Forward::raiseErrorEntry(TransportContext& ctx){
 		MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR_ENTRY,0);

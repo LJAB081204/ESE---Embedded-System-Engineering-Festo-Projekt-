@@ -438,22 +438,27 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 						cout << "EVENT GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_WFP:
+						data.sequenceState = WFP_State;
 						FSM.eventGoBackWFP();
 						cout << "EVENT WFP GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IH:
+						data.sequenceState = IH_State;
 						FSM.eventGoBackIH();
 						cout << "EVENT IH GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IM:
+						data.sequenceState = IM_State;
 						FSM.eventGoBackIM();
 						cout << "EVENT IM GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IF:
+						data.sequenceState = IF_State;
 						FSM.eventGoBackIF();
 						cout << "EVENT IF GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IHM:
+						data.sequenceState = IHM_State;
 						FSM.eventGoBackIHM();
 						cout << "EVENT IHM GO BACK ARRIVED" << endl;
 						break;
@@ -498,6 +503,7 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 					case PULSE_EVENT_SKIP_UPDATE:
 						FSM.eventSkipUpdate();
 						break;
+
 
 					case PULSE_RESPONSE_ESTOP_STATUS:
 						switch (msg.value.sival_int){

@@ -21,6 +21,8 @@ void Reset::entry(EStopContext& ctx){
 
 void Reset::exit(EStopContext& ctx){
 	ctx.hal.getActors()->ledButtonResetOff();
+	ctx.data.updateSequence();
+	ctx.data.reset();
 }
 void Reset::eventButtonEstopPressedRemote(EStopContext& ctx){
 	exit(ctx);

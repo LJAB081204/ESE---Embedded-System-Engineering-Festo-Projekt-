@@ -22,6 +22,7 @@ namespace M2{
 	void IH::entry(SequenceContext& ctx){
 		ctx.oneRound = false;
 		std::cout << "IH detected ---- Next expected -> IM" << std::endl;
+		ctx.data.sequenceState = IH_State;
 	}
 
 	void IH::exit(SequenceContext& ctx){

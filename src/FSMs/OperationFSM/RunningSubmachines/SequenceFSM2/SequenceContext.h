@@ -53,6 +53,7 @@ public:
 	void eventItemCorrect() { currentState->eventItemCorrect(*this); }
 	void eventItemWrong()   { currentState->eventItemWrong(*this); }
 	void eventItemAtPusher(){ currentState->eventItemAtPusher(*this); }
+	void reactivate()       { currentState->entry(*this); }
 
 };
 

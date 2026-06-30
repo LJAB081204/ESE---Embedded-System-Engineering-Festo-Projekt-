@@ -97,6 +97,7 @@ void dataClass::reset(){
 // Festo
 	readyForItem = false;
 	readyForItemRemote = true;
+	itemAtExit = false;
 
 // Weiche / Slide
 	slideFull = false;
@@ -303,3 +304,34 @@ void dataClass::raiseError(){
 	MsgSendPulse(conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
     }
 
+
+void dataClass::updateSequence() {
+	if(!isMachine1){
+		if(section3.empty()){
+			switch(sequenceState){
+				case WFP_State: MsgSendPulse(controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_WFP, 0); break;
+				case IH_State: MsgSendPulse(controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IH, 0); break;
+				case IM_State: MsgSendPulse(controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IM, 0); break;
+				case IF_State: MsgSendPulse(controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IF, 0); break;
+				case IHM_State: MsgSendPulse(controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IHM, 0); break;
+				default: break;
+					}
+			}
+		else {
+			switch(sequenceState){
+				case IH_State:
+					if (oneRound){
+						MsgSendPulse(controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IHM, 0);
+					} else {
+						MsgSendPulse(controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_WFP, 0);
+					}
+					break;
+				case IM_State: MsgSendPulse(controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IH, 0); break;
+				case IF_State: MsgSendPulse(controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IM, 0); break;
+				case IHM_State: MsgSendPulse(controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_IF, 0); break;
+				default: break;
+					}
+			MsgSendPulse(conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_GO_BACK_LOCAL, 0);
+		}
+		}
+	}
