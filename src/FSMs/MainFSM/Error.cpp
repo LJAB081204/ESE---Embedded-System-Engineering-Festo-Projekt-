@@ -66,6 +66,12 @@ void Error::eventErrorResolved(MainContext& ctx) {
     ctx.data.errorState = CURRENT_NACK_STATE;
     new(this) Operation(ctx.getOperationFSM());
     ctx.getOperationFSM().restoreHistory();
+	if(!ctx.data.isMachine1 && ctx.data.checkReady()){
+		MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_FESTO_READY, 0);
+
+	}
+
+
 }
 void Error::eventGoBackIH(MainContext& ctx){
 	ctx.getOperationFSM().eventGoBackIH();
