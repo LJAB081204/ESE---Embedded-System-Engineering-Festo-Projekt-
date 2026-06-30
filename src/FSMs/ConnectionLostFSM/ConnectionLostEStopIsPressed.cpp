@@ -14,6 +14,8 @@ ConnectionLostEStopIsPressed::ConnectionLostEStopIsPressed(){
 }
 
 void ConnectionLostEStopIsPressed::entry(ConnectionLostContext& ctx){
+	ctx.hal.getActors()->redLampBlinkOff();
+	ctx.hal.getActors()->redLampOn();
 	ctx.estopState = EStopButtonState::ISPRESSED;
 }
 

@@ -26,7 +26,8 @@ private:
     RunningFactory& factory;
     TimerHandler& timerHandler;
 
-    std::chrono::steady_clock::time_point buttonPressStart;
+    std::chrono::steady_clock::time_point buttonPressStartLocal;
+    std::chrono::steady_clock::time_point buttonPressStartRemote;
 	MainContext FSM;
     int ownChannelID;
 
