@@ -32,7 +32,7 @@ void PusherCalibration::exit(OperationContext& ctx) {
 	ctx.hal.getActors()->letItemPass();
 }
 
-void PusherCalibration::eventItemAtPusher(OperationContext& ctx) {
+void PusherCalibration::eventItemLeftPusher(OperationContext& ctx) {
 	exit(ctx);
 	new(this) ExitCalibration;
 	entry(ctx);
@@ -51,13 +51,13 @@ void PusherCalibration::eventButtonStartPressedLongRemote(OperationContext& ctx)
 }
 
 void PusherCalibration::eventButtonStopPressed(OperationContext& ctx){
-	exit(ctx);
-	new (this) Service;
-	entry(ctx);
+//	exit(ctx);
+//	new (this) Service;
+//	entry(ctx);
 }
 
 void PusherCalibration::eventButtonStopPressedRemote(OperationContext& ctx){
-	exit(ctx);
-	new (this) Service;
-	entry(ctx);
+//	exit(ctx);
+//	new (this) Service;
+//	entry(ctx);
 }

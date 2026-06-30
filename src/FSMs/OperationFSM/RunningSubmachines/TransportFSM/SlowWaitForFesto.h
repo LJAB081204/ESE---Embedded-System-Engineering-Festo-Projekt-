@@ -17,8 +17,10 @@ public:
 	void entry(TransportContext& ctx)override;
 	void exit(TransportContext& ctx)override;
 
+	void eventFestoNotReady(TransportContext& ctx)override;
 	void eventFestoReady(TransportContext& ctx)override;
 	void eventItemAtEntry(TransportContext& ctx)override;
+	void eventItemAtPusher(TransportContext& ctx)override;
 	void eventItemLeftEntry(TransportContext& ctx)override;
 	void eventItemInSlide(TransportContext& ctx)override;
 };

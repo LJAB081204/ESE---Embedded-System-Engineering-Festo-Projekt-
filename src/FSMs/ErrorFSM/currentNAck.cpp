@@ -108,3 +108,18 @@
 		entry(ctx);
 	}
 
+	void currentNAck::eventItemArrived(ErrorContext& ctx){
+		std::cout<<"Arrived = true"<<std::endl;
+		ctx.data.itemArrived = true;
+	}
+
+	void currentNAck::eventItemAtExit(ErrorContext& ctx){
+		std::cout<<"Exit = true"<<std::endl;
+		ctx.data.itemExit = true;
+	}
+
+	void currentNAck::eventItemAtPusher(ErrorContext& ctx){
+		std::cout<<"Pusher = true"<<std::endl;
+		ctx.data.itemPusher = true;
+	}
+

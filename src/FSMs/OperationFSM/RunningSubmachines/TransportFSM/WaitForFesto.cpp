@@ -16,7 +16,6 @@ namespace M1{
 
 	void WaitForFesto::entry(TransportContext& ctx){
 		std::cout<<"WaitForFesto" << std::endl;
-		ctx.data.handler->pauseAll();
 		MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_TRANSFER_REQUEST, 0);
 	}
 
@@ -24,6 +23,7 @@ namespace M1{
 
 	void WaitForFesto::eventFestoNotReady(TransportContext& ctx){
 		ctx.hal.getActors()->motorStop();
+		ctx.data.handler->pauseAll();
 	}
 	void WaitForFesto::eventFestoReady(TransportContext& ctx){
 		exit(ctx);
@@ -42,7 +42,9 @@ namespace M1{
 	void WaitForFesto::eventItemLeftEntry(TransportContext& ctx){
 		if(!ctx.data.section1.empty()){
 			ctx.data.section1.back().timer->start(ctx.data.maxEntryTime,0);
-			ctx.data.timerIS->stop();
+			if(ctx.data.timerIS != nullptr){
+				ctx.data.timerIS->stop();
+			}
 		}
 		else{
 			std::cout<<"Queue 1 leer Festo1" << std::endl;
@@ -53,6 +55,34 @@ namespace M1{
 		    ctx.data.minTimeEntryTimer = new DynamicTimer(101, *ctx.data.handler);
 		}
 		ctx.data.minTimeEntryTimer->start(ctx.data.minTimeEntry, 0);
+	}
+
+	void WaitForFesto::eventItemAtPusher(TransportContext& ctx){
+		if(!ctx.data.section2.empty()){
+			std::cout<< "min pusher time: "<<ctx.data.minPusherTime << std::endl;
+			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
+			if(ctx.data.section2.front().timer->getTime() < ctx.data.minPusherTime){
+				ctx.hal.getActors()->motorStop();
+				ctx.data.handler->pauseAll();
+				std::cout<< "Error item at Pusher"<< std::endl;
+				ctx.data.err = ITEM_APPEARED;
+				ctx.data.errorLoc = 2;
+				ctx.data.raiseError();
+			}
+			else{
+				if(!ctx.data.section2.empty()){
+					ctx.data.section2.front().timer->stop();
+				}
+			}
+		}
+		else{
+			ctx.hal.getActors()->motorStop();
+			ctx.data.handler->pauseAll();
+			std::cout<< "Error item arrived (empty)"<< std::endl;
+			ctx.data.err = ITEM_APPEARED;
+			ctx.data.errorLoc = 2;
+			ctx.data.raiseError();
+		}
 	}
 
 	void WaitForFesto::eventItemInSlide(TransportContext& ctx){
