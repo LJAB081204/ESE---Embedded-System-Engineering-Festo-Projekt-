@@ -22,7 +22,9 @@ Service::Service(){
 		std::cout << "Halte Start lange gedrückt zum Beenden." << std::endl;
 	}
 
-	void Service::exit(OperationContext& ctx){}
+	void Service::exit(OperationContext& ctx){
+		ctx.hal.getActors()->lampQ1Off();
+	}
 
 	void Service::eventButtonStartPressedLong(OperationContext& ctx){
 		std::cout << "Service-Modus beendet." << std::endl;

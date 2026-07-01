@@ -47,8 +47,8 @@
 		}
 		std::cout << "--- [IDLE] ---" << std::endl;
 		if(ctx.data.isMachine1 && ctx.data.entryTime == 0) {
-			std::cout << "Warnung: Keine Kalibrierungsdaten gefunden." << std::endl;
-			std::cout << "Bitte Kalibrierung im Service-Modus durchführen." << std::endl;
+//			std::cout << "Warnung: Keine Kalibrierungsdaten gefunden." << std::endl;
+//			std::cout << "Bitte Kalibrierung im Service-Modus durchführen." << std::endl;
 		}
 		std::cout << "Starttaste drücken für Betrieb." << std::endl;
 		std::cout << "Starttaste lange drücken für Service-Modus." << std::endl;

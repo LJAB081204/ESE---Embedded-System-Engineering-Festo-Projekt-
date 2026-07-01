@@ -66,7 +66,6 @@ namespace M2{
 	void Forward2::eventItemArrived(TransportContext2& ctx){
 		exit(ctx);
 		if(!ctx.data.section1.empty()){
-			int diff = ctx.data.entryTime - ctx.data.section1.front().timer->getTime();
 			if(ctx.data.section1.front().timer->getTime() < ctx.data.minEntryTime){
 				ctx.data.handler->pauseAll();
 				ctx.data.err = ITEM_APPEARED;
@@ -91,7 +90,6 @@ namespace M2{
 	void Forward2::eventItemAtPusher(TransportContext2& ctx){
 		exit(ctx);
 		if(!ctx.data.section2.empty()){
-			int diff = ctx.data.pusherTime - ctx.data.section2.front().timer->getTime();
 			if(ctx.data.section2.front().timer->getTime() < ctx.data.minPusherTime){
 				ctx.data.handler->pauseAll();
 				ctx.data.err = ITEM_APPEARED;
@@ -130,7 +128,6 @@ namespace M2{
 		ctx.hal.getActors()->motorStop();
 		exit(ctx);
 		if(!ctx.data.section3.empty()){
-			int diff = ctx.data.exitTime - ctx.data.section3.front().timer->getTime();
 			if(ctx.data.section3.front().timer->getTime() < ctx.data.minExitTime){
 				ctx.data.handler->pauseAll();
 				ctx.data.err = ITEM_APPEARED;
