@@ -31,7 +31,9 @@
 		}
 	}
 
-	void Calibration::exit(OperationContext& ctx){}
+	void Calibration::exit(OperationContext& ctx){
+		ctx.hal.getActors()->lampQ1Off();
+	}
 
 	void Calibration::eventItemAtEntry(OperationContext& ctx){
 		exit(ctx);

@@ -97,7 +97,6 @@ public:
 			currentState->entry(*this);
 		}
 		else{
-			std::cout << "Restore aufgerufen" << std::endl;
 			currentState->onRestore(historySource, *this);
 			currentState->entry(*this);
 			historySource = HistorySource::NONE_HISTORY;
