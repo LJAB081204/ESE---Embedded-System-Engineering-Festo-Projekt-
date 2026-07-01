@@ -36,6 +36,14 @@ public:
 
 	    void eventConnectionLost(MainContext& ctx);
 
+	    void updateSequence(MainContext& ctx);
+		void eventGoBackIH(MainContext& ctx)override;
+		void eventGoBackIM(MainContext& ctx)override;
+		void eventGoBackIF(MainContext& ctx)override;
+		void eventGoBackIHM(MainContext& ctx)override;
+		void eventGoBackWFP(MainContext& ctx)override;
+		void eventGoBack(MainContext& ctx)override;
+
 };
 
 #endif

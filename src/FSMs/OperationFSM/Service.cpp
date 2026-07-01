@@ -17,12 +17,15 @@ Service::Service(){
 		ctx.hal.getActors()->ledButtonReset();
 		ctx.hal.getActors()->motorStop();
 		ctx.hs.stopCalibration();
-		std::cout << "Service" << std::endl;
+		std::cout << "--- [SERVICE-MODUS] ---" << std::endl;
+		std::cout << "Drücke Reset für Kalibrierungsmodus." << std::endl;
+		std::cout << "Halte Start lange gedrückt zum Beenden." << std::endl;
 	}
 
 	void Service::exit(OperationContext& ctx){}
 
 	void Service::eventButtonStartPressedLong(OperationContext& ctx){
+		std::cout << "Service-Modus beendet." << std::endl;
 		exit(ctx);
 		ctx.longPressTransition = true;
 		new (this) Idle;
@@ -30,6 +33,7 @@ Service::Service(){
 	}
 
 	void Service::eventButtonStartPressedLongRemote(OperationContext& ctx){
+		std::cout << "Service-Modus beendet." << std::endl;
 		exit(ctx);
 		ctx.longPressTransition = true;
 		new (this) Idle;

@@ -19,7 +19,23 @@ namespace M1{
 	}
 
 	void IH::entry(SequenceContext& ctx){
-		std::cout << "IH --- next expected -> IM" << std::endl;
+		switch(ctx.data.sequenceState){
+				case WFP_State:
+					eventGoBackWFP(ctx);
+					break;
+				case IH_State:
+					std::cout << "Nächstes erwartet: IM" << std::endl;
+					break;
+				case IM_State:
+					eventGoBackIM(ctx);
+					break;
+				case IF_State:
+					eventGoBackIF(ctx);
+					break;
+				case IHM_State:
+					eventGoBackIHM(ctx);
+					break;
+				}
 	}
 
 	void IH::exit(SequenceContext& ctx){
@@ -27,8 +43,6 @@ namespace M1{
 	}
 
 	void IH::eventUpdate(SequenceContext& ctx){
-		std::cout << "SECTION 2 SIZE AT UPDATE :" << ctx.data.section2.size() << std::endl;
-
 		if(ctx.data.section2.empty()){
 			MsgSendPulse(ctx.data.conId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_SKIP_UPDATE, 0);
 			return;
@@ -38,12 +52,15 @@ namespace M1{
 		if(ctx.data.section2.front().item == IM_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 			exit(ctx);
 			raiseItemCorrect(ctx);
+			ctx.data.sequenceState = IM_State;
 			new (this) IM;
 			entry(ctx);
 		}
 		else{
 			exit(ctx);
 			ctx.data.section2.front().sortOut = true;
+			ctx.data.section2.front().expectedProfile = IM_PROFILE;
+			ctx.data.section2.front().sortOutReason = SortOutReason::WRONG_SEQUENCE;
 			raiseItemWrong(ctx);
 			entry(ctx);
 		}
@@ -69,8 +86,6 @@ namespace M1{
 	}*/
 
 	void IH::eventGoBackWFP(SequenceContext& ctx){
-		std::cout << "EVENT REACHED IH" << std::endl;
-
 		exit(ctx);
 		new(this) waitingForProfile;
 		entry(ctx);

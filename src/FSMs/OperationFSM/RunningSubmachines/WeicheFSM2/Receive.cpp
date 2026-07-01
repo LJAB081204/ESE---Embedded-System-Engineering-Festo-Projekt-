@@ -20,7 +20,21 @@ Receive::Receive(){
 }
 
 void Receive::entry(WeicheContext& ctx){
-	std::cout<<"Weiche receive"<<std::endl;
+	if(ctx.data.itemPusher == true){
+		ctx.data.itemPusher = false;
+//		ctx.hal.getActors()->sortItemOut();
+		eventTimerExpired(ctx);
+		return;
+
+	}
+	if(ctx.data.itemLeftPusher == true){
+		ctx.data.itemLeftPusher = false;
+		exit(ctx);
+		new(this) LetItemPass;
+		entry(ctx);
+		eventItemLeftPusher(ctx);
+		return;
+	}
 	ctx.hal.getActors()->closePusher();
 }
 void Receive::exit(WeicheContext& ctx){
@@ -44,7 +58,6 @@ void Receive::eventItemMetal(WeicheContext& ctx){
 }
 void Receive::eventTimerExpired(WeicheContext& ctx){
 	exit(ctx);
-	std::cout<<"Weiche Ready"<<std::endl;
 	raiseUpdate(ctx);
 	new (this) Ready;
 	entry(ctx);

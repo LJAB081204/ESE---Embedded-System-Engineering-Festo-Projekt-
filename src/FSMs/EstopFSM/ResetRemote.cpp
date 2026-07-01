@@ -22,6 +22,8 @@ void ResetRemote::entry(EStopContext& ctx){
 
 void ResetRemote::exit(EStopContext& ctx){
 	ctx.hal.getActors()->ledButtonResetOff();
+	ctx.data.updateSequence();
+	ctx.data.reset();
 }
 void ResetRemote::eventButtonEstopPressedRemote(EStopContext& ctx){
 	exit(ctx);
@@ -36,7 +38,6 @@ void ResetRemote::eventButtonEstopPressed(EStopContext& ctx){
 void ResetRemote::eventButtonResetPressed(EStopContext& ctx){
 	exit(ctx);
 	ctx.setActive(false);
-	std::cout << "estop set false!!!!" << std::endl;
 }
 
 

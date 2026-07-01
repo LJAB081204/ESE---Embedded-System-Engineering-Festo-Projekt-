@@ -20,7 +20,7 @@ void ExitCalibration::entry(OperationContext& ctx) {
 	if(ctx.round == 2){
 		ctx.calTimer->start(4999);
 	}
-	std::cout<< "ExitCalibration" << std::endl;
+	std::cout << "Kalibriere Ausgangszeit..." << std::endl;
 }
 
 void ExitCalibration::exit(OperationContext& ctx) {}
@@ -32,6 +32,11 @@ void ExitCalibration::eventItemAtExit(OperationContext& ctx) {
 	}
 	ctx.hal.getActors()->motorStop();
 	ctx.hal.getActors()->closePusher();
+	if(ctx.data.isMachine1) {
+		std::cout << "Werkstück am Ende angekommen – bitte auf Band 2 übergeben." << std::endl;
+	} else {
+		std::cout << "Werkstück am Ende angekommen – bitte entfernen." << std::endl;
+	}
 }
 
 void ExitCalibration::eventItemLeftExit(OperationContext& ctx) {
@@ -41,12 +46,14 @@ void ExitCalibration::eventItemLeftExit(OperationContext& ctx) {
 }
 
 void ExitCalibration::eventButtonStartPressedLong(OperationContext& ctx){
+	std::cout << "Kalibrierung abgebrochen." << std::endl;
 	exit(ctx);
 	new (this) Idle;
 	entry(ctx);
 }
 
 void ExitCalibration::eventButtonStartPressedLongRemote(OperationContext& ctx){
+	std::cout << "Kalibrierung abgebrochen." << std::endl;
 	exit(ctx);
 	new (this) Idle;
 	entry(ctx);

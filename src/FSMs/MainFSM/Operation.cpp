@@ -18,7 +18,9 @@
 
 
 
-void Operation::entry(MainContext& ctx) {}
+void Operation::entry(MainContext& ctx) {
+}
+
 void Operation::exit(MainContext& ctx)  {
 	ctx.hal.getActors()->greenLampOff();
 }
@@ -52,14 +54,12 @@ void Operation::eventButtonResetPressedRemote(MainContext& ctx) {
 	operationFSM.eventButtonResetPressedRemote();
 }
 void Operation::eventButtonEstopPressed(MainContext& ctx) {
-	ctx.data.reset();
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
     new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::LOCAL);
     entry(ctx);
 }
 void Operation::eventButtonEstopPressedRemote(MainContext& ctx) {
-	ctx.data.reset();
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
     new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::REMOTE);

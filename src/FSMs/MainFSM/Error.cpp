@@ -7,6 +7,7 @@
 #include "Error.h"
 #include "MainContext.h"
 #include "ConnectionLost.h"
+#include <iostream>
 
 Error::Error(HAL& hal, dataClass& data) : errorFSM(hal, data) {}
 
@@ -16,12 +17,13 @@ void Error::entry(MainContext& ctx) {
     ctx.hal.getActors()->redLampBlink(1000);
     ctx.hal.getActors()->ledButtonStartOff();
     ctx.data.handler->pauseAll();
-
+    std::cout << "--- [FEHLER] ---" << std::endl;
 }
 void Error::exit(MainContext& ctx) {
 	ctx.hal.getActors()->redLampBlinkOff();
 	ctx.hal.getActors()->redLampOff();
 	ctx.data.handler->resumeAll();
+
 }
 void Error::eventButtonResetPressed(MainContext& ctx) {
 	errorFSM.eventButtonResetPressed();
@@ -54,6 +56,10 @@ void Error::eventButtonStartPressed(MainContext& ctx) {
 		ctx.data.errorState = CURRENT_NACK_STATE;
 		new (this) Operation(ctx.getOperationFSM());
 		ctx.getOperationFSM().restoreHistory();
+		if(!ctx.data.isMachine1 && ctx.data.checkReady()){
+			std::cout << "TRANSFER STATE:" << ctx.data.itemCount << ctx.data.itemAtExit << std::endl;
+			MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_FESTO_READY, 0);
+		}
 		MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_RESOLVED, 0);
 	}
 }
@@ -62,6 +68,12 @@ void Error::eventErrorResolved(MainContext& ctx) {
     ctx.data.errorState = CURRENT_NACK_STATE;
     new(this) Operation(ctx.getOperationFSM());
     ctx.getOperationFSM().restoreHistory();
+	if(!ctx.data.isMachine1 && ctx.data.checkReady()){
+		MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_FESTO_READY, 0);
+
+	}
+
+
 }
 void Error::eventGoBackIH(MainContext& ctx){
 	ctx.getOperationFSM().eventGoBackIH();
@@ -87,7 +99,6 @@ void Error::eventGoBack(MainContext& ctx){
 void Error::eventButtonEstopPressed(MainContext& ctx) {
 	errorFSM.setActive(false);
 	ctx.data.errorState = CURRENT_NACK_STATE;
-	ctx.data.reset();
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
     new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::LOCAL);
@@ -96,7 +107,6 @@ void Error::eventButtonEstopPressed(MainContext& ctx) {
 void Error::eventButtonEstopPressedRemote(MainContext& ctx) {
 	errorFSM.setActive(false);
 	ctx.data.errorState = CURRENT_NACK_STATE;
-	ctx.data.reset();
 	ctx.getOperationFSM().saveHistory(HistorySource::ESTOP_HISTORY);
     exit(ctx);
     new(this) EStop(ctx.hal, ctx.hs, ctx.data, EStopSource::REMOTE);
@@ -126,6 +136,7 @@ void Error::eventItemAtExit(MainContext& ctx) {
 void Error::eventItemArrived(MainContext& ctx) {
 	errorFSM.eventItemArrived();
 }
+
 //void Error::raiseItemTimer(MainContext& ctx){
 //	if(ctx.data.itemArrived == true){
 //		ctx.data.itemArrived = false;

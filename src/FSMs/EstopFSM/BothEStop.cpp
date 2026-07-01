@@ -21,16 +21,11 @@ BothEStop::BothEStop(){
 void BothEStop::entry(EStopContext& ctx){
 	ctx.hal.getActors()->motorStop();
 	ctx.hal.getActors()->closePusher();
+	ctx.hal.getActors()->redLampBlinkOff();
 	ctx.hal.getActors()->redLampOn();
 	ctx.setActive(true);
-	std::string machine;
-	if(ctx.data.isMachine1){
-		machine = "Anlage 1";
-	}
-	else{
-		machine = "Anlage 2";
-	}
 	std::cout << "E-Stop auf beiden Anlagen gedrückt!" << std::endl;
+	std::cout << "Bitte beide E-Stops rausziehen und Reset drücken." << std::endl;
 }
 
 void BothEStop::exit(EStopContext& ctx){

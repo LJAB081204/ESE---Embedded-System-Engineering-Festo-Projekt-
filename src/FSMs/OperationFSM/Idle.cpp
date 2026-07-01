@@ -31,10 +31,10 @@
 		}
 		if(ctx.firstBoot || ctx.historySource == HistorySource::ESTOP_HISTORY){
 		    ctx.firstBoot = false;
-			if(ctx.hal.getSensors()->isItemAtEntry()){
-				std::cout << "Warnung: Werkstück am Eingang erkannt." << std::endl;
-				ctx.hal.getActors()->yellowLampBlink(1000);
-			}
+//			if(ctx.hal.getSensors()->isItemAtEntry()){
+//				std::cout << "Warnung: Werkstück am Eingang erkannt." << std::endl;
+//				ctx.hal.getActors()->yellowLampBlink(1000);
+//			}
 			if(ctx.hal.getSensors()->isItemInPusher()){
 				std::cout << "Warnung: Werkstück am Pusher erkannt." << std::endl;
 				ctx.hal.getActors()->yellowLampBlink(1000);
@@ -43,13 +43,23 @@
 				std::cout << "Warnung: Werkstück am Ausgang erkannt." << std::endl;
 				ctx.hal.getActors()->yellowLampBlink(1000);
 			}
+
 		}
+		std::cout << "--- [IDLE] ---" << std::endl;
+		if(ctx.data.isMachine1 && ctx.data.entryTime == 0) {
+			std::cout << "Warnung: Keine Kalibrierungsdaten gefunden." << std::endl;
+			std::cout << "Bitte Kalibrierung im Service-Modus durchführen." << std::endl;
+		}
+		std::cout << "Starttaste drücken für Betrieb." << std::endl;
+		std::cout << "Starttaste lange drücken für Service-Modus." << std::endl;
+		seqUpdate(ctx);
 //		ctx.blockStartUntilRelease = false;
 	}
 	void Idle::exit(OperationContext& ctx){
 		ctx.hal.getActors()->ledButtonStartOff();
 		ctx.hal.getActors()->yellowLampBlinkOff();
 		ctx.data.handler->resumeAll();
+
 
 	}
 
@@ -111,6 +121,27 @@
 		new (this) Service;
 		entry(ctx);
 	}
+
+	void Idle:: seqUpdate(OperationContext& ctx){
+		switch(ctx.data.sequenceState){
+				case WFP_State:
+					eventGoBackWFP(ctx);
+					break;
+				case IH_State:
+					eventGoBackIH(ctx);
+					break;
+				case IM_State:
+					eventGoBackIM(ctx);
+					break;
+				case IF_State:
+					eventGoBackIF(ctx);
+					break;
+				case IHM_State:
+					eventGoBackIHM(ctx);
+					break;
+	}
+	}
+
 	void Idle::eventGoBack(OperationContext& ctx){
 		if (ctx.savedRunning) ctx.savedRunning->eventGoBack(ctx);
 	}
@@ -127,6 +158,8 @@
 		if (ctx.savedRunning) ctx.savedRunning->eventGoBackIHM(ctx);
 	}
 
-
+	void Idle::eventGoBackWFP(OperationContext& ctx){
+		if (ctx.savedRunning) ctx.savedRunning->eventGoBackWFP(ctx);
+	}
 
 

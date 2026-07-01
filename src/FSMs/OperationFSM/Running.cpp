@@ -29,10 +29,13 @@ namespace M1{
 
 	void Running::entry(OperationContext& ctx){
 		ctx.hal.getActors()->greenLampOn();
+		std::cout << "--- [BETRIEB] ---" << std::endl;
+		std::cout << "Nächstes erwartet: " << nextExpected(ctx.data.sequenceState) << std::endl;
 	}
 
 	void Running::exit(OperationContext& ctx){
 		ctx.hal.getActors()->greenLampOff();
+		ctx.hal.getActors()->lampQ1Off();
 		delete transportFSM;
 		delete weicheFSM;
 		delete profileFSM;
@@ -40,6 +43,7 @@ namespace M1{
 	}
 
 	void Running::onRestore(HistorySource source, OperationContext& ctx){
+		std::cout << "--- [BETRIEB WIEDERHERGESTELLT] ---" << std::endl;
 		if (source == HistorySource::ESTOP_HISTORY){
 			delete transportFSM;
 			transportFSM = new TransportContext(ctx.hal,ctx.data);
@@ -49,12 +53,14 @@ namespace M1{
 			profileFSM = new ProfileContext(ctx.data);
 			delete slideFSM;
 			slideFSM = new SlideContext(ctx.hal,ctx.data);
+			sequenceFSM->reactivate();
 		}
 		else{
 			transportFSM->reactivate();
 			slideFSM->reactivate();
 			profileFSM->reactivate();
 			weicheFSM->reactivate();
+			sequenceFSM->reactivate();
 			if (ctx.data.pusherErrorActive){
 				delete weicheFSM;
 				weicheFSM = new WeicheContext(ctx.hal,ctx.data,ctx.timerHandler);

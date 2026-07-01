@@ -21,7 +21,8 @@ namespace M2{
 	}
 
 	void IF::entry(SequenceContext& ctx){
-		std::cout << "IF --- next expected -> IHM" << std::endl;
+		std::cout << "Nächstes erwartet: IHM" << std::endl;
+		ctx.data.sequenceState = IF_State;
 	}
 
 	void IF::exit(SequenceContext& ctx){
@@ -35,6 +36,9 @@ namespace M2{
 		item = ctx.data.nextItem.front().item;
 		ctx.data.nextItem.pop();
 		if(item != ctx.data.section2.front().item){
+			ctx.data.section2.front().sortOut = true;
+			ctx.data.section2.front().expectedProfile = item;
+			ctx.data.section2.front().sortOutReason = SortOutReason::ITEM_SWAPPED;
 			raiseGoBackIF(ctx);
 			raiseItemWrong(ctx);
 
@@ -48,6 +52,9 @@ namespace M2{
 			}
 			else{
 				exit(ctx);
+				ctx.data.section2.front().sortOut = true;
+				ctx.data.section2.front().expectedProfile = IHM_PROFILE;
+				ctx.data.section2.front().sortOutReason = SortOutReason::WRONG_SEQUENCE;
 				raiseItemWrong(ctx);
 				entry(ctx);
 			}

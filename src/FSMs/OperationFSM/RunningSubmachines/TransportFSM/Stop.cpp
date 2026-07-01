@@ -24,6 +24,11 @@ namespace M1{
 			ctx.data.addItem();
 			new (this) Forward;
 			entry(ctx);
+			if(ctx.data.timerIS == nullptr){
+				ctx.data.timerIS = new DynamicTimer(102,*ctx.data.handler);
+			}
+			ctx.data.timerIS->start(1000,0);
+
 		}
 	}
 
@@ -39,4 +44,15 @@ namespace M1{
 		}
 		ctx.data.timerIS->start(1000,0);
 	}
+	void Stop::eventItemAtExit(TransportContext& ctx){
+		ctx.data.err = ITEM_APPEARED;
+		ctx.data.errorLoc = 3;
+		ctx.data.raiseError();
+	}
+	void Stop::eventItemAtPusher(TransportContext& ctx){
+		ctx.data.err = ITEM_APPEARED;
+		ctx.data.errorLoc = 2;
+		ctx.data.raiseError();
+	}
+
 }

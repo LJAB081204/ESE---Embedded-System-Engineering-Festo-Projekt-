@@ -77,12 +77,11 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    case PULSE_BTN_START_LOCAL:
 				        if(msg.value.sival_int == 1){
 				            //cout << "Start pressed!" << endl;
-				            buttonPressStart = chrono::steady_clock::now();
+				            buttonPressStartLocal = chrono::steady_clock::now();
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_BTN_START_REMOTE, 1);
 				        } else {
-				            //cout << "Start released!" << endl;
-				            auto diff = chrono::steady_clock::now() - buttonPressStart;
-				            auto ms = chrono::duration_cast<chrono::milliseconds>(diff).count();
+				            auto ms = chrono::duration_cast<chrono::milliseconds>(
+				            	chrono::steady_clock::now() - buttonPressStartLocal).count();
 				            if(ms > 1000){
 				            	FSM.eventButtonStartPressedLong();
 				            }
@@ -95,11 +94,11 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 
 				    case PULSE_BTN_START_REMOTE:
 				        if(msg.value.sival_int == 1){
-				            buttonPressStart = chrono::steady_clock::now();
-				            //cout << "Start pressed on remote!" << endl;
+				            buttonPressStartRemote = chrono::steady_clock::now();
 				        } else {
-				            auto diff = chrono::steady_clock::now() - buttonPressStart;
-				            auto ms = chrono::duration_cast<chrono::milliseconds>(diff).count();
+				            auto ms = chrono::duration_cast<chrono::milliseconds>(
+				            	chrono::steady_clock::now() - buttonPressStartRemote).count();
+
 				            if(ms > 1000){
 				            	FSM.eventButtonStartPressedLongRemote();
 				            }
@@ -285,26 +284,18 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    	FSM.eventItemArrived();
 				    	break;
 				    case PULSE_EVENT_TRANSFER_REQUEST:
-						std::cout<< "request arrived" << std::endl;
-
 				    	if(data.checkReady()){
-				    		std::cout<< "Festo ready" << std::endl;
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_TRANSFER_REPLY, 1);
 				    	}
 				    	else{
-				    		std::cout<< "Festo not ready" << std::endl;
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_TRANSFER_REPLY, 0);
 				    	}
 				    	break;
 				    case PULSE_EVENT_TRANSFER_REPLY:
 				    	if(msg.value.sival_int == 1){
-				    		std::cout<< "Festo ready arrived" << std::endl;
-
 				    		FSM.eventFestoReady();
 				    	}
 				    	else{
-				    		std::cout<< "Festo not ready  arrived" << std::endl;
-
 				    		FSM.eventFestoNotReady();
 				    	}
 				    	break;
@@ -333,26 +324,21 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 				    	break;
 
 				    	case PULSE_DYNAMIC_TIMER_EXPIRED:
-						cout << "Timer expired: " << msg.value.sival_int <<  endl;
 						switch(msg.value.sival_int){
 							case 100:
 								FSM.eventTimerExpired();
 								break;
 							case 101:
-								cout << "Timer entry expired" <<  endl;
 								data.readyForEntry = true;
 								hal.getActors()->lampQ1Off();
 								break;
 							case 102:
-								cout << "IS Dispatcher" <<  endl;
 								FSM.eventTransportTimerExpired();
 								break;
 						default:
 							if(msg.code < 0){
-								cout << "Kernel Pulse" << endl;
 								break;
 							}
-							 std::cout << "item count: " << data.itemCount << std::endl;
 							data.isErrorLocal = true;
 							int itemLoc = data.findItem(msg.value.sival_int);
 							data.handler->pauseAll();
@@ -378,7 +364,6 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 								    break;
 								}
 								default:
-								    cout << "Item not found: " << msg.value.sival_int << endl;
 								    break;
 								}
 								break;
@@ -390,12 +375,10 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 						            break;
 						        }
 								data.isErrorLocal = true;
-								cout << "Dynamic Timer!!"<< msg.value.sival_int << endl;
 								FSM.eventError();
 
 								break;
 					case PULSE_EVENT_ERROR:
-							cout << "ERROR!!" << endl;
 							data.isErrorLocal = true;
 				            MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_REMOTE, 0);
 							FSM.eventError();
@@ -409,20 +392,14 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 							FSM.eventUpdate();
 							break;
 					case PULSE_EVENT_ITEM_CORRECT:
-							cout << "ITEM CORRECT" << endl;
-
 							FSM.eventItemCorrect();
 							break;
 					case PULSE_EVENT_ITEM_WRONG:
-							cout << "ITEM WRONG" << endl;
-
 							FSM.eventItemWrong();
 							break;
 
 					case PULSE_ITEM_TRANSFER:
 						//FSM.eventItemTransfer(msg.value.sival_int);
-
-						std::cout << "TRANSFER RECEIVED: " << msg.value.sival_int << std::endl;
 						data.addTransferredItem(data.convertIntToItem(msg.value.sival_int));
 						break;
 					case PULSE_EVENT_SLIDE_TIMER:
@@ -435,27 +412,26 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 
 					case PULSE_EVENT_GO_BACK_LOCAL:
 						FSM.eventGoBack();
-						cout << "EVENT GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_WFP:
+						data.sequenceState = WFP_State;
 						FSM.eventGoBackWFP();
-						cout << "EVENT WFP GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IH:
+						data.sequenceState = IH_State;
 						FSM.eventGoBackIH();
-						cout << "EVENT IH GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IM:
+						data.sequenceState = IM_State;
 						FSM.eventGoBackIM();
-						cout << "EVENT IM GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IF:
+						data.sequenceState = IF_State;
 						FSM.eventGoBackIF();
-						cout << "EVENT IF GO BACK ARRIVED" << endl;
 						break;
 					case PULSE_EVENT_GO_BACK_IHM:
+						data.sequenceState = IHM_State;
 						FSM.eventGoBackIHM();
-						cout << "EVENT IHM GO BACK ARRIVED" << endl;
 						break;
 
 					case PULSE_EVENT_ERROR_PUSHER_TIMER:
@@ -484,7 +460,6 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 						break;
 
 					case PULSE_HANDSHAKE_ESTOP_STATUS:
-						cout << "[HANDSHAKE] eStopIsPressed=" << data.eStopIsPressed << " eStopWasPressed=" << data.eStopWasPressed << endl;
 						if (data.eStopIsPressed){
 							MsgSendPulse(conCtrlConnectionID, SIGEV_PULSE_PRIO_INHERIT, PULSE_RESPONSE_ESTOP_STATUS, 0);
 							break;
@@ -499,19 +474,17 @@ Dispatcher::Dispatcher(int conCtrlConnectionID, HAL& hal,dataClass& data, Height
 						FSM.eventSkipUpdate();
 						break;
 
+
 					case PULSE_RESPONSE_ESTOP_STATUS:
 						switch (msg.value.sival_int){
 							case 0:
 								FSM.eventResponseEStopIsPressed();
-								cout << "Response: E-Stop is Pressed" << endl;
 								break;
 							case 1:
 								FSM.eventResponseEStopWasPressed();
-								cout << "Response: E-Stop was Pressed" << endl;
 								break;
 							case 2:
 								FSM.eventResponseEStopWasNotPressed();
-								cout << "Response: E-Stop was not Pressed" << endl;
 								break;
 						}
 				}

@@ -21,7 +21,6 @@ namespace M1{
 	}
 
 	void Forward::entry(TransportContext& ctx){
-		std::cout<<"Forward nach error"<<std::endl;
 		if(ctx.data.itemCount != 0){
 			ctx.hal.getActors()->motorStop();
 			ctx.hal.getActors()->motorForwards();
@@ -34,19 +33,28 @@ namespace M1{
 			entry(ctx);
 			return;
 		}
+		if(ctx.data.itemLeftEntry == true){
+			ctx.data.itemLeftEntry = false;
+			eventItemLeftEntry(ctx);
+		}
 		if(ctx.data.itemArrived == true){
 			ctx.data.itemArrived = false;
 			eventItemArrived(ctx);
 		}
-		if(ctx.data.itemAtExit == true){
-			ctx.data.itemAtExit = false;
+		if(ctx.data.itemExit == true){
+			ctx.data.itemExit = false;
 			eventItemAtExit(ctx);
 
 		}
 		if(ctx.data.itemPusher == true){
-			ctx.data.itemPusher = false;
+//			ctx.data.itemPusher = false;
 			eventItemAtPusher(ctx);
 		}
+		if(ctx.data.itemLeftExit == true){
+			ctx.data.itemLeftExit = false;
+			eventItemLeftExit(ctx);
+		}
+
 	}
 
 	void Forward::exit(TransportContext& ctx){}
@@ -77,7 +85,6 @@ namespace M1{
 			}
 		}
 		else{
-			std::cout<<"Queue 1 leer Festo1" << std::endl;
 		}
 		ctx.data.readyForEntry = false;
 		ctx.hal.getActors()->lampQ1();
@@ -90,12 +97,9 @@ namespace M1{
 
 	void Forward::eventItemArrived(TransportContext& ctx){
 		if(!ctx.data.section1.empty()){
-			std::cout<< "min entry time: "<<ctx.data.minEntryTime << std::endl;
-			std::cout<< "getTime: "<<ctx.data.section1.front().timer->getTime() << std::endl;
 			if(ctx.data.section1.front().timer->getTime() < ctx.data.minEntryTime){
 				ctx.data.handler->pauseAll();
 				ctx.hal.getActors()->motorStop();
-				std::cout<< "Error item arrived"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 1;
 				raiseError(ctx);
@@ -114,7 +118,6 @@ namespace M1{
 			if(!ctx.data.section1.empty()){
 				ctx.data.section1.front().timer->stop();
 			}
-			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 1;
 			raiseError(ctx);
@@ -124,12 +127,9 @@ namespace M1{
 
 	void Forward::eventItemAtPusher(TransportContext& ctx){
 		if(!ctx.data.section2.empty()){
-			std::cout<< "min pusher time: "<<ctx.data.minPusherTime << std::endl;
-			std::cout<< "getTime: "<<ctx.data.section2.front().timer->getTime() << std::endl;
 			if(ctx.data.section2.front().timer->getTime() < ctx.data.minPusherTime){
 				ctx.hal.getActors()->motorStop();
 				ctx.data.handler->pauseAll();
-				std::cout<< "Error item at Pusher"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 2;
 				raiseError(ctx);
@@ -143,7 +143,6 @@ namespace M1{
 		else{
 			ctx.hal.getActors()->motorStop();
 			ctx.data.handler->pauseAll();
-			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 2;
 			raiseError(ctx);
@@ -163,25 +162,14 @@ namespace M1{
 
 	void Forward::eventItemAtExit(TransportContext& ctx){
 		if(!ctx.data.section3.empty()){
-			std::cout<< "min exit time: "<<ctx.data.minExitTime << std::endl;
-			std::cout<< "getTime: "<<ctx.data.section3.front().timer->getTime() << std::endl;
 			if(ctx.data.section3.front().timer->getTime() < ctx.data.minExitTime){
 				ctx.data.handler->pauseAll();
-				std::cout<< "Error item at exit"<< std::endl;
 				ctx.data.err = ITEM_APPEARED;
 				ctx.data.errorLoc = 3;
 				raiseError(ctx);
 				ctx.hal.getActors()->motorStop();
 			}
 			else{
-//				if(!ctx.data.section3.empty()){
-//					uint32_t runnedTime = ctx.data.section3.front().timer->getTime();
-//					ctx.data.section3.front().timer->stop();
-//					std::cout<<"runnedTime:"<<runnedTime<<std::endl;
-//					delete ctx.data.section3.front().timer;
-//					ctx.data.section3.front().timer = new DynamicTimer(ctx.data.section3.front().id, *ctx.data.handler);
-//					ctx.data.section3.front().timer->start(ctx.data.maxExitTime,runnedTime);
-//				}
 				if(!ctx.data.section3.empty()){
 					ctx.data.section3.front().timer->stop();
 				}
@@ -194,7 +182,6 @@ namespace M1{
 		else{
 			ctx.data.handler->pauseAll();
 			ctx.hal.getActors()->motorStop();
-			std::cout<< "Error item arrived (empty)"<< std::endl;
 			ctx.data.err = ITEM_APPEARED;
 			ctx.data.errorLoc = 3;
 			raiseError(ctx);
@@ -206,6 +193,14 @@ namespace M1{
 		itemData item;
 		if(!ctx.data.section3.empty()){
 			item = ctx.data.section3.front();
+			if(item.sortOut) {
+				std::cout << "Werkstück weitergeleitet (Rutsche voll) | ID: " << item.id
+				          << " | Typ: " << profileName(item.item) << std::endl;
+			} else {
+				std::cout << "Werkstück korrekt übergeben | ID: " << item.id
+				          << " | Typ: " << profileName(item.item)
+				          << " | Nächstes erwartet: " << nextExpected(ctx.data.sequenceState) << std::endl;
+			}
 		}
 		uint32_t itemCode = ctx.data.convertItemToInt(item);
 		MsgSendPulse(ctx.data.controllerConId,SIGEV_PULSE_PRIO_INHERIT,PULSE_ITEM_TRANSFER,itemCode);
@@ -230,6 +225,7 @@ namespace M1{
 	void Forward::raiseError(TransportContext& ctx){
 		ctx.hal.getActors()->motorStop();
 		MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR,0);
+        MsgSendPulse(ctx.data.controllerConId, SIGEV_PULSE_PRIO_INHERIT, PULSE_EVENT_ERROR_REMOTE, 0);
 	}
 	void Forward::raiseErrorEntry(TransportContext& ctx){
 		MsgSendPulse(ctx.data.conId,SIGEV_PULSE_PRIO_INHERIT,PULSE_EVENT_ERROR_ENTRY,0);

@@ -17,13 +17,16 @@ namespace M2{
 I :: I(){}
 
 void I::entry(ProfileContext& ctx) {
-	std::cout << "///////////////I detected" << std::endl;
 	if(ctx.data.heightDefault == true){
 		ctx.data.heightDefault = false;
-		std::cout << ctx.data.heightDefault<< std::endl;
 		exit(ctx);
 		new(this) Default;
 		entry(ctx);
+		return;
+	}
+	if(ctx.data.itemGone == true){
+		ctx.data.itemGone = false;
+		eventItemGone(ctx);
 	}
 }
 

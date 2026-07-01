@@ -20,8 +20,24 @@ namespace M1{
 	}
 
 	void IHM::entry(SequenceContext& ctx){
-		std::cout << "IHM --- next expected -> IH" << std::endl;
-		ctx.data.oneRound = true;
+		switch(ctx.data.sequenceState){
+			case WFP_State:
+				eventGoBackWFP(ctx);
+				break;
+			case IH_State:
+				eventGoBackIH(ctx);
+				break;
+			case IM_State:
+				eventGoBackIM(ctx);
+				break;
+			case IF_State:
+				eventGoBackIF(ctx);
+				break;
+			case IHM_State:
+				std::cout << "Nächstes erwartet: IH (neue Runde)" << std::endl;
+				ctx.data.oneRound = true;
+				break;
+			}
 	}
 
 	void IHM::exit(SequenceContext& ctx){
@@ -38,12 +54,15 @@ namespace M1{
 		if(ctx.data.section2.front().item == IH_PROFILE){	//wenn vorderes(Item am Pusher) richtig dann zustand wechseln
 			exit(ctx);
 			raiseItemCorrect(ctx);
+			ctx.data.sequenceState = IH_State;
 			new (this) IH;
 			entry(ctx);
 		}
 		else{
 			exit(ctx);
 			ctx.data.section2.front().sortOut = true;
+			ctx.data.section2.front().expectedProfile = IH_PROFILE;
+			ctx.data.section2.front().sortOutReason = SortOutReason::WRONG_SEQUENCE;
 			raiseItemWrong(ctx);
 			entry(ctx);
 		}

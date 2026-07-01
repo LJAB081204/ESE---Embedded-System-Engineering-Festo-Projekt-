@@ -12,10 +12,13 @@ ResetConLost::ResetConLost(){
 }
 
 void ResetConLost::entry(EStopContext& ctx){
+	ctx.hal.getActors()->redLampOff();
+	ctx.hal.getActors()->redLampBlink(1000);
 	ctx.hal.getActors()->ledButtonReset();
 }
 
 void ResetConLost::exit(EStopContext& ctx){
+	ctx.hal.getActors()->redLampBlinkOff();
 	ctx.hal.getActors()->ledButtonResetOff();
 }
 void ResetConLost::eventButtonResetPressedRemote(EStopContext& ctx){

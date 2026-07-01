@@ -41,10 +41,10 @@ ConnectionController::ConnectionController(
     remoteOutCoid = -1;
     while ((remoteOutCoid = name_open(remoteName, NAME_FLAG_ATTACH_GLOBAL)) == -1) {
         sleep(1);
-        cout << "trying to connect..." << endl;
+        cout << "Verbindung wird aufgebaut..." << endl;
     }
     connected = true;
-    cout << "connection established, coid: " << remoteOutCoid << endl;
+    cout << "Verbindung hergestellt."<< endl;
 
     // --- Heartbeat-Channel ---
     heartbeatIn = name_attach(NULL, localHbName, NAME_FLAG_ATTACH_GLOBAL);
@@ -57,9 +57,9 @@ ConnectionController::ConnectionController(
     heartbeatOutCoid = -1;
     while ((heartbeatOutCoid = name_open(remoteHbName, NAME_FLAG_ATTACH_GLOBAL)) == -1) {
         sleep(1);
-        cout << "trying to connect heartbeat..." << endl;
+//        cout << "trying to connect heartbeat..." << endl;
     }
-    cout << "heartbeat channel established, coid: " << heartbeatOutCoid << endl;
+//    cout << "heartbeat connection established, coid: " << heartbeatOutCoid << endl;
 }
 
 // ------------------------------------------------------------

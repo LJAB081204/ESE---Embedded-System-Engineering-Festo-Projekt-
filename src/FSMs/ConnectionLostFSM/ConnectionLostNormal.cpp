@@ -17,11 +17,12 @@ ConnectionLostNormal::ConnectionLostNormal(){
 
 void ConnectionLostNormal::entry(ConnectionLostContext& ctx){
 	ctx.estopState = EStopButtonState::WASNOTPRESSED;
-	cout << "Connection Lost" << endl;
+	cout << "Verbindung verloren – bitte Verbindung wiederherstellen." << endl;
+	ctx.hal.getActors()->redLampBlink(1000);
 }
 
 void ConnectionLostNormal::exit(ConnectionLostContext& ctx){
-
+	ctx.hal.getActors()->redLampBlinkOff();
 }
 
 void ConnectionLostNormal::eventButtonEstopPressed(ConnectionLostContext& ctx){

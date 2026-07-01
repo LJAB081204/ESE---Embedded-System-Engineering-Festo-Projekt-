@@ -16,12 +16,15 @@ namespace M2{
 IU::IU(){};
 
 void IU::entry(ProfileContext& ctx) {
-	std::cout << "///////////////////IU detected" << std::endl;
 	if(ctx.data.heightDefault == true){
 		ctx.data.heightDefault = false;
 		exit(ctx);
 		new(this) Default;
 		entry(ctx);
+	}
+	if(ctx.data.itemGone == true){
+		ctx.data.itemGone = false;
+		eventItemGone(ctx);
 	}
 }
 

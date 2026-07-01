@@ -14,11 +14,12 @@ ConnectionLostEStopWasPressed::ConnectionLostEStopWasPressed(){
 }
 
 void ConnectionLostEStopWasPressed::entry(ConnectionLostContext& ctx){
+	ctx.hal.getActors()->redLampBlinkOff();
+	ctx.hal.getActors()->redLampOn();
 	ctx.estopState = EStopButtonState::WASPRESSED;
 }
 
 void ConnectionLostEStopWasPressed::exit(ConnectionLostContext& ctx){
-
 }
 
 void ConnectionLostEStopWasPressed::eventButtonEstopPressed(ConnectionLostContext& ctx){
